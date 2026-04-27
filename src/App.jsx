@@ -29,14 +29,14 @@ import OrbitalProjectCarousel from "./OrbitalProjectCarousel.jsx";
 
 const projects = [
   {
-    title: "bezstruje.hr",
+    title: "BezStruje.hr",
     description: "Obavijesti o kvarovima i planiranim radovima.",
     Icon: Zap,
     accent: "from-amber-300 to-orange-500",
     preview: "outage",
   },
   {
-    title: "vidimose.hr",
+    title: "VidimoSe.hr",
     description: "Digitalne pozivnice i event rje\u0161enja.",
     Icon: Heart,
     accent: "from-fuchsia-300 to-violet-500",
@@ -44,14 +44,14 @@ const projects = [
     href: "https://vidimose.hr",
   },
   {
-    title: "kpdinfo.com",
+    title: "KPDinfo.com",
     description: "AI poslovni asistent i analiti\u010dki uvidi.",
     Icon: Bot,
     accent: "from-blue-400 to-indigo-500",
     preview: "ai",
   },
   {
-    title: "GeoAdrese.com.hr",
+    title: "GeoAdrese.net",
     description: "Pretraga adresa i geo podaci.",
     Icon: MapPin,
     accent: "from-teal-300 to-cyan-500",
@@ -92,7 +92,7 @@ const stats = [
 const navLinks = [
   ["Projekti", "#projekti"],
   ["Usluge", "#usluge"],
-  ["O meni", "#omeni"],
+  ["O nama", "#onama"],
   ["Kontakt", "#kontakt", Mail],
 ];
 
@@ -107,7 +107,7 @@ function Navbar() {
             <img
               src="/brand/nepar_logo.png"
               alt="Nepar Solutions logo"
-              className="size-full scale-150 object-cover"
+              className="size-full object-contain p-1"
             />
           </span>
           <span className="min-w-0">
@@ -167,7 +167,7 @@ function Navbar() {
                   {label}
                 </a>
               ))}
-              <MotionButton href="#kontakt" className="mt-1 justify-self-start rounded-[0.75rem] px-5 py-3 text-sm sm:mt-2 sm:justify-self-stretch sm:rounded-[0.8rem] sm:px-6 sm:py-4 sm:text-base">
+              <MotionButton href="#kontakt" className="mt-1 hidden justify-self-start rounded-[0.75rem] px-5 py-3 text-sm md:inline-flex md:justify-self-stretch md:rounded-[0.8rem] md:px-6 md:py-4 md:text-base">
                 <Send className="size-4 sm:size-5" />
                 Javite se
               </MotionButton>
@@ -237,17 +237,33 @@ function ProjectPreviewSmall({ type }) {
   if (type === "geo") {
     return (
       <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/20 bg-slate-900">
-        <div className="absolute inset-0 opacity-80 [background-image:linear-gradient(rgba(59,130,246,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,.18)_1px,transparent_1px)] [background-size:14px_14px]" />
-        <MapPin className="absolute left-1/2 top-7 -translate-x-1/2 text-blue-300" size={22} />
+        <img
+          src="/brand/geoadrese.png"
+          alt="GeoAdrese.com.hr prikaz"
+          loading="lazy"
+          className="absolute inset-0 size-full object-cover object-top"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/72 via-transparent to-transparent" />
+        <MapPin className="absolute bottom-2 right-2 text-cyan-200 drop-shadow" size={18} />
       </div>
     );
   }
 
   return (
     <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/20 bg-slate-950/85">
-      <div className="absolute inset-0 opacity-55 [background-image:linear-gradient(rgba(34,211,238,.16)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,.16)_1px,transparent_1px)] [background-size:18px_18px]" />
-      <MapPin className="absolute left-4 top-6 text-red-300" size={17} />
-      <MapPin className="absolute right-4 bottom-5 text-amber-200" size={17} />
+      <img
+        src="/brand/bezstruje.png"
+        alt="Bezstruje.hr prikaz"
+        loading="lazy"
+        className="absolute inset-0 size-full object-cover object-top opacity-90"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+      <img
+        src="/brand/bezstruje_logo.png"
+        alt=""
+        loading="lazy"
+        className="absolute bottom-1.5 left-1.5 h-5 w-auto rounded bg-slate-950/70 p-0.5"
+      />
     </div>
   );
 }
@@ -467,21 +483,28 @@ function FeaturedProjects() {
 }
 
 function About() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <section id="omeni" className="px-4 py-10">
+    <section id="onama" className="px-4 py-10">
       <div className="mx-auto grid max-w-[1580px] gap-6 rounded-[1rem] border border-blue-200/12 bg-white/[0.035] p-5 shadow-2xl shadow-blue-950/20 backdrop-blur-xl lg:grid-cols-[0.65fr_1.35fr]">
-        <div className="relative min-h-56 overflow-hidden rounded-[0.9rem] border border-blue-300/15 bg-slate-950/70">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="group relative min-h-56 overflow-hidden rounded-[0.9rem] border border-blue-300/15 bg-slate-950/70 text-left"
+          aria-label="Otvori Nepar Solutions sliku"
+        >
           <img
             src="/brand/nepar.png"
             alt="Nepar Solutions brand"
             loading="lazy"
-            className="absolute inset-0 size-full object-contain p-9 opacity-90"
+            className="absolute inset-0 size-full object-cover opacity-95 transition duration-500 group-hover:scale-[1.03]"
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/18 via-transparent to-violet-500/18" />
-        </div>
+        </button>
         <div className="flex flex-col justify-center p-2 lg:p-5">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
-            O MENI
+            O NAMA
           </p>
           <h2 className="text-3xl font-semibold leading-tight tracking-normal text-white">
             Tehni&#269;ka izvedba, jasna komunikacija i fokus na proizvod koji radi.
@@ -491,6 +514,38 @@ function About() {
           </p>
         </div>
       </div>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed inset-0 z-[80] grid place-items-center bg-slate-950/82 px-4 backdrop-blur-lg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+          >
+            <motion.button
+              type="button"
+              className="relative w-full max-w-4xl overflow-hidden rounded-[1rem] border border-blue-200/20 bg-slate-950 shadow-2xl shadow-blue-500/25"
+              initial={{ opacity: 0, scale: 0.82, y: 28, rotateX: -8 }}
+              animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 18 }}
+              transition={{ type: "spring", stiffness: 210, damping: 22 }}
+              onClick={() => setOpen(false)}
+              aria-label="Zatvori Nepar Solutions sliku"
+            >
+              <img
+                src="/brand/nepar.png"
+                alt="Nepar Solutions brand"
+                className="block max-h-[82vh] w-full object-contain"
+              />
+              <span className="absolute right-3 top-3 grid size-9 place-items-center rounded-full border border-white/15 bg-slate-950/75 text-white backdrop-blur">
+                <X size={18} />
+              </span>
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -17,7 +17,7 @@ import {
 
 const cards = [
   {
-    title: "bezstruje.hr",
+    title: "BezStruje.hr",
     description: "Obavijesti o prekidima i kvarovima u opskrbi.",
     Icon: Zap,
     accent: "from-amber-300 to-orange-500",
@@ -25,7 +25,7 @@ const cards = [
     preview: "outage",
   },
   {
-    title: "vidimose.hr",
+    title: "VidimoSe.hr",
     description: "Pozivnice i eventi za va\u017ene trenutke.",
     Icon: Heart,
     accent: "from-fuchsia-300 to-violet-500",
@@ -34,7 +34,7 @@ const cards = [
     href: "https://vidimose.hr",
   },
   {
-    title: "kpdinfo.com",
+    title: "KPDinfo.com",
     description: "AI asistent za informacije, dokumente i poslovne uvide.",
     Icon: Bot,
     accent: "from-blue-400 to-indigo-500",
@@ -42,7 +42,7 @@ const cards = [
     preview: "ai",
   },
   {
-    title: "GeoAdrese.com.hr",
+    title: "GeoAdrese.net",
     description: "Pretraga adresa, koordinate i prostorni podaci.",
     Icon: MapPin,
     accent: "from-teal-300 to-cyan-500",
@@ -119,25 +119,22 @@ function getOrbitalPosition(baseAngle, index, radiusX, radiusY) {
 function OutagePreview() {
   return (
     <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-cyan-300/15 bg-slate-950/72 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
-      <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(34,211,238,.14)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,.14)_1px,transparent_1px)] [background-size:22px_22px]" />
-      <div className="relative flex items-center gap-2">
-        <span className="rounded-md border border-red-400/30 bg-red-500/15 px-2 py-1 text-[9px] font-bold uppercase text-red-200">
-          Kvar
-        </span>
-        <span className="rounded-md border border-amber-300/30 bg-amber-400/15 px-2 py-1 text-[9px] font-bold uppercase text-amber-100">
-          Planirano
-        </span>
-      </div>
-      <div className="absolute inset-x-2 bottom-2 top-10 overflow-hidden rounded-lg border border-white/10 bg-slate-900/75 sm:inset-x-3 sm:bottom-3 sm:top-12 sm:rounded-xl">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_34%_38%,rgba(239,68,68,.45),transparent_3%),radial-gradient(circle_at_72%_34%,rgba(245,158,11,.48),transparent_3%),radial-gradient(circle_at_58%_72%,rgba(239,68,68,.42),transparent_3%),linear-gradient(145deg,rgba(30,64,175,.35),transparent_42%)]" />
-        <div className="absolute inset-0 opacity-55 [background-image:linear-gradient(35deg,transparent_44%,rgba(59,130,246,.28)_45%,transparent_47%),linear-gradient(145deg,transparent_42%,rgba(148,163,184,.22)_44%,transparent_46%)] [background-size:44px_44px]" />
-        <div className="absolute bottom-2 left-2 space-y-1 text-[9px] text-slate-300">
-          <p>Danas, 09:15</p>
-          <p>Bez struje</p>
-          <p>Zagreb, Maksimir</p>
-        </div>
-        <MapPin className="absolute right-4 top-7 text-red-300" size={19} />
-        <MapPin className="absolute left-16 bottom-8 text-amber-200" size={18} />
+      <img
+        src="/brand/bezstruje.png"
+        alt="Bezstruje.hr prikaz"
+        loading="lazy"
+        className="absolute inset-0 size-full object-cover object-top"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/92 via-slate-950/20 to-transparent" />
+      <img
+        src="/brand/bezstruje_logo.png"
+        alt="Bezstruje.hr logo"
+        loading="lazy"
+        className="absolute left-2 top-2 h-7 w-auto rounded-md bg-slate-950/80 p-1 shadow-lg shadow-black/25 sm:left-3 sm:top-3 sm:h-9"
+      />
+      <div className="absolute bottom-2 left-2 right-2 rounded-lg border border-white/10 bg-slate-950/76 px-2 py-1.5 text-[9px] text-slate-200 backdrop-blur-sm sm:bottom-3 sm:left-3 sm:right-3 sm:text-[10px]">
+        <p className="font-semibold text-white">Prekidi i planirani radovi</p>
+        <p className="mt-0.5 text-slate-300">Pregled obavijesti po lokaciji</p>
       </div>
     </div>
   );
@@ -197,19 +194,19 @@ function AiPreview({ compact = false }) {
 function GeoPreview() {
   return (
     <div className="h-[138px] rounded-[0.75rem] border border-teal-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
-      <div className="mb-1.5 flex items-center gap-2 rounded-lg bg-white px-2 py-1.5 text-[9px] text-slate-500 sm:mb-2 sm:px-2.5 sm:py-2 sm:text-[10px]">
-        Unesite adresu...
-        <span className="ml-auto grid size-6 place-items-center rounded-md bg-blue-600 text-white">
-          <Search size={12} />
-        </span>
-      </div>
-      <div className="mb-1.5 rounded-lg border border-white/10 bg-white/[0.05] px-2 py-1.5 text-[9px] text-slate-200 sm:mb-2 sm:px-2.5 sm:py-2 sm:text-[10px]">
-        Ilica 1, 10000 Zagreb
-      </div>
-      <div className="relative h-[54px] overflow-hidden rounded-lg border border-white/10 bg-blue-950/55 sm:h-[142px] sm:rounded-xl">
-        <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(59,130,246,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,.18)_1px,transparent_1px)] [background-size:18px_18px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(132deg,transparent_43%,rgba(59,130,246,.55)_44%,transparent_46%),linear-gradient(62deg,transparent_55%,rgba(148,163,184,.25)_56%,transparent_58%)]" />
-        <MapPin className="absolute left-1/2 top-7 -translate-x-1/2 text-blue-300" size={24} />
+      <div className="relative h-full overflow-hidden rounded-lg border border-white/10 bg-blue-950/55 sm:rounded-xl">
+        <img
+          src="/brand/geoadrese.png"
+          alt="GeoAdrese.com.hr prikaz"
+          loading="lazy"
+          className="absolute inset-0 size-full object-cover object-top"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/88 via-slate-950/18 to-transparent" />
+        <div className="absolute bottom-2 left-2 right-2 rounded-lg border border-white/10 bg-slate-950/74 px-2 py-1.5 text-[9px] text-slate-200 backdrop-blur-sm sm:bottom-3 sm:left-3 sm:right-3 sm:text-[10px]">
+          <p className="font-semibold text-white">Pretraga adresa</p>
+          <p className="mt-0.5 text-slate-300">Koordinate i prostorni podaci</p>
+        </div>
+        <MapPin className="absolute right-3 top-3 text-cyan-200 drop-shadow" size={20} />
       </div>
     </div>
   );
