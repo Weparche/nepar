@@ -100,14 +100,14 @@ function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-5">
-      <nav className="mx-auto flex max-w-[1580px] items-center justify-between rounded-[0.9rem] border border-blue-200/14 bg-slate-950/64 px-3 py-2 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:rounded-[1.25rem] sm:px-8 sm:py-4 sm:shadow-2xl sm:backdrop-blur-2xl">
-        <a href="#top" className="flex min-w-0 items-center gap-3 sm:gap-5">
-          <span className="grid size-14 place-items-center overflow-hidden rounded-[1rem] border border-blue-300/20 bg-white/5 shadow-md shadow-blue-500/15 sm:size-28 sm:rounded-[2rem] sm:shadow-lg">
+    <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-3 sm:pt-3">
+      <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-[0.8rem] border border-blue-200/14 bg-slate-950/64 px-2 py-1.5 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:rounded-[1rem] sm:px-4 sm:py-2 lg:max-w-[1380px] lg:px-5">
+        <a href="#top" className="flex min-w-0 items-center gap-2 sm:gap-3">
+          <span className="grid h-14 w-[10.5rem] place-items-center overflow-hidden rounded-[0.85rem] border border-blue-300/20 bg-white/5 shadow-md shadow-blue-500/15 sm:h-28 sm:w-[21rem] sm:rounded-[1.35rem] sm:shadow-lg">
             <img
               src="/brand/nepar_logo.png"
               alt="Nepar Solutions logo"
-              className="size-full object-contain p-1"
+              className="size-full object-contain px-2 py-1 sm:px-3 sm:py-2"
             />
           </span>
           <span className="min-w-0">
