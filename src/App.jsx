@@ -100,21 +100,21 @@ function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
-      <nav className="mx-auto flex max-w-[1580px] items-center justify-between rounded-[1rem] border border-blue-200/14 bg-slate-950/58 px-4 py-3 shadow-2xl shadow-blue-950/30 backdrop-blur-2xl sm:px-6">
-        <a href="#top" className="flex items-center gap-3">
-          <span className="grid size-11 place-items-center overflow-hidden rounded-[0.9rem] border border-blue-300/20 bg-white/5 shadow-lg shadow-blue-500/15">
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-5">
+      <nav className="mx-auto flex max-w-[1580px] items-center justify-between rounded-[1.25rem] border border-blue-200/14 bg-slate-950/58 px-5 py-4 shadow-2xl shadow-blue-950/30 backdrop-blur-2xl sm:px-8">
+        <a href="#top" className="flex items-center gap-5">
+          <span className="grid size-28 place-items-center overflow-hidden rounded-[2rem] border border-blue-300/20 bg-white/5 shadow-lg shadow-blue-500/15">
             <img
               src="/brand/nepar_logo.png"
               alt="Nepar Solutions logo"
-              className="size-8 object-contain"
+              className="size-full scale-150 object-cover"
             />
           </span>
           <span>
-            <span className="block text-sm font-semibold tracking-normal text-white sm:text-base">
+            <span className="block text-xl font-semibold tracking-normal text-white sm:text-2xl">
               Nepar Solutions
             </span>
-            <span className="block text-[11px] text-slate-400 sm:text-xs">
+            <span className="block text-sm text-slate-400 sm:text-base">
               obrt za digitalna rje&#353;enja
             </span>
           </span>
@@ -125,25 +125,25 @@ function Navbar() {
             <a
               key={href}
               href={href}
-              className="inline-flex items-center gap-2 text-sm font-medium text-slate-200 transition hover:text-white"
+              className="inline-flex items-center gap-2 text-base font-medium text-slate-200 transition hover:text-white"
             >
-              {Icon && <Icon size={16} className="text-blue-200" />}
+              {Icon && <Icon size={20} className="text-blue-200" />}
               {label}
             </a>
           ))}
         </div>
 
-        <MotionButton href="#kontakt" className="hidden px-5 py-2.5 text-sm lg:inline-flex">
-          <Send size={16} />
-          Javi se
+        <MotionButton href="#kontakt" className="hidden px-7 py-4 text-base lg:inline-flex">
+          <Send size={20} />
+          Javite se
         </MotionButton>
 
         <button
-          className="grid size-11 place-items-center rounded-[0.9rem] border border-blue-200/15 bg-white/5 text-slate-200 lg:hidden"
+          className="grid size-14 place-items-center rounded-[1.1rem] border border-blue-200/15 bg-white/5 text-slate-200 lg:hidden"
           onClick={() => setOpen((value) => !value)}
           aria-label="Otvori navigaciju"
         >
-          {open ? <X size={20} /> : <Menu size={20} />}
+          {open ? <X size={26} /> : <Menu size={26} />}
         </button>
       </nav>
 
@@ -153,7 +153,7 @@ function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="mx-auto mt-3 max-w-[1580px] rounded-[1rem] border border-blue-200/14 bg-slate-950/88 p-4 shadow-2xl shadow-blue-950/30 backdrop-blur-2xl lg:hidden"
+            className="mx-auto mt-3 max-w-[1580px] rounded-[1.25rem] border border-blue-200/14 bg-slate-950/88 p-5 shadow-2xl shadow-blue-950/30 backdrop-blur-2xl lg:hidden"
           >
             <div className="grid gap-2">
               {navLinks.map(([label, href, Icon]) => (
@@ -161,15 +161,15 @@ function Navbar() {
                   key={href}
                   href={href}
                   onClick={() => setOpen(false)}
-                  className="inline-flex items-center gap-2 rounded-[0.85rem] px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/5"
+                  className="inline-flex items-center gap-3 rounded-[1rem] px-5 py-4 text-base font-medium text-slate-200 transition hover:bg-white/5"
                 >
-                  {Icon && <Icon size={16} className="text-blue-200" />}
+                  {Icon && <Icon size={20} className="text-blue-200" />}
                   {label}
                 </a>
               ))}
-              <MotionButton href="#kontakt" className="mt-2 justify-center px-5 py-3 text-sm">
-                <Send size={16} />
-                Javi se
+              <MotionButton href="#kontakt" className="mt-2 justify-center px-6 py-4 text-base">
+                <Send size={20} />
+                Javite se
               </MotionButton>
             </div>
           </motion.div>
@@ -187,7 +187,7 @@ function MotionButton({ href, children, className = "", variant = "primary" }) {
       href={href}
       whileHover={{ y: -2, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className={`items-center justify-center gap-2 rounded-[0.8rem] font-semibold transition ${
+      className={`inline-flex items-center justify-center gap-2 rounded-[0.8rem] font-semibold transition ${
         primary
           ? "bg-gradient-to-r from-blue-500 via-blue-500 to-violet-600 text-white shadow-xl shadow-blue-500/25"
           : "border border-blue-200/20 bg-white/[0.03] text-slate-200 backdrop-blur hover:bg-white/[0.07]"
@@ -205,6 +205,7 @@ function ProjectPreviewSmall({ type }) {
         <img
           src="/brand/pozivnica-home-cura.jpg"
           alt="Vidimose.hr digitalna pozivnica"
+          loading="lazy"
           className="h-full w-full object-cover object-top"
         />
       </div>
@@ -259,7 +260,7 @@ function Hero() {
   ];
 
   return (
-    <section id="top" className="relative px-4 pt-28 sm:pt-32 lg:pt-[7.1rem]">
+    <section id="top" className="relative px-4 pt-52 sm:pt-52 lg:pt-[11rem]">
       <div className="mx-auto grid max-w-[1580px] items-center gap-8 lg:grid-cols-[minmax(320px,0.62fr)_minmax(0,1.38fr)]">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
@@ -283,7 +284,7 @@ function Hero() {
             transition={{ delay: 0.16, duration: 0.75 }}
             className="text-4xl font-semibold leading-[1.06] tracking-normal text-white sm:text-5xl xl:text-[3.65rem]"
           >
-            Gradim korisne{" "}
+            Gradimo korisne{" "}
             <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-violet-400 bg-clip-text text-transparent">
               digitalne proizvode
             </span>{" "}
@@ -371,7 +372,7 @@ function Services() {
       <div className="mx-auto grid max-w-[1580px] gap-4 xl:grid-cols-[240px_1fr]">
         <div>
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
-            &#352;TO RADIM
+            &#352;TO RADIMO
           </p>
           <h2 className="text-3xl font-semibold leading-tight tracking-normal text-white sm:text-4xl">
             Rje&#353;enja koja donose vrijednost.
@@ -473,6 +474,7 @@ function About() {
           <img
             src="/brand/nepar.png"
             alt="Nepar Solutions brand"
+            loading="lazy"
             className="absolute inset-0 size-full object-contain p-9 opacity-90"
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/18 via-transparent to-violet-500/18" />
@@ -633,7 +635,7 @@ function BottomCta() {
             href="mailto:hello@nepar.solutions"
             className="inline-flex w-full px-5 py-3 text-sm sm:w-auto"
           >
-            Javi se i pokrenimo projekt
+            Javite se i pokrenimo projekt
             <Send size={17} />
           </MotionButton>
         </div>
@@ -664,7 +666,7 @@ export default function App() {
       <FeaturedProjects />
       <About />
       <BottomCta />
-      <footer className="px-4 pb-32">
+      <footer className="px-4 pb-36 sm:pb-32">
         <div className="mx-auto flex max-w-[1580px] flex-col items-center justify-between gap-4 border-t border-blue-200/10 pt-6 text-sm text-slate-500 sm:flex-row">
           <p>&copy; 2026 Nepar Solutions. Digitalna rje&#353;enja po mjeri.</p>
           <a href="#top" className="transition hover:text-slate-200">

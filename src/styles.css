@@ -17,11 +17,23 @@ body {
   color: white;
 }
 
-body::selection {
+::selection {
   background: rgba(59, 130, 246, 0.38);
 }
 
 #root {
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(96, 165, 250, 0.85);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

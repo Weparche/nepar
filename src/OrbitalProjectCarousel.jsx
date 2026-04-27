@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion";
+import { motion, useAnimationFrame, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
 import {
   ArrowRight,
   Bot,
@@ -149,6 +149,7 @@ function InvitePreview() {
       <motion.img
         src="/brand/pozivnica-home-cura.jpg"
         alt="Vidimose.hr digitalna pozivnica"
+        loading="lazy"
         animate={{ y: [0, -4, 0], scale: [1, 1.015, 1] }}
         transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
         className="relative h-full max-h-full w-auto rounded-xl border border-white/15 object-contain shadow-2xl shadow-fuchsia-500/25"
@@ -178,11 +179,12 @@ function AiPreview() {
         </div>
       </div>
       <div className="mt-6 flex h-20 items-end gap-1">
-        {[36, 58, 46, 64, 52, 72].map((height) => (
+        {[36, 58, 46, 64, 52, 72].map((h, i) => (
           <motion.span
-            key={height}
-            animate={{ height: [`${height - 8}%`, `${height}%`, `${height - 8}%`] }}
+            key={i}
+            animate={{ scaleY: [(h - 8) / h, 1, (h - 8) / h] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            style={{ height: `${h}%`, transformOrigin: "bottom" }}
             className="flex-1 rounded-t bg-gradient-to-t from-blue-600 to-cyan-300"
           />
         ))}
@@ -352,7 +354,7 @@ function OrbitDot({ card, index, angle, radiusX, radiusY, onClick }) {
       onClick={onClick}
       style={{ opacity, width }}
       className="h-2.5 rounded-full bg-blue-200"
-      aria-label={`Prikazi ${card.title}`}
+      aria-label={`Prikaži ${card.title}`}
     />
   );
 }
@@ -367,7 +369,7 @@ function OrbitButton({ direction, onClick, children }) {
       className={`absolute top-[46%] z-[140] grid size-12 -translate-y-1/2 place-items-center rounded-full border border-blue-300/40 bg-slate-950/70 text-blue-100 shadow-[0_0_28px_rgba(59,130,246,0.45)] backdrop-blur-xl transition hover:border-cyan-200 hover:text-white ${
         direction === "left" ? "-left-2 sm:left-0" : "-right-2 sm:right-0"
       }`}
-      aria-label={direction === "left" ? "Prethodni projekt" : "Sljedeci projekt"}
+      aria-label={direction === "left" ? "Prethodni projekt" : "Sljedeći projekt"}
     >
       {children}
     </motion.button>
@@ -377,7 +379,9 @@ function OrbitButton({ direction, onClick, children }) {
 export default function OrbitalProjectCarousel() {
   const angle = useMotionValue(90);
   const { radiusX, radiusY, orbitCenterY, sceneHeight } = useCarouselSize();
+  const prefersReducedMotion = useReducedMotion();
   useAnimationFrame((time, delta) => {
+    if (prefersReducedMotion) return;
     const next = (angle.get() + delta * 0.0046) % 360;
     angle.set(next);
   });
