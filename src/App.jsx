@@ -167,8 +167,8 @@ function Navbar() {
                   {label}
                 </a>
               ))}
-              <MotionButton href="#kontakt" className="mt-2 justify-center px-5 py-3 text-sm sm:px-6 sm:py-4 sm:text-base">
-                <Send size={20} />
+              <MotionButton href="#kontakt" className="mt-1 justify-self-start px-3 py-2 text-xs sm:mt-2 sm:justify-self-stretch sm:px-6 sm:py-4 sm:text-base">
+                <Send className="size-3.5 sm:size-5" />
                 Javite se
               </MotionButton>
             </div>

@@ -73,12 +73,12 @@ function useCarouselSize() {
       const width = window.innerWidth;
 
       if (width < 480) {
-        setSize({ radiusX: 130, radiusY: 26, orbitCenterY: 310, sceneHeight: 392, isMobile: true });
+        setSize({ radiusX: 124, radiusY: 24, orbitCenterY: 268, sceneHeight: 334, isMobile: true });
         return;
       }
 
       if (width < 768) {
-        setSize({ radiusX: 190, radiusY: 30, orbitCenterY: 320, sceneHeight: 410, isMobile: true });
+        setSize({ radiusX: 178, radiusY: 28, orbitCenterY: 282, sceneHeight: 356, isMobile: true });
         return;
       }
 
@@ -118,7 +118,7 @@ function getOrbitalPosition(baseAngle, index, radiusX, radiusY) {
 
 function OutagePreview() {
   return (
-    <div className="relative h-[178px] overflow-hidden rounded-[0.9rem] border border-cyan-300/15 bg-slate-950/72 p-3 sm:h-[238px]">
+    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-cyan-300/15 bg-slate-950/72 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
       <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(34,211,238,.14)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,.14)_1px,transparent_1px)] [background-size:22px_22px]" />
       <div className="relative flex items-center gap-2">
         <span className="rounded-md border border-red-400/30 bg-red-500/15 px-2 py-1 text-[9px] font-bold uppercase text-red-200">
@@ -128,7 +128,7 @@ function OutagePreview() {
           Planirano
         </span>
       </div>
-      <div className="absolute inset-x-3 bottom-3 top-12 overflow-hidden rounded-xl border border-white/10 bg-slate-900/75">
+      <div className="absolute inset-x-2 bottom-2 top-10 overflow-hidden rounded-lg border border-white/10 bg-slate-900/75 sm:inset-x-3 sm:bottom-3 sm:top-12 sm:rounded-xl">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_34%_38%,rgba(239,68,68,.45),transparent_3%),radial-gradient(circle_at_72%_34%,rgba(245,158,11,.48),transparent_3%),radial-gradient(circle_at_58%_72%,rgba(239,68,68,.42),transparent_3%),linear-gradient(145deg,rgba(30,64,175,.35),transparent_42%)]" />
         <div className="absolute inset-0 opacity-55 [background-image:linear-gradient(35deg,transparent_44%,rgba(59,130,246,.28)_45%,transparent_47%),linear-gradient(145deg,transparent_42%,rgba(148,163,184,.22)_44%,transparent_46%)] [background-size:44px_44px]" />
         <div className="absolute bottom-2 left-2 space-y-1 text-[9px] text-slate-300">
@@ -145,7 +145,7 @@ function OutagePreview() {
 
 function InvitePreview({ compact = false }) {
   return (
-    <div className="relative grid h-[178px] place-items-center overflow-hidden rounded-[0.9rem] border border-fuchsia-300/20 bg-gradient-to-br from-slate-950 via-fuchsia-950/40 to-slate-950 p-2 sm:h-[238px]">
+    <div className="relative grid h-[138px] place-items-center overflow-hidden rounded-[0.75rem] border border-fuchsia-300/20 bg-gradient-to-br from-slate-950 via-fuchsia-950/40 to-slate-950 p-2 sm:h-[238px] sm:rounded-[0.9rem]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_22%,rgba(250,204,21,.18),transparent_8%),radial-gradient(circle_at_80%_24%,rgba(255,255,255,.13),transparent_7%),radial-gradient(circle_at_28%_78%,rgba(244,114,182,.18),transparent_10%)]" />
       <motion.img
         src="/brand/pozivnica-home-cura.jpg"
@@ -161,15 +161,15 @@ function InvitePreview({ compact = false }) {
 
 function AiPreview({ compact = false }) {
   return (
-    <div className="h-[178px] rounded-[0.9rem] border border-blue-300/15 bg-slate-950/78 p-3 sm:h-[238px]">
-      <div className="mb-3 flex items-center gap-2 rounded-xl bg-white/[0.06] px-2.5 py-2 text-[10px] text-slate-200">
+    <div className="h-[138px] rounded-[0.75rem] border border-blue-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
+      <div className="mb-2 flex items-center gap-2 rounded-lg bg-white/[0.06] px-2 py-1.5 text-[9px] text-slate-200 sm:mb-3 sm:rounded-xl sm:px-2.5 sm:py-2 sm:text-[10px]">
         <Bot size={14} className="text-blue-200" />
         Kako mogu pomo\u0107i?
       </div>
-      <div className="ml-auto w-4/5 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 p-2 text-[10px] font-medium text-white">
+      <div className="ml-auto w-4/5 rounded-lg bg-gradient-to-r from-indigo-500 to-blue-500 p-1.5 text-[9px] font-medium text-white sm:rounded-xl sm:p-2 sm:text-[10px]">
         Analiziraj klasifikaciju djelatnosti za firmu.
       </div>
-      <div className="mt-3 grid grid-cols-2 gap-2">
+      <div className="mt-2 grid grid-cols-2 gap-2 sm:mt-3">
         <div className="rounded-lg border border-white/10 bg-white/[0.04] p-2">
           <p className="text-[9px] text-slate-500">Klasifikacija</p>
           <p className="text-xs font-semibold text-white">Ex 62.01</p>
@@ -179,7 +179,7 @@ function AiPreview({ compact = false }) {
           <p className="text-xs font-semibold text-cyan-200">Niski</p>
         </div>
       </div>
-      <div className="mt-4 flex h-12 items-end gap-1 sm:mt-6 sm:h-20">
+      <div className="mt-2 flex h-8 items-end gap-1 sm:mt-6 sm:h-20">
         {[36, 58, 46, 64, 52, 72].map((h, i) => (
           <motion.span
             key={i}
@@ -196,17 +196,17 @@ function AiPreview({ compact = false }) {
 
 function GeoPreview() {
   return (
-    <div className="h-[178px] rounded-[0.9rem] border border-teal-300/15 bg-slate-950/78 p-3 sm:h-[238px]">
-      <div className="mb-2 flex items-center gap-2 rounded-lg bg-white px-2.5 py-2 text-[10px] text-slate-500">
+    <div className="h-[138px] rounded-[0.75rem] border border-teal-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
+      <div className="mb-1.5 flex items-center gap-2 rounded-lg bg-white px-2 py-1.5 text-[9px] text-slate-500 sm:mb-2 sm:px-2.5 sm:py-2 sm:text-[10px]">
         Unesite adresu...
         <span className="ml-auto grid size-6 place-items-center rounded-md bg-blue-600 text-white">
           <Search size={12} />
         </span>
       </div>
-      <div className="mb-2 rounded-lg border border-white/10 bg-white/[0.05] px-2.5 py-2 text-[10px] text-slate-200">
+      <div className="mb-1.5 rounded-lg border border-white/10 bg-white/[0.05] px-2 py-1.5 text-[9px] text-slate-200 sm:mb-2 sm:px-2.5 sm:py-2 sm:text-[10px]">
         Ilica 1, 10000 Zagreb
       </div>
-      <div className="relative h-[82px] overflow-hidden rounded-xl border border-white/10 bg-blue-950/55 sm:h-[142px]">
+      <div className="relative h-[54px] overflow-hidden rounded-lg border border-white/10 bg-blue-950/55 sm:h-[142px] sm:rounded-xl">
         <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(59,130,246,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,.18)_1px,transparent_1px)] [background-size:18px_18px]" />
         <div className="absolute inset-0 bg-[linear-gradient(132deg,transparent_43%,rgba(59,130,246,.55)_44%,transparent_46%),linear-gradient(62deg,transparent_55%,rgba(148,163,184,.25)_56%,transparent_58%)]" />
         <MapPin className="absolute left-1/2 top-7 -translate-x-1/2 text-blue-300" size={24} />
@@ -217,20 +217,20 @@ function GeoPreview() {
 
 function MorePreview({ compact = false }) {
   return (
-    <div className="h-[178px] rounded-[0.9rem] border border-violet-300/15 bg-slate-950/78 p-3 sm:h-[238px]">
+    <div className="h-[138px] rounded-[0.75rem] border border-violet-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
       <div className="grid grid-cols-3 gap-2">
         {[Zap, Heart, Bot, MapPin, DatabaseZap, ChartNoAxesColumnIncreasing].map((Icon, index) => (
           <motion.div
             key={index}
             animate={compact ? false : { y: [0, index % 2 ? 3 : -3, 0] }}
             transition={compact ? undefined : { duration: 3 + index * 0.2, repeat: Infinity, ease: "easeInOut" }}
-            className="grid h-12 place-items-center rounded-lg border border-white/10 bg-white/[0.06] sm:h-16"
+            className="grid h-9 place-items-center rounded-lg border border-white/10 bg-white/[0.06] sm:h-16"
           >
             <Icon className="text-cyan-100" size={17} />
           </motion.div>
         ))}
       </div>
-      <div className="mt-4 border-t border-white/10 pt-4">
+      <div className="mt-3 border-t border-white/10 pt-3 sm:mt-4 sm:pt-4">
         <span className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-200">
           Pogledaj sve <ArrowRight size={13} />
         </span>
@@ -257,7 +257,7 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile }
   return (
     <CardShell
       {...linkProps}
-      className={`orbital-card relative block w-[176px] overflow-hidden rounded-[0.85rem] border bg-slate-950/88 p-2.5 shadow-md shadow-blue-950/25 sm:w-[230px] sm:rounded-[1rem] sm:p-3 sm:backdrop-blur-xl xl:w-[246px] ${
+      className={`orbital-card relative block w-[158px] overflow-hidden rounded-[0.75rem] border bg-slate-950/88 p-2 shadow-md shadow-blue-950/25 sm:w-[230px] sm:rounded-[1rem] sm:p-3 sm:backdrop-blur-xl xl:w-[246px] ${
         card.href ? "cursor-pointer" : ""
       }`}
       style={{
@@ -276,8 +276,8 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile }
           <Icon size={17} />
         </span>
         <div className="min-w-0">
-          <h3 className="truncate text-sm font-semibold text-white sm:text-lg">{card.title}</h3>
-          <p className="mt-1 line-clamp-2 text-[11px] leading-4 text-slate-300 sm:text-xs sm:leading-5">{card.description}</p>
+          <h3 className="truncate text-xs font-semibold text-white sm:text-lg">{card.title}</h3>
+          <p className="mt-0.5 line-clamp-2 text-[10px] leading-3.5 text-slate-300 sm:mt-1 sm:text-xs sm:leading-5">{card.description}</p>
         </div>
       </div>
       <Preview type={card.preview} compact={isMobile} />
@@ -385,7 +385,7 @@ export default function OrbitalProjectCarousel() {
   const prefersReducedMotion = useReducedMotion();
   useAnimationFrame((time, delta) => {
     if (prefersReducedMotion) return;
-    const next = (angle.get() + delta * (isMobile ? 0.0019 : 0.0046)) % 360;
+    const next = (angle.get() + delta * (isMobile ? 0.0034 : 0.0046)) % 360;
     angle.set(next);
   });
 
