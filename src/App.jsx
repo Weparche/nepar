@@ -348,6 +348,29 @@ function Hero() {
               </span>
             ))}
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 14, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.48, duration: 0.65, ease: "easeOut" }}
+            className="mt-5 lg:hidden"
+          >
+            <div className="inline-flex items-center gap-3 rounded-full border border-cyan-300/25 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-cyan-500/10 backdrop-blur">
+              <motion.span
+                aria-hidden="true"
+                animate={{ scale: [1, 1.25, 1], opacity: [0.65, 1, 0.65] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                className="size-2.5 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.8)]"
+              />
+              Izdvojeni projekti
+              <motion.span
+                aria-hidden="true"
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                className="h-px w-8 bg-gradient-to-r from-cyan-300 to-transparent"
+              />
+            </div>
+          </motion.div>
         </motion.div>
 
         <OrbitalProjectCarousel />
