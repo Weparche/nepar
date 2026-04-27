@@ -32,6 +32,12 @@ body {
   border-radius: 6px;
 }
 
+.orbital-item,
+.orbital-card {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -65,6 +65,7 @@ function useCarouselSize() {
     radiusY: 50,
     orbitCenterY: 372,
     sceneHeight: 508,
+    isMobile: false,
   });
 
   useEffect(() => {
@@ -72,21 +73,21 @@ function useCarouselSize() {
       const width = window.innerWidth;
 
       if (width < 480) {
-        setSize({ radiusX: 158, radiusY: 34, orbitCenterY: 382, sceneHeight: 510 });
+        setSize({ radiusX: 130, radiusY: 26, orbitCenterY: 310, sceneHeight: 392, isMobile: true });
         return;
       }
 
       if (width < 768) {
-        setSize({ radiusX: 246, radiusY: 38, orbitCenterY: 382, sceneHeight: 510 });
+        setSize({ radiusX: 190, radiusY: 30, orbitCenterY: 320, sceneHeight: 410, isMobile: true });
         return;
       }
 
       if (width < 1180) {
-        setSize({ radiusX: 326, radiusY: 44, orbitCenterY: 374, sceneHeight: 508 });
+        setSize({ radiusX: 326, radiusY: 44, orbitCenterY: 374, sceneHeight: 508, isMobile: false });
         return;
       }
 
-      setSize({ radiusX: 418, radiusY: 50, orbitCenterY: 372, sceneHeight: 508 });
+      setSize({ radiusX: 418, radiusY: 50, orbitCenterY: 372, sceneHeight: 508, isMobile: false });
     };
 
     update();
@@ -117,7 +118,7 @@ function getOrbitalPosition(baseAngle, index, radiusX, radiusY) {
 
 function OutagePreview() {
   return (
-    <div className="relative h-[238px] overflow-hidden rounded-[0.9rem] border border-cyan-300/15 bg-slate-950/72 p-3">
+    <div className="relative h-[178px] overflow-hidden rounded-[0.9rem] border border-cyan-300/15 bg-slate-950/72 p-3 sm:h-[238px]">
       <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(34,211,238,.14)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,.14)_1px,transparent_1px)] [background-size:22px_22px]" />
       <div className="relative flex items-center gap-2">
         <span className="rounded-md border border-red-400/30 bg-red-500/15 px-2 py-1 text-[9px] font-bold uppercase text-red-200">
@@ -142,25 +143,25 @@ function OutagePreview() {
   );
 }
 
-function InvitePreview() {
+function InvitePreview({ compact = false }) {
   return (
-    <div className="relative grid h-[238px] place-items-center overflow-hidden rounded-[0.9rem] border border-fuchsia-300/20 bg-gradient-to-br from-slate-950 via-fuchsia-950/40 to-slate-950 p-2">
+    <div className="relative grid h-[178px] place-items-center overflow-hidden rounded-[0.9rem] border border-fuchsia-300/20 bg-gradient-to-br from-slate-950 via-fuchsia-950/40 to-slate-950 p-2 sm:h-[238px]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_22%,rgba(250,204,21,.18),transparent_8%),radial-gradient(circle_at_80%_24%,rgba(255,255,255,.13),transparent_7%),radial-gradient(circle_at_28%_78%,rgba(244,114,182,.18),transparent_10%)]" />
       <motion.img
         src="/brand/pozivnica-home-cura.jpg"
         alt="Vidimose.hr digitalna pozivnica"
         loading="lazy"
-        animate={{ y: [0, -4, 0], scale: [1, 1.015, 1] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-        className="relative h-full max-h-full w-auto rounded-xl border border-white/15 object-contain shadow-2xl shadow-fuchsia-500/25"
+        animate={compact ? false : { y: [0, -4, 0], scale: [1, 1.015, 1] }}
+        transition={compact ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+        className="relative h-full max-h-full w-auto rounded-xl border border-white/15 object-contain shadow-lg shadow-fuchsia-500/15 sm:shadow-2xl sm:shadow-fuchsia-500/25"
       />
     </div>
   );
 }
 
-function AiPreview() {
+function AiPreview({ compact = false }) {
   return (
-    <div className="h-[238px] rounded-[0.9rem] border border-blue-300/15 bg-slate-950/78 p-3">
+    <div className="h-[178px] rounded-[0.9rem] border border-blue-300/15 bg-slate-950/78 p-3 sm:h-[238px]">
       <div className="mb-3 flex items-center gap-2 rounded-xl bg-white/[0.06] px-2.5 py-2 text-[10px] text-slate-200">
         <Bot size={14} className="text-blue-200" />
         Kako mogu pomo\u0107i?
@@ -178,12 +179,12 @@ function AiPreview() {
           <p className="text-xs font-semibold text-cyan-200">Niski</p>
         </div>
       </div>
-      <div className="mt-6 flex h-20 items-end gap-1">
+      <div className="mt-4 flex h-12 items-end gap-1 sm:mt-6 sm:h-20">
         {[36, 58, 46, 64, 52, 72].map((h, i) => (
           <motion.span
             key={i}
-            animate={{ scaleY: [(h - 8) / h, 1, (h - 8) / h] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            animate={compact ? false : { scaleY: [(h - 8) / h, 1, (h - 8) / h] }}
+            transition={compact ? undefined : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
             style={{ height: `${h}%`, transformOrigin: "bottom" }}
             className="flex-1 rounded-t bg-gradient-to-t from-blue-600 to-cyan-300"
           />
@@ -195,7 +196,7 @@ function AiPreview() {
 
 function GeoPreview() {
   return (
-    <div className="h-[238px] rounded-[0.9rem] border border-teal-300/15 bg-slate-950/78 p-3">
+    <div className="h-[178px] rounded-[0.9rem] border border-teal-300/15 bg-slate-950/78 p-3 sm:h-[238px]">
       <div className="mb-2 flex items-center gap-2 rounded-lg bg-white px-2.5 py-2 text-[10px] text-slate-500">
         Unesite adresu...
         <span className="ml-auto grid size-6 place-items-center rounded-md bg-blue-600 text-white">
@@ -205,7 +206,7 @@ function GeoPreview() {
       <div className="mb-2 rounded-lg border border-white/10 bg-white/[0.05] px-2.5 py-2 text-[10px] text-slate-200">
         Ilica 1, 10000 Zagreb
       </div>
-      <div className="relative h-[142px] overflow-hidden rounded-xl border border-white/10 bg-blue-950/55">
+      <div className="relative h-[82px] overflow-hidden rounded-xl border border-white/10 bg-blue-950/55 sm:h-[142px]">
         <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(59,130,246,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,.18)_1px,transparent_1px)] [background-size:18px_18px]" />
         <div className="absolute inset-0 bg-[linear-gradient(132deg,transparent_43%,rgba(59,130,246,.55)_44%,transparent_46%),linear-gradient(62deg,transparent_55%,rgba(148,163,184,.25)_56%,transparent_58%)]" />
         <MapPin className="absolute left-1/2 top-7 -translate-x-1/2 text-blue-300" size={24} />
@@ -214,16 +215,16 @@ function GeoPreview() {
   );
 }
 
-function MorePreview() {
+function MorePreview({ compact = false }) {
   return (
-    <div className="h-[238px] rounded-[0.9rem] border border-violet-300/15 bg-slate-950/78 p-3">
+    <div className="h-[178px] rounded-[0.9rem] border border-violet-300/15 bg-slate-950/78 p-3 sm:h-[238px]">
       <div className="grid grid-cols-3 gap-2">
         {[Zap, Heart, Bot, MapPin, DatabaseZap, ChartNoAxesColumnIncreasing].map((Icon, index) => (
           <motion.div
             key={index}
-            animate={{ y: [0, index % 2 ? 3 : -3, 0] }}
-            transition={{ duration: 3 + index * 0.2, repeat: Infinity, ease: "easeInOut" }}
-            className="grid h-16 place-items-center rounded-lg border border-white/10 bg-white/[0.06]"
+            animate={compact ? false : { y: [0, index % 2 ? 3 : -3, 0] }}
+            transition={compact ? undefined : { duration: 3 + index * 0.2, repeat: Infinity, ease: "easeInOut" }}
+            className="grid h-12 place-items-center rounded-lg border border-white/10 bg-white/[0.06] sm:h-16"
           >
             <Icon className="text-cyan-100" size={17} />
           </motion.div>
@@ -238,15 +239,15 @@ function MorePreview() {
   );
 }
 
-function Preview({ type }) {
+function Preview({ type, compact = false }) {
   if (type === "outage") return <OutagePreview />;
-  if (type === "invite") return <InvitePreview />;
-  if (type === "ai") return <AiPreview />;
+  if (type === "invite") return <InvitePreview compact={compact} />;
+  if (type === "ai") return <AiPreview compact={compact} />;
   if (type === "geo") return <GeoPreview />;
-  return <MorePreview />;
+  return <MorePreview compact={compact} />;
 }
 
-function OrbitalCard({ card, opacity, filter, boxShadow, borderColor }) {
+function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile }) {
   const Icon = card.Icon;
   const CardShell = card.href ? motion.a : motion.article;
   const linkProps = card.href
@@ -256,7 +257,7 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor }) {
   return (
     <CardShell
       {...linkProps}
-      className={`relative block w-[210px] overflow-hidden rounded-[1rem] border bg-slate-950/86 p-3 backdrop-blur-xl sm:w-[230px] xl:w-[246px] ${
+      className={`orbital-card relative block w-[176px] overflow-hidden rounded-[0.85rem] border bg-slate-950/88 p-2.5 shadow-md shadow-blue-950/25 sm:w-[230px] sm:rounded-[1rem] sm:p-3 sm:backdrop-blur-xl xl:w-[246px] ${
         card.href ? "cursor-pointer" : ""
       }`}
       style={{
@@ -265,26 +266,26 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor }) {
         boxShadow,
         borderColor,
       }}
-      whileHover={{ y: -8, scale: 1.02 }}
+      whileHover={isMobile ? undefined : { y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 220, damping: 24 }}
     >
       <div className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-blue-200/80 to-transparent" />
-      <div className="pointer-events-none absolute -right-10 -top-12 size-28 rounded-full bg-blue-400/12 blur-2xl" />
-      <div className="mb-3 flex items-start gap-2">
+      <div className="pointer-events-none absolute -right-10 -top-12 hidden size-28 rounded-full bg-blue-400/12 blur-2xl sm:block" />
+      <div className="mb-2 flex items-start gap-2 sm:mb-3">
         <span className={`mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${card.accent} text-white shadow-lg`}>
           <Icon size={17} />
         </span>
         <div className="min-w-0">
-          <h3 className="truncate text-base font-semibold text-white sm:text-lg">{card.title}</h3>
-          <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-300">{card.description}</p>
+          <h3 className="truncate text-sm font-semibold text-white sm:text-lg">{card.title}</h3>
+          <p className="mt-1 line-clamp-2 text-[11px] leading-4 text-slate-300 sm:text-xs sm:leading-5">{card.description}</p>
         </div>
       </div>
-      <Preview type={card.preview} />
+      <Preview type={card.preview} compact={isMobile} />
     </CardShell>
   );
 }
 
-function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY }) {
+function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMobile }) {
   const x = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).x);
   const y = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).y);
   const scale = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).scale);
@@ -313,7 +314,7 @@ function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY }) {
 
   return (
     <motion.div
-      className="absolute left-1/2"
+      className="orbital-item absolute left-1/2"
       style={{
         top: orbitCenterY,
         x,
@@ -323,15 +324,17 @@ function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY }) {
         zIndex,
         transformStyle: "preserve-3d",
         willChange: "transform",
+        backfaceVisibility: "hidden",
       }}
     >
       <div className="-translate-x-1/2 -translate-y-full">
         <OrbitalCard
           card={card}
           opacity={opacity}
-          filter={filter}
-          boxShadow={boxShadow}
+          filter={isMobile ? "brightness(0.96) saturate(1)" : filter}
+          boxShadow={isMobile ? "0 6px 18px rgba(15,23,42,0.28)" : boxShadow}
           borderColor={borderColor}
+          isMobile={isMobile}
         />
       </div>
     </motion.div>
@@ -366,7 +369,7 @@ function OrbitButton({ direction, onClick, children }) {
       onClick={onClick}
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.94 }}
-      className={`absolute top-[46%] z-[140] grid size-12 -translate-y-1/2 place-items-center rounded-full border border-blue-300/40 bg-slate-950/70 text-blue-100 shadow-[0_0_28px_rgba(59,130,246,0.45)] backdrop-blur-xl transition hover:border-cyan-200 hover:text-white ${
+      className={`absolute top-[46%] z-[140] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-blue-300/35 bg-slate-950/74 text-blue-100 shadow-[0_0_16px_rgba(59,130,246,0.28)] backdrop-blur-md transition hover:border-cyan-200 hover:text-white sm:size-12 sm:border-blue-300/40 sm:shadow-[0_0_28px_rgba(59,130,246,0.45)] sm:backdrop-blur-xl ${
         direction === "left" ? "-left-2 sm:left-0" : "-right-2 sm:right-0"
       }`}
       aria-label={direction === "left" ? "Prethodni projekt" : "Sljedeći projekt"}
@@ -378,11 +381,11 @@ function OrbitButton({ direction, onClick, children }) {
 
 export default function OrbitalProjectCarousel() {
   const angle = useMotionValue(90);
-  const { radiusX, radiusY, orbitCenterY, sceneHeight } = useCarouselSize();
+  const { radiusX, radiusY, orbitCenterY, sceneHeight, isMobile } = useCarouselSize();
   const prefersReducedMotion = useReducedMotion();
   useAnimationFrame((time, delta) => {
     if (prefersReducedMotion) return;
-    const next = (angle.get() + delta * 0.0046) % 360;
+    const next = (angle.get() + delta * (isMobile ? 0.0019 : 0.0046)) % 360;
     angle.set(next);
   });
 
@@ -401,12 +404,12 @@ export default function OrbitalProjectCarousel() {
       initial={{ opacity: 0, x: 36 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay: 0.16 }}
-      className="relative mx-auto mt-8 w-full min-w-0 max-w-[1010px] lg:mt-0"
+      className="relative mx-auto mt-6 w-full min-w-0 max-w-[1010px] sm:mt-8 lg:mt-0"
     >
-      <div className="absolute inset-x-8 top-20 h-72 rounded-full bg-blue-500/10 blur-3xl" />
-      <div className="relative" style={{ height: sceneHeight, perspective: 1450 }}>
+      <div className="absolute inset-x-8 top-20 hidden h-72 rounded-full bg-blue-500/10 blur-3xl sm:block" />
+      <div className="relative" style={{ height: sceneHeight, perspective: isMobile ? 900 : 1450 }}>
         <div
-          className="absolute left-1/2 rounded-[50%] bg-gradient-to-r from-transparent via-blue-400/18 to-transparent blur-2xl"
+          className="absolute left-1/2 rounded-[50%] bg-gradient-to-r from-transparent via-blue-400/18 to-transparent blur-lg sm:blur-2xl"
           style={{
             top: orbitCenterY - radiusY - 18,
             width: radiusX * 2.05,
@@ -431,7 +434,7 @@ export default function OrbitalProjectCarousel() {
             transform: "translateX(-50%)",
           }}
         >
-          <div className="absolute -inset-10 rounded-[50%] bg-[radial-gradient(ellipse_at_center,transparent_46%,rgba(6,182,212,0.20)_55%,rgba(37,99,235,0.24)_61%,rgba(217,70,239,0.18)_68%,transparent_76%)] blur-2xl" />
+          <div className="absolute -inset-4 rounded-[50%] bg-[radial-gradient(ellipse_at_center,transparent_46%,rgba(6,182,212,0.16)_55%,rgba(37,99,235,0.18)_61%,rgba(217,70,239,0.12)_68%,transparent_76%)] blur-md sm:-inset-10 sm:bg-[radial-gradient(ellipse_at_center,transparent_46%,rgba(6,182,212,0.20)_55%,rgba(37,99,235,0.24)_61%,rgba(217,70,239,0.18)_68%,transparent_76%)] sm:blur-2xl" />
           <svg
             className="absolute overflow-visible"
             style={{
@@ -444,19 +447,12 @@ export default function OrbitalProjectCarousel() {
             aria-hidden="true"
           >
             <defs>
-              <motion.linearGradient
+              <linearGradient
                 id="orbitBase"
                 x1="0%"
                 x2="100%"
                 y1="48%"
                 y2="52%"
-                animate={{
-                  x1: ["0%", "100%", "100%", "0%", "0%"],
-                  y1: ["48%", "0%", "100%", "52%", "48%"],
-                  x2: ["100%", "0%", "0%", "100%", "100%"],
-                  y2: ["52%", "100%", "0%", "48%", "52%"],
-                }}
-                transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
               >
                 <stop offset="0%" stopColor="rgba(37,99,235,0.05)" />
                 <stop offset="14%" stopColor="rgba(56,189,248,0.76)" />
@@ -465,27 +461,20 @@ export default function OrbitalProjectCarousel() {
                 <stop offset="74%" stopColor="rgba(217,70,239,0.82)" />
                 <stop offset="90%" stopColor="rgba(250,204,21,0.46)" />
                 <stop offset="100%" stopColor="rgba(37,99,235,0.08)" />
-              </motion.linearGradient>
-              <motion.linearGradient
+              </linearGradient>
+              <linearGradient
                 id="orbitSheen"
                 x1="100%"
                 x2="0%"
                 y1="10%"
                 y2="90%"
-                animate={{
-                  x1: ["100%", "0%", "0%", "100%", "100%"],
-                  y1: ["10%", "0%", "100%", "90%", "10%"],
-                  x2: ["0%", "100%", "100%", "0%", "0%"],
-                  y2: ["90%", "100%", "0%", "10%", "90%"],
-                }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: "linear" }}
               >
                 <stop offset="0%" stopColor="rgba(255,255,255,0)" />
                 <stop offset="26%" stopColor="rgba(34,211,238,0.34)" />
                 <stop offset="50%" stopColor="rgba(255,255,255,0.62)" />
                 <stop offset="72%" stopColor="rgba(217,70,239,0.44)" />
                 <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-              </motion.linearGradient>
+              </linearGradient>
               <filter id="orbitBlur" x="-20%" y="-120%" width="140%" height="340%">
                 <feGaussianBlur stdDeviation="10" />
               </filter>
@@ -498,8 +487,8 @@ export default function OrbitalProjectCarousel() {
               ry="50"
               fill="none"
               stroke="rgba(59,130,246,0.36)"
-              strokeWidth="26"
-              filter="url(#orbitBlur)"
+              strokeWidth={isMobile ? 12 : 26}
+              filter={isMobile ? undefined : "url(#orbitBlur)"}
             />
             <ellipse
               cx="500"
@@ -508,21 +497,23 @@ export default function OrbitalProjectCarousel() {
               ry="50"
               fill="none"
               stroke="url(#orbitBase)"
-              strokeWidth="12"
+              strokeWidth={isMobile ? 6 : 12}
               strokeLinecap="round"
             />
-            <motion.ellipse
-              cx="500"
-              cy="90"
-              rx="470"
-              ry="50"
-              fill="none"
-              stroke="url(#orbitSheen)"
-              strokeWidth="7"
-              strokeLinecap="round"
-              animate={{ opacity: [0.26, 0.72, 0.26] }}
-              transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
-            />
+            {!isMobile && (
+              <motion.ellipse
+                cx="500"
+                cy="90"
+                rx="470"
+                ry="50"
+                fill="none"
+                stroke="url(#orbitSheen)"
+                strokeWidth="7"
+                strokeLinecap="round"
+                animate={{ opacity: [0.26, 0.72, 0.26] }}
+                transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+              />
+            )}
             <ellipse
               cx="500"
               cy="90"
@@ -546,11 +537,12 @@ export default function OrbitalProjectCarousel() {
             radiusX={radiusX}
             radiusY={radiusY}
             orbitCenterY={orbitCenterY}
+            isMobile={isMobile}
           />
         ))}
 
         <svg
-          className="pointer-events-none absolute left-1/2 z-[132] overflow-visible"
+          className="pointer-events-none absolute left-1/2 z-[132] hidden overflow-visible sm:block"
           style={{
             top: orbitCenterY - radiusY - 24,
             width: radiusX * 2 + 48,
@@ -613,13 +605,13 @@ export default function OrbitalProjectCarousel() {
           />
         </svg>
 
-        <div className="pointer-events-none absolute left-1/2 z-[126] h-5 w-5 -translate-x-1/2 rounded-full border border-blue-200/55 bg-slate-950/75 shadow-[0_0_24px_rgba(59,130,246,0.45)]"
+        <div className="pointer-events-none absolute left-1/2 z-[126] h-3 w-3 -translate-x-1/2 rounded-full border border-blue-200/45 bg-slate-950/75 shadow-[0_0_12px_rgba(59,130,246,0.32)] sm:h-5 sm:w-5 sm:border-blue-200/55 sm:shadow-[0_0_24px_rgba(59,130,246,0.45)]"
           style={{
             top: orbitCenterY + radiusY - 10,
             transform: "translateX(-50%)",
           }}
         />
-        <div className="absolute bottom-4 left-1/2 z-[120] flex -translate-x-1/2 flex-wrap items-center justify-center gap-4">
+        <div className="absolute bottom-2 left-1/2 z-[120] flex -translate-x-1/2 flex-wrap items-center justify-center gap-2 sm:bottom-4 sm:gap-4">
           <div className="flex items-center gap-2">
             {cards.map((card, index) => (
               <OrbitDot
@@ -633,7 +625,7 @@ export default function OrbitalProjectCarousel() {
               />
             ))}
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-slate-950/62 px-3 py-1.5 text-xs text-slate-300 backdrop-blur-xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-slate-950/62 px-3 py-1.5 text-xs text-slate-300 backdrop-blur-xl max-[767px]:hidden">
             <motion.span
               animate={{ rotate: 360 }}
               transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
