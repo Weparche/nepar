@@ -385,7 +385,7 @@ export default function OrbitalProjectCarousel() {
   const prefersReducedMotion = useReducedMotion();
   useAnimationFrame((time, delta) => {
     if (prefersReducedMotion) return;
-    const next = (angle.get() + delta * (isMobile ? 0.0034 : 0.0046)) % 360;
+    const next = (angle.get() + delta * (isMobile ? 0.0068 : 0.0046)) % 360;
     angle.set(next);
   });
 
@@ -404,7 +404,7 @@ export default function OrbitalProjectCarousel() {
       initial={{ opacity: 0, x: 36 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay: 0.16 }}
-      className="relative mx-auto mt-6 w-full min-w-0 max-w-[1010px] sm:mt-8 lg:mt-0"
+      className="relative mx-auto mt-1 w-full min-w-0 max-w-[1010px] sm:mt-8 lg:mt-0"
     >
       <div className="absolute inset-x-8 top-20 hidden h-72 rounded-full bg-blue-500/10 blur-3xl sm:block" />
       <div className="relative" style={{ height: sceneHeight, perspective: isMobile ? 900 : 1450 }}>
