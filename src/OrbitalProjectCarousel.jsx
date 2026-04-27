@@ -385,7 +385,7 @@ export default function OrbitalProjectCarousel() {
   const prefersReducedMotion = useReducedMotion();
   useAnimationFrame((time, delta) => {
     if (prefersReducedMotion) return;
-    const next = (angle.get() + delta * (isMobile ? 0.0068 : 0.0046)) % 360;
+    const next = (angle.get() + delta * (isMobile ? 0.0136 : 0.0046)) % 360;
     angle.set(next);
   });
 
