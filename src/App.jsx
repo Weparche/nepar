@@ -133,7 +133,7 @@ function Navbar() {
           ))}
         </div>
 
-        <MotionButton href="#kontakt" className="hidden px-7 py-4 text-base xl:inline-flex">
+        <MotionButton href="#kontakt" className="!hidden px-7 py-4 text-base 2xl:!inline-flex">
           <Send className="size-4 xl:size-5" />
           Javite se
         </MotionButton>
@@ -277,7 +277,7 @@ function Hero() {
 
   return (
     <section id="top" className="relative px-4 pt-28 sm:pt-52 lg:pt-[11rem]">
-      <div className="mx-auto grid max-w-[1580px] items-center gap-2 sm:gap-8 lg:grid-cols-[minmax(320px,0.62fr)_minmax(0,1.38fr)]">
+      <div className="mx-auto grid max-w-[1580px] items-center gap-0 sm:gap-8 lg:grid-cols-[minmax(320px,0.62fr)_minmax(0,1.38fr)]">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -353,7 +353,7 @@ function Hero() {
             initial={{ opacity: 0, y: 14, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 0.48, duration: 0.65, ease: "easeOut" }}
-            className="mt-5 lg:hidden"
+            className="mt-3 -mb-3 lg:hidden"
           >
             <div className="inline-flex items-center gap-3 rounded-full border border-cyan-300/25 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-cyan-500/10 backdrop-blur">
               <motion.span
