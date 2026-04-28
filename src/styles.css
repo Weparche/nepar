@@ -44,6 +44,7 @@ body {
   inset: -1px;
   z-index: -2;
   border-radius: inherit;
+  padding: 1px;
   background: conic-gradient(
     from 0deg,
     rgba(59, 130, 246, 0.95),
@@ -52,13 +53,21 @@ body {
     rgba(217, 70, 239, 0.9),
     rgba(59, 130, 246, 0.95)
   );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
   animation: kicker-ring-spin 3.4s linear infinite;
 }
 
 .hero-kicker::after {
   content: "";
   position: absolute;
-  inset: 1px;
+  inset: 0;
   z-index: -1;
   border-radius: inherit;
   background: rgba(2, 6, 23, 0.92);
