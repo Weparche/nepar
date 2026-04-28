@@ -292,12 +292,6 @@ function Hero() {
           >
             <svg className="hero-kicker-outline" viewBox="0 0 100 32" preserveAspectRatio="none" aria-hidden="true">
               <defs>
-                <linearGradient id="heroKickerBase" x1="0%" x2="100%" y1="0%" y2="0%">
-                  <stop offset="0%" stopColor="rgba(59,130,246,0.55)" />
-                  <stop offset="35%" stopColor="rgba(34,211,238,0.6)" />
-                  <stop offset="68%" stopColor="rgba(124,58,237,0.58)" />
-                  <stop offset="100%" stopColor="rgba(217,70,239,0.5)" />
-                </linearGradient>
                 <linearGradient id="heroKickerSheen" x1="0%" x2="100%" y1="0%" y2="0%">
                   <stop offset="0%" stopColor="rgba(34,211,238,0)" />
                   <stop offset="38%" stopColor="rgba(34,211,238,0.95)" />
@@ -306,8 +300,7 @@ function Hero() {
                   <stop offset="100%" stopColor="rgba(217,70,239,0)" />
                 </linearGradient>
               </defs>
-              <rect className="hero-kicker-outline-base" x="1" y="1" width="98" height="30" rx="15" pathLength="100" />
-              <rect className="hero-kicker-outline-sheen" x="1" y="1" width="98" height="30" rx="15" pathLength="100" />
+              <rect className="hero-kicker-outline-sheen" x="1.5" y="1.5" width="97" height="29" rx="14.5" pathLength="100" />
             </svg>
             <Zap size={15} />
             <span className="hero-kicker-text">DIGITALNA RJE&#352;ENJA KOJA RADE</span>
