@@ -411,7 +411,7 @@ function Services() {
       <div className="mx-auto grid max-w-[1180px] gap-4 lg:max-w-[1380px] xl:grid-cols-[240px_1fr]">
         <div>
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
-            &#352;TO RADIMO
+            &#352;TO RADIMO?
           </p>
           <h2 className="text-3xl font-semibold leading-tight tracking-normal text-white sm:text-4xl">
             Rje&#353;enja koja donose vrijednost.
@@ -577,112 +577,73 @@ function BottomCta() {
   return (
     <section id="kontakt" className="fixed inset-x-0 bottom-0 z-40 px-2 pb-2 sm:px-5 sm:pb-5">
       <div className="relative mx-auto max-w-[1180px] overflow-hidden rounded-[0.85rem] border border-blue-300/20 bg-slate-950/84 px-3 py-2.5 shadow-xl shadow-blue-500/15 backdrop-blur-xl sm:rounded-[1rem] sm:border-blue-300/25 sm:px-6 sm:py-4 sm:shadow-2xl sm:shadow-blue-500/25 sm:backdrop-blur-2xl lg:max-w-[1380px]">
-        <motion.div
-          aria-hidden="true"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-y-0 left-0 hidden w-[200%] opacity-[0.20] sm:block"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(255,255,255,.16) 1px, transparent 1px), radial-gradient(circle, rgba(34,211,238,.14) 1px, transparent 1px), linear-gradient(90deg, transparent, rgba(59,130,246,.06), transparent)",
-            backgroundPosition: "0 0, 28px 18px, 0 0",
-            backgroundSize: "70px 46px, 112px 72px, 260px 100%",
-          }}
-        />
+        <div className="footer-motion-field" aria-hidden="true">
+          <div className="footer-stars-track" />
+          <div className="footer-stars-track footer-stars-track-alt" />
+          <div className="footer-wave-track footer-wave-track-cyan">
+            {[0, 1].map((copy) => (
+              <svg
+                key={copy}
+                className="footer-wave-panel"
+                viewBox="0 0 1000 140"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M 0 76 C 84 24 166 128 250 76 S 416 24 500 76 S 666 128 750 76 S 916 24 1000 76"
+                  fill="none"
+                  stroke={`url(#footerWaveCyan${copy})`}
+                  strokeWidth="3.2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 0 102 C 104 62 146 128 250 102 S 396 62 500 102 S 646 128 750 102 S 896 62 1000 102"
+                  fill="none"
+                  stroke="rgba(96,165,250,0.26)"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+                <defs>
+                  <linearGradient id={`footerWaveCyan${copy}`} x1="0%" x2="100%" y1="50%" y2="50%">
+                    <stop offset="0%" stopColor="rgba(59,130,246,0)" />
+                    <stop offset="18%" stopColor="rgba(59,130,246,0.42)" />
+                    <stop offset="42%" stopColor="rgba(34,211,238,0.82)" />
+                    <stop offset="62%" stopColor="rgba(255,255,255,0.48)" />
+                    <stop offset="82%" stopColor="rgba(124,58,237,0.42)" />
+                    <stop offset="100%" stopColor="rgba(59,130,246,0)" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            ))}
+          </div>
+          <div className="footer-wave-track footer-wave-track-violet">
+            {[0, 1].map((copy) => (
+              <svg
+                key={copy}
+                className="footer-wave-panel"
+                viewBox="0 0 1000 140"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M 0 48 C 96 92 154 6 250 48 S 404 92 500 48 S 654 6 750 48 S 904 92 1000 48"
+                  fill="none"
+                  stroke={`url(#footerWaveViolet${copy})`}
+                  strokeWidth="2.8"
+                  strokeLinecap="round"
+                />
+                <defs>
+                  <linearGradient id={`footerWaveViolet${copy}`} x1="0%" x2="100%" y1="50%" y2="50%">
+                    <stop offset="0%" stopColor="rgba(217,70,239,0)" />
+                    <stop offset="22%" stopColor="rgba(217,70,239,0.45)" />
+                    <stop offset="50%" stopColor="rgba(124,58,237,0.72)" />
+                    <stop offset="76%" stopColor="rgba(34,211,238,0.38)" />
+                    <stop offset="100%" stopColor="rgba(217,70,239,0)" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            ))}
+          </div>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-violet-500/10 to-cyan-400/10" />
-        <motion.svg
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 left-0 hidden h-full w-[46%] opacity-[0.82] sm:block"
-          viewBox="0 0 720 132"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <linearGradient id="ctaWaveCyan" x1="0%" x2="100%" y1="50%" y2="50%">
-              <stop offset="0%" stopColor="rgba(59,130,246,0)" />
-              <stop offset="24%" stopColor="rgba(37,99,235,0.40)" />
-              <stop offset="52%" stopColor="rgba(34,211,238,0.70)" />
-              <stop offset="78%" stopColor="rgba(124,58,237,0.50)" />
-              <stop offset="100%" stopColor="rgba(59,130,246,0)" />
-            </linearGradient>
-            <linearGradient id="ctaWaveViolet" x1="0%" x2="100%" y1="50%" y2="50%">
-              <stop offset="0%" stopColor="rgba(168,85,247,0)" />
-              <stop offset="30%" stopColor="rgba(168,85,247,0.42)" />
-              <stop offset="54%" stopColor="rgba(255,255,255,0.42)" />
-              <stop offset="74%" stopColor="rgba(34,211,238,0.42)" />
-              <stop offset="100%" stopColor="rgba(168,85,247,0)" />
-            </linearGradient>
-            <filter id="ctaWaveGlow" x="-10%" y="-120%" width="120%" height="340%">
-              <feGaussianBlur stdDeviation="8" />
-            </filter>
-          </defs>
-          <motion.g
-            animate={{ x: [-180, 0] }}
-            transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-          >
-            <path
-              d="M -180 88 C -96 42 -12 122 72 88 S 240 42 324 88 S 492 122 576 88 S 744 42 828 88"
-              fill="none"
-              stroke="url(#ctaWaveCyan)"
-              strokeWidth="4"
-              strokeLinecap="round"
-              filter="url(#ctaWaveGlow)"
-            />
-            <path
-              d="M -180 58 C -84 98 -36 22 60 58 S 252 98 348 58 S 540 22 636 58 S 828 98 924 58"
-              fill="none"
-              stroke="url(#ctaWaveViolet)"
-              strokeWidth="3.2"
-              strokeLinecap="round"
-              opacity="0.78"
-            />
-            <path
-              d="M -180 108 C -74 74 -26 128 80 108 S 292 74 398 108 S 610 128 716 108 S 928 74 1034 108"
-              fill="none"
-              stroke="rgba(96,165,250,0.34)"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-            />
-          </motion.g>
-        </motion.svg>
-        <motion.svg
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 right-0 hidden h-full w-[46%] opacity-[0.78] sm:block"
-          viewBox="0 0 720 132"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <linearGradient id="ctaWaveRight" x1="0%" x2="100%" y1="50%" y2="50%">
-              <stop offset="0%" stopColor="rgba(124,58,237,0)" />
-              <stop offset="28%" stopColor="rgba(124,58,237,0.50)" />
-              <stop offset="58%" stopColor="rgba(37,99,235,0.62)" />
-              <stop offset="82%" stopColor="rgba(34,211,238,0.42)" />
-              <stop offset="100%" stopColor="rgba(124,58,237,0)" />
-            </linearGradient>
-            <filter id="ctaWaveRightGlow" x="-10%" y="-120%" width="120%" height="340%">
-              <feGaussianBlur stdDeviation="8" />
-            </filter>
-          </defs>
-          <motion.g
-            animate={{ x: [0, -180] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          >
-            <path
-              d="M -120 86 C -20 44 34 124 134 86 S 334 44 434 86 S 634 124 734 86 S 934 44 1034 86"
-              fill="none"
-              stroke="url(#ctaWaveRight)"
-              strokeWidth="4"
-              strokeLinecap="round"
-              filter="url(#ctaWaveRightGlow)"
-            />
-            <path
-              d="M -120 108 C -18 68 30 138 132 108 S 336 68 438 108 S 642 138 744 108 S 948 68 1050 108"
-              fill="none"
-              stroke="rgba(139,92,246,0.38)"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-            />
-          </motion.g>
-        </motion.svg>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-slate-950/30 to-transparent" />
         <div className="relative flex flex-col items-center justify-between gap-2 text-center md:flex-row md:text-left">
           <div className="flex items-center gap-2.5 sm:gap-4">
