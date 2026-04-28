@@ -407,7 +407,7 @@ function StatsBar() {
 
 function Services() {
   return (
-    <section id="usluge" className="px-4 py-5">
+    <section id="usluge" className="overflow-x-hidden px-4 py-5">
       <div className="mx-auto grid max-w-[1180px] gap-4 lg:max-w-[1380px] xl:grid-cols-[240px_1fr]">
         <div>
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
@@ -425,10 +425,10 @@ function Services() {
           {services.map(({ title, description, Icon }, index) => (
             <motion.article
               key={title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 220 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
+              transition={{ duration: 0.8, delay: index * 1, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -6, scale: 1.01 }}
               className="group relative overflow-hidden rounded-[1rem] border border-blue-200/12 bg-slate-950/52 p-5 shadow-xl shadow-black/20 backdrop-blur-xl"
             >

@@ -35,23 +35,35 @@ body {
 .hero-kicker {
   position: relative;
   isolation: isolate;
+  overflow: hidden;
   border: 1px solid transparent;
+  background:
+    linear-gradient(rgba(2, 6, 23, 0.92), rgba(2, 6, 23, 0.92)) padding-box,
+    linear-gradient(90deg, rgba(59, 130, 246, 0.58), rgba(34, 211, 238, 0.58), rgba(124, 58, 237, 0.58), rgba(217, 70, 239, 0.5)) border-box;
+}
+
+.hero-kicker > * {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-kicker::before {
   content: "";
   position: absolute;
-  inset: -1px;
-  z-index: -2;
+  inset: 0;
+  z-index: 0;
   border-radius: inherit;
   padding: 1px;
   background: conic-gradient(
     from 0deg,
-    rgba(59, 130, 246, 0.95),
-    rgba(34, 211, 238, 0.95),
-    rgba(124, 58, 237, 0.95),
-    rgba(217, 70, 239, 0.9),
-    rgba(59, 130, 246, 0.95)
+    transparent 0deg,
+    transparent 250deg,
+    rgba(59, 130, 246, 0.1) 268deg,
+    rgba(34, 211, 238, 0.95) 286deg,
+    rgba(255, 255, 255, 0.95) 300deg,
+    rgba(217, 70, 239, 0.84) 314deg,
+    transparent 336deg,
+    transparent 360deg
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -61,16 +73,7 @@ body {
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
-  animation: kicker-ring-spin 3.4s linear infinite;
-}
-
-.hero-kicker::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: rgba(2, 6, 23, 0.92);
+  animation: kicker-sheen-orbit 2.8s linear infinite;
 }
 
 .hero-kicker svg {
@@ -101,7 +104,7 @@ body {
   transform: translateZ(0);
 }
 
-@keyframes kicker-ring-spin {
+@keyframes kicker-sheen-orbit {
   to {
     transform: rotate(360deg);
   }
