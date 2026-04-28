@@ -27,76 +27,260 @@ import {
 } from "lucide-react";
 import OrbitalProjectCarousel from "./OrbitalProjectCarousel.jsx";
 
-const projects = [
-  {
-    title: "BezStruje.hr",
-    description: "Obavijesti o kvarovima i planiranim radovima.",
-    Icon: Zap,
-    accent: "from-amber-300 to-orange-500",
-    preview: "outage",
+const content = {
+  hr: {
+    navLinks: [
+      ["Projekti", "#projekti"],
+      ["Usluge", "#usluge"],
+      ["O nama", "#onama"],
+      ["Kontakt", "#kontakt", Mail],
+    ],
+    navCta: "Javite se",
+    menuLabel: "Otvori navigaciju",
+    projects: [
+      {
+        title: "BezStruje.hr",
+        description: "Obavijesti o kvarovima i planiranim radovima.",
+        Icon: Zap,
+        accent: "from-amber-300 to-orange-500",
+        preview: "outage",
+      },
+      {
+        title: "VidimoSe.hr",
+        description: "Digitalne pozivnice i event rje\u0161enja.",
+        Icon: Heart,
+        accent: "from-fuchsia-300 to-violet-500",
+        preview: "invite",
+        href: "https://vidimose.hr",
+      },
+      {
+        title: "KPDinfo.com",
+        description: "AI poslovni asistent i analiti\u010dki uvidi.",
+        Icon: Bot,
+        accent: "from-blue-400 to-indigo-500",
+        preview: "ai",
+      },
+      {
+        title: "GeoAdrese.net",
+        description: "Pretraga adresa i geo podaci.",
+        Icon: MapPin,
+        accent: "from-teal-300 to-cyan-500",
+        preview: "geo",
+      },
+    ],
+    services: [
+      {
+        title: "Web aplikacije",
+        description: "Moderne web aplikacije po mjeri va\u0161eg poslovanja. Brze, sigurne i skalabilne.",
+        Icon: Cpu,
+      },
+      {
+        title: "Portali i alati",
+        description: "Specijalizirani portali i alati koji rje\u0161avaju konkretne potrebe va\u0161ih korisnika.",
+        Icon: Grid3X3,
+      },
+      {
+        title: "AI i automatizacija",
+        description: "AI asistenti, obrada dokumenata i automatizacija procesa koji \u0161tede vrijeme.",
+        Icon: Bot,
+      },
+      {
+        title: "Mape i podaci",
+        description: "Geo rje\u0161enja, pretraga adresa, karte, koordinate i rad s prostornim podacima.",
+        Icon: Map,
+      },
+    ],
+    stats: [
+      ["20+", "Portali i platforme", Grid3X3],
+      ["40+", "Web aplikacija", Monitor],
+      ["15+", "AI alata i asistenata", BrainCircuit],
+      ["30+", "Integracija i API-ja", Puzzle],
+    ],
+    hero: {
+      kicker: "DIGITALNA RJE\u0160ENJA KOJA RADE",
+      lead: "Gradimo korisne",
+      highlight: "digitalne proizvode",
+      rest: "za stvarni svijet.",
+      description: "Web aplikacije, AI alati, portali i specijalizirana rje\u0161enja od ideje do produkcije.",
+      primary: "Pregled projekata",
+      secondary: "Kontakt",
+      mobileProjects: "Izdvojeni projekti",
+      trust: [
+        ["Prakti\u010dni proizvodi", ShieldCheck],
+        ["Brza izvedba", CheckCircle2],
+        ["Fokus na rezultat", Sparkles],
+      ],
+    },
+    servicesSection: {
+      eyebrow: "\u0160TO RADIMO?",
+      title: "Rje\u0161enja koja donose vrijednost.",
+      description: "Od ideje do stabilnog proizvoda, brzo i fokusirano na korisnika.",
+    },
+    featured: {
+      eyebrow: "IZDVOJENI PROJEKTI",
+      link: "Pogledaj sve projekte",
+    },
+    about: {
+      eyebrow: "O NAMA",
+      imageLabel: "Otvori Nepar Solutions sliku",
+      closeLabel: "Zatvori Nepar Solutions sliku",
+      title: "Tehni\u010dka izvedba, jasna komunikacija i fokus na proizvod koji radi.",
+      description:
+        "Nepar Solutions spaja razvoj web aplikacija, AI rje\u0161enja, portala, integracija i rada s podacima u jedan prakti\u010dan proces.",
+    },
+    cta: {
+      title: "Imate ideju? Pretvorimo je u proizvod.",
+      description: "Od prvog razgovora do lansiranja, tu smo da va\u0161a ideja postane stvarnost.",
+      button: "Javite se i pokrenimo projekt",
+    },
+    footer: {
+      copyright: "\u00a9 2026 Nepar Solutions. Digitalna rje\u0161enja po mjeri.",
+      top: "Povratak na vrh",
+    },
+    previewAlts: {
+      invite: "Vidimose.hr digitalna pozivnica",
+      geo: "GeoAdrese.com.hr prikaz",
+      outage: "Bezstruje.hr prikaz",
+    },
   },
-  {
-    title: "VidimoSe.hr",
-    description: "Digitalne pozivnice i event rje\u0161enja.",
-    Icon: Heart,
-    accent: "from-fuchsia-300 to-violet-500",
-    preview: "invite",
-    href: "https://vidimose.hr",
+  en: {
+    navLinks: [
+      ["Projects", "#projekti"],
+      ["Services", "#usluge"],
+      ["About us", "#onama"],
+      ["Contact", "#kontakt", Mail],
+    ],
+    navCta: "Contact us",
+    menuLabel: "Open navigation",
+    projects: [
+      {
+        title: "BezStruje.hr",
+        description: "Outage alerts and planned maintenance notices.",
+        Icon: Zap,
+        accent: "from-amber-300 to-orange-500",
+        preview: "outage",
+      },
+      {
+        title: "VidimoSe.hr",
+        description: "Digital invitations and event solutions.",
+        Icon: Heart,
+        accent: "from-fuchsia-300 to-violet-500",
+        preview: "invite",
+        href: "https://vidimose.hr",
+      },
+      {
+        title: "KPDinfo.com",
+        description: "AI business assistant and analytical insights.",
+        Icon: Bot,
+        accent: "from-blue-400 to-indigo-500",
+        preview: "ai",
+      },
+      {
+        title: "GeoAdrese.net",
+        description: "Address search and geospatial data.",
+        Icon: MapPin,
+        accent: "from-teal-300 to-cyan-500",
+        preview: "geo",
+      },
+    ],
+    services: [
+      {
+        title: "Web applications",
+        description: "Modern web apps tailored to your business. Fast, secure, and scalable.",
+        Icon: Cpu,
+      },
+      {
+        title: "Portals and tools",
+        description: "Specialized portals and tools that solve concrete user needs.",
+        Icon: Grid3X3,
+      },
+      {
+        title: "AI and automation",
+        description: "AI assistants, document processing, and process automation that saves time.",
+        Icon: Bot,
+      },
+      {
+        title: "Maps and data",
+        description: "Geo solutions, address search, maps, coordinates, and spatial data workflows.",
+        Icon: Map,
+      },
+    ],
+    stats: [
+      ["20+", "Portals and platforms", Grid3X3],
+      ["40+", "Web applications", Monitor],
+      ["15+", "AI tools and assistants", BrainCircuit],
+      ["30+", "Integrations and APIs", Puzzle],
+    ],
+    hero: {
+      kicker: "DIGITAL SOLUTIONS THAT WORK",
+      lead: "We build useful",
+      highlight: "digital products",
+      rest: "for the real world.",
+      description: "Web applications, AI tools, portals, and specialized solutions from idea to production.",
+      primary: "View projects",
+      secondary: "Contact",
+      mobileProjects: "Featured projects",
+      trust: [
+        ["Practical products", ShieldCheck],
+        ["Fast delivery", CheckCircle2],
+        ["Result focused", Sparkles],
+      ],
+    },
+    servicesSection: {
+      eyebrow: "WHAT WE DO",
+      title: "Solutions that create value.",
+      description: "From idea to stable product, fast and focused on the user.",
+    },
+    featured: {
+      eyebrow: "FEATURED PROJECTS",
+      link: "View all projects",
+    },
+    about: {
+      eyebrow: "ABOUT US",
+      imageLabel: "Open Nepar Solutions image",
+      closeLabel: "Close Nepar Solutions image",
+      title: "Technical delivery, clear communication, and focus on a product that works.",
+      description:
+        "Nepar Solutions brings together web app development, AI solutions, portals, integrations, and data work into one practical process.",
+    },
+    cta: {
+      title: "Have an idea? Let\u2019s turn it into a product.",
+      description: "From the first conversation to launch, we are here to turn your idea into reality.",
+      button: "Reach out and start the project",
+    },
+    footer: {
+      copyright: "\u00a9 2026 Nepar Solutions. Tailored digital solutions.",
+      top: "Back to top",
+    },
+    previewAlts: {
+      invite: "Vidimose.hr digital invitation",
+      geo: "GeoAdrese.com.hr preview",
+      outage: "Bezstruje.hr preview",
+    },
   },
-  {
-    title: "KPDinfo.com",
-    description: "AI poslovni asistent i analiti\u010dki uvidi.",
-    Icon: Bot,
-    accent: "from-blue-400 to-indigo-500",
-    preview: "ai",
-  },
-  {
-    title: "GeoAdrese.net",
-    description: "Pretraga adresa i geo podaci.",
-    Icon: MapPin,
-    accent: "from-teal-300 to-cyan-500",
-    preview: "geo",
-  },
-];
+};
 
-const services = [
-  {
-    title: "Web aplikacije",
-    description: "Moderne web aplikacije po mjeri va\u0161eg poslovanja. Brze, sigurne i skalabilne.",
-    Icon: Cpu,
-  },
-  {
-    title: "Portali i alati",
-    description: "Specijalizirani portali i alati koji rje\u0161avaju konkretne potrebe va\u0161ih korisnika.",
-    Icon: Grid3X3,
-  },
-  {
-    title: "AI i automatizacija",
-    description: "AI asistenti, obrada dokumenata i automatizacija procesa koji \u0161tede vrijeme.",
-    Icon: Bot,
-  },
-  {
-    title: "Mape i podaci",
-    description: "Geo rje\u0161enja, pretraga adresa, karte, koordinate i rad s prostornim podacima.",
-    Icon: Map,
-  },
-];
+function LanguageToggle({ lang, setLang }) {
+  return (
+    <div className="inline-flex shrink-0 rounded-full border border-blue-200/15 bg-white/5 p-0.5 text-[11px] font-semibold text-slate-300">
+      {["hr", "en"].map((value) => (
+        <button
+          key={value}
+          type="button"
+          onClick={() => setLang(value)}
+          className={`rounded-full px-2.5 py-1 transition ${
+            lang === value ? "bg-blue-500 text-white shadow-md shadow-blue-500/20" : "hover:text-white"
+          }`}
+          aria-pressed={lang === value}
+        >
+          {value === "hr" ? "HR" : "ENG"}
+        </button>
+      ))}
+    </div>
+  );
+}
 
-const stats = [
-  ["20+", "Portali i platforme", Grid3X3],
-  ["40+", "Web aplikacija", Monitor],
-  ["15+", "AI alata i asistenata", BrainCircuit],
-  ["30+", "Integracija i API-ja", Puzzle],
-];
-
-const navLinks = [
-  ["Projekti", "#projekti"],
-  ["Usluge", "#usluge"],
-  ["O nama", "#onama"],
-  ["Kontakt", "#kontakt", Mail],
-];
-
-function Navbar() {
+function Navbar({ lang, setLang, copy }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -121,7 +305,7 @@ function Navbar() {
         </a>
 
         <div className="hidden items-center gap-8 lg:flex">
-          {navLinks.map(([label, href, Icon]) => (
+          {copy.navLinks.map(([label, href, Icon]) => (
             <a
               key={href}
               href={href}
@@ -133,15 +317,19 @@ function Navbar() {
           ))}
         </div>
 
+        <div className="ml-auto mr-2 lg:ml-0">
+          <LanguageToggle lang={lang} setLang={setLang} />
+        </div>
+
         <MotionButton href="#kontakt" className="!hidden px-7 py-4 text-base 2xl:!inline-flex">
           <Send className="size-4 xl:size-5" />
-          Javite se
+          {copy.navCta}
         </MotionButton>
 
         <button
           className="grid size-10 shrink-0 place-items-center rounded-[0.8rem] border border-blue-200/15 bg-white/5 text-slate-200 sm:size-14 sm:rounded-[1.1rem] lg:hidden"
           onClick={() => setOpen((value) => !value)}
-          aria-label="Otvori navigaciju"
+          aria-label={copy.menuLabel}
         >
           {open ? <X className="size-5 sm:size-[26px]" /> : <Menu className="size-5 sm:size-[26px]" />}
         </button>
@@ -156,7 +344,7 @@ function Navbar() {
             className="mx-auto mt-2 max-w-[1180px] rounded-[0.9rem] border border-blue-200/14 bg-slate-950/90 p-3 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:mt-3 sm:rounded-[1.25rem] sm:p-5 sm:shadow-2xl sm:backdrop-blur-2xl lg:max-w-[1380px] lg:hidden"
           >
             <div className="grid gap-1 sm:gap-2">
-              {navLinks.map(([label, href, Icon]) => (
+              {copy.navLinks.map(([label, href, Icon]) => (
                 <a
                   key={href}
                   href={href}
@@ -169,7 +357,7 @@ function Navbar() {
               ))}
               <MotionButton href="#kontakt" className="mt-1 justify-self-start rounded-[0.75rem] px-5 py-3 text-sm sm:mt-2 sm:justify-self-stretch sm:rounded-[0.8rem] sm:px-6 sm:py-4 sm:text-base">
                 <Send className="size-4 sm:size-5" />
-                Javite se
+                {copy.navCta}
               </MotionButton>
             </div>
           </motion.div>
@@ -198,13 +386,13 @@ function MotionButton({ href, children, className = "", variant = "primary" }) {
   );
 }
 
-function ProjectPreviewSmall({ type }) {
+function ProjectPreviewSmall({ type, copy }) {
   if (type === "invite") {
     return (
       <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-[0.7rem] border border-fuchsia-300/20 bg-slate-950">
         <img
           src="/brand/pozivnica-home-cura.jpg"
-          alt="Vidimose.hr digitalna pozivnica"
+          alt={copy.previewAlts.invite}
           loading="lazy"
           className="h-full w-full object-cover object-top"
         />
@@ -239,7 +427,7 @@ function ProjectPreviewSmall({ type }) {
       <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/20 bg-slate-900">
         <img
           src="/brand/geoadrese.png"
-          alt="GeoAdrese.com.hr prikaz"
+          alt={copy.previewAlts.geo}
           loading="lazy"
           className="absolute inset-0 size-full object-cover object-top"
         />
@@ -253,7 +441,7 @@ function ProjectPreviewSmall({ type }) {
     <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/20 bg-slate-950/85">
       <img
         src="/brand/bezstruje.png"
-        alt="Bezstruje.hr prikaz"
+        alt={copy.previewAlts.outage}
         loading="lazy"
         className="absolute inset-0 size-full object-cover object-top opacity-90"
       />
@@ -268,13 +456,7 @@ function ProjectPreviewSmall({ type }) {
   );
 }
 
-function Hero() {
-  const trustPoints = [
-    ["Prakti\u010dni proizvodi", ShieldCheck],
-    ["Brza izvedba", CheckCircle2],
-    ["Fokus na rezultat", Sparkles],
-  ];
-
+function Hero({ copy, lang }) {
   return (
     <section id="top" className="relative px-4 pt-24 sm:pt-36 lg:pt-[7.75rem]">
       <div className="mx-auto grid max-w-[1180px] items-center gap-0 sm:gap-8 lg:max-w-[1380px] lg:grid-cols-[minmax(320px,0.62fr)_minmax(0,1.38fr)]">
@@ -291,7 +473,7 @@ function Hero() {
             className="hero-kicker mb-5 inline-flex items-center gap-2 rounded-full bg-slate-950/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] shadow-lg shadow-violet-500/10"
           >
             <Zap size={15} />
-            <span className="hero-kicker-text">DIGITALNA RJE&#352;ENJA KOJA RADE</span>
+            <span className="hero-kicker-text">{copy.hero.kicker}</span>
           </motion.div>
 
           <motion.h1
@@ -300,11 +482,11 @@ function Hero() {
             transition={{ delay: 0.16, duration: 0.75 }}
             className="text-4xl font-semibold leading-[1.06] tracking-normal text-white sm:text-5xl xl:text-[3.65rem]"
           >
-            Gradimo korisne{" "}
+            {copy.hero.lead}{" "}
             <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-violet-400 bg-clip-text text-transparent">
-              digitalne proizvode
+              {copy.hero.highlight}
             </span>{" "}
-            za stvarni svijet.
+            {copy.hero.rest}
           </motion.h1>
 
           <motion.p
@@ -313,7 +495,7 @@ function Hero() {
             transition={{ delay: 0.24, duration: 0.75 }}
             className="mt-5 max-w-xl text-lg leading-8 text-slate-300"
           >
-            Web aplikacije, AI alati, portali i specijalizirana rje&#353;enja od ideje do produkcije.
+            {copy.hero.description}
           </motion.p>
 
           <motion.div
@@ -323,11 +505,11 @@ function Hero() {
             className="mt-7 flex flex-col gap-3 sm:flex-row"
           >
             <MotionButton href="#projekti" className="inline-flex px-6 py-4">
-              Pregled projekata
+              {copy.hero.primary}
               <ArrowRight size={18} />
             </MotionButton>
             <MotionButton href="#kontakt" variant="secondary" className="inline-flex px-6 py-4">
-              Kontakt
+              {copy.hero.secondary}
               <Mail size={18} />
             </MotionButton>
           </motion.div>
@@ -338,7 +520,7 @@ function Hero() {
             transition={{ delay: 0.4, duration: 0.75 }}
             className="mt-7 flex flex-wrap gap-3"
           >
-            {trustPoints.map(([point, Icon]) => (
+            {copy.hero.trust.map(([point, Icon]) => (
               <span
                 key={point}
                 className="inline-flex items-center gap-2 text-sm text-slate-300"
@@ -362,7 +544,7 @@ function Hero() {
                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
                 className="size-2.5 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.8)]"
               />
-              Izdvojeni projekti
+              {copy.hero.mobileProjects}
               <motion.span
                 aria-hidden="true"
                 animate={{ x: [0, 5, 0] }}
@@ -373,13 +555,13 @@ function Hero() {
           </motion.div>
         </motion.div>
 
-        <OrbitalProjectCarousel />
+        <OrbitalProjectCarousel lang={lang} />
       </div>
     </section>
   );
 }
 
-function StatsBar() {
+function StatsBar({ copy }) {
   return (
     <section className="px-4 py-4">
       <motion.div
@@ -390,7 +572,7 @@ function StatsBar() {
         className="mx-auto max-w-[1180px] rounded-[1rem] border border-blue-200/12 bg-slate-950/54 px-5 py-4 shadow-2xl shadow-blue-950/20 backdrop-blur-xl lg:max-w-[1380px]"
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-blue-200/10">
-          {stats.map(([value, label, Icon]) => (
+          {copy.stats.map(([value, label, Icon]) => (
             <div key={label} className="flex items-center justify-center gap-4 lg:px-6">
               <Icon size={32} className="text-blue-300" />
               <div>
@@ -405,24 +587,24 @@ function StatsBar() {
   );
 }
 
-function Services() {
+function Services({ copy }) {
   return (
     <section id="usluge" className="overflow-x-hidden px-4 py-5">
       <div className="mx-auto grid max-w-[1180px] gap-4 lg:max-w-[1380px] xl:grid-cols-[240px_1fr]">
         <div>
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
-            &#352;TO RADIMO?
+            {copy.servicesSection.eyebrow}
           </p>
           <h2 className="text-3xl font-semibold leading-tight tracking-normal text-white sm:text-4xl">
-            Rje&#353;enja koja donose vrijednost.
+            {copy.servicesSection.title}
           </h2>
           <p className="mt-4 text-sm leading-6 text-slate-400">
-            Od ideje do stabilnog proizvoda, brzo i fokusirano na korisnika.
+            {copy.servicesSection.description}
           </p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {services.map(({ title, description, Icon }, index) => (
+          {copy.services.map(({ title, description, Icon }, index) => (
             <motion.article
               key={title}
               initial={{ opacity: 0, x: 220 }}
@@ -448,26 +630,26 @@ function Services() {
   );
 }
 
-function FeaturedProjects() {
+function FeaturedProjects({ copy }) {
   return (
     <section id="projekti" className="px-4 py-5">
       <div className="mx-auto max-w-[1180px] border-t border-blue-200/10 pt-5 lg:max-w-[1380px]">
         <div className="grid gap-4 xl:grid-cols-[220px_1fr] xl:items-start">
           <div>
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-white">
-              IZDVOJENI PROJEKTI
+              {copy.featured.eyebrow}
             </p>
             <a
               href="#kontakt"
               className="inline-flex items-center gap-2 text-sm font-semibold text-blue-300 transition hover:text-white"
             >
-              Pogledaj sve projekte
+              {copy.featured.link}
               <ArrowRight size={16} />
             </a>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {projects.map((project, index) => {
+            {copy.projects.map((project, index) => {
               const Icon = project.Icon;
               const ProjectShell = project.href ? motion.a : motion.article;
               const linkProps = project.href
@@ -485,7 +667,7 @@ function FeaturedProjects() {
                   whileHover={{ y: -4 }}
                   className="flex min-h-[96px] items-center gap-3 rounded-[0.9rem] border border-blue-200/12 bg-slate-950/52 p-3 shadow-lg shadow-black/15 backdrop-blur-xl"
                 >
-                  <ProjectPreviewSmall type={project.preview} />
+                  <ProjectPreviewSmall type={project.preview} copy={copy} />
                   <div className="min-w-0">
                     <div className="mb-1 flex items-center gap-2">
                       <span className={`grid size-7 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${project.accent} text-white`}>
@@ -505,7 +687,7 @@ function FeaturedProjects() {
   );
 }
 
-function About() {
+function About({ copy }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -515,7 +697,7 @@ function About() {
           type="button"
           onClick={() => setOpen(true)}
           className="group relative min-h-56 overflow-hidden rounded-[0.9rem] border border-blue-300/15 bg-slate-950/70 text-left"
-          aria-label="Otvori Nepar Solutions sliku"
+          aria-label={copy.about.imageLabel}
         >
           <img
             src="/brand/nepar.png"
@@ -527,13 +709,13 @@ function About() {
         </button>
         <div className="flex flex-col justify-center p-2 lg:p-5">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
-            O NAMA
+            {copy.about.eyebrow}
           </p>
           <h2 className="text-3xl font-semibold leading-tight tracking-normal text-white">
-            Tehni&#269;ka izvedba, jasna komunikacija i fokus na proizvod koji radi.
+            {copy.about.title}
           </h2>
           <p className="mt-4 max-w-4xl text-base leading-7 text-slate-400">
-            Nepar Solutions spaja razvoj web aplikacija, AI rje&#353;enja, portala, integracija i rada s podacima u jedan prakti&#269;an proces.
+            {copy.about.description}
           </p>
         </div>
       </div>
@@ -555,7 +737,7 @@ function About() {
               exit={{ opacity: 0, scale: 0.9, y: 18 }}
               transition={{ type: "spring", stiffness: 210, damping: 22 }}
               onClick={() => setOpen(false)}
-              aria-label="Zatvori Nepar Solutions sliku"
+              aria-label={copy.about.closeLabel}
             >
               <img
                 src="/brand/nepar.png"
@@ -573,7 +755,7 @@ function About() {
   );
 }
 
-function BottomCta() {
+function BottomCta({ copy }) {
   return (
     <section id="kontakt" className="fixed inset-x-0 bottom-0 z-40 px-2 pb-2 sm:px-5 sm:pb-5">
       <div className="relative mx-auto max-w-[1180px] overflow-hidden rounded-[0.85rem] border border-blue-300/20 bg-slate-950/84 px-3 py-2.5 shadow-xl shadow-blue-500/15 backdrop-blur-xl sm:rounded-[1rem] sm:border-blue-300/25 sm:px-6 sm:py-4 sm:shadow-2xl sm:shadow-blue-500/25 sm:backdrop-blur-2xl lg:max-w-[1380px]">
@@ -663,10 +845,10 @@ function BottomCta() {
             </div>
             <div>
               <h2 className="text-sm font-semibold tracking-normal text-white sm:text-2xl">
-                Imate ideju? Pretvorimo je u proizvod.
+                {copy.cta.title}
               </h2>
               <p className="mt-0.5 max-w-2xl text-xs leading-4 text-slate-300 sm:mt-1 sm:text-sm sm:leading-normal">
-                Od prvog razgovora do lansiranja, tu smo da va&#353;a ideja postane stvarnost.
+                {copy.cta.description}
               </p>
             </div>
           </div>
@@ -674,7 +856,7 @@ function BottomCta() {
             href="mailto:hello@nepar.solutions"
             className="inline-flex w-full px-4 py-2 text-xs sm:w-auto sm:px-5 sm:py-3 sm:text-sm"
           >
-            Javite se i pokrenimo projekt
+            {copy.cta.button}
             <Send className="size-4 sm:size-[17px]" />
           </MotionButton>
         </div>
@@ -695,21 +877,24 @@ function Background() {
 }
 
 export default function App() {
+  const [lang, setLang] = useState("hr");
+  const copy = content[lang];
+
   return (
     <main className="relative min-h-screen overflow-x-hidden font-sans text-white">
       <Background />
-      <Navbar />
-      <Hero />
-      <StatsBar />
-      <Services />
-      <FeaturedProjects />
-      <About />
-      <BottomCta />
+      <Navbar lang={lang} setLang={setLang} copy={copy} />
+      <Hero copy={copy} lang={lang} />
+      <StatsBar copy={copy} />
+      <Services copy={copy} />
+      <FeaturedProjects copy={copy} />
+      <About copy={copy} />
+      <BottomCta copy={copy} />
       <footer className="px-4 pb-20 sm:pb-32">
         <div className="mx-auto flex max-w-[1180px] flex-col items-center justify-between gap-2 border-t border-blue-200/10 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-6 sm:text-sm lg:max-w-[1380px]">
-          <p>&copy; 2026 Nepar Solutions. Digitalna rje&#353;enja po mjeri.</p>
+          <p>{copy.footer.copyright}</p>
           <a href="#top" className="transition hover:text-slate-200">
-            Povratak na vrh
+            {copy.footer.top}
           </a>
         </div>
       </footer>

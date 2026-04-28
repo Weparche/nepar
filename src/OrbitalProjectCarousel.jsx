@@ -15,49 +15,140 @@ import {
   Zap,
 } from "lucide-react";
 
-const cards = [
-  {
-    title: "BezStruje.hr",
-    description: "Obavijesti o prekidima i kvarovima u opskrbi.",
-    Icon: Zap,
-    accent: "from-amber-300 to-orange-500",
-    iconTone: "text-amber-200",
-    preview: "outage",
+const carouselContent = {
+  hr: {
+    cards: [
+      {
+        title: "BezStruje.hr",
+        description: "Obavijesti o prekidima i kvarovima u opskrbi.",
+        Icon: Zap,
+        accent: "from-amber-300 to-orange-500",
+        iconTone: "text-amber-200",
+        preview: "outage",
+      },
+      {
+        title: "VidimoSe.hr",
+        description: "Pozivnice i eventi za va\u017ene trenutke.",
+        Icon: Heart,
+        accent: "from-fuchsia-300 to-violet-500",
+        iconTone: "text-fuchsia-200",
+        preview: "invite",
+        href: "https://vidimose.hr",
+      },
+      {
+        title: "KPDinfo.com",
+        description: "AI asistent za informacije, dokumente i poslovne uvide.",
+        Icon: Bot,
+        accent: "from-blue-400 to-indigo-500",
+        iconTone: "text-blue-200",
+        preview: "ai",
+      },
+      {
+        title: "GeoAdrese.net",
+        description: "Pretraga adresa, koordinate i prostorni podaci.",
+        Icon: MapPin,
+        accent: "from-teal-300 to-cyan-500",
+        iconTone: "text-teal-200",
+        preview: "geo",
+      },
+      {
+        title: "Ostali projekti",
+        description: "Jo\u0161 mnogo rje\u0161enja izra\u0111enih po mjeri.",
+        Icon: Plus,
+        accent: "from-violet-400 to-cyan-400",
+        iconTone: "text-violet-200",
+        preview: "more",
+      },
+    ],
+    preview: {
+      outageAlt: "Bezstruje.hr prikaz",
+      outageLogoAlt: "Bezstruje.hr logo",
+      outageTitle: "Prekidi i planirani radovi",
+      outageSubtitle: "Pregled obavijesti po lokaciji",
+      inviteAlt: "Vidimose.hr digitalna pozivnica",
+      aiQuestion: "Kako mogu pomo\u0107i?",
+      aiPrompt: "Analiziraj klasifikaciju djelatnosti za firmu.",
+      aiClassification: "Klasifikacija",
+      aiRisk: "Procjena rizika",
+      aiRiskValue: "Niski",
+      geoAlt: "GeoAdrese.com.hr prikaz",
+      geoTitle: "Pretraga adresa",
+      geoSubtitle: "Koordinate i prostorni podaci",
+      more: "Pogledaj sve",
+      rotating: "Rotiraju\u0107i prikaz projekata",
+      previous: "Prethodni projekt",
+      next: "Sljede\u0107i projekt",
+      show: "Prika\u017ei",
+    },
   },
-  {
-    title: "VidimoSe.hr",
-    description: "Pozivnice i eventi za va\u017ene trenutke.",
-    Icon: Heart,
-    accent: "from-fuchsia-300 to-violet-500",
-    iconTone: "text-fuchsia-200",
-    preview: "invite",
-    href: "https://vidimose.hr",
+  en: {
+    cards: [
+      {
+        title: "BezStruje.hr",
+        description: "Power outage alerts and supply interruption notices.",
+        Icon: Zap,
+        accent: "from-amber-300 to-orange-500",
+        iconTone: "text-amber-200",
+        preview: "outage",
+      },
+      {
+        title: "VidimoSe.hr",
+        description: "Invitations and events for important moments.",
+        Icon: Heart,
+        accent: "from-fuchsia-300 to-violet-500",
+        iconTone: "text-fuchsia-200",
+        preview: "invite",
+        href: "https://vidimose.hr",
+      },
+      {
+        title: "KPDinfo.com",
+        description: "AI assistant for information, documents, and business insights.",
+        Icon: Bot,
+        accent: "from-blue-400 to-indigo-500",
+        iconTone: "text-blue-200",
+        preview: "ai",
+      },
+      {
+        title: "GeoAdrese.net",
+        description: "Address search, coordinates, and spatial data.",
+        Icon: MapPin,
+        accent: "from-teal-300 to-cyan-500",
+        iconTone: "text-teal-200",
+        preview: "geo",
+      },
+      {
+        title: "More projects",
+        description: "Many more custom-built digital solutions.",
+        Icon: Plus,
+        accent: "from-violet-400 to-cyan-400",
+        iconTone: "text-violet-200",
+        preview: "more",
+      },
+    ],
+    preview: {
+      outageAlt: "Bezstruje.hr preview",
+      outageLogoAlt: "Bezstruje.hr logo",
+      outageTitle: "Outages and planned works",
+      outageSubtitle: "Location-based notice overview",
+      inviteAlt: "Vidimose.hr digital invitation",
+      aiQuestion: "How can I help?",
+      aiPrompt: "Analyze activity classification for a company.",
+      aiClassification: "Classification",
+      aiRisk: "Risk estimate",
+      aiRiskValue: "Low",
+      geoAlt: "GeoAdrese.com.hr preview",
+      geoTitle: "Address search",
+      geoSubtitle: "Coordinates and spatial data",
+      more: "View all",
+      rotating: "Rotating project view",
+      previous: "Previous project",
+      next: "Next project",
+      show: "Show",
+    },
   },
-  {
-    title: "KPDinfo.com",
-    description: "AI asistent za informacije, dokumente i poslovne uvide.",
-    Icon: Bot,
-    accent: "from-blue-400 to-indigo-500",
-    iconTone: "text-blue-200",
-    preview: "ai",
-  },
-  {
-    title: "GeoAdrese.net",
-    description: "Pretraga adresa, koordinate i prostorni podaci.",
-    Icon: MapPin,
-    accent: "from-teal-300 to-cyan-500",
-    iconTone: "text-teal-200",
-    preview: "geo",
-  },
-  {
-    title: "Ostali projekti",
-    description: "Jo\u0161 mnogo rje\u0161enja izra\u0111enih po mjeri.",
-    Icon: Plus,
-    accent: "from-violet-400 to-cyan-400",
-    iconTone: "text-violet-200",
-    preview: "more",
-  },
-];
+};
+
+const CARD_COUNT = carouselContent.hr.cards.length;
 
 function useCarouselSize() {
   const [size, setSize] = useState({
@@ -99,7 +190,7 @@ function useCarouselSize() {
 }
 
 function getOrbitalPosition(baseAngle, index, radiusX, radiusY) {
-  const theta = baseAngle + index * (360 / cards.length);
+  const theta = baseAngle + index * (360 / CARD_COUNT);
   const radians = (theta * Math.PI) / 180;
   const x = Math.cos(radians) * radiusX;
   const y = Math.sin(radians) * radiusY;
@@ -116,37 +207,37 @@ function getOrbitalPosition(baseAngle, index, radiusX, radiusY) {
   };
 }
 
-function OutagePreview() {
+function OutagePreview({ copy }) {
   return (
     <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-cyan-300/15 bg-slate-950/72 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
       <img
         src="/brand/bezstruje.png"
-        alt="Bezstruje.hr prikaz"
+        alt={copy.outageAlt}
         loading="lazy"
         className="absolute inset-0 size-full object-cover object-top"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/92 via-slate-950/20 to-transparent" />
       <img
         src="/brand/bezstruje_logo.png"
-        alt="Bezstruje.hr logo"
+        alt={copy.outageLogoAlt}
         loading="lazy"
         className="absolute left-2 top-2 h-7 w-auto rounded-md bg-slate-950/80 p-1 shadow-lg shadow-black/25 sm:left-3 sm:top-3 sm:h-9"
       />
       <div className="absolute bottom-2 left-2 right-2 rounded-lg border border-white/10 bg-slate-950/76 px-2 py-1.5 text-[9px] text-slate-200 backdrop-blur-sm sm:bottom-3 sm:left-3 sm:right-3 sm:text-[10px]">
-        <p className="font-semibold text-white">Prekidi i planirani radovi</p>
-        <p className="mt-0.5 text-slate-300">Pregled obavijesti po lokaciji</p>
+        <p className="font-semibold text-white">{copy.outageTitle}</p>
+        <p className="mt-0.5 text-slate-300">{copy.outageSubtitle}</p>
       </div>
     </div>
   );
 }
 
-function InvitePreview({ compact = false }) {
+function InvitePreview({ compact = false, copy }) {
   return (
     <div className="relative grid h-[138px] place-items-center overflow-hidden rounded-[0.75rem] border border-fuchsia-300/20 bg-gradient-to-br from-slate-950 via-fuchsia-950/40 to-slate-950 p-2 sm:h-[238px] sm:rounded-[0.9rem]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_22%,rgba(250,204,21,.18),transparent_8%),radial-gradient(circle_at_80%_24%,rgba(255,255,255,.13),transparent_7%),radial-gradient(circle_at_28%_78%,rgba(244,114,182,.18),transparent_10%)]" />
       <motion.img
         src="/brand/pozivnica-home-cura.jpg"
-        alt="Vidimose.hr digitalna pozivnica"
+        alt={copy.inviteAlt}
         loading="lazy"
         animate={compact ? false : { y: [0, -4, 0], scale: [1, 1.015, 1] }}
         transition={compact ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
@@ -156,24 +247,24 @@ function InvitePreview({ compact = false }) {
   );
 }
 
-function AiPreview({ compact = false }) {
+function AiPreview({ compact = false, copy }) {
   return (
     <div className="h-[138px] rounded-[0.75rem] border border-blue-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
       <div className="mb-2 flex items-center gap-2 rounded-lg bg-white/[0.06] px-2 py-1.5 text-[9px] text-slate-200 sm:mb-3 sm:rounded-xl sm:px-2.5 sm:py-2 sm:text-[10px]">
         <Bot size={14} className="text-blue-200" />
-        Kako mogu pomo\u0107i?
+        {copy.aiQuestion}
       </div>
       <div className="ml-auto w-4/5 rounded-lg bg-gradient-to-r from-indigo-500 to-blue-500 p-1.5 text-[9px] font-medium text-white sm:rounded-xl sm:p-2 sm:text-[10px]">
-        Analiziraj klasifikaciju djelatnosti za firmu.
+        {copy.aiPrompt}
       </div>
       <div className="mt-2 grid grid-cols-2 gap-2 sm:mt-3">
         <div className="rounded-lg border border-white/10 bg-white/[0.04] p-2">
-          <p className="text-[9px] text-slate-500">Klasifikacija</p>
+          <p className="text-[9px] text-slate-500">{copy.aiClassification}</p>
           <p className="text-xs font-semibold text-white">Ex 62.01</p>
         </div>
         <div className="rounded-lg border border-white/10 bg-white/[0.04] p-2">
-          <p className="text-[9px] text-slate-500">Procjena rizika</p>
-          <p className="text-xs font-semibold text-cyan-200">Niski</p>
+          <p className="text-[9px] text-slate-500">{copy.aiRisk}</p>
+          <p className="text-xs font-semibold text-cyan-200">{copy.aiRiskValue}</p>
         </div>
       </div>
       <div className="mt-2 flex h-8 items-end gap-1 sm:mt-6 sm:h-20">
@@ -191,20 +282,20 @@ function AiPreview({ compact = false }) {
   );
 }
 
-function GeoPreview() {
+function GeoPreview({ copy }) {
   return (
     <div className="h-[138px] rounded-[0.75rem] border border-teal-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
       <div className="relative h-full overflow-hidden rounded-lg border border-white/10 bg-blue-950/55 sm:rounded-xl">
         <img
           src="/brand/geoadrese.png"
-          alt="GeoAdrese.com.hr prikaz"
+          alt={copy.geoAlt}
           loading="lazy"
           className="absolute inset-0 size-full object-cover object-top"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/88 via-slate-950/18 to-transparent" />
         <div className="absolute bottom-2 left-2 right-2 rounded-lg border border-white/10 bg-slate-950/74 px-2 py-1.5 text-[9px] text-slate-200 backdrop-blur-sm sm:bottom-3 sm:left-3 sm:right-3 sm:text-[10px]">
-          <p className="font-semibold text-white">Pretraga adresa</p>
-          <p className="mt-0.5 text-slate-300">Koordinate i prostorni podaci</p>
+          <p className="font-semibold text-white">{copy.geoTitle}</p>
+          <p className="mt-0.5 text-slate-300">{copy.geoSubtitle}</p>
         </div>
         <MapPin className="absolute right-3 top-3 text-cyan-200 drop-shadow" size={20} />
       </div>
@@ -212,7 +303,7 @@ function GeoPreview() {
   );
 }
 
-function MorePreview({ compact = false }) {
+function MorePreview({ compact = false, copy }) {
   return (
     <div className="h-[138px] rounded-[0.75rem] border border-violet-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
       <div className="grid grid-cols-3 gap-2">
@@ -229,22 +320,22 @@ function MorePreview({ compact = false }) {
       </div>
       <div className="mt-3 border-t border-white/10 pt-3 sm:mt-4 sm:pt-4">
         <span className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-200">
-          Pogledaj sve <ArrowRight size={13} />
+          {copy.more} <ArrowRight size={13} />
         </span>
       </div>
     </div>
   );
 }
 
-function Preview({ type, compact = false }) {
-  if (type === "outage") return <OutagePreview />;
-  if (type === "invite") return <InvitePreview compact={compact} />;
-  if (type === "ai") return <AiPreview compact={compact} />;
-  if (type === "geo") return <GeoPreview />;
-  return <MorePreview compact={compact} />;
+function Preview({ type, compact = false, copy }) {
+  if (type === "outage") return <OutagePreview copy={copy} />;
+  if (type === "invite") return <InvitePreview compact={compact} copy={copy} />;
+  if (type === "ai") return <AiPreview compact={compact} copy={copy} />;
+  if (type === "geo") return <GeoPreview copy={copy} />;
+  return <MorePreview compact={compact} copy={copy} />;
 }
 
-function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile }) {
+function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, copy }) {
   const Icon = card.Icon;
   const CardShell = card.href ? motion.a : motion.article;
   const linkProps = card.href
@@ -277,12 +368,12 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile }
           <p className="mt-0.5 line-clamp-2 text-[10px] leading-3.5 text-slate-300 sm:mt-1 sm:text-xs sm:leading-5">{card.description}</p>
         </div>
       </div>
-      <Preview type={card.preview} compact={isMobile} />
+      <Preview type={card.preview} compact={isMobile} copy={copy} />
     </CardShell>
   );
 }
 
-function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMobile }) {
+function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMobile, copy }) {
   const x = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).x);
   const y = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).y);
   const scale = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).scale);
@@ -332,13 +423,14 @@ function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMob
           boxShadow={isMobile ? "0 6px 18px rgba(15,23,42,0.28)" : boxShadow}
           borderColor={borderColor}
           isMobile={isMobile}
+          copy={copy}
         />
       </div>
     </motion.div>
   );
 }
 
-function OrbitDot({ card, index, angle, radiusX, radiusY, onClick }) {
+function OrbitDot({ card, index, angle, radiusX, radiusY, onClick, label }) {
   const opacity = useTransform(angle, (value) => {
     const depth = getOrbitalPosition(value, index, radiusX, radiusY).depth;
     return 0.42 + depth * 0.58;
@@ -354,12 +446,12 @@ function OrbitDot({ card, index, angle, radiusX, radiusY, onClick }) {
       onClick={onClick}
       style={{ opacity, width }}
       className="h-2.5 rounded-full bg-blue-200"
-      aria-label={`Prikaži ${card.title}`}
+      aria-label={`${label} ${card.title}`}
     />
   );
 }
 
-function OrbitButton({ direction, onClick, children }) {
+function OrbitButton({ direction, onClick, children, copy }) {
   return (
     <motion.button
       type="button"
@@ -369,14 +461,15 @@ function OrbitButton({ direction, onClick, children }) {
       className={`absolute top-[46%] z-[140] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-blue-300/35 bg-slate-950/74 text-blue-100 shadow-[0_0_16px_rgba(59,130,246,0.28)] backdrop-blur-md transition hover:border-cyan-200 hover:text-white sm:size-12 sm:border-blue-300/40 sm:shadow-[0_0_28px_rgba(59,130,246,0.45)] sm:backdrop-blur-xl ${
         direction === "left" ? "-left-2 sm:left-0" : "-right-2 sm:right-0"
       }`}
-      aria-label={direction === "left" ? "Prethodni projekt" : "Sljedeći projekt"}
+      aria-label={direction === "left" ? copy.previous : copy.next}
     >
       {children}
     </motion.button>
   );
 }
 
-export default function OrbitalProjectCarousel() {
+export default function OrbitalProjectCarousel({ lang = "hr" }) {
+  const { cards, preview } = carouselContent[lang] || carouselContent.hr;
   const angle = useMotionValue(90);
   const { radiusX, radiusY, orbitCenterY, sceneHeight, isMobile } = useCarouselSize();
   const prefersReducedMotion = useReducedMotion();
@@ -415,10 +508,10 @@ export default function OrbitalProjectCarousel() {
           }}
         />
 
-        <OrbitButton direction="left" onClick={() => moveBy(-1)}>
+        <OrbitButton direction="left" onClick={() => moveBy(-1)} copy={preview}>
           <ChevronLeft size={23} />
         </OrbitButton>
-        <OrbitButton direction="right" onClick={() => moveBy(1)}>
+        <OrbitButton direction="right" onClick={() => moveBy(1)} copy={preview}>
           <ChevronRight size={23} />
         </OrbitButton>
 
@@ -535,6 +628,7 @@ export default function OrbitalProjectCarousel() {
             radiusY={radiusY}
             orbitCenterY={orbitCenterY}
             isMobile={isMobile}
+            copy={preview}
           />
         ))}
 
@@ -619,6 +713,7 @@ export default function OrbitalProjectCarousel() {
                 radiusX={radiusX}
                 radiusY={radiusY}
                 onClick={() => jumpTo(index)}
+                label={preview.show}
               />
             ))}
           </div>
@@ -630,7 +725,7 @@ export default function OrbitalProjectCarousel() {
             >
               <RotateCw size={15} />
             </motion.span>
-            Rotiraju&#263;i prikaz projekata
+            {preview.rotating}
           </div>
         </div>
       </div>
