@@ -100,10 +100,10 @@ function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-3 sm:pt-3">
-      <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-[0.8rem] border border-blue-200/14 bg-slate-950/64 px-2 py-1.5 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:rounded-[1rem] sm:px-4 sm:py-2 lg:max-w-[1380px] lg:px-5">
+    <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-3 sm:pt-2.5">
+      <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-[0.8rem] border border-blue-200/14 bg-slate-950/64 px-2 py-1.5 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:rounded-[1rem] sm:px-4 sm:py-1.5 lg:max-w-[1380px] lg:px-5">
         <a href="#top" className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-[0.75rem] border border-blue-300/20 bg-black shadow-md shadow-blue-500/15 sm:h-20 sm:w-[14.7rem] sm:rounded-[1.15rem] sm:shadow-lg">
+          <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-[0.75rem] border border-blue-300/20 bg-black shadow-md shadow-blue-500/15 sm:h-[4.5rem] sm:w-[13.25rem] sm:rounded-[1.05rem] sm:shadow-lg">
             <img
               src="/brand/nepar_logo.png"
               alt="Nepar Solutions logo"
@@ -276,7 +276,7 @@ function Hero() {
   ];
 
   return (
-    <section id="top" className="relative px-4 pt-28 sm:pt-52 lg:pt-[11rem]">
+    <section id="top" className="relative px-4 pt-24 sm:pt-40 lg:pt-[8.75rem]">
       <div className="mx-auto grid max-w-[1180px] items-center gap-0 sm:gap-8 lg:max-w-[1380px] lg:grid-cols-[minmax(320px,0.62fr)_minmax(0,1.38fr)]">
         <motion.div
           initial={{ opacity: 0, y: 28 }}

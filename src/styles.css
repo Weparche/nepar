@@ -50,30 +50,18 @@ body {
 .hero-kicker::before {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 250deg,
-    rgba(59, 130, 246, 0.1) 268deg,
-    rgba(34, 211, 238, 0.95) 286deg,
-    rgba(255, 255, 255, 0.95) 300deg,
-    rgba(217, 70, 239, 0.84) 314deg,
-    transparent 336deg,
-    transparent 360deg
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  animation: kicker-sheen-orbit 2.8s linear infinite;
+  left: 16%;
+  top: 0;
+  z-index: 2;
+  width: 44px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #22d3ee, #ffffff, #d946ef, transparent);
+  box-shadow:
+    0 0 10px rgba(34, 211, 238, 0.8),
+    0 0 18px rgba(217, 70, 239, 0.45);
+  transform: translate(-50%, -50%);
+  animation: kicker-sheen-orbit 3s linear infinite;
 }
 
 .hero-kicker svg {
@@ -105,8 +93,34 @@ body {
 }
 
 @keyframes kicker-sheen-orbit {
-  to {
-    transform: rotate(360deg);
+  0% {
+    left: 16%;
+    top: 0;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  25% {
+    left: 100%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  50% {
+    left: 84%;
+    top: 100%;
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+
+  75% {
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(270deg);
+  }
+
+  100% {
+    left: 16%;
+    top: 0;
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
