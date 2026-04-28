@@ -110,14 +110,14 @@ function Navbar() {
               className="size-full object-contain px-2 py-1 sm:px-3 sm:py-2"
             />
           </span>
-          <span className="min-w-0">
+          {/* <span className="min-w-0">
             <span className="block truncate text-base font-semibold tracking-normal text-white sm:text-2xl">
               Nepar Solutions
             </span>
             <span className="block truncate text-xs text-slate-400 sm:text-base">
               obrt za digitalna rje&#353;enja
             </span>
-          </span>
+          </span> */}
         </a>
 
         <div className="hidden items-center gap-8 lg:flex">
@@ -153,7 +153,7 @@ function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="mx-auto mt-2 max-w-[1580px] rounded-[0.9rem] border border-blue-200/14 bg-slate-950/90 p-3 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:mt-3 sm:rounded-[1.25rem] sm:p-5 sm:shadow-2xl sm:backdrop-blur-2xl lg:hidden"
+            className="mx-auto mt-2 max-w-[1180px] rounded-[0.9rem] border border-blue-200/14 bg-slate-950/90 p-3 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:mt-3 sm:rounded-[1.25rem] sm:p-5 sm:shadow-2xl sm:backdrop-blur-2xl lg:max-w-[1380px] lg:hidden"
           >
             <div className="grid gap-1 sm:gap-2">
               {navLinks.map(([label, href, Icon]) => (
@@ -277,7 +277,7 @@ function Hero() {
 
   return (
     <section id="top" className="relative px-4 pt-28 sm:pt-52 lg:pt-[11rem]">
-      <div className="mx-auto grid max-w-[1580px] items-center gap-0 sm:gap-8 lg:grid-cols-[minmax(320px,0.62fr)_minmax(0,1.38fr)]">
+      <div className="mx-auto grid max-w-[1180px] items-center gap-0 sm:gap-8 lg:max-w-[1380px] lg:grid-cols-[minmax(320px,0.62fr)_minmax(0,1.38fr)]">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -387,7 +387,7 @@ function StatsBar() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.65 }}
-        className="mx-auto max-w-[1580px] rounded-[1rem] border border-blue-200/12 bg-slate-950/54 px-5 py-4 shadow-2xl shadow-blue-950/20 backdrop-blur-xl"
+        className="mx-auto max-w-[1180px] rounded-[1rem] border border-blue-200/12 bg-slate-950/54 px-5 py-4 shadow-2xl shadow-blue-950/20 backdrop-blur-xl lg:max-w-[1380px]"
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-blue-200/10">
           {stats.map(([value, label, Icon]) => (
@@ -408,7 +408,7 @@ function StatsBar() {
 function Services() {
   return (
     <section id="usluge" className="px-4 py-5">
-      <div className="mx-auto grid max-w-[1580px] gap-4 xl:grid-cols-[240px_1fr]">
+      <div className="mx-auto grid max-w-[1180px] gap-4 lg:max-w-[1380px] xl:grid-cols-[240px_1fr]">
         <div>
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
             &#352;TO RADIMO
@@ -451,7 +451,7 @@ function Services() {
 function FeaturedProjects() {
   return (
     <section id="projekti" className="px-4 py-5">
-      <div className="mx-auto max-w-[1580px] border-t border-blue-200/10 pt-5">
+      <div className="mx-auto max-w-[1180px] border-t border-blue-200/10 pt-5 lg:max-w-[1380px]">
         <div className="grid gap-4 xl:grid-cols-[220px_1fr] xl:items-start">
           <div>
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-white">
@@ -510,7 +510,7 @@ function About() {
 
   return (
     <section id="onama" className="px-4 py-10">
-      <div className="mx-auto grid max-w-[1580px] gap-6 rounded-[1rem] border border-blue-200/12 bg-white/[0.035] p-5 shadow-2xl shadow-blue-950/20 backdrop-blur-xl lg:grid-cols-[0.65fr_1.35fr]">
+      <div className="mx-auto grid max-w-[1180px] gap-6 rounded-[1rem] border border-blue-200/12 bg-white/[0.035] p-5 shadow-2xl shadow-blue-950/20 backdrop-blur-xl lg:max-w-[1380px] lg:grid-cols-[0.65fr_1.35fr]">
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -576,7 +576,7 @@ function About() {
 function BottomCta() {
   return (
     <section id="kontakt" className="fixed inset-x-0 bottom-0 z-40 px-2 pb-2 sm:px-5 sm:pb-5">
-      <div className="relative mx-auto max-w-[1580px] overflow-hidden rounded-[0.85rem] border border-blue-300/20 bg-slate-950/84 px-3 py-2.5 shadow-xl shadow-blue-500/15 backdrop-blur-xl sm:rounded-[1rem] sm:border-blue-300/25 sm:px-6 sm:py-4 sm:shadow-2xl sm:shadow-blue-500/25 sm:backdrop-blur-2xl">
+      <div className="relative mx-auto max-w-[1180px] overflow-hidden rounded-[0.85rem] border border-blue-300/20 bg-slate-950/84 px-3 py-2.5 shadow-xl shadow-blue-500/15 backdrop-blur-xl sm:rounded-[1rem] sm:border-blue-300/25 sm:px-6 sm:py-4 sm:shadow-2xl sm:shadow-blue-500/25 sm:backdrop-blur-2xl lg:max-w-[1380px]">
         <motion.div
           aria-hidden="true"
           animate={{ x: ["0%", "-50%"] }}
@@ -745,7 +745,7 @@ export default function App() {
       <About />
       <BottomCta />
       <footer className="px-4 pb-20 sm:pb-32">
-        <div className="mx-auto flex max-w-[1580px] flex-col items-center justify-between gap-2 border-t border-blue-200/10 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-6 sm:text-sm">
+        <div className="mx-auto flex max-w-[1180px] flex-col items-center justify-between gap-2 border-t border-blue-200/10 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-6 sm:text-sm lg:max-w-[1380px]">
           <p>&copy; 2026 Nepar Solutions. Digitalna rje&#353;enja po mjeri.</p>
           <a href="#top" className="transition hover:text-slate-200">
             Povratak na vrh
