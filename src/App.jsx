@@ -705,7 +705,7 @@ function BottomCta() {
                 Imate ideju? Pretvorimo je u proizvod.
               </h2>
               <p className="mt-0.5 max-w-2xl text-xs leading-4 text-slate-300 sm:mt-1 sm:text-sm sm:leading-normal">
-                Od prvog razgovora do lansiranja, tu sam da va&#353;a ideja postane stvarnost.
+                Od prvog razgovora do lansiranja, tu smo da va&#353;a ideja postane stvarnost.
               </p>
             </div>
           </div>
