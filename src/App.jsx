@@ -100,10 +100,10 @@ function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-3 sm:pt-2.5">
-      <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-[0.8rem] border border-blue-200/14 bg-slate-950/64 px-2 py-1.5 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:rounded-[1rem] sm:px-4 sm:py-1.5 lg:max-w-[1380px] lg:px-5">
+    <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-3 sm:pt-2">
+      <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-[0.8rem] border border-blue-200/14 bg-slate-950/64 px-2 py-1.5 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:rounded-[0.9rem] sm:px-3 sm:py-1 lg:max-w-[1380px] lg:px-4">
         <a href="#top" className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-[0.75rem] border border-blue-300/20 bg-black shadow-md shadow-blue-500/15 sm:h-[4.5rem] sm:w-[13.25rem] sm:rounded-[1.05rem] sm:shadow-lg">
+          <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-[0.75rem] border border-blue-300/20 bg-black shadow-md shadow-blue-500/15 sm:h-[3.85rem] sm:w-[11.25rem] sm:rounded-[0.95rem] sm:shadow-lg">
             <img
               src="/brand/nepar_logo.png"
               alt="Nepar Solutions logo"
@@ -276,7 +276,7 @@ function Hero() {
   ];
 
   return (
-    <section id="top" className="relative px-4 pt-24 sm:pt-40 lg:pt-[8.75rem]">
+    <section id="top" className="relative px-4 pt-24 sm:pt-36 lg:pt-[7.75rem]">
       <div className="mx-auto grid max-w-[1180px] items-center gap-0 sm:gap-8 lg:max-w-[1380px] lg:grid-cols-[minmax(320px,0.62fr)_minmax(0,1.38fr)]">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
@@ -290,6 +290,25 @@ function Hero() {
             transition={{ delay: 0.08, duration: 0.65 }}
             className="hero-kicker mb-5 inline-flex items-center gap-2 rounded-full bg-slate-950/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] shadow-lg shadow-violet-500/10"
           >
+            <svg className="hero-kicker-outline" viewBox="0 0 100 32" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="heroKickerBase" x1="0%" x2="100%" y1="0%" y2="0%">
+                  <stop offset="0%" stopColor="rgba(59,130,246,0.55)" />
+                  <stop offset="35%" stopColor="rgba(34,211,238,0.6)" />
+                  <stop offset="68%" stopColor="rgba(124,58,237,0.58)" />
+                  <stop offset="100%" stopColor="rgba(217,70,239,0.5)" />
+                </linearGradient>
+                <linearGradient id="heroKickerSheen" x1="0%" x2="100%" y1="0%" y2="0%">
+                  <stop offset="0%" stopColor="rgba(34,211,238,0)" />
+                  <stop offset="38%" stopColor="rgba(34,211,238,0.95)" />
+                  <stop offset="55%" stopColor="rgba(255,255,255,0.95)" />
+                  <stop offset="72%" stopColor="rgba(217,70,239,0.9)" />
+                  <stop offset="100%" stopColor="rgba(217,70,239,0)" />
+                </linearGradient>
+              </defs>
+              <rect className="hero-kicker-outline-base" x="1" y="1" width="98" height="30" rx="15" pathLength="100" />
+              <rect className="hero-kicker-outline-sheen" x="1" y="1" width="98" height="30" rx="15" pathLength="100" />
+            </svg>
             <Zap size={15} />
             <span className="hero-kicker-text">DIGITALNA RJE&#352;ENJA KOJA RADE</span>
           </motion.div>
@@ -427,7 +446,7 @@ function Services() {
               key={title}
               initial={{ opacity: 0, x: 220 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
+              viewport={{ once: true, margin: "0px 0px -180px 0px", amount: 0.2 }}
               transition={{ duration: 0.8, delay: index * 1, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -6, scale: 1.01 }}
               className="group relative overflow-hidden rounded-[1rem] border border-blue-200/12 bg-slate-950/52 p-5 shadow-xl shadow-black/20 backdrop-blur-xl"

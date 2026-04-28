@@ -37,9 +37,7 @@ body {
   isolation: isolate;
   overflow: hidden;
   border: 1px solid transparent;
-  background:
-    linear-gradient(rgba(2, 6, 23, 0.92), rgba(2, 6, 23, 0.92)) padding-box,
-    linear-gradient(90deg, rgba(59, 130, 246, 0.58), rgba(34, 211, 238, 0.58), rgba(124, 58, 237, 0.58), rgba(217, 70, 239, 0.5)) border-box;
+  background: rgba(2, 6, 23, 0.92);
 }
 
 .hero-kicker > * {
@@ -47,21 +45,32 @@ body {
   z-index: 1;
 }
 
-.hero-kicker::before {
-  content: "";
+.hero-kicker-outline {
   position: absolute;
-  left: 16%;
-  top: 0;
-  z-index: 2;
-  width: 44px;
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, #22d3ee, #ffffff, #d946ef, transparent);
-  box-shadow:
-    0 0 10px rgba(34, 211, 238, 0.8),
-    0 0 18px rgba(217, 70, 239, 0.45);
-  transform: translate(-50%, -50%);
-  animation: kicker-sheen-orbit 3s linear infinite;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+  filter: drop-shadow(0 0 9px rgba(34, 211, 238, 0.28));
+}
+
+.hero-kicker-outline-base,
+.hero-kicker-outline-sheen {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.hero-kicker-outline-base {
+  stroke: url("#heroKickerBase");
+  stroke-width: 1.15;
+}
+
+.hero-kicker-outline-sheen {
+  stroke: url("#heroKickerSheen");
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-dasharray: 14 86;
+  animation: kicker-outline-run 2.4s linear infinite;
 }
 
 .hero-kicker svg {
@@ -92,35 +101,9 @@ body {
   transform: translateZ(0);
 }
 
-@keyframes kicker-sheen-orbit {
-  0% {
-    left: 16%;
-    top: 0;
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  25% {
-    left: 100%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(90deg);
-  }
-
-  50% {
-    left: 84%;
-    top: 100%;
-    transform: translate(-50%, -50%) rotate(180deg);
-  }
-
-  75% {
-    left: 0;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(270deg);
-  }
-
-  100% {
-    left: 16%;
-    top: 0;
-    transform: translate(-50%, -50%) rotate(360deg);
+@keyframes kicker-outline-run {
+  to {
+    stroke-dashoffset: -100;
   }
 }
 
@@ -140,7 +123,7 @@ body {
     scroll-behavior: auto;
   }
 
-  .hero-kicker::before,
+  .hero-kicker-outline-sheen,
   .hero-kicker-text {
     animation: none;
   }
