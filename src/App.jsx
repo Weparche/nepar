@@ -290,18 +290,6 @@ function Hero() {
             transition={{ delay: 0.08, duration: 0.65 }}
             className="hero-kicker mb-5 inline-flex items-center gap-2 rounded-full bg-slate-950/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] shadow-lg shadow-violet-500/10"
           >
-            <svg className="hero-kicker-outline" viewBox="0 0 100 32" preserveAspectRatio="none" aria-hidden="true">
-              <defs>
-                <linearGradient id="heroKickerSheen" x1="0%" x2="100%" y1="0%" y2="0%">
-                  <stop offset="0%" stopColor="rgba(34,211,238,0)" />
-                  <stop offset="38%" stopColor="rgba(34,211,238,0.95)" />
-                  <stop offset="55%" stopColor="rgba(255,255,255,0.95)" />
-                  <stop offset="72%" stopColor="rgba(217,70,239,0.9)" />
-                  <stop offset="100%" stopColor="rgba(217,70,239,0)" />
-                </linearGradient>
-              </defs>
-              <rect className="hero-kicker-outline-sheen" x="1.5" y="1.5" width="97" height="29" rx="14.5" pathLength="100" />
-            </svg>
             <Zap size={15} />
             <span className="hero-kicker-text">DIGITALNA RJE&#352;ENJA KOJA RADE</span>
           </motion.div>
