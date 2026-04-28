@@ -32,14 +32,90 @@ body {
   border-radius: 6px;
 }
 
+.hero-kicker {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid transparent;
+}
+
+.hero-kicker::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -2;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    rgba(59, 130, 246, 0.95),
+    rgba(34, 211, 238, 0.95),
+    rgba(124, 58, 237, 0.95),
+    rgba(217, 70, 239, 0.9),
+    rgba(59, 130, 246, 0.95)
+  );
+  animation: kicker-ring-spin 3.4s linear infinite;
+}
+
+.hero-kicker::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: rgba(2, 6, 23, 0.92);
+}
+
+.hero-kicker svg {
+  color: rgb(125, 211, 252);
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.45));
+}
+
+.hero-kicker-text {
+  background: linear-gradient(
+    90deg,
+    #93c5fd,
+    #22d3ee,
+    #a78bfa,
+    #f0abfc,
+    #93c5fd
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: kicker-text-shimmer 2.8s ease-in-out infinite;
+  text-shadow: 0 0 20px rgba(34, 211, 238, 0.18);
+}
+
 .orbital-item,
 .orbital-card {
   backface-visibility: hidden;
   transform: translateZ(0);
 }
 
+@keyframes kicker-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes kicker-text-shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .hero-kicker::before,
+  .hero-kicker-text {
+    animation: none;
   }
 }

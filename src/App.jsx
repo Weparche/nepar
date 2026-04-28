@@ -288,10 +288,10 @@ function Hero() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.08, duration: 0.65 }}
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-blue-200 shadow-lg shadow-violet-500/10"
+            className="hero-kicker mb-5 inline-flex items-center gap-2 rounded-full bg-slate-950/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] shadow-lg shadow-violet-500/10"
           >
             <Zap size={15} />
-            DIGITALNA RJE&#352;ENJA KOJA RADE
+            <span className="hero-kicker-text">DIGITALNA RJE&#352;ENJA KOJA RADE</span>
           </motion.div>
 
           <motion.h1
