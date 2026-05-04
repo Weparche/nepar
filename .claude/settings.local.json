@@ -4,7 +4,8 @@
       "Bash(npm run *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)",
       "Bash(curl -s http://localhost:5173/)",
-      "Bash(Get-ChildItem -Path \"c:\\\\Nepar\" -Force)"
+      "Bash(Get-ChildItem -Path \"c:\\\\Nepar\" -Force)",
+      "Bash(Select-String \"webp|geoadrese|kpdinfo|kadigra\")"
     ]
   }
 }

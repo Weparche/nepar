@@ -260,32 +260,22 @@ function InvitePreview({ compact = false, copy }) {
 
 function AiPreview({ compact = false, copy }) {
   return (
-    <div className="h-[138px] rounded-[0.75rem] border border-blue-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
-      <div className="mb-2 flex items-center gap-2 rounded-lg bg-white/[0.06] px-2 py-1.5 text-[9px] text-slate-200 sm:mb-3 sm:rounded-xl sm:px-2.5 sm:py-2 sm:text-[10px]">
-        <Bot size={14} className="text-blue-200" />
-        {copy.aiQuestion}
-      </div>
-      <div className="ml-auto w-4/5 rounded-lg bg-gradient-to-r from-indigo-500 to-blue-500 p-1.5 text-[9px] font-medium text-white sm:rounded-xl sm:p-2 sm:text-[10px]">
-        {copy.aiPrompt}
-      </div>
-      <div className="mt-2 grid grid-cols-2 gap-2 sm:mt-3">
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-2">
-          <p className="text-[9px] text-slate-500">{copy.aiClassification}</p>
-          <p className="text-xs font-semibold text-white">Ex 62.01</p>
-        </div>
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-2">
-          <p className="text-[9px] text-slate-500">{copy.aiRisk}</p>
-          <p className="text-xs font-semibold text-cyan-200">{copy.aiRiskValue}</p>
-        </div>
-      </div>
-      <div className="mt-2 flex h-8 items-end gap-1 sm:mt-6 sm:h-20">
+    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-blue-300/15 bg-slate-950/78 sm:h-[238px] sm:rounded-[0.9rem]">
+      <img
+        src="/brand/kpdinfo.webp"
+        alt={copy.aiAlt ?? "KPDinfo.com prikaz"}
+        loading="lazy"
+        className="absolute inset-0 size-full object-cover object-top"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-slate-950/10" />
+      <div className="absolute inset-x-0 bottom-0 flex h-10 items-end gap-1 px-2 pb-2 sm:h-20 sm:px-3 sm:pb-3">
         {[36, 58, 46, 64, 52, 72].map((h, i) => (
           <motion.span
             key={i}
             animate={compact ? false : { scaleY: [(h - 8) / h, 1, (h - 8) / h] }}
             transition={compact ? undefined : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
             style={{ height: `${h}%`, transformOrigin: "bottom" }}
-            className="flex-1 rounded-t bg-gradient-to-t from-blue-600 to-cyan-300"
+            className="flex-1 rounded-t bg-gradient-to-t from-blue-600 to-cyan-300 opacity-80"
           />
         ))}
       </div>
@@ -298,7 +288,7 @@ function GeoPreview({ copy }) {
     <div className="h-[138px] rounded-[0.75rem] border border-teal-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
       <div className="relative h-full overflow-hidden rounded-lg border border-white/10 bg-blue-950/55 sm:rounded-xl">
         <img
-          src="/brand/geoadrese.png"
+          src="/brand/geoadrese.webp"
           alt={copy.geoAlt}
           loading="lazy"
           className="absolute inset-0 size-full object-cover object-top"
@@ -318,7 +308,7 @@ function KadigraPreview({ compact = false, copy }) {
   return (
     <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-red-300/20 bg-slate-950/72 sm:h-[238px] sm:rounded-[0.9rem]">
       <motion.img
-        src="/brand/kadigrahrvatska_nepar.jpg"
+        src="/brand/kadigrahrvatska.webp"
         alt={copy.kadigraAlt}
         loading="lazy"
         animate={compact ? false : { scale: [1, 1.04, 1] }}

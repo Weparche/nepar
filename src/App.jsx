@@ -861,7 +861,7 @@ function BottomCta({ copy }) {
             </div>
           </div>
           <MotionButton
-            href="mailto:hello@nepar.solutions"
+            href="mailto:nepar@nepar.hr"
             className="inline-flex w-full px-4 py-2 text-xs sm:w-auto sm:px-5 sm:py-3 sm:text-sm"
           >
             {copy.cta.button}
