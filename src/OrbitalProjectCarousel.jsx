@@ -12,6 +12,7 @@ import {
   Plus,
   RotateCw,
   Search,
+  Trophy,
   Zap,
 } from "lucide-react";
 
@@ -25,6 +26,7 @@ const carouselContent = {
         accent: "from-amber-300 to-orange-500",
         iconTone: "text-amber-200",
         preview: "outage",
+        href: "https://bezstruje.hr",
       },
       {
         title: "VidimoSe.hr",
@@ -42,6 +44,7 @@ const carouselContent = {
         accent: "from-blue-400 to-indigo-500",
         iconTone: "text-blue-200",
         preview: "ai",
+        href: "https://kpdinfo.com",
       },
       {
         title: "GeoAdrese.net",
@@ -50,14 +53,16 @@ const carouselContent = {
         accent: "from-teal-300 to-cyan-500",
         iconTone: "text-teal-200",
         preview: "geo",
+        href: "https://geoadrese.net",
       },
       {
-        title: "Ostali projekti",
-        description: "Jo\u0161 mnogo rje\u0161enja izra\u0111enih po mjeri.",
-        Icon: Plus,
-        accent: "from-violet-400 to-cyan-400",
-        iconTone: "text-violet-200",
-        preview: "more",
+        title: "KadigraHrvatska.hr",
+        description: "Fanhub navija\u010da Hrvatske \u2014 Postani izbornik.",
+        Icon: Trophy,
+        accent: "from-red-400 to-rose-600",
+        iconTone: "text-red-200",
+        preview: "kadigra",
+        href: "https://kadigrahrvatska.hr",
       },
     ],
     preview: {
@@ -74,6 +79,7 @@ const carouselContent = {
       geoAlt: "GeoAdrese.com.hr prikaz",
       geoTitle: "Pretraga adresa",
       geoSubtitle: "Koordinate i prostorni podaci",
+      kadigraAlt: "KadigraHrvatska.hr prikaz",
       more: "Pogledaj sve",
       rotating: "Rotiraju\u0107i prikaz projekata",
       previous: "Prethodni projekt",
@@ -90,6 +96,7 @@ const carouselContent = {
         accent: "from-amber-300 to-orange-500",
         iconTone: "text-amber-200",
         preview: "outage",
+        href: "https://bezstruje.hr",
       },
       {
         title: "VidimoSe.hr",
@@ -107,6 +114,7 @@ const carouselContent = {
         accent: "from-blue-400 to-indigo-500",
         iconTone: "text-blue-200",
         preview: "ai",
+        href: "https://kpdinfo.com",
       },
       {
         title: "GeoAdrese.net",
@@ -115,14 +123,16 @@ const carouselContent = {
         accent: "from-teal-300 to-cyan-500",
         iconTone: "text-teal-200",
         preview: "geo",
+        href: "https://geoadrese.net",
       },
       {
-        title: "More projects",
-        description: "Many more custom-built digital solutions.",
-        Icon: Plus,
-        accent: "from-violet-400 to-cyan-400",
-        iconTone: "text-violet-200",
-        preview: "more",
+        title: "KadigraHrvatska.hr",
+        description: "Croatia fan hub — Become the coach.",
+        Icon: Trophy,
+        accent: "from-red-400 to-rose-600",
+        iconTone: "text-red-200",
+        preview: "kadigra",
+        href: "https://kadigrahrvatska.hr",
       },
     ],
     preview: {
@@ -139,6 +149,7 @@ const carouselContent = {
       geoAlt: "GeoAdrese.com.hr preview",
       geoTitle: "Address search",
       geoSubtitle: "Coordinates and spatial data",
+      kadigraAlt: "KadigraHrvatska.hr preview",
       more: "View all",
       rotating: "Rotating project view",
       previous: "Previous project",
@@ -303,6 +314,22 @@ function GeoPreview({ copy }) {
   );
 }
 
+function KadigraPreview({ compact = false, copy }) {
+  return (
+    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-red-300/20 bg-slate-950/72 sm:h-[238px] sm:rounded-[0.9rem]">
+      <motion.img
+        src="/brand/kadigrahrvatska_nepar.jpg"
+        alt={copy.kadigraAlt}
+        loading="lazy"
+        animate={compact ? false : { scale: [1, 1.04, 1] }}
+        transition={compact ? undefined : { duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-0 size-full object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/88 via-slate-950/10 to-transparent" />
+    </div>
+  );
+}
+
 function MorePreview({ compact = false, copy }) {
   return (
     <div className="h-[138px] rounded-[0.75rem] border border-violet-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
@@ -332,6 +359,7 @@ function Preview({ type, compact = false, copy }) {
   if (type === "invite") return <InvitePreview compact={compact} copy={copy} />;
   if (type === "ai") return <AiPreview compact={compact} copy={copy} />;
   if (type === "geo") return <GeoPreview copy={copy} />;
+  if (type === "kadigra") return <KadigraPreview compact={compact} copy={copy} />;
   return <MorePreview compact={compact} copy={copy} />;
 }
 

@@ -136,6 +136,10 @@ const content = {
     footer: {
       copyright: "\u00a9 2026 Nepar Solutions. Digitalna rje\u0161enja po mjeri.",
       top: "Povratak na vrh",
+      infoLabel: "Poslovni podaci",
+      companyName: "Nepar, obrt za digitalna rje\u0161enja i usluge",
+      owner: "vl. Ivan Gorupi\u0107",
+      mbo: "MBO: 99267101",
     },
     previewAlts: {
       invite: "Vidimose.hr digitalna pozivnica",
@@ -251,6 +255,10 @@ const content = {
     footer: {
       copyright: "\u00a9 2026 Nepar Solutions. Tailored digital solutions.",
       top: "Back to top",
+      infoLabel: "Business info",
+      companyName: "Nepar, sole proprietorship for digital solutions and services",
+      owner: "Prop. Ivan Gorupi\u0107",
+      mbo: "MBO: 99267101",
     },
     previewAlts: {
       invite: "Vidimose.hr digital invitation",
@@ -891,11 +899,27 @@ export default function App() {
       <About copy={copy} />
       <BottomCta copy={copy} />
       <footer className="px-4 pb-20 sm:pb-32">
-        <div className="mx-auto flex max-w-[1180px] flex-col items-center justify-between gap-2 border-t border-blue-200/10 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-6 sm:text-sm lg:max-w-[1380px]">
-          <p>{copy.footer.copyright}</p>
-          <a href="#top" className="transition hover:text-slate-200">
-            {copy.footer.top}
-          </a>
+        <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
+          <div className="border-t border-blue-200/10 pt-8 sm:pt-10">
+            <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="mb-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-400/60">
+                  {copy.footer.infoLabel}
+                </p>
+                <p className="text-sm font-medium text-slate-300">{copy.footer.companyName}</p>
+                <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-0.5 text-xs text-slate-500">
+                  <span>{copy.footer.owner}</span>
+                  <span>{copy.footer.mbo}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col items-center justify-between gap-2 border-t border-blue-200/10 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
+              <p>{copy.footer.copyright}</p>
+              <a href="#top" className="transition hover:text-slate-200">
+                {copy.footer.top}
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </main>
