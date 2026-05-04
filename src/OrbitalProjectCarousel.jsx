@@ -294,10 +294,6 @@ function GeoPreview({ copy }) {
           className="absolute inset-0 size-full object-cover object-top"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/88 via-slate-950/18 to-transparent" />
-        <div className="absolute bottom-2 left-2 right-2 rounded-lg border border-white/10 bg-slate-950/74 px-2 py-1.5 text-[9px] text-slate-200 backdrop-blur-sm sm:bottom-3 sm:left-3 sm:right-3 sm:text-[10px]">
-          <p className="font-semibold text-white">{copy.geoTitle}</p>
-          <p className="mt-0.5 text-slate-300">{copy.geoSubtitle}</p>
-        </div>
         <MapPin className="absolute right-3 top-3 text-cyan-200 drop-shadow" size={20} />
       </div>
     </div>

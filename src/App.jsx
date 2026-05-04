@@ -22,6 +22,7 @@ import {
   Send,
   ShieldCheck,
   Sparkles,
+  Trophy,
   X,
   Zap,
 } from "lucide-react";
@@ -33,7 +34,7 @@ const content = {
       ["Projekti", "#projekti"],
       ["Usluge", "#usluge"],
       ["O nama", "#onama"],
-      ["Kontakt", "#kontakt", Mail],
+      ["Kontakt", "mailto:nepar@nepar.hr", Mail],
     ],
     navCta: "Javite se",
     menuLabel: "Otvori navigaciju",
@@ -66,6 +67,15 @@ const content = {
         Icon: MapPin,
         accent: "from-teal-300 to-cyan-500",
         preview: "geo",
+        href: "https://geoadrese.net",
+      },
+      {
+        title: "KadigraHrvatska.hr",
+        description: "Fanhub navijača Hrvatske — Postani izbornik.",
+        Icon: Trophy,
+        accent: "from-red-400 to-rose-600",
+        preview: "kadigra",
+        href: "https://kadigrahrvatska.hr",
       },
     ],
     services: [
@@ -140,11 +150,13 @@ const content = {
       companyName: "Nepar, obrt za digitalna rje\u0161enja i usluge",
       owner: "vl. Ivan Gorupi\u0107",
       mbo: "MBO: 99267101",
+      email: "nepar@nepar.hr",
     },
     previewAlts: {
       invite: "Vidimose.hr digitalna pozivnica",
       geo: "GeoAdrese.com.hr prikaz",
       outage: "Bezstruje.hr prikaz",
+      kadigra: "KadigraHrvatska.hr prikaz",
     },
   },
   en: {
@@ -152,7 +164,7 @@ const content = {
       ["Projects", "#projekti"],
       ["Services", "#usluge"],
       ["About us", "#onama"],
-      ["Contact", "#kontakt", Mail],
+      ["Contact", "mailto:nepar@nepar.hr", Mail],
     ],
     navCta: "Contact us",
     menuLabel: "Open navigation",
@@ -185,6 +197,15 @@ const content = {
         Icon: MapPin,
         accent: "from-teal-300 to-cyan-500",
         preview: "geo",
+        href: "https://geoadrese.net",
+      },
+      {
+        title: "KadigraHrvatska.hr",
+        description: "Croatia fan hub — Become the coach.",
+        Icon: Trophy,
+        accent: "from-red-400 to-rose-600",
+        preview: "kadigra",
+        href: "https://kadigrahrvatska.hr",
       },
     ],
     services: [
@@ -259,11 +280,13 @@ const content = {
       companyName: "Nepar, sole proprietorship for digital solutions and services",
       owner: "Prop. Ivan Gorupi\u0107",
       mbo: "MBO: 99267101",
+      email: "nepar@nepar.hr",
     },
     previewAlts: {
       invite: "Vidimose.hr digital invitation",
       geo: "GeoAdrese.com.hr preview",
       outage: "Bezstruje.hr preview",
+      kadigra: "KadigraHrvatska.hr preview",
     },
   },
 };
@@ -329,7 +352,7 @@ function Navbar({ lang, setLang, copy }) {
           <LanguageToggle lang={lang} setLang={setLang} />
         </div>
 
-        <MotionButton href="#kontakt" className="!hidden px-7 py-4 text-base 2xl:!inline-flex">
+        <MotionButton href="mailto:nepar@nepar.hr" className="!hidden px-7 py-4 text-base 2xl:!inline-flex">
           <Send className="size-4 xl:size-5" />
           {copy.navCta}
         </MotionButton>
@@ -363,7 +386,7 @@ function Navbar({ lang, setLang, copy }) {
                   {label}
                 </a>
               ))}
-              <MotionButton href="#kontakt" className="mt-1 justify-self-start rounded-[0.75rem] px-5 py-3 text-sm sm:mt-2 sm:justify-self-stretch sm:rounded-[0.8rem] sm:px-6 sm:py-4 sm:text-base">
+              <MotionButton href="mailto:nepar@nepar.hr" className="mt-1 justify-self-start rounded-[0.75rem] px-5 py-3 text-sm sm:mt-2 sm:justify-self-stretch sm:rounded-[0.8rem] sm:px-6 sm:py-4 sm:text-base">
                 <Send className="size-4 sm:size-5" />
                 {copy.navCta}
               </MotionButton>
@@ -410,18 +433,19 @@ function ProjectPreviewSmall({ type, copy }) {
 
   if (type === "ai") {
     return (
-      <div className="size-20 shrink-0 rounded-[0.7rem] border border-blue-300/20 bg-slate-950/85 p-2">
-        <div className="mb-2 h-2 w-12 rounded bg-blue-400/40" />
-        <div className="space-y-1">
-          <span className="block h-2 rounded bg-white/10" />
-          <span className="block h-2 w-4/5 rounded bg-white/10" />
-          <span className="block h-2 w-3/5 rounded bg-blue-400/40" />
-        </div>
-        <div className="mt-3 flex h-5 items-end gap-1">
+      <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/20 bg-slate-950">
+        <img
+          src="/brand/kpdinfo.webp"
+          alt="KPDinfo.com"
+          loading="lazy"
+          className="absolute inset-0 size-full object-cover object-top"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
+        <div className="absolute inset-x-1.5 bottom-1.5 flex h-4 items-end gap-0.5">
           {[35, 62, 50, 74].map((height) => (
             <span
               key={height}
-              className="flex-1 rounded-t bg-gradient-to-t from-blue-600 to-cyan-300"
+              className="flex-1 rounded-t bg-gradient-to-t from-blue-600 to-cyan-300 opacity-80"
               style={{ height: `${height}%` }}
             />
           ))}
@@ -434,13 +458,27 @@ function ProjectPreviewSmall({ type, copy }) {
     return (
       <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/20 bg-slate-900">
         <img
-          src="/brand/geoadrese.png"
+          src="/brand/geoadrese.webp"
           alt={copy.previewAlts.geo}
           loading="lazy"
           className="absolute inset-0 size-full object-cover object-top"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/72 via-transparent to-transparent" />
         <MapPin className="absolute bottom-2 right-2 text-cyan-200 drop-shadow" size={18} />
+      </div>
+    );
+  }
+
+  if (type === "kadigra") {
+    return (
+      <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-red-300/20 bg-slate-950">
+        <img
+          src="/brand/kadigrahrvatska.webp"
+          alt={copy.previewAlts.kadigra}
+          loading="lazy"
+          className="absolute inset-0 size-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent" />
       </div>
     );
   }
@@ -516,7 +554,7 @@ function Hero({ copy, lang }) {
               {copy.hero.primary}
               <ArrowRight size={18} />
             </MotionButton>
-            <MotionButton href="#kontakt" variant="secondary" className="inline-flex px-6 py-4">
+            <MotionButton href="mailto:nepar@nepar.hr" variant="secondary" className="inline-flex px-6 py-4">
               {copy.hero.secondary}
               <Mail size={18} />
             </MotionButton>
@@ -642,21 +680,10 @@ function FeaturedProjects({ copy }) {
   return (
     <section id="projekti" className="px-4 py-5">
       <div className="mx-auto max-w-[1180px] border-t border-blue-200/10 pt-5 lg:max-w-[1380px]">
-        <div className="grid gap-4 xl:grid-cols-[220px_1fr] xl:items-start">
-          <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-white">
-              {copy.featured.eyebrow}
-            </p>
-            <a
-              href="#kontakt"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-blue-300 transition hover:text-white"
-            >
-              {copy.featured.link}
-              <ArrowRight size={16} />
-            </a>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <p className="mb-5 text-center text-xs font-bold uppercase tracking-[0.18em] text-white">
+          {copy.featured.eyebrow}
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {copy.projects.map((project, index) => {
               const Icon = project.Icon;
               const ProjectShell = project.href ? motion.a : motion.article;
@@ -688,7 +715,6 @@ function FeaturedProjects({ copy }) {
                 </ProjectShell>
               );
             })}
-          </div>
         </div>
       </div>
     </section>
@@ -910,6 +936,9 @@ export default function App() {
                 <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-0.5 text-xs text-slate-500">
                   <span>{copy.footer.owner}</span>
                   <span>{copy.footer.mbo}</span>
+                  <a href="mailto:nepar@nepar.hr" className="transition hover:text-slate-300">
+                    {copy.footer.email}
+                  </a>
                 </div>
               </div>
             </div>
