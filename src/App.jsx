@@ -6,10 +6,13 @@ import {
   BrainCircuit,
   CheckCircle2,
   Cpu,
+  Database,
   DatabaseZap,
   ExternalLink,
+  Globe,
   Grid3X3,
   Heart,
+  Layers,
   Mail,
   Map,
   MapPin,
@@ -23,6 +26,7 @@ import {
   ShieldCheck,
   Sparkles,
   Trophy,
+  Wand2,
   X,
   Zap,
 } from "lucide-react";
@@ -81,23 +85,31 @@ const content = {
     services: [
       {
         title: "Web aplikacije",
-        description: "Moderne web aplikacije po mjeri va\u0161eg poslovanja. Brze, sigurne i skalabilne.",
-        Icon: Cpu,
+        description: "Pretvaramo ideje u brze, sigurne i skalabilne web aplikacije prilago\u0111ene va\u0161em poslovanju \u2014 od prototipa do produkcije.",
+        Icon: Globe,
+        iconCls: "bg-blue-500/15 text-blue-300 ring-blue-400/20",
+        blurCls: "bg-blue-400/12",
       },
       {
         title: "Portali i alati",
-        description: "Specijalizirani portali i alati koji rje\u0161avaju konkretne potrebe va\u0161ih korisnika.",
-        Icon: Grid3X3,
+        description: "Specijalizirani portali i pametni alati koji rje\u0161avaju prave probleme va\u0161ih korisnika \u2014 br\u017ee, jednostavnije, u\u010dinkovitije.",
+        Icon: Layers,
+        iconCls: "bg-violet-500/15 text-violet-300 ring-violet-400/20",
+        blurCls: "bg-violet-400/12",
       },
       {
         title: "AI i automatizacija",
-        description: "AI asistenti, obrada dokumenata i automatizacija procesa koji \u0161tede vrijeme.",
-        Icon: Bot,
+        description: "AI asistenti i automatizacija koja preuzima repetitivne zadatke, ubrzava procese i osloba\u0111a va\u0161 tim za ono \u0161to je zaista va\u017eno.",
+        Icon: Wand2,
+        iconCls: "bg-cyan-500/15 text-cyan-300 ring-cyan-400/20",
+        blurCls: "bg-cyan-400/12",
       },
       {
         title: "Mape i podaci",
-        description: "Geo rje\u0161enja, pretraga adresa, karte, koordinate i rad s prostornim podacima.",
-        Icon: Map,
+        description: "Geo rje\u0161enja, pretraga adresa i prostorne analize integrirane direktno u va\u0161 sustav \u2014 precizno, pouzdano i u stvarnom vremenu.",
+        Icon: Database,
+        iconCls: "bg-amber-500/15 text-amber-300 ring-amber-400/20",
+        blurCls: "bg-amber-400/12",
       },
     ],
     stats: [
@@ -211,23 +223,31 @@ const content = {
     services: [
       {
         title: "Web applications",
-        description: "Modern web apps tailored to your business. Fast, secure, and scalable.",
-        Icon: Cpu,
+        description: "We turn ideas into fast, secure, and scalable web applications built for your business — from prototype to production.",
+        Icon: Globe,
+        iconCls: "bg-blue-500/15 text-blue-300 ring-blue-400/20",
+        blurCls: "bg-blue-400/12",
       },
       {
         title: "Portals and tools",
-        description: "Specialized portals and tools that solve concrete user needs.",
-        Icon: Grid3X3,
+        description: "Specialized portals and smart tools that solve real user problems — faster, simpler, and more effectively.",
+        Icon: Layers,
+        iconCls: "bg-violet-500/15 text-violet-300 ring-violet-400/20",
+        blurCls: "bg-violet-400/12",
       },
       {
         title: "AI and automation",
-        description: "AI assistants, document processing, and process automation that saves time.",
-        Icon: Bot,
+        description: "AI assistants and automation that take over repetitive tasks, speed up processes, and free your team for what truly matters.",
+        Icon: Wand2,
+        iconCls: "bg-cyan-500/15 text-cyan-300 ring-cyan-400/20",
+        blurCls: "bg-cyan-400/12",
       },
       {
         title: "Maps and data",
-        description: "Geo solutions, address search, maps, coordinates, and spatial data workflows.",
-        Icon: Map,
+        description: "Geo solutions, address search, and spatial analytics integrated directly into your system — precise, reliable, and real-time.",
+        Icon: Database,
+        iconCls: "bg-amber-500/15 text-amber-300 ring-amber-400/20",
+        blurCls: "bg-amber-400/12",
       },
     ],
     stats: [
@@ -650,7 +670,7 @@ function Services({ copy }) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {copy.services.map(({ title, description, Icon }, index) => (
+          {copy.services.map(({ title, description, Icon, iconCls, blurCls }, index) => (
             <motion.article
               key={title}
               initial={{ opacity: 0, x: 220 }}
@@ -660,9 +680,9 @@ function Services({ copy }) {
               whileHover={{ y: -6, scale: 1.01 }}
               className="group relative overflow-hidden rounded-[1rem] border border-blue-200/12 bg-slate-950/52 p-5 shadow-xl shadow-black/20 backdrop-blur-xl"
             >
-              <div className="absolute -right-10 -top-10 size-28 rounded-full bg-blue-400/10 blur-2xl transition group-hover:bg-violet-400/14" />
+              <div className={`absolute -right-10 -top-10 size-28 rounded-full blur-2xl transition ${blurCls}`} />
               <div className="relative mb-4 flex items-center gap-3">
-                <div className="grid size-12 place-items-center rounded-[0.85rem] bg-blue-500/14 text-blue-200 ring-1 ring-blue-200/12">
+                <div className={`grid size-12 place-items-center rounded-[0.85rem] ring-1 ${iconCls}`}>
                   <Icon size={23} />
                 </div>
                 <h3 className="text-base font-semibold text-white">{title}</h3>
@@ -678,9 +698,9 @@ function Services({ copy }) {
 
 function FeaturedProjects({ copy }) {
   return (
-    <section id="projekti" className="px-4 py-5">
-      <div className="mx-auto max-w-[1180px] border-t border-blue-200/10 pt-5 lg:max-w-[1380px]">
-        <p className="mb-5 text-center text-xs font-bold uppercase tracking-[0.18em] text-white">
+    <section id="projekti" className="px-4 pt-3 pb-5 sm:py-5">
+      <div className="mx-auto max-w-[1180px] border-t border-blue-200/10 pt-3 sm:pt-5 lg:max-w-[1380px]">
+        <p className="mb-2 text-center text-xs font-bold uppercase tracking-[0.18em] text-white sm:mb-5">
           {copy.featured.eyebrow}
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
