@@ -372,10 +372,13 @@ function Navbar({ lang, setLang, copy }) {
           <LanguageToggle lang={lang} setLang={setLang} />
         </div>
 
-        <MotionButton href="mailto:nepar@nepar.hr" className="!hidden px-7 py-4 text-base 2xl:!inline-flex">
-          <Send className="size-4 xl:size-5" />
-          {copy.navCta}
-        </MotionButton>
+        <a
+          href="mailto:nepar@nepar.hr"
+          className="hidden select-all items-center gap-2.5 rounded-[0.75rem] bg-gradient-to-r from-blue-500 to-violet-600 px-4 py-2.5 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:shadow-blue-500/50 hover:brightness-110 lg:inline-flex"
+        >
+          <Mail className="shrink-0" size={18} />
+          nepar@nepar.hr
+        </a>
 
         <button
           className="grid size-10 shrink-0 place-items-center rounded-[0.8rem] border border-blue-200/15 bg-white/5 text-slate-200 sm:size-14 sm:rounded-[1.1rem] lg:hidden"
