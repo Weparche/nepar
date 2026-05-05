@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, ImagePlus, Mail, MapPin, Send, X } from "lucide-react";
-import { Background, content as siteContent, LanguageToggle, Navbar } from "./App.jsx";
+import { Background, content as siteContent, Navbar } from "./App.jsx";
 
 const contactContent = {
   hr: {
@@ -365,9 +365,28 @@ export default function ContactPage() {
 
       <footer className="px-4 pb-8">
         <div className="mx-auto max-w-4xl">
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-blue-200/10 pt-5 text-xs text-slate-500 sm:flex-row sm:text-sm">
-            <p>© 2026 Nepar Solutions. {lang === "hr" ? "Sva prava pridržana." : "All rights reserved."}</p>
-            <LanguageToggle lang={lang} setLang={setLang} />
+          <div className="border-t border-blue-200/10 pt-8">
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="mb-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-400/60">
+                  {navCopy.footer.infoLabel}
+                </p>
+                <p className="text-sm font-medium text-slate-300">{navCopy.footer.companyName}</p>
+                <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-0.5 text-xs text-slate-500">
+                  <span>{navCopy.footer.owner}</span>
+                  <span>{navCopy.footer.mbo}</span>
+                  <a href="mailto:nepar@nepar.hr" className="transition hover:text-slate-300">
+                    {navCopy.footer.email}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col items-center justify-between gap-2 border-t border-blue-200/10 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
+              <p>{navCopy.footer.copyright}</p>
+              <a href="/" className="transition hover:text-slate-200">
+                {copy.form.backHome}
+              </a>
+            </div>
           </div>
         </div>
       </footer>
