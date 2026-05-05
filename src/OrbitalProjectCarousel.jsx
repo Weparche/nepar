@@ -30,7 +30,7 @@ const carouselContent = {
       },
       {
         title: "VidimoSe.hr",
-        description: "Pozivnice i eventi za va\u017ene trenutke.",
+        description: "Dje\u010dji ro\u0111endani, pozivnice i igraonice. Sve na jednom mjestu!",
         Icon: Heart,
         accent: "from-fuchsia-300 to-violet-500",
         iconTone: "text-fuchsia-200",
@@ -39,7 +39,7 @@ const carouselContent = {
       },
       {
         title: "KPDinfo.com",
-        description: "AI asistent za informacije, dokumente i poslovne uvide.",
+        description: "KPD 2026 AI tražilica za točne KPD šifre.",
         Icon: Bot,
         accent: "from-blue-400 to-indigo-500",
         iconTone: "text-blue-200",
@@ -100,7 +100,7 @@ const carouselContent = {
       },
       {
         title: "VidimoSe.hr",
-        description: "Invitations and events for important moments.",
+        description: "Kids' birthdays, invitations, and playrooms. All in one place!",
         Icon: Heart,
         accent: "from-fuchsia-300 to-violet-500",
         iconTone: "text-fuchsia-200",
@@ -109,7 +109,7 @@ const carouselContent = {
       },
       {
         title: "KPDinfo.com",
-        description: "AI assistant for information, documents, and business insights.",
+        description: "KPD 2026 AI search for accurate KPD codes.",
         Icon: Bot,
         accent: "from-blue-400 to-indigo-500",
         iconTone: "text-blue-200",
@@ -220,24 +220,20 @@ function getOrbitalPosition(baseAngle, index, radiusX, radiusY) {
 
 function OutagePreview({ copy }) {
   return (
-    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-cyan-300/15 bg-slate-950/72 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
+    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-cyan-300/15 bg-slate-950/72 sm:h-[238px] sm:rounded-[0.9rem]">
       <img
-        src="/brand/bezstruje.png"
+        src="/brand/bezstruje.webp"
         alt={copy.outageAlt}
         loading="lazy"
         className="absolute inset-0 size-full object-cover object-top"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/92 via-slate-950/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent" />
       <img
         src="/brand/bezstruje_logo.png"
         alt={copy.outageLogoAlt}
         loading="lazy"
         className="absolute left-2 top-2 h-7 w-auto rounded-md bg-slate-950/80 p-1 shadow-lg shadow-black/25 sm:left-3 sm:top-3 sm:h-9"
       />
-      <div className="absolute bottom-2 left-2 right-2 rounded-lg border border-white/10 bg-slate-950/76 px-2 py-1.5 text-[9px] text-slate-200 backdrop-blur-sm sm:bottom-3 sm:left-3 sm:right-3 sm:text-[10px]">
-        <p className="font-semibold text-white">{copy.outageTitle}</p>
-        <p className="mt-0.5 text-slate-300">{copy.outageSubtitle}</p>
-      </div>
     </div>
   );
 }
@@ -247,7 +243,7 @@ function InvitePreview({ compact = false, copy }) {
     <div className="relative grid h-[138px] place-items-center overflow-hidden rounded-[0.75rem] border border-fuchsia-300/20 bg-gradient-to-br from-slate-950 via-fuchsia-950/40 to-slate-950 p-2 sm:h-[238px] sm:rounded-[0.9rem]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_22%,rgba(250,204,21,.18),transparent_8%),radial-gradient(circle_at_80%_24%,rgba(255,255,255,.13),transparent_7%),radial-gradient(circle_at_28%_78%,rgba(244,114,182,.18),transparent_10%)]" />
       <motion.img
-        src="/brand/pozivnica-home-cura.jpg"
+        src="/brand/vidimose.webp"
         alt={copy.inviteAlt}
         loading="lazy"
         animate={compact ? false : { y: [0, -4, 0], scale: [1, 1.015, 1] }}

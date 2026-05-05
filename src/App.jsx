@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import ContactPage from "./ContactPage.jsx";
 import {
   ArrowRight,
   Bot,
@@ -38,7 +40,7 @@ const content = {
       ["Projekti", "#projekti"],
       ["Usluge", "#usluge"],
       ["O nama", "#onama"],
-      ["Kontakt", "mailto:nepar@nepar.hr", Mail],
+      ["Kontakt", "/kontakt", Mail],
     ],
     navCta: "Javite se",
     menuLabel: "Otvori navigaciju",
@@ -52,7 +54,7 @@ const content = {
       },
       {
         title: "VidimoSe.hr",
-        description: "Digitalne pozivnice i event rje\u0161enja.",
+        description: "Dje\u010dji ro\u0111endani, pozivnice i igraonice. Sve na jednom mjestu!",
         Icon: Heart,
         accent: "from-fuchsia-300 to-violet-500",
         preview: "invite",
@@ -60,7 +62,7 @@ const content = {
       },
       {
         title: "KPDinfo.com",
-        description: "AI poslovni asistent i analiti\u010dki uvidi.",
+        description: "KPD 2026 AI tra\u017eilica za to\u010dne KPD \u0161ifre.",
         Icon: Bot,
         accent: "from-blue-400 to-indigo-500",
         preview: "ai",
@@ -176,7 +178,7 @@ const content = {
       ["Projects", "#projekti"],
       ["Services", "#usluge"],
       ["About us", "#onama"],
-      ["Contact", "mailto:nepar@nepar.hr", Mail],
+      ["Contact", "/kontakt", Mail],
     ],
     navCta: "Contact us",
     menuLabel: "Open navigation",
@@ -190,7 +192,7 @@ const content = {
       },
       {
         title: "VidimoSe.hr",
-        description: "Digital invitations and event solutions.",
+        description: "Kids' birthdays, invitations, and playrooms. All in one place!",
         Icon: Heart,
         accent: "from-fuchsia-300 to-violet-500",
         preview: "invite",
@@ -198,7 +200,7 @@ const content = {
       },
       {
         title: "KPDinfo.com",
-        description: "AI business assistant and analytical insights.",
+        description: "KPD 2026 AI search for accurate KPD codes.",
         Icon: Bot,
         accent: "from-blue-400 to-indigo-500",
         preview: "ai",
@@ -311,7 +313,9 @@ const content = {
   },
 };
 
-function LanguageToggle({ lang, setLang }) {
+export { content };
+
+export function LanguageToggle({ lang, setLang }) {
   return (
     <div className="inline-flex shrink-0 rounded-full border border-blue-200/15 bg-white/5 p-0.5 text-[11px] font-semibold text-slate-300">
       {["hr", "en"].map((value) => (
@@ -331,13 +335,20 @@ function LanguageToggle({ lang, setLang }) {
   );
 }
 
-function Navbar({ lang, setLang, copy }) {
+export function Navbar({ lang, setLang, copy }) {
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const onHome = pathname === "/";
+
+  function resolveHref(href) {
+    if (href.startsWith("#") && !onHome) return `/${href}`;
+    return href;
+  }
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-3 sm:pt-2">
       <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-[0.8rem] border border-blue-200/14 bg-slate-950/64 px-2 py-1.5 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:rounded-[0.9rem] sm:px-3 sm:py-1 lg:max-w-[1380px] lg:px-4">
-        <a href="#top" className="flex min-w-0 items-center gap-2 sm:gap-3">
+        <a href={onHome ? "#top" : "/"} className="flex min-w-0 items-center gap-2 sm:gap-3">
           <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-[0.75rem] border border-blue-300/20 bg-black shadow-md shadow-blue-500/15 sm:h-[3.85rem] sm:w-[11.25rem] sm:rounded-[0.95rem] sm:shadow-lg">
             <img
               src="/brand/nepar_logo.png"
@@ -356,16 +367,22 @@ function Navbar({ lang, setLang, copy }) {
         </a>
 
         <div className="hidden items-center gap-8 lg:flex">
-          {copy.navLinks.map(([label, href, Icon]) => (
-            <a
-              key={href}
-              href={href}
-              className="inline-flex items-center gap-2 text-base font-medium text-slate-200 transition hover:text-white"
-            >
-              {Icon && <Icon size={20} className="text-blue-200" />}
-              {label}
-            </a>
-          ))}
+          {copy.navLinks.map(([label, href, Icon]) => {
+            const resolved = resolveHref(href);
+            const isRouter = resolved.startsWith("/") && !resolved.startsWith("//") && !resolved.includes(":");
+            const Comp = isRouter ? Link : "a";
+            const linkProp = isRouter ? { to: resolved } : { href: resolved };
+            return (
+              <Comp
+                key={href}
+                {...linkProp}
+                className="inline-flex items-center gap-2 text-base font-medium text-slate-200 transition hover:text-white"
+              >
+                {Icon && <Icon size={20} className="text-blue-200" />}
+                {label}
+              </Comp>
+            );
+          })}
         </div>
 
         <div className="ml-auto mr-2 lg:ml-0">
@@ -398,18 +415,24 @@ function Navbar({ lang, setLang, copy }) {
             className="mx-auto mt-2 max-w-[1180px] rounded-[0.9rem] border border-blue-200/14 bg-slate-950/90 p-3 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:mt-3 sm:rounded-[1.25rem] sm:p-5 sm:shadow-2xl sm:backdrop-blur-2xl lg:max-w-[1380px] lg:hidden"
           >
             <div className="grid gap-1 sm:gap-2">
-              {copy.navLinks.map(([label, href, Icon]) => (
-                <a
-                  key={href}
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className="inline-flex items-center gap-3 rounded-[0.8rem] px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/5 sm:rounded-[1rem] sm:px-5 sm:py-4 sm:text-base"
-                >
-                  {Icon && <Icon size={20} className="text-blue-200" />}
-                  {label}
-                </a>
-              ))}
-              <MotionButton href="mailto:nepar@nepar.hr" className="mt-1 justify-self-start rounded-[0.75rem] px-5 py-3 text-sm sm:mt-2 sm:justify-self-stretch sm:rounded-[0.8rem] sm:px-6 sm:py-4 sm:text-base">
+              {copy.navLinks.map(([label, href, Icon]) => {
+                const resolved = resolveHref(href);
+                const isRouter = resolved.startsWith("/") && !resolved.startsWith("//") && !resolved.includes(":");
+                const Comp = isRouter ? Link : "a";
+                const linkProp = isRouter ? { to: resolved } : { href: resolved };
+                return (
+                  <Comp
+                    key={href}
+                    {...linkProp}
+                    onClick={() => setOpen(false)}
+                    className="inline-flex items-center gap-3 rounded-[0.8rem] px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/5 sm:rounded-[1rem] sm:px-5 sm:py-4 sm:text-base"
+                  >
+                    {Icon && <Icon size={20} className="text-blue-200" />}
+                    {label}
+                  </Comp>
+                );
+              })}
+              <MotionButton href="/kontakt" className="mt-1 justify-self-start rounded-[0.75rem] px-5 py-3 text-sm sm:mt-2 sm:justify-self-stretch sm:rounded-[0.8rem] sm:px-6 sm:py-4 sm:text-base">
                 <Send className="size-4 sm:size-5" />
                 {copy.navCta}
               </MotionButton>
@@ -421,22 +444,22 @@ function Navbar({ lang, setLang, copy }) {
   );
 }
 
-function MotionButton({ href, children, className = "", variant = "primary" }) {
-  const primary = variant === "primary";
+const MotionLink = motion(Link);
 
-  return (
-    <motion.a
-      href={href}
-      whileHover={{ y: -2, scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={`inline-flex items-center justify-center gap-2 rounded-[0.8rem] font-semibold transition ${
-        primary
-          ? "bg-gradient-to-r from-blue-500 via-blue-500 to-violet-600 text-white shadow-xl shadow-blue-500/25"
-          : "border border-blue-200/20 bg-white/[0.03] text-slate-200 backdrop-blur hover:bg-white/[0.07]"
-      } ${className}`}
-    >
-      {children}
-    </motion.a>
+export function MotionButton({ href, children, className = "", variant = "primary" }) {
+  const primary = variant === "primary";
+  const cls = `inline-flex items-center justify-center gap-2 rounded-[0.8rem] font-semibold transition ${
+    primary
+      ? "bg-gradient-to-r from-blue-500 via-blue-500 to-violet-600 text-white shadow-xl shadow-blue-500/25"
+      : "border border-blue-200/20 bg-white/[0.03] text-slate-200 backdrop-blur hover:bg-white/[0.07]"
+  } ${className}`;
+  const motionProps = { whileHover: { y: -2, scale: 1.02 }, whileTap: { scale: 0.98 } };
+  const isRouterLink = href && href.startsWith("/") && !href.includes(":");
+
+  return isRouterLink ? (
+    <MotionLink to={href} {...motionProps} className={cls}>{children}</MotionLink>
+  ) : (
+    <motion.a href={href} {...motionProps} className={cls}>{children}</motion.a>
   );
 }
 
@@ -445,7 +468,7 @@ function ProjectPreviewSmall({ type, copy }) {
     return (
       <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-[0.7rem] border border-fuchsia-300/20 bg-slate-950">
         <img
-          src="/brand/pozivnica-home-cura.jpg"
+          src="/brand/vidimose.webp"
           alt={copy.previewAlts.invite}
           loading="lazy"
           className="h-full w-full object-cover object-top"
@@ -577,7 +600,7 @@ function Hero({ copy, lang }) {
               {copy.hero.primary}
               <ArrowRight size={18} />
             </MotionButton>
-            <MotionButton href="mailto:nepar@nepar.hr" variant="secondary" className="inline-flex px-6 py-4">
+            <MotionButton href="/kontakt" variant="secondary" className="inline-flex px-6 py-4">
               {copy.hero.secondary}
               <Mail size={18} />
             </MotionButton>
@@ -658,7 +681,7 @@ function StatsBar({ copy }) {
 
 function Services({ copy }) {
   return (
-    <section id="usluge" className="overflow-x-hidden px-4 py-5">
+    <section id="usluge" className="overflow-x-hidden px-4 py-5 scroll-mt-24">
       <div className="mx-auto grid max-w-[1180px] gap-4 lg:max-w-[1380px] xl:grid-cols-[240px_1fr]">
         <div>
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
@@ -701,7 +724,7 @@ function Services({ copy }) {
 
 function FeaturedProjects({ copy }) {
   return (
-    <section id="projekti" className="px-4 pt-3 pb-5 sm:py-5">
+    <section id="projekti" className="px-4 pt-3 pb-5 sm:py-5 scroll-mt-24">
       <div className="mx-auto max-w-[1180px] border-t border-blue-200/10 pt-3 sm:pt-5 lg:max-w-[1380px]">
         <p className="mb-2 text-center text-xs font-bold uppercase tracking-[0.18em] text-white sm:mb-5">
           {copy.featured.eyebrow}
@@ -748,7 +771,7 @@ function About({ copy }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <section id="onama" className="px-4 py-10">
+    <section id="onama" className="px-4 py-10 scroll-mt-24">
       <div className="mx-auto grid max-w-[1180px] gap-6 rounded-[1rem] border border-blue-200/12 bg-white/[0.035] p-5 shadow-2xl shadow-blue-950/20 backdrop-blur-xl lg:max-w-[1380px] lg:grid-cols-[0.65fr_1.35fr]">
         <button
           type="button"
@@ -910,7 +933,7 @@ function BottomCta({ copy }) {
             </div>
           </div>
           <MotionButton
-            href="mailto:nepar@nepar.hr"
+            href="/kontakt"
             className="inline-flex w-full px-4 py-2 text-xs sm:w-auto sm:px-5 sm:py-3 sm:text-sm"
           >
             {copy.cta.button}
@@ -922,7 +945,7 @@ function BottomCta({ copy }) {
   );
 }
 
-function Background() {
+export function Background() {
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#020617]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(37,99,235,0.28),transparent_30%),radial-gradient(circle_at_78%_12%,rgba(124,58,237,0.24),transparent_28%),radial-gradient(circle_at_55%_72%,rgba(6,182,212,0.16),transparent_32%)]" />
@@ -933,7 +956,7 @@ function Background() {
   );
 }
 
-export default function App() {
+function HomePage() {
   const [lang, setLang] = useState("hr");
   const copy = content[lang];
 
@@ -975,5 +998,23 @@ export default function App() {
         </div>
       </footer>
     </main>
+  );
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/kontakt" element={<ContactPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
