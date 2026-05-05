@@ -88,7 +88,7 @@ export default function ContactPage() {
   const [dragging, setDragging] = useState(false);
   const fileRef = useRef(null);
 
-  const WORKER_URL = import.meta.env.VITE_WORKER_URL || "https://nepar-contact.nepar.workers.dev";
+  const WORKER_URL = import.meta.env.VITE_WORKER_URL || null;
 
   function handleFile(f) {
     if (!f || !f.type.startsWith("image/")) return;
@@ -117,6 +117,14 @@ export default function ContactPage() {
         reader.onload = () => resolve(reader.result.split(",")[1]);
         reader.readAsDataURL(file);
       });
+    }
+
+    if (!WORKER_URL) {
+      const body = `Ime: ${name}\nE-mail: ${email}\nTema: ${subject}\n\nPoruka:\n${message}`;
+      window.location.href = `mailto:nepar@nepar.hr?subject=${encodeURIComponent(subject || "Upit s web stranice")}&body=${encodeURIComponent(body)}`;
+      setSending(false);
+      setSubmitted(true);
+      return;
     }
 
     try {
