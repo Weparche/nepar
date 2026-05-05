@@ -767,8 +767,9 @@ function FeaturedProjects({ copy }) {
   );
 }
 
-function About({ copy }) {
+function About({ copy, lang }) {
   const [open, setOpen] = useState(false);
+  const brandImg = lang === "en" ? "/brand/nepar-eng.webp" : "/brand/nepar.webp";
 
   return (
     <section id="onama" className="px-4 py-10 scroll-mt-24">
@@ -780,7 +781,7 @@ function About({ copy }) {
           aria-label={copy.about.imageLabel}
         >
           <img
-            src="/brand/nepar.png"
+            src={brandImg}
             alt="Nepar Solutions brand"
             loading="lazy"
             className="absolute inset-0 size-full object-cover opacity-95 transition duration-500 group-hover:scale-[1.03]"
@@ -820,7 +821,7 @@ function About({ copy }) {
               aria-label={copy.about.closeLabel}
             >
               <img
-                src="/brand/nepar.png"
+                src={brandImg}
                 alt="Nepar Solutions brand"
                 className="block max-h-[82vh] w-full object-contain"
               />
@@ -968,7 +969,7 @@ function HomePage() {
       <StatsBar copy={copy} />
       <Services copy={copy} />
       <FeaturedProjects copy={copy} />
-      <About copy={copy} />
+      <About copy={copy} lang={lang} />
       <BottomCta copy={copy} />
       <footer className="px-4 pb-20 sm:pb-32">
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
