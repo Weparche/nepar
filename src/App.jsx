@@ -51,6 +51,7 @@ const content = {
         Icon: Zap,
         accent: "from-amber-300 to-orange-500",
         preview: "outage",
+        href: "https://bezstruje.hr",
       },
       {
         title: "VidimoSe.hr",
@@ -66,6 +67,7 @@ const content = {
         Icon: Bot,
         accent: "from-blue-400 to-indigo-500",
         preview: "ai",
+        href: "https://kpdinfo.com",
       },
       {
         title: "GeoAdrese.net",
@@ -189,6 +191,7 @@ const content = {
         Icon: Zap,
         accent: "from-amber-300 to-orange-500",
         preview: "outage",
+        href: "https://bezstruje.hr",
       },
       {
         title: "VidimoSe.hr",
@@ -204,6 +207,7 @@ const content = {
         Icon: Bot,
         accent: "from-blue-400 to-indigo-500",
         preview: "ai",
+        href: "https://kpdinfo.com",
       },
       {
         title: "GeoAdrese.net",
@@ -726,7 +730,7 @@ function FeaturedProjects({ copy }) {
   return (
     <section id="projekti" className="px-4 pt-3 pb-5 sm:py-5 scroll-mt-24">
       <div className="mx-auto max-w-[1180px] border-t border-blue-200/10 pt-3 sm:pt-5 lg:max-w-[1380px]">
-        <p className="mb-2 text-center text-xs font-bold uppercase tracking-[0.18em] text-white sm:mb-5">
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-white sm:mb-5">
           {copy.featured.eyebrow}
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
