@@ -558,13 +558,13 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
                 y1="48%"
                 y2="52%"
               >
-                <stop offset="0%" stopColor="rgba(37,99,235,0.05)" />
-                <stop offset="14%" stopColor="rgba(56,189,248,0.76)" />
-                <stop offset="34%" stopColor="rgba(34,211,238,0.95)" />
-                <stop offset="55%" stopColor="rgba(99,102,241,0.88)" />
-                <stop offset="74%" stopColor="rgba(217,70,239,0.82)" />
-                <stop offset="90%" stopColor="rgba(250,204,21,0.46)" />
-                <stop offset="100%" stopColor="rgba(37,99,235,0.08)" />
+                <stop offset="0%" stopColor="rgba(37,99,235,0.1)" />
+                <stop offset="14%" stopColor="rgba(56,189,248,0.95)" />
+                <stop offset="34%" stopColor="rgba(8,145,178,1)" />
+                <stop offset="55%" stopColor="rgba(99,102,241,1)" />
+                <stop offset="74%" stopColor="rgba(192,38,211,0.95)" />
+                <stop offset="90%" stopColor="rgba(245,158,11,0.7)" />
+                <stop offset="100%" stopColor="rgba(37,99,235,0.15)" />
               </linearGradient>
               <linearGradient
                 id="orbitSheen"
@@ -574,9 +574,9 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
                 y2="90%"
               >
                 <stop offset="0%" stopColor="rgba(255,255,255,0)" />
-                <stop offset="26%" stopColor="rgba(34,211,238,0.34)" />
-                <stop offset="50%" stopColor="rgba(37,99,235,0.7)" />
-                <stop offset="72%" stopColor="rgba(217,70,239,0.44)" />
+                <stop offset="26%" stopColor="rgba(8,145,178,0.6)" />
+                <stop offset="50%" stopColor="rgba(37,99,235,0.95)" />
+                <stop offset="72%" stopColor="rgba(192,38,211,0.7)" />
                 <stop offset="100%" stopColor="rgba(255,255,255,0)" />
               </linearGradient>
               <filter id="orbitBlur" x="-20%" y="-120%" width="140%" height="340%">
@@ -590,8 +590,8 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               rx="470"
               ry="50"
               fill="none"
-              stroke="rgba(59,130,246,0.36)"
-              strokeWidth={isMobile ? 12 : 26}
+              stroke="rgba(59,130,246,0.55)"
+              strokeWidth={isMobile ? 16 : 34}
               filter={isMobile ? undefined : "url(#orbitBlur)"}
             />
             <ellipse
@@ -601,7 +601,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               ry="50"
               fill="none"
               stroke="url(#orbitBase)"
-              strokeWidth={isMobile ? 6 : 12}
+              strokeWidth={isMobile ? 9 : 18}
               strokeLinecap="round"
             />
             {!isMobile && (
@@ -612,9 +612,9 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
                 ry="50"
                 fill="none"
                 stroke="url(#orbitSheen)"
-                strokeWidth="7"
+                strokeWidth="11"
                 strokeLinecap="round"
-                animate={{ opacity: [0.26, 0.72, 0.26] }}
+                animate={{ opacity: [0.4, 0.95, 0.4] }}
                 transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
               />
             )}
@@ -624,10 +624,10 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               rx="470"
               ry="50"
               fill="none"
-              stroke="rgba(30,58,138,0.45)"
-              strokeWidth="2.5"
+              stroke="rgba(30,58,138,0.7)"
+              strokeWidth="4"
               strokeLinecap="round"
-              opacity="0.75"
+              opacity="0.85"
             />
           </svg>
         </div>
@@ -674,11 +674,11 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               transition={{ duration: 7.2, repeat: Infinity, ease: "linear" }}
             >
               <stop offset="0%" stopColor="rgba(37,99,235,0)" />
-              <stop offset="12%" stopColor="rgba(59,130,246,0.55)" />
-              <stop offset="30%" stopColor="rgba(34,211,238,0.98)" />
-              <stop offset="52%" stopColor="rgba(37,99,235,0.85)" />
-              <stop offset="68%" stopColor="rgba(217,70,239,0.9)" />
-              <stop offset="84%" stopColor="rgba(250,204,21,0.62)" />
+              <stop offset="12%" stopColor="rgba(59,130,246,0.85)" />
+              <stop offset="30%" stopColor="rgba(8,145,178,1)" />
+              <stop offset="52%" stopColor="rgba(37,99,235,1)" />
+              <stop offset="68%" stopColor="rgba(192,38,211,1)" />
+              <stop offset="84%" stopColor="rgba(245,158,11,0.85)" />
               <stop offset="100%" stopColor="rgba(37,99,235,0)" />
             </motion.linearGradient>
             <filter id="orbitFrontGlow" x="-20%" y="-140%" width="140%" height="360%">
@@ -688,8 +688,8 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
           <path
             d="M 42 90 C 218 148 782 148 958 90"
             fill="none"
-            stroke="rgba(59,130,246,0.45)"
-            strokeWidth="26"
+            stroke="rgba(59,130,246,0.65)"
+            strokeWidth="36"
             strokeLinecap="round"
             filter="url(#orbitFrontGlow)"
           />
@@ -697,14 +697,14 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
             d="M 42 90 C 218 148 782 148 958 90"
             fill="none"
             stroke="url(#orbitFront)"
-            strokeWidth="13"
+            strokeWidth="20"
             strokeLinecap="round"
           />
           <path
             d="M 42 90 C 218 148 782 148 958 90"
             fill="none"
-            stroke="rgba(30,58,138,0.55)"
-            strokeWidth="2.5"
+            stroke="rgba(30,58,138,0.75)"
+            strokeWidth="4"
             strokeLinecap="round"
             opacity="0.85"
           />
