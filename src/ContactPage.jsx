@@ -70,7 +70,7 @@ const contactContent = {
 
 /* text-base (16px) on inputs prevents iOS Safari zoom-on-focus */
 const inputCls =
-  "w-full rounded-[0.75rem] border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 placeholder:text-slate-400 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20";
+  "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 placeholder:text-slate-500 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20";
 
 export default function ContactPage() {
   const [lang, setLang] = useState("hr");
@@ -193,10 +193,10 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.12 }}
-            className="relative rounded-[1rem] border border-slate-200 bg-white/85 p-5 shadow-2xl shadow-blue-200/30 backdrop-blur-xl sm:p-8"
+            className="relative rounded-2xl border border-slate-200 bg-white/85 p-5 shadow-2xl shadow-blue-200/30 backdrop-blur-md sm:p-8 sm:backdrop-blur-xl"
           >
             {/* Decorative blurs in their own clipped wrapper */}
-            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[1rem]">
+            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
               <div className="absolute -right-16 -top-16 size-56 rounded-full bg-blue-500/8 blur-3xl" />
               <div className="absolute -bottom-12 -left-12 size-44 rounded-full bg-violet-500/8 blur-3xl" />
             </div>
@@ -223,8 +223,9 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} className="relative grid gap-5">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-medium text-slate-700">{copy.form.name}</label>
+                    <label htmlFor="contact-name" className="text-sm font-medium text-slate-700">{copy.form.name}</label>
                     <input
+                      id="contact-name"
                       required
                       type="text"
                       value={name}
@@ -234,8 +235,9 @@ export default function ContactPage() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-medium text-slate-700">{copy.form.email}</label>
+                    <label htmlFor="contact-email" className="text-sm font-medium text-slate-700">{copy.form.email}</label>
                     <input
+                      id="contact-email"
                       required
                       type="email"
                       value={email}
@@ -247,8 +249,9 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-slate-700">{copy.form.subject}</label>
+                  <label htmlFor="contact-subject" className="text-sm font-medium text-slate-700">{copy.form.subject}</label>
                   <input
+                    id="contact-subject"
                     type="text"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
@@ -258,8 +261,9 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-slate-700">{copy.form.message}</label>
+                  <label htmlFor="contact-message" className="text-sm font-medium text-slate-700">{copy.form.message}</label>
                   <textarea
+                    id="contact-message"
                     required
                     rows={5}
                     value={message}
@@ -271,9 +275,9 @@ export default function ContactPage() {
 
                 {/* Upload */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-slate-700">{copy.form.uploadLabel}</label>
+                  <label htmlFor="contact-file" className="text-sm font-medium text-slate-700">{copy.form.uploadLabel}</label>
                   {file ? (
-                    <div className="flex items-center gap-3 rounded-[0.75rem] border border-slate-300 bg-white px-4 py-3">
+                    <div className="flex items-center gap-3 rounded-xl border border-slate-300 bg-white px-4 py-3">
                       <div className="flex min-w-0 flex-1 items-center gap-3">
                         <img
                           src={URL.createObjectURL(file)}
@@ -302,13 +306,13 @@ export default function ContactPage() {
                       onDragLeave={() => setDragging(false)}
                       onDrop={handleDrop}
                       onClick={() => fileRef.current?.click()}
-                      className={`flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-[0.75rem] border-2 border-dashed px-4 py-7 text-center transition ${
+                      className={`flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-xl border-2 border-dashed px-4 py-7 text-center transition ${
                         dragging
                           ? "border-blue-500/70 bg-blue-50"
                           : "border-slate-300 bg-white/60 hover:border-blue-400/60 hover:bg-white"
                       }`}
                     >
-                      <div className="grid size-10 place-items-center rounded-[0.65rem] bg-blue-100 text-blue-600 ring-1 ring-blue-300/60">
+                      <div className="grid size-10 place-items-center rounded-lg bg-blue-100 text-blue-600 ring-1 ring-blue-300/60">
                         <ImagePlus size={18} />
                       </div>
                       <p className="text-sm text-slate-600">
@@ -317,6 +321,7 @@ export default function ContactPage() {
                       </p>
                       <p className="text-xs text-slate-500">{copy.form.uploadTypes}</p>
                       <input
+                        id="contact-file"
                         ref={fileRef}
                         type="file"
                         accept="image/*"
@@ -328,7 +333,7 @@ export default function ContactPage() {
                 </div>
 
                 {sendError && (
-                  <p className="rounded-[0.75rem] border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  <p className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
                     {sendError}
                   </p>
                 )}
@@ -338,7 +343,7 @@ export default function ContactPage() {
                   disabled={sending}
                   whileHover={sending ? {} : { y: -2, scale: 1.02 }}
                   whileTap={sending ? {} : { scale: 0.98 }}
-                  className="inline-flex w-full items-center justify-center gap-2.5 rounded-[0.8rem] bg-gradient-to-r from-blue-500 via-blue-500 to-violet-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition hover:shadow-blue-500/45 disabled:opacity-60 sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-blue-500 via-blue-500 to-violet-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition hover:shadow-blue-500/45 disabled:opacity-60 sm:w-auto"
                 >
                   {sending ? (
                     <svg className="size-4 animate-spin" viewBox="0 0 24 24" fill="none">
@@ -368,7 +373,7 @@ export default function ContactPage() {
           <div className="border-t border-slate-200 pt-8">
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="mb-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-600/80">
+                <p className="mb-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-700">
                   {navCopy.footer.infoLabel}
                 </p>
                 <p className="text-sm font-medium text-slate-700">{navCopy.footer.companyName}</p>

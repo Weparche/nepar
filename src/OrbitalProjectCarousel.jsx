@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { motion, useAnimationFrame, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
 import {
   ArrowRight,
   Bot,
@@ -220,7 +220,7 @@ function getOrbitalPosition(baseAngle, index, radiusX, radiusY) {
 
 function OutagePreview({ copy }) {
   return (
-    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-cyan-400/40 bg-slate-100 sm:h-[238px] sm:rounded-[0.9rem]">
+    <div className="relative h-[138px] overflow-hidden rounded-xl border border-cyan-400/40 bg-slate-100 sm:h-[238px] sm:rounded-2xl">
       <img
         src="/brand/bezstruje.webp"
         alt={copy.outageAlt}
@@ -240,7 +240,7 @@ function OutagePreview({ copy }) {
 
 function InvitePreview({ compact = false, copy }) {
   return (
-    <div className="relative grid h-[138px] place-items-center overflow-hidden rounded-[0.75rem] border border-fuchsia-400/50 bg-gradient-to-br from-fuchsia-50 via-pink-50 to-slate-100 p-2 sm:h-[238px] sm:rounded-[0.9rem]">
+    <div className="relative grid h-[138px] place-items-center overflow-hidden rounded-xl border border-fuchsia-400/50 bg-gradient-to-br from-fuchsia-50 via-pink-50 to-slate-100 p-2 sm:h-[238px] sm:rounded-2xl">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_22%,rgba(250,204,21,.22),transparent_8%),radial-gradient(circle_at_80%_24%,rgba(167,139,250,.18),transparent_7%),radial-gradient(circle_at_28%_78%,rgba(244,114,182,.22),transparent_10%)]" />
       <motion.img
         src="/brand/vidimose.webp"
@@ -256,7 +256,7 @@ function InvitePreview({ compact = false, copy }) {
 
 function AiPreview({ compact = false, copy }) {
   return (
-    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-blue-400/40 bg-slate-100 sm:h-[238px] sm:rounded-[0.9rem]">
+    <div className="relative h-[138px] overflow-hidden rounded-xl border border-blue-400/40 bg-slate-100 sm:h-[238px] sm:rounded-2xl">
       <img
         src="/brand/kpdinfo.webp"
         alt={copy.aiAlt ?? "KPDinfo.com prikaz"}
@@ -281,7 +281,7 @@ function AiPreview({ compact = false, copy }) {
 
 function GeoPreview({ copy }) {
   return (
-    <div className="h-[138px] rounded-[0.75rem] border border-teal-400/40 bg-white/70 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
+    <div className="h-[138px] rounded-xl border border-teal-400/40 bg-white/70 p-2 sm:h-[238px] sm:rounded-2xl sm:p-3">
       <div className="relative h-full overflow-hidden rounded-lg border border-blue-200/60 bg-blue-50 sm:rounded-xl">
         <img
           src="/brand/geoadrese.webp"
@@ -298,7 +298,7 @@ function GeoPreview({ copy }) {
 
 function KadigraPreview({ compact = false, copy }) {
   return (
-    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-red-400/40 bg-slate-100 sm:h-[238px] sm:rounded-[0.9rem]">
+    <div className="relative h-[138px] overflow-hidden rounded-xl border border-red-400/40 bg-slate-100 sm:h-[238px] sm:rounded-2xl">
       <motion.img
         src="/brand/kadigrahrvatska.webp"
         alt={copy.kadigraAlt}
@@ -314,7 +314,7 @@ function KadigraPreview({ compact = false, copy }) {
 
 function MorePreview({ compact = false, copy }) {
   return (
-    <div className="h-[138px] rounded-[0.75rem] border border-violet-400/40 bg-white/70 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
+    <div className="h-[138px] rounded-xl border border-violet-400/40 bg-white/70 p-2 sm:h-[238px] sm:rounded-2xl sm:p-3">
       <div className="grid grid-cols-3 gap-2">
         {[Zap, Heart, Bot, MapPin, DatabaseZap, ChartNoAxesColumnIncreasing].map((Icon, index) => (
           <motion.div
@@ -355,7 +355,7 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, 
   return (
     <CardShell
       {...linkProps}
-      className={`orbital-card relative block w-[158px] overflow-hidden rounded-[0.75rem] border bg-white/90 p-2 shadow-md shadow-blue-200/40 sm:w-[230px] sm:rounded-[1rem] sm:p-3 sm:backdrop-blur-xl xl:w-[246px] ${
+      className={`orbital-card relative block w-[158px] overflow-hidden rounded-xl border bg-white/90 p-2 shadow-md shadow-blue-200/40 sm:w-[230px] sm:rounded-2xl sm:p-3 sm:backdrop-blur-xl xl:w-[246px] ${
         card.href ? "cursor-pointer" : ""
       }`}
       style={{
@@ -483,8 +483,11 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
   const angle = useMotionValue(90);
   const { radiusX, radiusY, orbitCenterY, sceneHeight, isMobile } = useCarouselSize();
   const prefersReducedMotion = useReducedMotion();
+  const containerRef = useRef(null);
+  const inView = useInView(containerRef, { margin: "0px 0px -20% 0px" });
   useAnimationFrame((time, delta) => {
     if (prefersReducedMotion) return;
+    if (!inView) return;
     const next = (angle.get() + delta * (isMobile ? 0.0136 : 0.0046)) % 360;
     angle.set(next);
   });
@@ -501,6 +504,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
 
   return (
     <motion.div
+      ref={containerRef}
       initial={{ opacity: 0, x: 36 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay: 0.16 }}
@@ -727,7 +731,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               />
             ))}
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs text-slate-700 backdrop-blur-xl max-[767px]:hidden">
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs text-slate-700 backdrop-blur-md sm:backdrop-blur-xl max-[767px]:hidden">
             <motion.span
               animate={{ rotate: 360 }}
               transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
