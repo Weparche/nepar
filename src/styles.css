@@ -13,6 +13,7 @@ body {
   margin: 0;
   min-width: 320px;
   overflow-x: hidden;
+  overflow-anchor: none;
   background: #f8fafc;
   color: #1e293b;
 }

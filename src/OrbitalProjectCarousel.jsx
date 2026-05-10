@@ -161,37 +161,20 @@ const carouselContent = {
 
 const CARD_COUNT = carouselContent.hr.cards.length;
 
+function computeCarouselSize(width) {
+  if (width < 480) return { radiusX: 124, radiusY: 24, orbitCenterY: 268, sceneHeight: 334, isMobile: true };
+  if (width < 768) return { radiusX: 178, radiusY: 28, orbitCenterY: 282, sceneHeight: 356, isMobile: true };
+  if (width < 1180) return { radiusX: 326, radiusY: 44, orbitCenterY: 374, sceneHeight: 508, isMobile: false };
+  return { radiusX: 418, radiusY: 50, orbitCenterY: 372, sceneHeight: 508, isMobile: false };
+}
+
 function useCarouselSize() {
-  const [size, setSize] = useState({
-    radiusX: 418,
-    radiusY: 50,
-    orbitCenterY: 372,
-    sceneHeight: 508,
-    isMobile: false,
-  });
+  const [size, setSize] = useState(() =>
+    computeCarouselSize(typeof window === "undefined" ? 1280 : window.innerWidth),
+  );
 
   useEffect(() => {
-    const update = () => {
-      const width = window.innerWidth;
-
-      if (width < 480) {
-        setSize({ radiusX: 124, radiusY: 24, orbitCenterY: 268, sceneHeight: 334, isMobile: true });
-        return;
-      }
-
-      if (width < 768) {
-        setSize({ radiusX: 178, radiusY: 28, orbitCenterY: 282, sceneHeight: 356, isMobile: true });
-        return;
-      }
-
-      if (width < 1180) {
-        setSize({ radiusX: 326, radiusY: 44, orbitCenterY: 374, sceneHeight: 508, isMobile: false });
-        return;
-      }
-
-      setSize({ radiusX: 418, radiusY: 50, orbitCenterY: 372, sceneHeight: 508, isMobile: false });
-    };
-
+    const update = () => setSize(computeCarouselSize(window.innerWidth));
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
