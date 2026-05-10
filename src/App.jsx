@@ -375,23 +375,26 @@ export function Navbar({ lang, setLang, copy }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-3 sm:pt-2">
       <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-xl border border-slate-200/80 bg-white/80 px-2 py-1.5 shadow-xl shadow-blue-200/40 backdrop-blur-md sm:rounded-2xl sm:px-3 sm:py-1 sm:backdrop-blur-xl lg:max-w-[1380px] lg:px-4">
-        <a href={onHome ? "#top" : "/"} className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-xl sm:h-[3.85rem] sm:w-[11.25rem] sm:rounded-2xl">
-            <img
-              src="/brand/nepar_logo.webp"
-              alt="Nepar Solutions logo"
-              className="size-full object-contain px-2 py-1 sm:px-3 sm:py-2"
-            />
-          </span>
-          {/* <span className="min-w-0">
-            <span className="block truncate text-base font-semibold tracking-normal text-white sm:text-2xl">
-              Nepar Solutions
+        {(() => {
+          const logoInner = (
+            <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-xl sm:h-[3.85rem] sm:w-[11.25rem] sm:rounded-2xl">
+              <img
+                src="/brand/nepar_logo.webp"
+                alt="Nepar Solutions logo"
+                className="size-full object-contain px-2 py-1 sm:px-3 sm:py-2"
+              />
             </span>
-            <span className="block truncate text-xs text-slate-400 sm:text-base">
-              obrt za digitalna rje&#353;enja
-            </span>
-          </span> */}
-        </a>
+          );
+          return onHome ? (
+            <a href="#top" className="flex min-w-0 items-center gap-2 sm:gap-3">
+              {logoInner}
+            </a>
+          ) : (
+            <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
+              {logoInner}
+            </Link>
+          );
+        })()}
 
         <div className="hidden items-center gap-8 lg:flex">
           {copy.navLinks.map(([label, href, Icon]) => {
@@ -1062,11 +1065,11 @@ function ScrollToTop() {
       const timer = setTimeout(() => {
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: "smooth" });
-        else window.scrollTo(0, 0);
+        else window.scrollTo({ top: 0, behavior: "instant" });
       }, 50);
       return () => clearTimeout(timer);
     }
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, [pathname, hash]);
   return null;
 }
