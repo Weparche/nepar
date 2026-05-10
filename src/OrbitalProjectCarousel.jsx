@@ -220,19 +220,19 @@ function getOrbitalPosition(baseAngle, index, radiusX, radiusY) {
 
 function OutagePreview({ copy }) {
   return (
-    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-cyan-300/15 bg-slate-950/72 sm:h-[238px] sm:rounded-[0.9rem]">
+    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-cyan-400/40 bg-slate-100 sm:h-[238px] sm:rounded-[0.9rem]">
       <img
         src="/brand/bezstruje.webp"
         alt={copy.outageAlt}
         loading="lazy"
         className="absolute inset-0 size-full object-cover object-top"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-slate-900/5 to-transparent" />
       <img
         src="/brand/bezstruje_logo.png"
         alt={copy.outageLogoAlt}
         loading="lazy"
-        className="absolute left-2 top-2 h-7 w-auto rounded-md bg-slate-950/80 p-1 shadow-lg shadow-black/25 sm:left-3 sm:top-3 sm:h-9"
+        className="absolute left-2 top-2 h-7 w-auto rounded-md bg-white/85 p-1 shadow-lg shadow-slate-300/60 sm:left-3 sm:top-3 sm:h-9"
       />
     </div>
   );
@@ -240,15 +240,15 @@ function OutagePreview({ copy }) {
 
 function InvitePreview({ compact = false, copy }) {
   return (
-    <div className="relative grid h-[138px] place-items-center overflow-hidden rounded-[0.75rem] border border-fuchsia-300/20 bg-gradient-to-br from-slate-950 via-fuchsia-950/40 to-slate-950 p-2 sm:h-[238px] sm:rounded-[0.9rem]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_22%,rgba(250,204,21,.18),transparent_8%),radial-gradient(circle_at_80%_24%,rgba(255,255,255,.13),transparent_7%),radial-gradient(circle_at_28%_78%,rgba(244,114,182,.18),transparent_10%)]" />
+    <div className="relative grid h-[138px] place-items-center overflow-hidden rounded-[0.75rem] border border-fuchsia-400/50 bg-gradient-to-br from-fuchsia-50 via-pink-50 to-slate-100 p-2 sm:h-[238px] sm:rounded-[0.9rem]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_22%,rgba(250,204,21,.22),transparent_8%),radial-gradient(circle_at_80%_24%,rgba(167,139,250,.18),transparent_7%),radial-gradient(circle_at_28%_78%,rgba(244,114,182,.22),transparent_10%)]" />
       <motion.img
         src="/brand/vidimose.webp"
         alt={copy.inviteAlt}
         loading="lazy"
         animate={compact ? false : { y: [0, -4, 0], scale: [1, 1.015, 1] }}
         transition={compact ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-        className="relative h-full max-h-full w-auto rounded-xl border border-white/15 object-contain shadow-lg shadow-fuchsia-500/15 sm:shadow-2xl sm:shadow-fuchsia-500/25"
+        className="relative h-full max-h-full w-auto rounded-xl border border-fuchsia-300/40 object-contain shadow-lg shadow-fuchsia-300/30 sm:shadow-2xl sm:shadow-fuchsia-400/30"
       />
     </div>
   );
@@ -256,14 +256,14 @@ function InvitePreview({ compact = false, copy }) {
 
 function AiPreview({ compact = false, copy }) {
   return (
-    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-blue-300/15 bg-slate-950/78 sm:h-[238px] sm:rounded-[0.9rem]">
+    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-blue-400/40 bg-slate-100 sm:h-[238px] sm:rounded-[0.9rem]">
       <img
         src="/brand/kpdinfo.webp"
         alt={copy.aiAlt ?? "KPDinfo.com prikaz"}
         loading="lazy"
         className="absolute inset-0 size-full object-cover object-top"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-slate-950/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/55 via-slate-900/15 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 flex h-10 items-end gap-1 px-2 pb-2 sm:h-20 sm:px-3 sm:pb-3">
         {[36, 58, 46, 64, 52, 72].map((h, i) => (
           <motion.span
@@ -281,16 +281,16 @@ function AiPreview({ compact = false, copy }) {
 
 function GeoPreview({ copy }) {
   return (
-    <div className="h-[138px] rounded-[0.75rem] border border-teal-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
-      <div className="relative h-full overflow-hidden rounded-lg border border-white/10 bg-blue-950/55 sm:rounded-xl">
+    <div className="h-[138px] rounded-[0.75rem] border border-teal-400/40 bg-white/70 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
+      <div className="relative h-full overflow-hidden rounded-lg border border-blue-200/60 bg-blue-50 sm:rounded-xl">
         <img
           src="/brand/geoadrese.webp"
           alt={copy.geoAlt}
           loading="lazy"
           className="absolute inset-0 size-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/88 via-slate-950/18 to-transparent" />
-        <MapPin className="absolute right-3 top-3 text-cyan-200 drop-shadow" size={20} />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-slate-900/10 to-transparent" />
+        <MapPin className="absolute right-3 top-3 text-cyan-700 drop-shadow" size={20} />
       </div>
     </div>
   );
@@ -298,7 +298,7 @@ function GeoPreview({ copy }) {
 
 function KadigraPreview({ compact = false, copy }) {
   return (
-    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-red-300/20 bg-slate-950/72 sm:h-[238px] sm:rounded-[0.9rem]">
+    <div className="relative h-[138px] overflow-hidden rounded-[0.75rem] border border-red-400/40 bg-slate-100 sm:h-[238px] sm:rounded-[0.9rem]">
       <motion.img
         src="/brand/kadigrahrvatska.webp"
         alt={copy.kadigraAlt}
@@ -307,28 +307,28 @@ function KadigraPreview({ compact = false, copy }) {
         transition={compact ? undefined : { duration: 7, repeat: Infinity, ease: "easeInOut" }}
         className="absolute inset-0 size-full object-cover object-center"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/88 via-slate-950/10 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-slate-900/5 to-transparent" />
     </div>
   );
 }
 
 function MorePreview({ compact = false, copy }) {
   return (
-    <div className="h-[138px] rounded-[0.75rem] border border-violet-300/15 bg-slate-950/78 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
+    <div className="h-[138px] rounded-[0.75rem] border border-violet-400/40 bg-white/70 p-2 sm:h-[238px] sm:rounded-[0.9rem] sm:p-3">
       <div className="grid grid-cols-3 gap-2">
         {[Zap, Heart, Bot, MapPin, DatabaseZap, ChartNoAxesColumnIncreasing].map((Icon, index) => (
           <motion.div
             key={index}
             animate={compact ? false : { y: [0, index % 2 ? 3 : -3, 0] }}
             transition={compact ? undefined : { duration: 3 + index * 0.2, repeat: Infinity, ease: "easeInOut" }}
-            className="grid h-9 place-items-center rounded-lg border border-white/10 bg-white/[0.06] sm:h-16"
+            className="grid h-9 place-items-center rounded-lg border border-violet-200/70 bg-violet-50 sm:h-16"
           >
-            <Icon className="text-cyan-100" size={17} />
+            <Icon className="text-violet-600" size={17} />
           </motion.div>
         ))}
       </div>
-      <div className="mt-3 border-t border-white/10 pt-3 sm:mt-4 sm:pt-4">
-        <span className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-200">
+      <div className="mt-3 border-t border-slate-200 pt-3 sm:mt-4 sm:pt-4">
+        <span className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-700">
           {copy.more} <ArrowRight size={13} />
         </span>
       </div>
@@ -355,7 +355,7 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, 
   return (
     <CardShell
       {...linkProps}
-      className={`orbital-card relative block w-[158px] overflow-hidden rounded-[0.75rem] border bg-slate-950/88 p-2 shadow-md shadow-blue-950/25 sm:w-[230px] sm:rounded-[1rem] sm:p-3 sm:backdrop-blur-xl xl:w-[246px] ${
+      className={`orbital-card relative block w-[158px] overflow-hidden rounded-[0.75rem] border bg-white/90 p-2 shadow-md shadow-blue-200/40 sm:w-[230px] sm:rounded-[1rem] sm:p-3 sm:backdrop-blur-xl xl:w-[246px] ${
         card.href ? "cursor-pointer" : ""
       }`}
       style={{
@@ -367,15 +367,15 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, 
       whileHover={isMobile ? undefined : { y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 220, damping: 24 }}
     >
-      <div className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-blue-200/80 to-transparent" />
-      <div className="pointer-events-none absolute -right-10 -top-12 hidden size-28 rounded-full bg-blue-400/12 blur-2xl sm:block" />
+      <div className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/60 to-transparent" />
+      <div className="pointer-events-none absolute -right-10 -top-12 hidden size-28 rounded-full bg-blue-400/10 blur-2xl sm:block" />
       <div className="mb-2 flex items-start gap-2 sm:mb-3">
         <span className={`mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${card.accent} text-white shadow-lg`}>
           <Icon size={17} />
         </span>
         <div className="min-w-0">
-          <h3 className="truncate text-xs font-semibold text-white sm:text-lg">{card.title}</h3>
-          <p className="mt-0.5 line-clamp-2 text-[10px] leading-3.5 text-slate-300 sm:mt-1 sm:text-xs sm:leading-5">{card.description}</p>
+          <h3 className="truncate text-xs font-semibold text-slate-900 sm:text-lg">{card.title}</h3>
+          <p className="mt-0.5 line-clamp-2 text-[10px] leading-3.5 text-slate-600 sm:mt-1 sm:text-xs sm:leading-5">{card.description}</p>
         </div>
       </div>
       <Preview type={card.preview} compact={isMobile} copy={copy} />
@@ -455,7 +455,7 @@ function OrbitDot({ card, index, angle, radiusX, radiusY, onClick, label }) {
       type="button"
       onClick={onClick}
       style={{ opacity, width }}
-      className="h-2.5 rounded-full bg-blue-200"
+      className="h-2.5 rounded-full bg-blue-500"
       aria-label={`${label} ${card.title}`}
     />
   );
@@ -468,7 +468,7 @@ function OrbitButton({ direction, onClick, children, copy }) {
       onClick={onClick}
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.94 }}
-      className={`absolute top-[46%] z-[140] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-blue-300/35 bg-slate-950/74 text-blue-100 shadow-[0_0_16px_rgba(59,130,246,0.28)] backdrop-blur-md transition hover:border-cyan-200 hover:text-white sm:size-12 sm:border-blue-300/40 sm:shadow-[0_0_28px_rgba(59,130,246,0.45)] sm:backdrop-blur-xl ${
+      className={`absolute top-[46%] z-[140] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-blue-300/60 bg-white/85 text-blue-700 shadow-[0_0_16px_rgba(59,130,246,0.18)] backdrop-blur-md transition hover:border-blue-500 hover:text-blue-900 sm:size-12 sm:border-blue-400/60 sm:shadow-[0_0_28px_rgba(59,130,246,0.22)] sm:backdrop-blur-xl ${
         direction === "left" ? "-left-2 sm:left-0" : "-right-2 sm:right-0"
       }`}
       aria-label={direction === "left" ? copy.previous : copy.next}
@@ -571,7 +571,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               >
                 <stop offset="0%" stopColor="rgba(255,255,255,0)" />
                 <stop offset="26%" stopColor="rgba(34,211,238,0.34)" />
-                <stop offset="50%" stopColor="rgba(255,255,255,0.62)" />
+                <stop offset="50%" stopColor="rgba(37,99,235,0.7)" />
                 <stop offset="72%" stopColor="rgba(217,70,239,0.44)" />
                 <stop offset="100%" stopColor="rgba(255,255,255,0)" />
               </linearGradient>
@@ -620,7 +620,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               rx="470"
               ry="50"
               fill="none"
-              stroke="rgba(255,255,255,0.52)"
+              stroke="rgba(30,58,138,0.45)"
               strokeWidth="2.5"
               strokeLinecap="round"
               opacity="0.75"
@@ -672,7 +672,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               <stop offset="0%" stopColor="rgba(37,99,235,0)" />
               <stop offset="12%" stopColor="rgba(59,130,246,0.55)" />
               <stop offset="30%" stopColor="rgba(34,211,238,0.98)" />
-              <stop offset="52%" stopColor="rgba(255,255,255,0.95)" />
+              <stop offset="52%" stopColor="rgba(37,99,235,0.85)" />
               <stop offset="68%" stopColor="rgba(217,70,239,0.9)" />
               <stop offset="84%" stopColor="rgba(250,204,21,0.62)" />
               <stop offset="100%" stopColor="rgba(37,99,235,0)" />
@@ -699,14 +699,14 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
           <path
             d="M 42 90 C 218 148 782 148 958 90"
             fill="none"
-            stroke="rgba(255,255,255,0.62)"
+            stroke="rgba(30,58,138,0.55)"
             strokeWidth="2.5"
             strokeLinecap="round"
             opacity="0.85"
           />
         </svg>
 
-        <div className="pointer-events-none absolute left-1/2 z-[126] h-3 w-3 -translate-x-1/2 rounded-full border border-blue-200/45 bg-slate-950/75 shadow-[0_0_12px_rgba(59,130,246,0.32)] sm:h-5 sm:w-5 sm:border-blue-200/55 sm:shadow-[0_0_24px_rgba(59,130,246,0.45)]"
+        <div className="pointer-events-none absolute left-1/2 z-[126] h-3 w-3 -translate-x-1/2 rounded-full border border-blue-400/60 bg-white/85 shadow-[0_0_12px_rgba(59,130,246,0.22)] sm:h-5 sm:w-5 sm:border-blue-400/70 sm:shadow-[0_0_24px_rgba(59,130,246,0.32)]"
           style={{
             top: orbitCenterY + radiusY - 10,
             transform: "translateX(-50%)",
@@ -727,11 +727,11 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               />
             ))}
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-slate-950/62 px-3 py-1.5 text-xs text-slate-300 backdrop-blur-xl max-[767px]:hidden">
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs text-slate-700 backdrop-blur-xl max-[767px]:hidden">
             <motion.span
               animate={{ rotate: 360 }}
               transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
-              className="text-violet-300"
+              className="text-violet-600"
             >
               <RotateCw size={15} />
             </motion.span>

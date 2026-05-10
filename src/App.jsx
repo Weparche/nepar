@@ -321,14 +321,14 @@ export { content };
 
 export function LanguageToggle({ lang, setLang }) {
   return (
-    <div className="inline-flex shrink-0 rounded-full border border-blue-200/15 bg-white/5 p-0.5 text-[11px] font-semibold text-slate-300">
+    <div className="inline-flex shrink-0 rounded-full border border-slate-200 bg-white p-0.5 text-[11px] font-semibold text-slate-700">
       {["hr", "en"].map((value) => (
         <button
           key={value}
           type="button"
           onClick={() => setLang(value)}
           className={`rounded-full px-2.5 py-1 transition ${
-            lang === value ? "bg-blue-500 text-white shadow-md shadow-blue-500/20" : "hover:text-white"
+            lang === value ? "bg-blue-500 text-white shadow-md shadow-blue-500/20" : "hover:text-slate-900"
           }`}
           aria-pressed={lang === value}
         >
@@ -351,11 +351,11 @@ export function Navbar({ lang, setLang, copy }) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-3 sm:pt-2">
-      <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-[0.8rem] border border-blue-200/14 bg-slate-950/64 px-2 py-1.5 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:rounded-[0.9rem] sm:px-3 sm:py-1 lg:max-w-[1380px] lg:px-4">
+      <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-[0.8rem] border border-slate-200/80 bg-white/80 px-2 py-1.5 shadow-xl shadow-blue-200/40 backdrop-blur-xl sm:rounded-[0.9rem] sm:px-3 sm:py-1 lg:max-w-[1380px] lg:px-4">
         <a href={onHome ? "#top" : "/"} className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-[0.75rem] border border-blue-300/20 bg-black shadow-md shadow-blue-500/15 sm:h-[3.85rem] sm:w-[11.25rem] sm:rounded-[0.95rem] sm:shadow-lg">
+          <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-[0.75rem] sm:h-[3.85rem] sm:w-[11.25rem] sm:rounded-[0.95rem]">
             <img
-              src="/brand/nepar_logo.png"
+              src="/brand/nepar_logo.webp"
               alt="Nepar Solutions logo"
               className="size-full object-contain px-2 py-1 sm:px-3 sm:py-2"
             />
@@ -380,9 +380,9 @@ export function Navbar({ lang, setLang, copy }) {
               <Comp
                 key={href}
                 {...linkProp}
-                className="inline-flex items-center gap-2 text-base font-medium text-slate-200 transition hover:text-white"
+                className="inline-flex items-center gap-2 text-base font-medium text-slate-700 transition hover:text-slate-900"
               >
-                {Icon && <Icon size={20} className="text-blue-200" />}
+                {Icon && <Icon size={20} className="text-blue-600" />}
                 {label}
               </Comp>
             );
@@ -402,7 +402,7 @@ export function Navbar({ lang, setLang, copy }) {
         </a>
 
         <button
-          className="grid size-10 shrink-0 place-items-center rounded-[0.8rem] border border-blue-200/15 bg-white/5 text-slate-200 sm:size-14 sm:rounded-[1.1rem] lg:hidden"
+          className="grid size-10 shrink-0 place-items-center rounded-[0.8rem] border border-slate-200 bg-white/80 text-slate-700 sm:size-14 sm:rounded-[1.1rem] lg:hidden"
           onClick={() => setOpen((value) => !value)}
           aria-label={copy.menuLabel}
         >
@@ -416,7 +416,7 @@ export function Navbar({ lang, setLang, copy }) {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="mx-auto mt-2 max-w-[1180px] rounded-[0.9rem] border border-blue-200/14 bg-slate-950/90 p-3 shadow-xl shadow-blue-950/25 backdrop-blur-xl sm:mt-3 sm:rounded-[1.25rem] sm:p-5 sm:shadow-2xl sm:backdrop-blur-2xl lg:max-w-[1380px] lg:hidden"
+            className="mx-auto mt-2 max-w-[1180px] rounded-[0.9rem] border border-slate-200 bg-white/95 p-3 shadow-xl shadow-blue-200/40 backdrop-blur-xl sm:mt-3 sm:rounded-[1.25rem] sm:p-5 sm:shadow-2xl sm:backdrop-blur-2xl lg:max-w-[1380px] lg:hidden"
           >
             <div className="grid gap-1 sm:gap-2">
               {copy.navLinks.map(([label, href, Icon]) => {
@@ -429,9 +429,9 @@ export function Navbar({ lang, setLang, copy }) {
                     key={href}
                     {...linkProp}
                     onClick={() => setOpen(false)}
-                    className="inline-flex items-center gap-3 rounded-[0.8rem] px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/5 sm:rounded-[1rem] sm:px-5 sm:py-4 sm:text-base"
+                    className="inline-flex items-center gap-3 rounded-[0.8rem] px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100 sm:rounded-[1rem] sm:px-5 sm:py-4 sm:text-base"
                   >
-                    {Icon && <Icon size={20} className="text-blue-200" />}
+                    {Icon && <Icon size={20} className="text-blue-600" />}
                     {label}
                   </Comp>
                 );
@@ -455,7 +455,7 @@ export function MotionButton({ href, children, className = "", variant = "primar
   const cls = `inline-flex items-center justify-center gap-2 rounded-[0.8rem] font-semibold transition ${
     primary
       ? "bg-gradient-to-r from-blue-500 via-blue-500 to-violet-600 text-white shadow-xl shadow-blue-500/25"
-      : "border border-blue-200/20 bg-white/[0.03] text-slate-200 backdrop-blur hover:bg-white/[0.07]"
+      : "border border-slate-200 bg-white/85 text-slate-700 backdrop-blur hover:bg-white"
   } ${className}`;
   const motionProps = { whileHover: { y: -2, scale: 1.02 }, whileTap: { scale: 0.98 } };
   const isRouterLink = href && href.startsWith("/") && !href.includes(":");
@@ -470,7 +470,7 @@ export function MotionButton({ href, children, className = "", variant = "primar
 function ProjectPreviewSmall({ type, copy }) {
   if (type === "invite") {
     return (
-      <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-[0.7rem] border border-fuchsia-300/20 bg-slate-950">
+      <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-[0.7rem] border border-fuchsia-300/50 bg-slate-100">
         <img
           src="/brand/vidimose.webp"
           alt={copy.previewAlts.invite}
@@ -483,14 +483,14 @@ function ProjectPreviewSmall({ type, copy }) {
 
   if (type === "ai") {
     return (
-      <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/20 bg-slate-950">
+      <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/50 bg-slate-100">
         <img
           src="/brand/kpdinfo.webp"
           alt="KPDinfo.com"
           loading="lazy"
           className="absolute inset-0 size-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent" />
         <div className="absolute inset-x-1.5 bottom-1.5 flex h-4 items-end gap-0.5">
           {[35, 62, 50, 74].map((height) => (
             <span
@@ -506,14 +506,14 @@ function ProjectPreviewSmall({ type, copy }) {
 
   if (type === "geo") {
     return (
-      <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/20 bg-slate-900">
+      <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/50 bg-slate-100">
         <img
           src="/brand/geoadrese.webp"
           alt={copy.previewAlts.geo}
           loading="lazy"
           className="absolute inset-0 size-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/72 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-transparent to-transparent" />
         <MapPin className="absolute bottom-2 right-2 text-cyan-200 drop-shadow" size={18} />
       </div>
     );
@@ -521,32 +521,32 @@ function ProjectPreviewSmall({ type, copy }) {
 
   if (type === "kadigra") {
     return (
-      <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-red-300/20 bg-slate-950">
+      <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-red-300/50 bg-slate-100">
         <img
           src="/brand/kadigrahrvatska.webp"
           alt={copy.previewAlts.kadigra}
           loading="lazy"
           className="absolute inset-0 size-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-transparent to-transparent" />
       </div>
     );
   }
 
   return (
-    <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/20 bg-slate-950/85">
+    <div className="relative size-20 shrink-0 overflow-hidden rounded-[0.7rem] border border-blue-300/50 bg-slate-100">
       <img
         src="/brand/bezstruje.png"
         alt={copy.previewAlts.outage}
         loading="lazy"
         className="absolute inset-0 size-full object-cover object-top opacity-90"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-transparent to-transparent" />
       <img
         src="/brand/bezstruje_logo.png"
         alt=""
         loading="lazy"
-        className="absolute bottom-1.5 left-1.5 h-5 w-auto rounded bg-slate-950/70 p-0.5"
+        className="absolute bottom-1.5 left-1.5 h-5 w-auto rounded bg-white/85 p-0.5"
       />
     </div>
   );
@@ -566,7 +566,7 @@ function Hero({ copy, lang }) {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.08, duration: 0.65 }}
-            className="hero-kicker mb-5 inline-flex items-center gap-2 rounded-full bg-slate-950/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] shadow-lg shadow-violet-500/10"
+            className="hero-kicker mb-5 inline-flex items-center gap-2 rounded-full bg-white/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] shadow-lg shadow-violet-500/10"
           >
             <Zap size={15} />
             <span className="hero-kicker-text">{copy.hero.kicker}</span>
@@ -576,10 +576,10 @@ function Hero({ copy, lang }) {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.16, duration: 0.75 }}
-            className="text-4xl font-semibold leading-[1.06] tracking-normal text-white sm:text-5xl xl:text-[3.65rem]"
+            className="text-4xl font-semibold leading-[1.06] tracking-normal text-slate-900 sm:text-5xl xl:text-[3.65rem]"
           >
             {copy.hero.lead}{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-cyan-600 to-violet-600 bg-clip-text text-transparent">
               {copy.hero.highlight}
             </span>{" "}
             {copy.hero.rest}
@@ -589,7 +589,7 @@ function Hero({ copy, lang }) {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.24, duration: 0.75 }}
-            className="mt-5 max-w-xl text-lg leading-8 text-slate-300"
+            className="mt-5 max-w-xl text-lg leading-8 text-slate-600"
           >
             {copy.hero.description}
           </motion.p>
@@ -619,9 +619,9 @@ function Hero({ copy, lang }) {
             {copy.hero.trust.map(([point, Icon]) => (
               <span
                 key={point}
-                className="inline-flex items-center gap-2 text-sm text-slate-300"
+                className="inline-flex items-center gap-2 text-sm text-slate-600"
               >
-                <Icon size={16} className="text-blue-300" />
+                <Icon size={16} className="text-blue-600" />
                 {point}
               </span>
             ))}
@@ -633,7 +633,7 @@ function Hero({ copy, lang }) {
             transition={{ delay: 0.48, duration: 0.65, ease: "easeOut" }}
             className="mt-3 -mb-3 lg:hidden"
           >
-            <div className="inline-flex items-center gap-3 rounded-full border border-cyan-300/25 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-cyan-500/10 backdrop-blur">
+            <div className="inline-flex items-center gap-3 rounded-full border border-cyan-400/50 bg-white/85 px-4 py-2 text-sm font-semibold text-slate-800 shadow-lg shadow-cyan-500/10 backdrop-blur">
               <motion.span
                 aria-hidden="true"
                 animate={{ scale: [1, 1.25, 1], opacity: [0.65, 1, 0.65] }}
@@ -665,15 +665,15 @@ function StatsBar({ copy }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.65 }}
-        className="mx-auto max-w-[1180px] rounded-[1rem] border border-blue-200/12 bg-slate-950/54 px-5 py-4 shadow-2xl shadow-blue-950/20 backdrop-blur-xl lg:max-w-[1380px]"
+        className="mx-auto max-w-[1180px] rounded-[1rem] border border-slate-200/80 bg-white/75 px-5 py-4 shadow-2xl shadow-blue-200/30 backdrop-blur-xl lg:max-w-[1380px]"
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-blue-200/10">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-slate-200">
           {copy.stats.map(([value, label, Icon]) => (
             <div key={label} className="flex items-center justify-center gap-4 lg:px-6">
-              <Icon size={32} className="text-blue-300" />
+              <Icon size={32} className="text-blue-600" />
               <div>
-                <p className="text-3xl font-semibold leading-none text-white">{value}</p>
-                <p className="mt-1 text-sm text-slate-300">{label}</p>
+                <p className="text-3xl font-semibold leading-none text-slate-900">{value}</p>
+                <p className="mt-1 text-sm text-slate-600">{label}</p>
               </div>
             </div>
           ))}
@@ -688,13 +688,13 @@ function Services({ copy }) {
     <section id="usluge" className="overflow-x-hidden px-4 py-5 scroll-mt-24">
       <div className="mx-auto grid max-w-[1180px] gap-4 lg:max-w-[1380px] xl:grid-cols-[240px_1fr]">
         <div>
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
             {copy.servicesSection.eyebrow}
           </p>
-          <h2 className="text-3xl font-semibold leading-tight tracking-normal text-white sm:text-4xl">
+          <h2 className="text-3xl font-semibold leading-tight tracking-normal text-slate-900 sm:text-4xl">
             {copy.servicesSection.title}
           </h2>
-          <p className="mt-4 text-sm leading-6 text-slate-400">
+          <p className="mt-4 text-sm leading-6 text-slate-600">
             {copy.servicesSection.description}
           </p>
         </div>
@@ -708,16 +708,16 @@ function Services({ copy }) {
               viewport={{ once: true, margin: "0px 0px -180px 0px", amount: 0.2 }}
               transition={{ duration: 0.8, delay: index * 1, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -6, scale: 1.01 }}
-              className="group relative overflow-hidden rounded-[1rem] border border-blue-200/12 bg-slate-950/52 p-5 shadow-xl shadow-black/20 backdrop-blur-xl"
+              className="group relative overflow-hidden rounded-[1rem] border border-slate-200/80 bg-white/75 p-5 shadow-xl shadow-slate-300/40 backdrop-blur-xl"
             >
               <div className={`absolute -right-10 -top-10 size-28 rounded-full blur-2xl transition ${blurCls}`} />
               <div className="relative mb-4 flex items-center gap-3">
                 <div className={`grid size-12 place-items-center rounded-[0.85rem] ring-1 ${iconCls}`}>
                   <Icon size={23} />
                 </div>
-                <h3 className="text-base font-semibold text-white">{title}</h3>
+                <h3 className="text-base font-semibold text-slate-900">{title}</h3>
               </div>
-              <p className="relative text-sm leading-6 text-slate-400">{description}</p>
+              <p className="relative text-sm leading-6 text-slate-600">{description}</p>
             </motion.article>
           ))}
         </div>
@@ -729,8 +729,8 @@ function Services({ copy }) {
 function FeaturedProjects({ copy }) {
   return (
     <section id="projekti" className="px-4 pt-3 pb-5 sm:py-5 scroll-mt-24">
-      <div className="mx-auto max-w-[1180px] border-t border-blue-200/10 pt-3 sm:pt-5 lg:max-w-[1380px]">
-        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-white sm:mb-5">
+      <div className="mx-auto max-w-[1180px] border-t border-slate-200 pt-3 sm:pt-5 lg:max-w-[1380px]">
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-900 sm:mb-5">
           {copy.featured.eyebrow}
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -750,7 +750,7 @@ function FeaturedProjects({ copy }) {
                   viewport={{ once: true, margin: "-70px" }}
                   transition={{ duration: 0.45, delay: index * 0.05 }}
                   whileHover={{ y: -4 }}
-                  className="flex min-h-[96px] items-center gap-3 rounded-[0.9rem] border border-blue-200/12 bg-slate-950/52 p-3 shadow-lg shadow-black/15 backdrop-blur-xl"
+                  className="flex min-h-[96px] items-center gap-3 rounded-[0.9rem] border border-slate-200/80 bg-white/75 p-3 shadow-lg shadow-slate-300/40 backdrop-blur-xl"
                 >
                   <ProjectPreviewSmall type={project.preview} copy={copy} />
                   <div className="min-w-0">
@@ -758,9 +758,9 @@ function FeaturedProjects({ copy }) {
                       <span className={`grid size-7 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${project.accent} text-white`}>
                         <Icon size={15} />
                       </span>
-                      <h3 className="truncate text-sm font-semibold text-white">{project.title}</h3>
+                      <h3 className="truncate text-sm font-semibold text-slate-900">{project.title}</h3>
                     </div>
-                    <p className="text-sm leading-5 text-slate-400">{project.description}</p>
+                    <p className="text-sm leading-5 text-slate-600">{project.description}</p>
                   </div>
                 </ProjectShell>
               );
@@ -777,11 +777,11 @@ function About({ copy, lang }) {
 
   return (
     <section id="onama" className="px-4 py-10 scroll-mt-24">
-      <div className="mx-auto grid max-w-[1180px] gap-6 rounded-[1rem] border border-blue-200/12 bg-white/[0.035] p-5 shadow-2xl shadow-blue-950/20 backdrop-blur-xl lg:max-w-[1380px] lg:grid-cols-[0.65fr_1.35fr]">
+      <div className="mx-auto grid max-w-[1180px] gap-6 rounded-[1rem] border border-slate-200/80 bg-white/80 p-5 shadow-2xl shadow-blue-200/30 backdrop-blur-xl lg:max-w-[1380px] lg:grid-cols-[0.65fr_1.35fr]">
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="group relative min-h-56 overflow-hidden rounded-[0.9rem] border border-blue-300/15 bg-slate-950/70 text-left"
+          className="group relative min-h-56 overflow-hidden rounded-[0.9rem] border border-blue-300/40 bg-slate-100 text-left"
           aria-label={copy.about.imageLabel}
         >
           <img
@@ -793,13 +793,13 @@ function About({ copy, lang }) {
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/18 via-transparent to-violet-500/18" />
         </button>
         <div className="flex flex-col justify-center p-2 lg:p-5">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
             {copy.about.eyebrow}
           </p>
-          <h2 className="text-3xl font-semibold leading-tight tracking-normal text-white">
+          <h2 className="text-3xl font-semibold leading-tight tracking-normal text-slate-900">
             {copy.about.title}
           </h2>
-          <p className="mt-4 max-w-4xl text-base leading-7 text-slate-400">
+          <p className="mt-4 max-w-4xl text-base leading-7 text-slate-600">
             {copy.about.description}
           </p>
         </div>
@@ -808,7 +808,7 @@ function About({ copy, lang }) {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[80] grid place-items-center bg-slate-950/82 px-4 backdrop-blur-lg"
+            className="fixed inset-0 z-[80] grid place-items-center bg-slate-900/45 px-4 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -816,7 +816,7 @@ function About({ copy, lang }) {
           >
             <motion.button
               type="button"
-              className="relative w-full max-w-4xl overflow-hidden rounded-[1rem] border border-blue-200/20 bg-slate-950 shadow-2xl shadow-blue-500/25"
+              className="relative w-full max-w-4xl overflow-hidden rounded-[1rem] border border-slate-200 bg-white shadow-2xl shadow-blue-500/25"
               initial={{ opacity: 0, scale: 0.82, y: 28, rotateX: -8 }}
               animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 18 }}
@@ -829,7 +829,7 @@ function About({ copy, lang }) {
                 alt="Nepar Solutions brand"
                 className="block max-h-[82vh] w-full object-contain"
               />
-              <span className="absolute right-3 top-3 grid size-9 place-items-center rounded-full border border-white/15 bg-slate-950/75 text-white backdrop-blur">
+              <span className="absolute right-3 top-3 grid size-9 place-items-center rounded-full border border-slate-200 bg-white/85 text-slate-700 backdrop-blur">
                 <X size={18} />
               </span>
             </motion.button>
@@ -843,7 +843,7 @@ function About({ copy, lang }) {
 function BottomCta({ copy }) {
   return (
     <section id="kontakt" className="fixed inset-x-0 bottom-0 z-40 px-2 pb-2 sm:px-5 sm:pb-5">
-      <div className="relative mx-auto max-w-[1180px] overflow-hidden rounded-[0.85rem] border border-blue-300/20 bg-slate-950/84 px-3 py-2.5 shadow-xl shadow-blue-500/15 backdrop-blur-xl sm:rounded-[1rem] sm:border-blue-300/25 sm:px-6 sm:py-4 sm:shadow-2xl sm:shadow-blue-500/25 sm:backdrop-blur-2xl lg:max-w-[1380px]">
+      <div className="relative mx-auto max-w-[1180px] overflow-hidden rounded-[0.85rem] border border-blue-300/40 bg-white/85 px-3 py-2.5 shadow-xl shadow-blue-300/30 backdrop-blur-xl sm:rounded-[1rem] sm:border-blue-300/50 sm:px-6 sm:py-4 sm:shadow-2xl sm:shadow-blue-300/40 sm:backdrop-blur-2xl lg:max-w-[1380px]">
         <div className="footer-motion-field" aria-hidden="true">
           <div className="footer-stars-track" />
           <div className="footer-stars-track footer-stars-track-alt" />
@@ -865,17 +865,17 @@ function BottomCta({ copy }) {
                 <path
                   d="M 0 102 C 104 62 146 128 250 102 S 396 62 500 102 S 646 128 750 102 S 896 62 1000 102"
                   fill="none"
-                  stroke="rgba(96,165,250,0.26)"
+                  stroke="rgba(37,99,235,0.32)"
                   strokeWidth="1.8"
                   strokeLinecap="round"
                 />
                 <defs>
                   <linearGradient id={`footerWaveCyan${copy}`} x1="0%" x2="100%" y1="50%" y2="50%">
                     <stop offset="0%" stopColor="rgba(59,130,246,0)" />
-                    <stop offset="18%" stopColor="rgba(59,130,246,0.42)" />
-                    <stop offset="42%" stopColor="rgba(34,211,238,0.82)" />
-                    <stop offset="62%" stopColor="rgba(255,255,255,0.48)" />
-                    <stop offset="82%" stopColor="rgba(124,58,237,0.42)" />
+                    <stop offset="18%" stopColor="rgba(59,130,246,0.55)" />
+                    <stop offset="42%" stopColor="rgba(8,145,178,0.7)" />
+                    <stop offset="62%" stopColor="rgba(37,99,235,0.55)" />
+                    <stop offset="82%" stopColor="rgba(124,58,237,0.55)" />
                     <stop offset="100%" stopColor="rgba(59,130,246,0)" />
                   </linearGradient>
                 </defs>
@@ -911,7 +911,7 @@ function BottomCta({ copy }) {
           </div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-violet-500/10 to-cyan-400/10" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-slate-950/30 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-slate-200/30 to-transparent" />
         <div className="relative flex flex-col items-center justify-between gap-2 text-center md:flex-row md:text-left">
           <div className="flex items-center gap-2.5 sm:gap-4">
             <div className="relative shrink-0">
@@ -929,10 +929,10 @@ function BottomCta({ copy }) {
               </motion.div>
             </div>
             <div>
-              <h2 className="text-sm font-semibold tracking-normal text-white sm:text-2xl">
+              <h2 className="text-sm font-semibold tracking-normal text-slate-900 sm:text-2xl">
                 {copy.cta.title}
               </h2>
-              <p className="mt-0.5 max-w-2xl text-xs leading-4 text-slate-300 sm:mt-1 sm:text-sm sm:leading-normal">
+              <p className="mt-0.5 max-w-2xl text-xs leading-4 text-slate-600 sm:mt-1 sm:text-sm sm:leading-normal">
                 {copy.cta.description}
               </p>
             </div>
@@ -952,11 +952,11 @@ function BottomCta({ copy }) {
 
 export function Background() {
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#020617]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(37,99,235,0.28),transparent_30%),radial-gradient(circle_at_78%_12%,rgba(124,58,237,0.24),transparent_28%),radial-gradient(circle_at_55%_72%,rgba(6,182,212,0.16),transparent_32%)]" />
-      <div className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(148,163,184,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,.18)_1px,transparent_1px)] [background-size:72px_72px]" />
-      <div className="absolute inset-0 opacity-[0.08] [background-image:radial-gradient(circle_at_center,white_1px,transparent_1px)] [background-size:18px_18px]" />
-      <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-blue-500/12 to-transparent" />
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#f8fafc]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(37,99,235,0.12),transparent_30%),radial-gradient(circle_at_78%_12%,rgba(124,58,237,0.10),transparent_28%),radial-gradient(circle_at_55%_72%,rgba(6,182,212,0.08),transparent_32%)]" />
+      <div className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(100,116,139,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(100,116,139,.12)_1px,transparent_1px)] [background-size:72px_72px]" />
+      <div className="absolute inset-0 opacity-[0.18] [background-image:radial-gradient(circle_at_center,rgba(37,99,235,0.22)_1px,transparent_1px)] [background-size:18px_18px]" />
+      <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-blue-500/8 to-transparent" />
     </div>
   );
 }
@@ -966,7 +966,7 @@ function HomePage() {
   const copy = content[lang];
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden font-sans text-white">
+    <main className="relative min-h-screen overflow-x-hidden font-sans text-slate-800">
       <Background />
       <Navbar lang={lang} setLang={setLang} copy={copy} />
       <Hero copy={copy} lang={lang} />
@@ -977,25 +977,25 @@ function HomePage() {
       <BottomCta copy={copy} />
       <footer className="px-4 pb-20 sm:pb-32">
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
-          <div className="border-t border-blue-200/10 pt-8 sm:pt-10">
+          <div className="border-t border-slate-200 pt-8 sm:pt-10">
             <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="mb-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-400/60">
+                <p className="mb-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-600/80">
                   {copy.footer.infoLabel}
                 </p>
-                <p className="text-sm font-medium text-slate-300">{copy.footer.companyName}</p>
+                <p className="text-sm font-medium text-slate-700">{copy.footer.companyName}</p>
                 <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-0.5 text-xs text-slate-500">
                   <span>{copy.footer.owner}</span>
                   <span>{copy.footer.mbo}</span>
-                  <a href="mailto:nepar@nepar.hr" className="transition hover:text-slate-300">
+                  <a href="mailto:nepar@nepar.hr" className="transition hover:text-slate-900">
                     {copy.footer.email}
                   </a>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-between gap-2 border-t border-blue-200/10 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
+            <div className="flex flex-col items-center justify-between gap-2 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
               <p>{copy.footer.copyright}</p>
-              <a href="#top" className="transition hover:text-slate-200">
+              <a href="#top" className="transition hover:text-slate-900">
                 {copy.footer.top}
               </a>
             </div>

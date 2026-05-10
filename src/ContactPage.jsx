@@ -70,7 +70,7 @@ const contactContent = {
 
 /* text-base (16px) on inputs prevents iOS Safari zoom-on-focus */
 const inputCls =
-  "w-full rounded-[0.75rem] border border-blue-200/15 bg-white/[0.04] px-4 py-3 text-base text-white placeholder:text-slate-500 outline-none transition focus:border-blue-400/40 focus:bg-white/[0.07] focus:ring-2 focus:ring-blue-500/20";
+  "w-full rounded-[0.75rem] border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 placeholder:text-slate-400 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20";
 
 export default function ContactPage() {
   const [lang, setLang] = useState("hr");
@@ -143,7 +143,7 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden font-sans text-white">
+    <main className="relative min-h-screen overflow-x-hidden font-sans text-slate-800">
       <Background />
       <Navbar lang={lang} setLang={setLang} copy={navCopy} />
 
@@ -157,31 +157,31 @@ export default function ContactPage() {
             transition={{ duration: 0.55 }}
             className="mb-8 text-center sm:mb-12"
           >
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
               {copy.eyebrow}
             </p>
-            <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl xl:text-6xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl xl:text-6xl">
               {copy.title}{" "}
-              <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-violet-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-cyan-600 to-violet-600 bg-clip-text text-transparent">
                 {copy.titleHighlight}
               </span>
             </h1>
-            <p className="mx-auto mt-4 max-w-md text-base leading-7 text-slate-400">
+            <p className="mx-auto mt-4 max-w-md text-base leading-7 text-slate-600">
               {copy.description}
             </p>
 
             {/* Info — inline below heading, no boxes */}
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               {copy.info.map(({ Icon, label, value, href }) => (
-                <span key={label} className="inline-flex items-center gap-2 text-sm text-slate-400">
-                  <Icon size={14} className="shrink-0 text-blue-400" />
+                <span key={label} className="inline-flex items-center gap-2 text-sm text-slate-600">
+                  <Icon size={14} className="shrink-0 text-blue-600" />
                   <span className="text-slate-500">{label}:</span>
                   {href ? (
-                    <a href={href} className="font-medium text-slate-300 transition hover:text-white select-all">
+                    <a href={href} className="font-medium text-slate-700 transition hover:text-slate-900 select-all">
                       {value}
                     </a>
                   ) : (
-                    <span className="font-medium text-slate-300">{value}</span>
+                    <span className="font-medium text-slate-700">{value}</span>
                   )}
                 </span>
               ))}
@@ -193,7 +193,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.12 }}
-            className="relative rounded-[1rem] border border-blue-200/12 bg-white/[0.03] p-5 shadow-2xl shadow-blue-950/20 backdrop-blur-xl sm:p-8"
+            className="relative rounded-[1rem] border border-slate-200 bg-white/85 p-5 shadow-2xl shadow-blue-200/30 backdrop-blur-xl sm:p-8"
           >
             {/* Decorative blurs in their own clipped wrapper */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[1rem]">
@@ -207,14 +207,14 @@ export default function ContactPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="relative flex flex-col items-center justify-center gap-4 py-12 text-center"
               >
-                <div className="grid size-14 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-violet-600 shadow-lg shadow-blue-500/30">
+                <div className="grid size-14 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-violet-600 shadow-lg shadow-blue-300/50">
                   <CheckCircle2 size={26} className="text-white" />
                 </div>
-                <h2 className="text-xl font-semibold text-white">{copy.form.successTitle}</h2>
-                <p className="max-w-xs text-sm leading-6 text-slate-400">{copy.form.successDesc}</p>
+                <h2 className="text-xl font-semibold text-slate-900">{copy.form.successTitle}</h2>
+                <p className="max-w-xs text-sm leading-6 text-slate-600">{copy.form.successDesc}</p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="mt-1 text-sm text-blue-400 transition hover:text-blue-300"
+                  className="mt-1 text-sm text-blue-600 transition hover:text-blue-700"
                 >
                   {copy.form.newMessage}
                 </button>
@@ -223,7 +223,7 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} className="relative grid gap-5">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-medium text-slate-300">{copy.form.name}</label>
+                    <label className="text-sm font-medium text-slate-700">{copy.form.name}</label>
                     <input
                       required
                       type="text"
@@ -234,7 +234,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-medium text-slate-300">{copy.form.email}</label>
+                    <label className="text-sm font-medium text-slate-700">{copy.form.email}</label>
                     <input
                       required
                       type="email"
@@ -247,7 +247,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-slate-300">{copy.form.subject}</label>
+                  <label className="text-sm font-medium text-slate-700">{copy.form.subject}</label>
                   <input
                     type="text"
                     value={subject}
@@ -258,7 +258,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-slate-300">{copy.form.message}</label>
+                  <label className="text-sm font-medium text-slate-700">{copy.form.message}</label>
                   <textarea
                     required
                     rows={5}
@@ -271,9 +271,9 @@ export default function ContactPage() {
 
                 {/* Upload */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-slate-300">{copy.form.uploadLabel}</label>
+                  <label className="text-sm font-medium text-slate-700">{copy.form.uploadLabel}</label>
                   {file ? (
-                    <div className="flex items-center gap-3 rounded-[0.75rem] border border-blue-200/15 bg-white/[0.04] px-4 py-3">
+                    <div className="flex items-center gap-3 rounded-[0.75rem] border border-slate-300 bg-white px-4 py-3">
                       <div className="flex min-w-0 flex-1 items-center gap-3">
                         <img
                           src={URL.createObjectURL(file)}
@@ -283,14 +283,14 @@ export default function ContactPage() {
                           className="size-10 shrink-0 rounded-lg object-cover"
                         />
                         <div className="min-w-0">
-                          <p className="truncate text-sm font-medium text-slate-200">{file.name}</p>
+                          <p className="truncate text-sm font-medium text-slate-800">{file.name}</p>
                           <p className="text-xs text-slate-500">{(file.size / 1024).toFixed(0)} KB</p>
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => setFile(null)}
-                        className="shrink-0 rounded-lg p-1.5 text-slate-500 transition hover:bg-white/10 hover:text-white"
+                        className="shrink-0 rounded-lg p-1.5 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
                         aria-label={copy.form.uploadRemove}
                       >
                         <X size={14} />
@@ -304,18 +304,18 @@ export default function ContactPage() {
                       onClick={() => fileRef.current?.click()}
                       className={`flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-[0.75rem] border-2 border-dashed px-4 py-7 text-center transition ${
                         dragging
-                          ? "border-blue-400/60 bg-blue-500/10"
-                          : "border-blue-200/15 bg-white/[0.02] hover:border-blue-400/30 hover:bg-white/[0.04]"
+                          ? "border-blue-500/70 bg-blue-50"
+                          : "border-slate-300 bg-white/60 hover:border-blue-400/60 hover:bg-white"
                       }`}
                     >
-                      <div className="grid size-10 place-items-center rounded-[0.65rem] bg-blue-500/15 text-blue-300 ring-1 ring-blue-400/20">
+                      <div className="grid size-10 place-items-center rounded-[0.65rem] bg-blue-100 text-blue-600 ring-1 ring-blue-300/60">
                         <ImagePlus size={18} />
                       </div>
-                      <p className="text-sm text-slate-400">
+                      <p className="text-sm text-slate-600">
                         {copy.form.uploadHint}{" "}
-                        <span className="font-medium text-blue-400">{copy.form.uploadBtn}</span>
+                        <span className="font-medium text-blue-600">{copy.form.uploadBtn}</span>
                       </p>
-                      <p className="text-xs text-slate-600">{copy.form.uploadTypes}</p>
+                      <p className="text-xs text-slate-500">{copy.form.uploadTypes}</p>
                       <input
                         ref={fileRef}
                         type="file"
@@ -328,7 +328,7 @@ export default function ContactPage() {
                 </div>
 
                 {sendError && (
-                  <p className="rounded-[0.75rem] border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                  <p className="rounded-[0.75rem] border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
                     {sendError}
                   </p>
                 )}
@@ -355,7 +355,7 @@ export default function ContactPage() {
           </motion.div>
 
           <div className="mt-6 text-center">
-            <a href="/" className="text-sm text-slate-500 transition hover:text-slate-300">
+            <a href="/" className="text-sm text-slate-500 transition hover:text-slate-900">
               {copy.form.backHome}
             </a>
           </div>
@@ -365,25 +365,25 @@ export default function ContactPage() {
 
       <footer className="px-4 pb-8">
         <div className="mx-auto max-w-4xl">
-          <div className="border-t border-blue-200/10 pt-8">
+          <div className="border-t border-slate-200 pt-8">
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="mb-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-400/60">
+                <p className="mb-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-600/80">
                   {navCopy.footer.infoLabel}
                 </p>
-                <p className="text-sm font-medium text-slate-300">{navCopy.footer.companyName}</p>
+                <p className="text-sm font-medium text-slate-700">{navCopy.footer.companyName}</p>
                 <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-0.5 text-xs text-slate-500">
                   <span>{navCopy.footer.owner}</span>
                   <span>{navCopy.footer.mbo}</span>
-                  <a href="mailto:nepar@nepar.hr" className="transition hover:text-slate-300">
+                  <a href="mailto:nepar@nepar.hr" className="transition hover:text-slate-900">
                     {navCopy.footer.email}
                   </a>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-between gap-2 border-t border-blue-200/10 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
+            <div className="flex flex-col items-center justify-between gap-2 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
               <p>{navCopy.footer.copyright}</p>
-              <a href="/" className="transition hover:text-slate-200">
+              <a href="/" className="transition hover:text-slate-900">
                 {copy.form.backHome}
               </a>
             </div>
