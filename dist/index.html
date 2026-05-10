@@ -13,7 +13,21 @@
         try {
           if ("scrollRestoration" in history) history.scrollRestoration = "manual";
           if (location.hash) history.replaceState(null, "", location.pathname + location.search);
-          window.scrollTo(0, 0);
+          var root = document.documentElement;
+          var prev = root.style.scrollBehavior;
+          root.style.scrollBehavior = "auto";
+          var snap = function () { window.scrollTo(0, 0); };
+          snap();
+          if (typeof requestAnimationFrame === "function") {
+            requestAnimationFrame(function () {
+              snap();
+              requestAnimationFrame(snap);
+            });
+          }
+          setTimeout(function () { snap(); root.style.scrollBehavior = prev; }, 50);
+          setTimeout(snap, 200);
+          setTimeout(snap, 600);
+          window.addEventListener("load", snap, { once: true });
         } catch (e) {}
       })();
     </script>
@@ -51,7 +65,7 @@
       content="Nepar Solutions gradi web aplikacije, AI alate, portale i digitalna rješenja po mjeri."
     />
     <meta name="twitter:image" content="/brand/web-app-manifest-512x512.png" />
-    <script type="module" crossorigin src="/assets/index-CzxNpAXh.js"></script>
+    <script type="module" crossorigin src="/assets/index-CFVGYEAT.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-DRMdcEn2.css">
   </head>
   <body>

@@ -1099,6 +1099,20 @@ function HomePage() {
   );
 }
 
+function forceScrollTop() {
+  const root = document.documentElement;
+  const prev = root.style.scrollBehavior;
+  root.style.scrollBehavior = "auto";
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      root.style.scrollBehavior = prev;
+    });
+  });
+}
+
 function ScrollToTop() {
   const { pathname, hash, key } = useLocation();
   const isInitialMount = useRef(true);
@@ -1106,22 +1120,25 @@ function ScrollToTop() {
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
-      window.scrollTo({ top: 0, behavior: "instant" });
       if (hash && window.history.replaceState) {
         window.history.replaceState(null, "", pathname);
       }
-      return;
+      forceScrollTop();
+      const t1 = setTimeout(forceScrollTop, 100);
+      const t2 = setTimeout(forceScrollTop, 400);
+      const t3 = setTimeout(forceScrollTop, 900);
+      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     }
     if (hash) {
       const id = hash.slice(1);
       const timer = setTimeout(() => {
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: "smooth" });
-        else window.scrollTo({ top: 0, behavior: "instant" });
+        else forceScrollTop();
       }, 50);
       return () => clearTimeout(timer);
     }
-    window.scrollTo({ top: 0, behavior: "instant" });
+    forceScrollTop();
   }, [pathname, hash, key]);
   return null;
 }
