@@ -321,20 +321,35 @@ export { content };
 
 export function LanguageToggle({ lang, setLang }) {
   return (
-    <div className="inline-flex shrink-0 rounded-full border border-slate-200 bg-white p-0.5 text-[11px] font-semibold text-slate-700">
-      {["hr", "en"].map((value) => (
-        <button
-          key={value}
-          type="button"
-          onClick={() => setLang(value)}
-          className={`rounded-full px-2.5 py-1 transition ${
-            lang === value ? "bg-blue-500 text-white shadow-md shadow-blue-500/20" : "hover:text-slate-900"
-          }`}
-          aria-pressed={lang === value}
-        >
-          {value === "hr" ? "HR" : "ENG"}
-        </button>
-      ))}
+    <div
+      role="group"
+      aria-label="Language"
+      className="relative inline-flex shrink-0 rounded-full border border-slate-200 bg-white p-0.5 text-[11px] font-semibold text-slate-700 shadow-sm"
+    >
+      {["hr", "en"].map((value) => {
+        const isActive = lang === value;
+        return (
+          <button
+            key={value}
+            type="button"
+            onClick={() => setLang(value)}
+            className="relative z-10 rounded-full px-2.5 py-1 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+            aria-pressed={isActive}
+          >
+            {isActive && (
+              <motion.span
+                layoutId="lang-toggle-pill"
+                aria-hidden="true"
+                className="absolute inset-0 -z-10 rounded-full bg-blue-500 shadow-md shadow-blue-500/30"
+                transition={{ type: "spring", stiffness: 360, damping: 30 }}
+              />
+            )}
+            <span className={isActive ? "text-white" : "transition-colors hover:text-slate-900"}>
+              {value === "hr" ? "HR" : "ENG"}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -396,7 +411,7 @@ export function Navbar({ lang, setLang, copy }) {
           );
         })()}
 
-        <div className="hidden items-center gap-8 lg:flex">
+        <div className="hidden items-center gap-2 lg:flex">
           {copy.navLinks.map(([label, href, Icon]) => {
             const resolved = resolveHref(href);
             const isRouter = resolved.startsWith("/") && !resolved.startsWith("//") && !resolved.includes(":");
@@ -408,14 +423,27 @@ export function Navbar({ lang, setLang, copy }) {
                 key={href}
                 {...linkProp}
                 aria-current={isActive ? "true" : undefined}
-                className={`relative inline-flex items-center gap-2 text-base font-medium transition after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-blue-500 after:transition-transform after:duration-300 ${
-                  isActive
-                    ? "text-blue-600 after:scale-x-100"
-                    : "text-slate-700 hover:text-slate-900 after:scale-x-0"
+                className={`group relative inline-flex items-center gap-2 rounded-lg px-3 py-2 text-base font-medium transition-colors duration-200 hover:text-blue-600 ${
+                  isActive ? "text-blue-600" : "text-slate-700"
                 }`}
               >
-                {Icon && <Icon size={20} className="text-blue-600" />}
-                {label}
+                {Icon && (
+                  <Icon
+                    size={20}
+                    className={`transition-colors duration-200 ${
+                      isActive ? "text-blue-600" : "text-blue-500 group-hover:text-blue-600"
+                    }`}
+                  />
+                )}
+                <span className="relative">
+                  {label}
+                  <span
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute -bottom-1 left-0 h-0.5 w-full origin-left rounded-full bg-blue-500 transition-transform duration-300 ${
+                      isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </span>
               </Comp>
             );
           })}
@@ -427,16 +455,17 @@ export function Navbar({ lang, setLang, copy }) {
 
         <a
           href="mailto:nepar@nepar.hr"
-          className="hidden select-all items-center gap-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-violet-600 px-4 py-2.5 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:shadow-blue-500/50 hover:brightness-110 lg:inline-flex"
+          className="hidden select-all items-center gap-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-violet-600 px-4 py-2.5 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/45 hover:brightness-110 lg:inline-flex"
         >
           <Mail className="shrink-0" size={18} />
           nepar@nepar.hr
         </a>
 
         <button
-          className="grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white/80 text-slate-700 sm:size-14 sm:rounded-2xl lg:hidden"
+          className="grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white/80 text-slate-700 transition-colors duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 sm:size-14 sm:rounded-2xl lg:hidden"
           onClick={() => setOpen((value) => !value)}
           aria-label={copy.menuLabel}
+          aria-expanded={open}
         >
           {open ? <X className="size-5 sm:size-[26px]" /> : <Menu className="size-5 sm:size-[26px]" />}
         </button>
@@ -456,14 +485,27 @@ export function Navbar({ lang, setLang, copy }) {
                 const isRouter = resolved.startsWith("/") && !resolved.startsWith("//") && !resolved.includes(":");
                 const Comp = isRouter ? Link : "a";
                 const linkProp = isRouter ? { to: resolved } : { href: resolved };
+                const isActive = href.startsWith("#") && activeSection === href.slice(1);
                 return (
                   <Comp
                     key={href}
                     {...linkProp}
                     onClick={() => setOpen(false)}
-                    className="inline-flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100 sm:rounded-2xl sm:px-5 sm:py-4 sm:text-base"
+                    aria-current={isActive ? "true" : undefined}
+                    className={`group inline-flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 sm:rounded-2xl sm:px-5 sm:py-4 sm:text-base ${
+                      isActive
+                        ? "bg-blue-50 text-blue-600"
+                        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
                   >
-                    {Icon && <Icon size={20} className="text-blue-600" />}
+                    {Icon && (
+                      <Icon
+                        size={20}
+                        className={`transition-transform duration-200 group-hover:translate-x-0.5 ${
+                          isActive ? "text-blue-600" : "text-blue-500"
+                        }`}
+                      />
+                    )}
                     {label}
                   </Comp>
                 );
@@ -1058,8 +1100,18 @@ function HomePage() {
 }
 
 function ScrollToTop() {
-  const { pathname, hash } = useLocation();
+  const { pathname, hash, key } = useLocation();
+  const isInitialMount = useRef(true);
+
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      window.scrollTo({ top: 0, behavior: "instant" });
+      if (hash && window.history.replaceState) {
+        window.history.replaceState(null, "", pathname);
+      }
+      return;
+    }
     if (hash) {
       const id = hash.slice(1);
       const timer = setTimeout(() => {
@@ -1070,7 +1122,7 @@ function ScrollToTop() {
       return () => clearTimeout(timer);
     }
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, [pathname, hash]);
+  }, [pathname, hash, key]);
   return null;
 }
 
