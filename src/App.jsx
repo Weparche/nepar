@@ -392,7 +392,7 @@ export function Navbar({ lang, setLang, copy }) {
       <nav className="mx-auto flex max-w-[1180px] items-center justify-between rounded-xl border border-slate-200/80 bg-white/80 px-2 py-1.5 shadow-xl shadow-blue-200/40 backdrop-blur-md sm:rounded-2xl sm:px-3 sm:py-1 sm:backdrop-blur-xl lg:max-w-[1380px] lg:px-4">
         {(() => {
           const logoInner = (
-            <span className="grid h-10 w-[7.35rem] place-items-center overflow-hidden rounded-xl sm:h-[3.85rem] sm:w-[11.25rem] sm:rounded-2xl">
+            <span className="grid h-12 w-[8.82rem] place-items-center overflow-hidden rounded-xl sm:h-[4.62rem] sm:w-[13.5rem] sm:rounded-2xl">
               <img
                 src="/brand/nepar_logo.webp"
                 alt="Nepar Solutions logo"
