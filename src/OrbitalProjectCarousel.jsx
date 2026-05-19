@@ -160,12 +160,13 @@ const carouselContent = {
 };
 
 const CARD_COUNT = carouselContent.hr.cards.length;
+const easeOut = [0.23, 1, 0.32, 1];
 
 function computeCarouselSize(width) {
-  if (width < 480) return { radiusX: 124, radiusY: 24, orbitCenterY: 268, sceneHeight: 334, isMobile: true };
-  if (width < 768) return { radiusX: 178, radiusY: 28, orbitCenterY: 282, sceneHeight: 356, isMobile: true };
-  if (width < 1180) return { radiusX: 326, radiusY: 44, orbitCenterY: 374, sceneHeight: 508, isMobile: false };
-  return { radiusX: 418, radiusY: 50, orbitCenterY: 372, sceneHeight: 508, isMobile: false };
+  if (width < 480) return { radiusX: 124, radiusY: 24, orbitCenterY: 252, sceneHeight: 318, isMobile: true };
+  if (width < 768) return { radiusX: 178, radiusY: 28, orbitCenterY: 270, sceneHeight: 344, isMobile: true };
+  if (width < 1180) return { radiusX: 318, radiusY: 42, orbitCenterY: 356, sceneHeight: 486, isMobile: false };
+  return { radiusX: 408, radiusY: 48, orbitCenterY: 356, sceneHeight: 492, isMobile: false };
 }
 
 function useCarouselSize() {
@@ -194,9 +195,9 @@ function getOrbitalPosition(baseAngle, index, radiusX, radiusY) {
     x,
     y,
     depth,
-    scale: 0.8 + depth * 0.2,
-    opacity: 0.54 + depth * 0.46,
-    rotateY: Math.cos(radians) * -10,
+    scale: 0.82 + depth * 0.18,
+    opacity: 0.62 + depth * 0.38,
+    rotateY: Math.cos(radians) * -7,
     zIndex: Math.round(depth * 100),
   };
 }
@@ -229,8 +230,8 @@ function InvitePreview({ compact = false, copy }) {
         src="/brand/vidimose.webp"
         alt={copy.inviteAlt}
         loading="lazy"
-        animate={compact ? false : { y: [0, -4, 0], scale: [1, 1.015, 1] }}
-        transition={compact ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+        animate={compact ? false : { y: [0, -3, 0], scale: [1, 1.01, 1] }}
+        transition={compact ? undefined : { duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
         className="relative h-full max-h-full w-auto rounded-xl border border-fuchsia-300/40 object-contain shadow-lg shadow-fuchsia-300/30 sm:shadow-2xl sm:shadow-fuchsia-400/30"
       />
     </div>
@@ -252,7 +253,7 @@ function AiPreview({ compact = false, copy }) {
           <motion.span
             key={i}
             animate={compact ? false : { scaleY: [(h - 8) / h, 1, (h - 8) / h] }}
-            transition={compact ? undefined : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            transition={compact ? undefined : { duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
             style={{ height: `${h}%`, transformOrigin: "bottom" }}
             className="flex-1 rounded-t bg-gradient-to-t from-blue-600 to-cyan-300 opacity-80"
           />
@@ -286,8 +287,8 @@ function KadigraPreview({ compact = false, copy }) {
         src="/brand/kadigrahrvatska.webp"
         alt={copy.kadigraAlt}
         loading="lazy"
-        animate={compact ? false : { scale: [1, 1.04, 1] }}
-        transition={compact ? undefined : { duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        animate={compact ? false : { scale: [1, 1.025, 1] }}
+        transition={compact ? undefined : { duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute inset-0 size-full object-cover object-center"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-slate-900/5 to-transparent" />
@@ -302,8 +303,8 @@ function MorePreview({ compact = false, copy }) {
         {[Zap, Heart, Bot, MapPin, DatabaseZap, ChartNoAxesColumnIncreasing].map((Icon, index) => (
           <motion.div
             key={index}
-            animate={compact ? false : { y: [0, index % 2 ? 3 : -3, 0] }}
-            transition={compact ? undefined : { duration: 3 + index * 0.2, repeat: Infinity, ease: "easeInOut" }}
+            animate={compact ? false : { y: [0, index % 2 ? 2 : -2, 0] }}
+            transition={compact ? undefined : { duration: 4 + index * 0.18, repeat: Infinity, ease: "easeInOut" }}
             className="grid h-9 place-items-center rounded-lg border border-violet-200/70 bg-violet-50 sm:h-16"
           >
             <Icon className="text-violet-600" size={17} />
@@ -338,7 +339,7 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, 
   return (
     <CardShell
       {...linkProps}
-      className={`orbital-card relative block w-[158px] overflow-hidden rounded-xl border bg-white/90 p-2 shadow-md shadow-blue-200/40 sm:w-[230px] sm:rounded-2xl sm:p-3 sm:backdrop-blur-xl xl:w-[246px] ${
+      className={`orbital-card premium-card relative block w-[158px] overflow-hidden p-2 sm:w-[230px] sm:p-3 xl:w-[246px] ${
         card.href ? "cursor-pointer" : ""
       }`}
       style={{
@@ -347,8 +348,9 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, 
         boxShadow,
         borderColor,
       }}
-      whileHover={isMobile ? undefined : { y: -8, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 220, damping: 24 }}
+      whileHover={isMobile ? undefined : { y: -5, scale: 1.012 }}
+      whileTap={card.href ? { scale: 0.985 } : undefined}
+      transition={{ type: "spring", stiffness: 320, damping: 30 }}
     >
       <div className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/60 to-transparent" />
       <div className="pointer-events-none absolute -right-10 -top-12 hidden size-28 rounded-full bg-blue-400/10 blur-2xl sm:block" />
@@ -384,8 +386,8 @@ function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMob
   });
   const boxShadow = useTransform(angle, (value) => {
     const depth = getOrbitalPosition(value, index, radiusX, radiusY).depth;
-    const alpha = 0.12 + depth * 0.24;
-    return `0 0 ${18 + depth * 28}px rgba(59,130,246,${alpha})`;
+    const alpha = 0.1 + depth * 0.18;
+    return `0 ${10 + depth * 14}px ${22 + depth * 24}px rgba(15,23,42,${alpha})`;
   });
   const borderColor = useTransform(angle, (value) => {
     const depth = getOrbitalPosition(value, index, radiusX, radiusY).depth;
@@ -438,7 +440,8 @@ function OrbitDot({ card, index, angle, radiusX, radiusY, onClick, label }) {
       type="button"
       onClick={onClick}
       style={{ opacity, width }}
-      className="h-2.5 rounded-full bg-blue-500"
+      whileTap={{ scale: 0.92 }}
+      className="pressable h-2.5 rounded-full bg-blue-500 transition-colors duration-200 hover:bg-cyan-500"
       aria-label={`${label} ${card.title}`}
     />
   );
@@ -449,9 +452,10 @@ function OrbitButton({ direction, onClick, children, copy }) {
     <motion.button
       type="button"
       onClick={onClick}
-      whileHover={{ scale: 1.08 }}
+      whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 0.94 }}
-      className={`absolute top-[46%] z-[140] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-blue-300/60 bg-white/85 text-blue-700 shadow-[0_0_16px_rgba(59,130,246,0.18)] backdrop-blur-md transition hover:border-blue-500 hover:text-blue-900 sm:size-12 sm:border-blue-400/60 sm:shadow-[0_0_28px_rgba(59,130,246,0.22)] sm:backdrop-blur-xl ${
+      transition={{ type: "spring", stiffness: 500, damping: 34 }}
+      className={`pressable absolute top-[46%] z-[140] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-blue-200/80 bg-white/[0.88] text-blue-700 shadow-lg shadow-blue-200/30 backdrop-blur-xl transition-colors duration-200 hover:border-blue-400 hover:text-blue-900 sm:size-12 ${
         direction === "left" ? "-left-2 sm:left-0" : "-right-2 sm:right-0"
       }`}
       aria-label={direction === "left" ? copy.previous : copy.next}
@@ -490,13 +494,13 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
       ref={containerRef}
       initial={{ opacity: 0, x: 36 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, delay: 0.16 }}
-      className="relative mx-auto mt-1 w-full min-w-0 max-w-[1010px] sm:mt-8 lg:mt-0"
+      transition={{ duration: 0.52, delay: 0.12, ease: easeOut }}
+      className="relative mx-auto mt-1 w-full min-w-0 max-w-[1010px] sm:mt-6 lg:mt-0"
     >
-      <div className="absolute inset-x-8 top-20 hidden h-72 rounded-full bg-blue-500/10 blur-3xl sm:block" />
+      <div className="absolute inset-x-8 top-20 hidden h-72 rounded-full bg-blue-500/10 opacity-70 blur-3xl sm:block" />
       <div className="relative" style={{ height: sceneHeight, perspective: isMobile ? 900 : 1450 }}>
         <div
-          className="absolute left-1/2 rounded-[50%] bg-gradient-to-r from-transparent via-blue-400/18 to-transparent blur-lg sm:blur-2xl"
+          className="absolute left-1/2 rounded-[50%] bg-gradient-to-r from-transparent via-blue-400/12 to-transparent blur-lg sm:blur-2xl"
           style={{
             top: orbitCenterY - radiusY - 18,
             width: radiusX * 2.05,
@@ -521,7 +525,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
             transform: "translateX(-50%)",
           }}
         >
-          <div className="absolute -inset-4 rounded-[50%] bg-[radial-gradient(ellipse_at_center,transparent_46%,rgba(6,182,212,0.16)_55%,rgba(37,99,235,0.18)_61%,rgba(217,70,239,0.12)_68%,transparent_76%)] blur-md sm:-inset-10 sm:bg-[radial-gradient(ellipse_at_center,transparent_46%,rgba(6,182,212,0.20)_55%,rgba(37,99,235,0.24)_61%,rgba(217,70,239,0.18)_68%,transparent_76%)] sm:blur-2xl" />
+          <div className="absolute -inset-4 rounded-[50%] bg-[radial-gradient(ellipse_at_center,transparent_48%,rgba(6,182,212,0.11)_57%,rgba(37,99,235,0.13)_63%,rgba(217,70,239,0.08)_70%,transparent_78%)] blur-md sm:-inset-10 sm:bg-[radial-gradient(ellipse_at_center,transparent_48%,rgba(6,182,212,0.14)_57%,rgba(37,99,235,0.16)_63%,rgba(217,70,239,0.10)_70%,transparent_78%)] sm:blur-2xl" />
           <svg
             className="absolute overflow-visible"
             style={{
@@ -542,11 +546,11 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
                 y2="52%"
               >
                 <stop offset="0%" stopColor="rgba(37,99,235,0.05)" />
-                <stop offset="14%" stopColor="rgba(56,189,248,0.76)" />
-                <stop offset="34%" stopColor="rgba(34,211,238,0.95)" />
-                <stop offset="55%" stopColor="rgba(99,102,241,0.88)" />
-                <stop offset="74%" stopColor="rgba(217,70,239,0.82)" />
-                <stop offset="90%" stopColor="rgba(250,204,21,0.46)" />
+              <stop offset="14%" stopColor="rgba(56,189,248,0.48)" />
+              <stop offset="34%" stopColor="rgba(34,211,238,0.62)" />
+              <stop offset="55%" stopColor="rgba(99,102,241,0.58)" />
+              <stop offset="74%" stopColor="rgba(217,70,239,0.42)" />
+              <stop offset="90%" stopColor="rgba(250,204,21,0.28)" />
                 <stop offset="100%" stopColor="rgba(37,99,235,0.08)" />
               </linearGradient>
               <linearGradient
@@ -573,7 +577,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               rx="470"
               ry="50"
               fill="none"
-              stroke="rgba(59,130,246,0.36)"
+              stroke="rgba(59,130,246,0.22)"
               strokeWidth={isMobile ? 12 : 26}
               filter={isMobile ? undefined : "url(#orbitBlur)"}
             />
@@ -598,7 +602,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
                 strokeWidth="7"
                 strokeLinecap="round"
                 animate={{ opacity: [0.26, 0.72, 0.26] }}
-                transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
               />
             )}
             <ellipse
@@ -607,7 +611,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               rx="470"
               ry="50"
               fill="none"
-              stroke="rgba(30,58,138,0.45)"
+              stroke="rgba(30,58,138,0.28)"
               strokeWidth="2.5"
               strokeLinecap="round"
               opacity="0.75"
@@ -657,11 +661,11 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               transition={{ duration: 7.2, repeat: Infinity, ease: "linear" }}
             >
               <stop offset="0%" stopColor="rgba(37,99,235,0)" />
-              <stop offset="12%" stopColor="rgba(59,130,246,0.55)" />
-              <stop offset="30%" stopColor="rgba(34,211,238,0.98)" />
-              <stop offset="52%" stopColor="rgba(37,99,235,0.85)" />
-              <stop offset="68%" stopColor="rgba(217,70,239,0.9)" />
-              <stop offset="84%" stopColor="rgba(250,204,21,0.62)" />
+              <stop offset="12%" stopColor="rgba(59,130,246,0.34)" />
+              <stop offset="30%" stopColor="rgba(34,211,238,0.62)" />
+              <stop offset="52%" stopColor="rgba(37,99,235,0.54)" />
+              <stop offset="68%" stopColor="rgba(217,70,239,0.52)" />
+              <stop offset="84%" stopColor="rgba(250,204,21,0.34)" />
               <stop offset="100%" stopColor="rgba(37,99,235,0)" />
             </motion.linearGradient>
             <filter id="orbitFrontGlow" x="-20%" y="-140%" width="140%" height="360%">
@@ -671,7 +675,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
           <path
             d="M 42 90 C 218 148 782 148 958 90"
             fill="none"
-            stroke="rgba(59,130,246,0.45)"
+            stroke="rgba(59,130,246,0.25)"
             strokeWidth="26"
             strokeLinecap="round"
             filter="url(#orbitFrontGlow)"
@@ -686,14 +690,14 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
           <path
             d="M 42 90 C 218 148 782 148 958 90"
             fill="none"
-            stroke="rgba(30,58,138,0.55)"
+            stroke="rgba(30,58,138,0.34)"
             strokeWidth="2.5"
             strokeLinecap="round"
             opacity="0.85"
           />
         </svg>
 
-        <div className="pointer-events-none absolute left-1/2 z-[126] h-3 w-3 -translate-x-1/2 rounded-full border border-blue-400/60 bg-white/85 shadow-[0_0_12px_rgba(59,130,246,0.22)] sm:h-5 sm:w-5 sm:border-blue-400/70 sm:shadow-[0_0_24px_rgba(59,130,246,0.32)]"
+        <div className="pointer-events-none absolute left-1/2 z-[126] h-3 w-3 -translate-x-1/2 rounded-full border border-blue-400/45 bg-white/85 shadow-[0_0_12px_rgba(59,130,246,0.18)] sm:h-5 sm:w-5 sm:border-blue-400/55 sm:shadow-[0_0_24px_rgba(59,130,246,0.22)]"
           style={{
             top: orbitCenterY + radiusY - 10,
             transform: "translateX(-50%)",
@@ -714,7 +718,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               />
             ))}
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs text-slate-700 backdrop-blur-md sm:backdrop-blur-xl max-[767px]:hidden">
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs text-slate-700 shadow-sm backdrop-blur-xl max-[767px]:hidden">
             <motion.span
               animate={{ rotate: 360 }}
               transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
