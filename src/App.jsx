@@ -399,7 +399,7 @@ export function Navbar({ lang, setLang, copy }) {
           const logoInner = (
             <span className="grid h-12 w-[8.82rem] place-items-center overflow-hidden rounded-xl sm:h-[4.62rem] sm:w-[13.5rem] sm:rounded-2xl">
               <img
-                src="/brand/nepar_logo.webp"
+                src="/brand/nepar_logo.png"
                 alt="Nepar Solutions logo"
                 className="size-full object-contain px-2 py-1 sm:px-3 sm:py-2"
               />
