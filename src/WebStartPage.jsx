@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { Background, MotionButton, Navbar, content as siteContent } from "./App.jsx";
 import PackageInquiryModal from "./PackageInquiryModal.jsx";
+import WebTrustSection from "./WebTrustSection.jsx";
 import { usePageMeta } from "./usePageMeta.js";
 
 const PILOT_FILLED = 6;
@@ -77,22 +78,25 @@ const pageCopy = {
     objection: {
       title: "„Imamo Instagram i Google Maps. Treba li nam web?”",
       text: "Instagram, Facebook i Google Maps odlični su za vidljivost. Ali kada potencijalni klijent želi brzo vidjeti vašu ponudu, slike, lokaciju, najčešća pitanja i poslati upit — treba mu jedno jasno mjesto. Zato ova stranica nije zamjena za društvene mreže, nego profesionalni link koji ih povezuje i pretvara interes u konkretan kontakt.",
+      slogan: "Instagram donosi pažnju. Google Maps donosi lokaciju. Web donosi povjerenje i upit.",
     },
     audience: {
       eyebrow: "ZA KOGA JE OVO?",
-      title: "Profesionalan link za lokalne biznise koji već imaju društvene mreže, ali trebaju jasnu prodajnu stranicu.",
+      title: "Za koga je ova usluga?",
+      intro:
+        "Najviše smisla ima za lokalne biznise koji već imaju Instagram, Facebook ili Google Maps, ali žele jedno profesionalno mjesto na koje mogu slati potencijalne klijente.",
       items: [
-        { title: "Obrti i lokalne usluge", description: "Jedan link s ponudom, radnim vremenom i kontaktom za sve kanale.", Icon: Building2, iconCls: "bg-blue-500/15 text-blue-600 ring-blue-400/20" },
-        { title: "Saloni i beauty djelatnosti", description: "Tretmani, cjenik i način rezervacije na jednom mjestu.", Icon: Scissors, iconCls: "bg-fuchsia-500/15 text-fuchsia-600 ring-fuchsia-400/20" },
-        { title: "Dječje igraonice i rođendaonice", description: "Paketi, lokacije i rezervacije roditeljima dostupni odmah.", Icon: PartyPopper, iconCls: "bg-violet-500/15 text-violet-600 ring-violet-400/20" },
-        { title: "Restorani, kafići i dostava", description: "Jelovnik, lokacija i kontakt u nekoliko klikova s mobitela.", Icon: Coffee, iconCls: "bg-amber-500/15 text-amber-600 ring-amber-400/20" },
-        { title: "Apartmani i turističke usluge", description: "Fotografije, sadržaj i kontakt za goste koji traže smještaj.", Icon: Home, iconCls: "bg-cyan-500/15 text-cyan-600 ring-cyan-400/20" },
-        { title: "Servisi i majstori", description: "Jasna ponuda i poziv na akciju kad vas netko traži lokalno.", Icon: Wrench, iconCls: "bg-slate-500/15 text-slate-700 ring-slate-400/20" },
+        { title: "Obrti i lokalne usluge", description: "Za firme koje žele jasno pokazati što rade, gdje se nalaze i kako ih kontaktirati.", Icon: Building2, iconCls: "bg-blue-500/15 text-blue-600 ring-blue-400/20" },
+        { title: "Saloni i beauty djelatnosti", description: "Za frizerske, beauty, nail i slične salone koji žele lakše dobivati upite i termine.", Icon: Scissors, iconCls: "bg-fuchsia-500/15 text-fuchsia-600 ring-fuchsia-400/20" },
+        { title: "Dječje igraonice i rođendaonice", description: "Za prostore koji žele prikazati pakete, slike, lokaciju, termine i upite za rođendane.", Icon: PartyPopper, iconCls: "bg-violet-500/15 text-violet-600 ring-violet-400/20" },
+        { title: "Restorani, kafići i dostava", description: "Za ugostitelje koji žele prikazati ponudu, meni, lokaciju, narudžbe ili rezervacije.", Icon: Coffee, iconCls: "bg-amber-500/15 text-amber-600 ring-amber-400/20" },
+        { title: "Apartmani i turističke usluge", description: "Za iznajmljivače koji žele profesionalan link za slike, lokaciju, sadržaje i upite.", Icon: Home, iconCls: "bg-cyan-500/15 text-cyan-600 ring-cyan-400/20" },
+        { title: "Servisi i majstori", description: "Za uslužne djelatnosti koje žele jasno prikazati područje rada, usluge i kontakt.", Icon: Wrench, iconCls: "bg-slate-500/15 text-slate-700 ring-slate-400/20" },
       ],
     },
     steps: {
       eyebrow: "KAKO FUNKCIONIRA?",
-      title: "Od upita do aktivnog linka u četiri jasna koraka.",
+      title: "Kako funkcionira?",
       items: [
         { title: "Pošaljete osnovne podatke", description: "Naziv, djelatnost, usluge, lokaciju, kontakt, slike i što želite istaknuti." },
         { title: "Pripremimo prijedlog stranice", description: "Dobivate moderan preview s tekstovima, dizajnom, kontakt gumbom i osnovnim SEO postavkama." },
@@ -102,7 +106,9 @@ const pageCopy = {
     },
     packages: {
       eyebrow: "PAKETI",
-      title: "Tri razine — od jednostavnog linka do naprednih upita i analitike.",
+      title: "Paketi za različite potrebe",
+      intro:
+        "Krenite jednostavno ili odaberite paket s više sadržaja, analitikom i upitima. Bez početnog troška izrade i bez dugoročne ugovorne obveze.",
       billing: {
         monthly: "Mjesečno",
         yearly: "Godišnje",
@@ -219,17 +225,20 @@ const pageCopy = {
       items: [
         { q: "Zašto mi treba web ako imam Instagram, Facebook i Google Maps?", a: "Društvene mreže i Google Maps odlični su za vidljivost, ali web daje jedno jasno mjesto gdje klijent može brzo vidjeti vašu ponudu, slike, lokaciju, najčešća pitanja i poslati upit. Web nije zamjena za te kanale, nego profesionalni link koji ih povezuje." },
         { q: "Mogu li link staviti na Instagram i Google Maps?", a: "Da. Link možete koristiti na Instagram profilu, Facebook stranici, Google Business profilu, WhatsApp porukama, oglasima, QR kodovima i vizitkama." },
-        { q: "Koji paket je najbolji za početak?", a: "Za većinu lokalnih firmi najbolji izbor je Web Business jer uključuje više sekcija, galeriju, bolju prezentaciju ponude, osnovnu analitiku i do 3 manje izmjene mjesečno." },
-        { q: "Što znači da se stranica deaktivira nakon otkazivanja?", a: "Ako otkažete pretplatu, stranica se više ne prikazuje javno. Domena, ako je registrirana na ime klijenta, ostaje vlasništvo klijenta." },
-        { q: "Mogu li kasnije prijeći na veći paket?", a: "Da. Možete krenuti s manjim paketom i kasnije prijeći na Business ili Pro ako želite više sekcija, analitiku, upite ili rezervacije." },
-        { q: "Je li ovo jednako kao klasična izrada web stranice?", a: "Ne. Ovo je pretplatni model bez početnog troška izrade. Klasična jednokratna izrada web stranice može se dogovoriti posebno." },
         { q: "Moram li platiti izradu stranice?", a: "Ne. Kod ove ponude nema početnog troška izrade. Plaća se samo mjesečna pretplata ako odlučite aktivirati stranicu." },
         { q: "Koliko traje besplatan pregled?", a: "Prvih 7 dana možete pregledati prijedlog stranice bez obveze." },
+        { q: "Mogu li otkazati kad god želim?", a: "Da. Nema dugoročne ugovorne obveze. Ako otkažete, stranica se deaktivira." },
+        { q: "Koji paket je najbolji za početak?", a: "Za većinu lokalnih firmi najbolji izbor je Web Business jer uključuje više sekcija, galeriju, bolju prezentaciju ponude, osnovnu analitiku i do 3 manje izmjene mjesečno." },
+        { q: "Što ako želim zadržati web bez pretplate?", a: "Moguć je jednokratni otkup stranice prema dogovoru." },
+        { q: "Mogu li kasnije prijeći na veći paket?", a: "Da. Možete krenuti s manjim paketom i kasnije prijeći na Business ili Pro ako želite više sekcija, analitiku, upite ili rezervacije." },
+        { q: "Je li ovo jednako kao klasična izrada web stranice?", a: "Ne. Ovo je pretplatni model bez početnog troška izrade. Klasična jednokratna izrada web stranice može se dogovoriti posebno." },
+        { q: "Za koje djelatnosti je ova ponuda najbolja?", a: "Najviše smisla ima za male obrte, salone, restorane, igraonice, servise, apartmane i lokalne usluge koje žele brzo dobiti profesionalnu online prisutnost." },
       ],
     },
     finalCta: {
       title: "Želite da pripremimo prijedlog vaše stranice?",
-      description: "Pošaljite osnovne podatke o poslu i pripremit ćemo vam prijedlog prodajne stranice bez početnog troška.",
+      description:
+        "Pošaljite nam svoj Instagram, Facebook ili Google Maps profil. Pripremit ćemo vam prijedlog profesionalne stranice koja sve vaše kanale povezuje u jedan jasan link za upite.",
       button: "Pošaljite upit",
     },
     backHome: "← Natrag na početnu",
@@ -258,22 +267,25 @@ const pageCopy = {
     objection: {
       title: "“We have Instagram and Google Maps. Do we need a website?”",
       text: "Social profiles and Google Maps are great for visibility. But when a potential client wants to quickly see your offer, photos, location, FAQs, and send an inquiry, they need one clear place. This page is not a replacement for social media — it is the professional link that connects them and turns interest into contact.",
+      slogan: "Instagram brings attention. Google Maps brings location. Your website brings trust and inquiries.",
     },
     audience: {
       eyebrow: "WHO IS THIS FOR?",
-      title: "A professional link for local businesses that already use social media but need a clear sales page.",
+      title: "Who is this service for?",
+      intro:
+        "It makes the most sense for local businesses that already use Instagram, Facebook, or Google Maps but want one professional place to send potential clients.",
       items: [
-        { title: "Trades and local services", description: "One link with your offer, hours, and contact for every channel.", Icon: Building2, iconCls: "bg-blue-500/15 text-blue-600 ring-blue-400/20" },
-        { title: "Salons and beauty businesses", description: "Treatments, pricing, and booking in one place.", Icon: Scissors, iconCls: "bg-fuchsia-500/15 text-fuchsia-600 ring-fuchsia-400/20" },
-        { title: "Kids' playrooms and party venues", description: "Packages, locations, and bookings for parents instantly.", Icon: PartyPopper, iconCls: "bg-violet-500/15 text-violet-600 ring-violet-400/20" },
-        { title: "Restaurants, cafés, and delivery", description: "Menu, location, and contact in a few taps on mobile.", Icon: Coffee, iconCls: "bg-amber-500/15 text-amber-600 ring-amber-400/20" },
-        { title: "Apartments and tourism services", description: "Photos, content, and contact for guests looking for accommodation.", Icon: Home, iconCls: "bg-cyan-500/15 text-cyan-600 ring-cyan-400/20" },
-        { title: "Repair services and tradespeople", description: "A clear offer and call to action when locals search for you.", Icon: Wrench, iconCls: "bg-slate-500/15 text-slate-700 ring-slate-400/20" },
+        { title: "Trades and local services", description: "For businesses that want to clearly show what they do, where they are, and how to get in touch.", Icon: Building2, iconCls: "bg-blue-500/15 text-blue-600 ring-blue-400/20" },
+        { title: "Salons and beauty businesses", description: "For hair, beauty, nail, and similar salons that want easier inquiries and bookings.", Icon: Scissors, iconCls: "bg-fuchsia-500/15 text-fuchsia-600 ring-fuchsia-400/20" },
+        { title: "Kids' playrooms and party venues", description: "For venues that want to show packages, photos, location, dates, and birthday inquiries.", Icon: PartyPopper, iconCls: "bg-violet-500/15 text-violet-600 ring-violet-400/20" },
+        { title: "Restaurants, cafés, and delivery", description: "For hospitality businesses that want to show their offer, menu, location, orders, or reservations.", Icon: Coffee, iconCls: "bg-amber-500/15 text-amber-600 ring-amber-400/20" },
+        { title: "Apartments and tourism services", description: "For hosts who want a professional link for photos, location, content, and inquiries.", Icon: Home, iconCls: "bg-cyan-500/15 text-cyan-600 ring-cyan-400/20" },
+        { title: "Repair services and tradespeople", description: "For service businesses that want to clearly show their area, services, and contact details.", Icon: Wrench, iconCls: "bg-slate-500/15 text-slate-700 ring-slate-400/20" },
       ],
     },
     steps: {
       eyebrow: "HOW IT WORKS",
-      title: "From inquiry to a live link in four clear steps.",
+      title: "How it works",
       items: [
         { title: "You send basic details", description: "Business name, activity, services, location, contact, images, and what to highlight." },
         { title: "We prepare a website proposal", description: "You receive a modern preview with copy, design, a contact button, and basic SEO settings." },
@@ -283,7 +295,9 @@ const pageCopy = {
     },
     packages: {
       eyebrow: "PLANS",
-      title: "Three levels — from a simple link to advanced inquiries and analytics.",
+      title: "Plans for different needs",
+      intro:
+        "Start simple or choose a plan with more content, analytics, and inquiries. No upfront build cost and no long-term contract.",
       billing: {
         monthly: "Monthly",
         yearly: "Yearly",
@@ -400,17 +414,20 @@ const pageCopy = {
       items: [
         { q: "Why do I need a website if I have Instagram, Facebook, and Google Maps?", a: "Social profiles and Google Maps are great for visibility, but a website gives one clear place where clients can quickly see your offer, photos, location, FAQs, and send an inquiry. It is not a replacement for those channels — it is the professional link that connects them." },
         { q: "Can I put the link on Instagram and Google Maps?", a: "Yes. You can use the link on your Instagram profile, Facebook page, Google Business profile, WhatsApp messages, ads, QR codes, and business cards." },
-        { q: "Which plan is best to start with?", a: "For most local businesses, Web Business is the best choice because it includes more sections, a gallery, stronger offer presentation, basic analytics, and up to 3 minor changes per month." },
-        { q: "What does it mean that the page is deactivated after cancellation?", a: "If you cancel the subscription, the page is no longer publicly visible. If the domain is registered in the client's name, it remains the client's property." },
-        { q: "Can I upgrade to a larger plan later?", a: "Yes. You can start with a smaller plan and move to Business or Pro later if you want more sections, analytics, inquiries, or bookings." },
-        { q: "Is this the same as a classic website build?", a: "No. This is a subscription model with no upfront build cost. A classic one-time website build can be agreed separately." },
         { q: "Do I have to pay for the website build?", a: "No. This offer has no upfront build cost. You only pay a monthly subscription if you decide to activate the site." },
         { q: "How long is the free review period?", a: "You can review the proposal for the first 7 days with no obligation." },
+        { q: "Can I cancel whenever I want?", a: "Yes. There is no long-term contract. If you cancel, the page is deactivated." },
+        { q: "Which plan is best to start with?", a: "For most local businesses, Web Business is the best choice because it includes more sections, a gallery, stronger offer presentation, basic analytics, and up to 3 minor changes per month." },
+        { q: "What if I want to keep the website without a subscription?", a: "A one-time buyout of the website can be agreed separately." },
+        { q: "Can I upgrade to a larger plan later?", a: "Yes. You can start with a smaller plan and move to Business or Pro later if you want more sections, analytics, inquiries, or bookings." },
+        { q: "Is this the same as a classic website build?", a: "No. This is a subscription model with no upfront build cost. A classic one-time website build can be agreed separately." },
+        { q: "Which industries is this offer best for?", a: "It works best for small trades, salons, restaurants, playrooms, service businesses, apartments, and local services that want a professional online presence quickly." },
       ],
     },
     finalCta: {
       title: "Want us to prepare a proposal for your page?",
-      description: "Send basic business details and we will prepare a sales page proposal with no upfront cost.",
+      description:
+        "Send us your Instagram, Facebook, or Google Maps profile. We will prepare a professional page proposal that connects all your channels into one clear link for inquiries.",
       button: "Send an inquiry",
     },
     backHome: "← Back to home",
@@ -766,14 +783,20 @@ export default function WebStartPage() {
         >
           <h2 className="text-lg font-semibold leading-snug text-slate-900 sm:text-xl">{copy.objection.title}</h2>
           <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">{copy.objection.text}</p>
+          <p className="mt-4 rounded-xl border border-slate-200/80 bg-slate-50/70 px-4 py-3 text-sm font-medium leading-6 text-slate-800 sm:text-base">
+            {copy.objection.slogan}
+          </p>
         </motion.div>
       </section>
+
+      <WebTrustSection lang={lang} showHighlight={false} />
 
       <section className="px-4 py-8 sm:py-10">
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <motion.div {...reveal} className="mb-8 max-w-2xl">
             <SectionEyebrow>{copy.audience.eyebrow}</SectionEyebrow>
             <h2 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">{copy.audience.title}</h2>
+            <p className="mt-4 text-base leading-7 text-slate-600">{copy.audience.intro}</p>
           </motion.div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {copy.audience.items.map(({ title, description, Icon, iconCls }, index) => (
@@ -822,6 +845,7 @@ export default function WebStartPage() {
           <motion.div {...reveal} className="mb-8 max-w-2xl">
             <SectionEyebrow>{copy.packages.eyebrow}</SectionEyebrow>
             <h2 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">{copy.packages.title}</h2>
+            <p className="mt-4 text-base leading-7 text-slate-600">{copy.packages.intro}</p>
           </motion.div>
           <BillingToggle billing={billing} onChange={setBilling} labels={copy.packages.billing} />
           <div className="grid items-stretch gap-5 lg:grid-cols-3 lg:gap-4 xl:gap-6">

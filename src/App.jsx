@@ -158,6 +158,11 @@ const content = {
       title: "Jedan profesionalni link za va\u0161 posao",
       description:
         "Instagram, Facebook i Google Maps ve\u0107 vam donose vidljivost. Mi dodajemo prodajnu stranicu koja sve to povezuje i pretvara posjete u konkretne upite \u2014 bez po\u010detnog tro\u0161ka izrade.",
+      highlight:
+        "Jedan profesionalni link koji pretvara Instagram, Facebook i Google Maps posjete u konkretne upite.",
+      trustStat:
+        "potro\u0161a\u010da smatra da je poslovanje s web stranicom vjerodostojnije od poslovanja koje ima samo profil na dru\u0161tvenim mre\u017eama.",
+      trustSource: "Izvor: Verisign Online Survey",
       cta: "Pogledaj pakete",
       secondaryNote:
         "Pilot ponuda od 30 \u20ac/mj za prvih 10 klijenata. Business paket od 59 \u20ac/mj i Pro paket od 89 \u20ac/mj za firme koje \u017eele vi\u0161e upita, rezervacija i analitiku.",
@@ -312,6 +317,11 @@ const content = {
       title: "One professional link for your business",
       description:
         "Instagram, Facebook, and Google Maps already bring visibility. We add a sales page that connects them and turns visits into real inquiries \u2014 with no upfront build cost.",
+      highlight:
+        "One professional link that turns Instagram, Facebook, and Google Maps visits into real inquiries.",
+      trustStat:
+        "of consumers believe a business with a website is more credible than one with social media profiles only.",
+      trustSource: "Source: Verisign Online Survey",
       cta: "View plans",
       secondaryNote:
         "Pilot offer from \u20ac30/mo for the first 10 clients. Business plan from \u20ac59/mo and Pro plan from \u20ac89/mo for businesses that want more inquiries, bookings, and analytics.",
@@ -983,6 +993,22 @@ function WebStartPromo({ copy }) {
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{promo.eyebrow}</p>
             <h2 className="text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl">{promo.title}</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">{promo.description}</p>
+            <p className="mt-3 max-w-3xl rounded-xl border border-blue-200/70 bg-blue-50/60 px-4 py-3 text-sm font-medium leading-6 text-slate-800 sm:text-base">
+              {promo.highlight}
+            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.45, ease: easeOut, delay: 0.08 }}
+              className="mt-3 max-w-3xl rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3"
+            >
+              <p className="text-sm leading-6 text-slate-700">
+                <span className="font-semibold text-blue-600">84%</span>{" "}
+                {promo.trustStat}
+              </p>
+              <p className="mt-1 text-xs text-slate-500">{promo.trustSource}</p>
+            </motion.div>
             <p className="mt-3 max-w-3xl text-xs leading-5 text-slate-500 sm:text-sm sm:leading-6">{promo.secondaryNote}</p>
           </div>
 
