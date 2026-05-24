@@ -564,7 +564,7 @@ export function Navbar({ lang, setLang, copy }) {
 
 const MotionLink = motion(Link);
 
-export function MotionButton({ href, children, className = "", variant = "primary" }) {
+export function MotionButton({ href, onClick, children, className = "", variant = "primary", type = "button" }) {
   const primary = variant === "primary";
   const cls = `pressable inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition ${
     primary
@@ -576,6 +576,15 @@ export function MotionButton({ href, children, className = "", variant = "primar
     whileTap: { scale: 0.97 },
     transition: { type: "spring", stiffness: 460, damping: 32 },
   };
+
+  if (onClick) {
+    return (
+      <motion.button type={type} onClick={onClick} {...motionProps} className={cls}>
+        {children}
+      </motion.button>
+    );
+  }
+
   const isRouterLink = href && href.startsWith("/") && !href.includes(":");
 
   return isRouterLink ? (

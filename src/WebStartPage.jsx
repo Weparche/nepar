@@ -20,6 +20,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { Background, MotionButton, Navbar, content as siteContent } from "./App.jsx";
+import PackageInquiryModal from "./PackageInquiryModal.jsx";
 import { usePageMeta } from "./usePageMeta.js";
 
 const PILOT_FILLED = 6;
@@ -33,8 +34,21 @@ const reveal = {
   transition: { duration: 0.55, ease: easeOut },
 };
 
-function contactHref(packageName) {
-  return `/kontakt?tema=${encodeURIComponent(`${packageName} — besplatan prijedlog stranice`)}`;
+function formatPrice(amount, perMonthLabel) {
+  return `${amount} €${perMonthLabel}`;
+}
+
+function getPackagePrice(pkg, billing) {
+  return billing === "yearly" ? pkg.yearlyPrice : pkg.monthlyPrice;
+}
+
+function buildPriceLabel(pkg, billing, labels) {
+  const price = getPackagePrice(pkg, billing);
+  const per = formatPrice(price, labels.perMonth);
+  if (billing === "yearly") {
+    return `${per} (${price * 12} € ${labels.yearlyBilled})`;
+  }
+  return per;
 }
 
 const pageCopy = {
@@ -88,6 +102,14 @@ const pageCopy = {
     packages: {
       eyebrow: "PAKETI",
       title: "Tri razine — od jednostavnog linka do naprednih upita i analitike.",
+      billing: {
+        monthly: "Mjesečno",
+        yearly: "Godišnje",
+        yearlySave: "10 € jeftinije po mjesecu",
+        yearlyBilled: "naplata godišnje",
+        perMonth: "/mj",
+        startPilotNote: "Pilot ponuda — 30 €/mj i za mjesečnu i godišnju naplatu",
+      },
       chooseTitle: "Koji paket odabrati?",
       chooseItems: [
         { name: "Web Start", text: "ako želite jednostavnu i profesionalnu stranicu s kontaktom." },
@@ -98,7 +120,9 @@ const pageCopy = {
         {
           id: "start",
           name: "Web Start",
-          price: "30 €/mj",
+          monthlyPrice: 30,
+          yearlyPrice: 30,
+          fixedPilot: true,
           note: "Pilot cijena za prvih 10 klijenata",
           regular: "Redovna cijena: 49 €/mj",
           description: "Za male obrte i lokalne usluge koje žele profesionalnu online prisutnost bez početnog troška.",
@@ -118,7 +142,9 @@ const pageCopy = {
         {
           id: "business",
           name: "Web Business",
-          price: "59 €/mj",
+          monthlyPrice: 59,
+          yearlyPrice: 49,
+          fixedPilot: false,
           note: null,
           regular: null,
           description: "Za firme koje žele ozbiljniju prezentaciju, više sadržaja, galeriju, analitiku i bolju pripremu za upite.",
@@ -142,7 +168,9 @@ const pageCopy = {
         {
           id: "pro",
           name: "Web Pro",
-          price: "89 €/mj",
+          monthlyPrice: 89,
+          yearlyPrice: 79,
+          fixedPilot: false,
           note: null,
           regular: null,
           description: "Za igraonice, salone, restorane, apartmane i uslužne biznise koji žele više od same stranice — upite, rezervacije ili lead formu.",
@@ -251,6 +279,14 @@ const pageCopy = {
     packages: {
       eyebrow: "PLANS",
       title: "Three levels — from a simple link to advanced inquiries and analytics.",
+      billing: {
+        monthly: "Monthly",
+        yearly: "Yearly",
+        yearlySave: "€10 cheaper per month",
+        yearlyBilled: "billed annually",
+        perMonth: "/mo",
+        startPilotNote: "Pilot offer — €30/mo for both monthly and yearly billing",
+      },
       chooseTitle: "Which plan should you choose?",
       chooseItems: [
         { name: "Web Start", text: "if you want a simple, professional page with contact options." },
@@ -261,7 +297,9 @@ const pageCopy = {
         {
           id: "start",
           name: "Web Start",
-          price: "€30/mo",
+          monthlyPrice: 30,
+          yearlyPrice: 30,
+          fixedPilot: true,
           note: "Pilot price for the first 10 clients",
           regular: "Regular price: €49/mo",
           description: "For small trades and local services that want a professional online presence with no upfront cost.",
@@ -281,7 +319,9 @@ const pageCopy = {
         {
           id: "business",
           name: "Web Business",
-          price: "€59/mo",
+          monthlyPrice: 59,
+          yearlyPrice: 49,
+          fixedPilot: false,
           note: null,
           regular: null,
           description: "For businesses that want a stronger presentation, more content, a gallery, analytics, and better inquiry preparation.",
@@ -305,7 +345,9 @@ const pageCopy = {
         {
           id: "pro",
           name: "Web Pro",
-          price: "€89/mo",
+          monthlyPrice: 89,
+          yearlyPrice: 79,
+          fixedPilot: false,
           note: null,
           regular: null,
           description: "For playrooms, salons, restaurants, apartments, and service businesses that need more than a page — inquiries, bookings, or lead forms.",
@@ -424,8 +466,58 @@ function PilotCapacityBox({ copy }) {
   );
 }
 
-function PackageCard({ pkg, index }) {
+function BillingToggle({ billing, onChange, labels }) {
+  return (
+    <div className="mb-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div
+        role="group"
+        aria-label={`${labels.monthly} / ${labels.yearly}`}
+        className="relative inline-flex rounded-full border border-slate-200/80 bg-white/90 p-1 text-sm font-semibold text-slate-700 shadow-sm backdrop-blur"
+      >
+        {["monthly", "yearly"].map((value) => {
+          const isActive = billing === value;
+          return (
+            <button
+              key={value}
+              type="button"
+              onClick={() => onChange(value)}
+              className="pressable relative z-10 rounded-full px-4 py-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+              aria-pressed={isActive}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="billing-toggle-pill"
+                  aria-hidden="true"
+                  className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 shadow-md shadow-blue-500/25"
+                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                />
+              )}
+              <span className={isActive ? "text-white" : "transition-colors hover:text-slate-900"}>
+                {value === "monthly" ? labels.monthly : labels.yearly}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      {billing === "yearly" && (
+        <motion.span
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200/80"
+        >
+          {labels.yearlySave}
+        </motion.span>
+      )}
+    </div>
+  );
+}
+
+function PackageCard({ pkg, index, billing, labels, onSelect }) {
   const featured = pkg.featured;
+  const price = getPackagePrice(pkg, billing);
+  const showSave = billing === "yearly" && pkg.monthlyPrice > pkg.yearlyPrice;
+  const priceLabel = buildPriceLabel(pkg, billing, labels);
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -458,8 +550,21 @@ function PackageCard({ pkg, index }) {
           </span>
         )}
       </div>
-      <p className="mt-2 text-3xl font-semibold text-slate-900">{pkg.price}</p>
+      <div className="mt-2">
+        {showSave && (
+          <p className="text-sm text-slate-400 line-through">{formatPrice(pkg.monthlyPrice, labels.perMonth)}</p>
+        )}
+        <p className="text-3xl font-semibold text-slate-900">{formatPrice(price, labels.perMonth)}</p>
+        {billing === "yearly" && (
+          <p className="mt-1 text-xs text-slate-500">
+            {price * 12} € {labels.yearlyBilled}
+          </p>
+        )}
+      </div>
       {pkg.note && <p className="mt-1 text-sm font-medium text-blue-700">{pkg.note}</p>}
+      {pkg.fixedPilot && billing === "yearly" && (
+        <p className="mt-1 text-xs font-medium text-blue-600">{labels.startPilotNote}</p>
+      )}
       {pkg.regular && <p className="mt-0.5 text-sm text-slate-500">{pkg.regular}</p>}
       <p className="mt-4 text-sm leading-6 text-slate-600">{pkg.description}</p>
       <ul className="mt-5 flex-1 space-y-2.5">
@@ -471,9 +576,9 @@ function PackageCard({ pkg, index }) {
         ))}
       </ul>
       <MotionButton
-        href={contactHref(pkg.name)}
+        onClick={() => onSelect(pkg, priceLabel)}
         variant={featured ? "primary" : "secondary"}
-        className={`mt-6 inline-flex w-full px-5 py-3.5 text-sm ${featured ? "" : ""}`}
+        className="mt-6 inline-flex w-full px-5 py-3.5 text-sm"
       >
         {pkg.cta}
         <ArrowRight size={16} />
@@ -509,9 +614,22 @@ function FaqItem({ question, answer, index }) {
 
 export default function WebStartPage() {
   const [lang, setLang] = useState("hr");
+  const [billing, setBilling] = useState("monthly");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState(null);
   const navCopy = siteContent[lang];
   const copy = pageCopy[lang];
-  const defaultContact = contactHref("Web Start");
+  const defaultPackage = copy.packages.items[0];
+
+  function openInquiry(pkg = defaultPackage, priceLabel = "") {
+    setSelectedPackage({ name: pkg.name, priceLabel });
+    setModalOpen(true);
+  }
+
+  function openDefaultInquiry() {
+    const priceLabel = buildPriceLabel(defaultPackage, billing, copy.packages.billing);
+    openInquiry(defaultPackage, priceLabel);
+  }
 
   usePageMeta({
     title: copy.meta.title,
@@ -542,7 +660,7 @@ export default function WebStartPage() {
               {copy.hero.highlight}
             </motion.p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <MotionButton href={defaultContact} className="inline-flex px-6 py-4">
+              <MotionButton onClick={openDefaultInquiry} className="inline-flex px-6 py-4">
                 {copy.hero.primary}
                 <Send size={18} />
               </MotionButton>
@@ -632,9 +750,17 @@ export default function WebStartPage() {
             <SectionEyebrow>{copy.packages.eyebrow}</SectionEyebrow>
             <h2 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">{copy.packages.title}</h2>
           </motion.div>
+          <BillingToggle billing={billing} onChange={setBilling} labels={copy.packages.billing} />
           <div className="grid items-stretch gap-5 lg:grid-cols-3 lg:gap-4 xl:gap-6">
             {copy.packages.items.map((pkg, index) => (
-              <PackageCard key={pkg.id} pkg={pkg} index={index} />
+              <PackageCard
+                key={pkg.id}
+                pkg={pkg}
+                index={index}
+                billing={billing}
+                labels={copy.packages.billing}
+                onSelect={(selected, priceLabel) => openInquiry(selected, priceLabel)}
+              />
             ))}
           </div>
           <motion.div {...reveal} className="mt-8 rounded-2xl border border-slate-200/80 bg-white/75 p-5 sm:p-6">
@@ -713,13 +839,22 @@ export default function WebStartPage() {
           <div className="relative">
             <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">{copy.finalCta.title}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-600">{copy.finalCta.description}</p>
-            <MotionButton href={defaultContact} className="mt-6 inline-flex px-6 py-4">
+            <MotionButton onClick={openDefaultInquiry} className="mt-6 inline-flex px-6 py-4">
               {copy.finalCta.button}
               <Send size={18} />
             </MotionButton>
           </div>
         </motion.div>
       </section>
+
+      <PackageInquiryModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        lang={lang}
+        packageName={selectedPackage?.name ?? defaultPackage.name}
+        billing={billing}
+        priceLabel={selectedPackage?.priceLabel ?? buildPriceLabel(defaultPackage, billing, copy.packages.billing)}
+      />
 
       <footer className="px-4 pb-10">
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
