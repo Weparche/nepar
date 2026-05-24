@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import ContactPage from "./ContactPage.jsx";
+import WebStartPage from "./WebStartPage.jsx";
 import {
   ArrowRight,
   Bot,
@@ -142,6 +143,14 @@ const content = {
       title: "Rje\u0161enja koja donose vrijednost.",
       description: "Od ideje do stabilnog proizvoda, brzo i fokusirano na korisnika.",
     },
+    webStartPromo: {
+      eyebrow: "NOVA USLUGA",
+      title: "Web stranica bez po\u010detnog tro\u0161ka",
+      description:
+        "Za male biznise koji \u017eele moderan web bez velike po\u010detne investicije. Prvih 7 dana pregledate prijedlog bez obveze, a ako vam odgovara \u2014 stranica ostaje aktivna od 30 \u20ac/mj u pilot ponudi.",
+      cta: "Saznaj vi\u0161e",
+      pilot: "6 / 10 pilot mjesta popunjeno",
+    },
     featured: {
       eyebrow: "IZDVOJENI PROJEKTI",
       link: "Pogledaj sve projekte",
@@ -281,6 +290,14 @@ const content = {
       eyebrow: "WHAT WE DO",
       title: "Solutions that create value.",
       description: "From idea to stable product, fast and focused on the user.",
+    },
+    webStartPromo: {
+      eyebrow: "NEW SERVICE",
+      title: "Website with no upfront cost",
+      description:
+        "For small businesses that want a modern website without a large upfront investment. Review the proposal free for 7 days, then keep it live from \u20ac30/mo in the pilot offer.",
+      cta: "Learn more",
+      pilot: "6 / 10 pilot spots taken",
     },
     featured: {
       eyebrow: "FEATURED PROJECTS",
@@ -800,6 +817,42 @@ function Services({ copy }) {
   );
 }
 
+function WebStartPromo({ copy }) {
+  const promo = copy.webStartPromo;
+  return (
+    <section className="px-4 py-2 sm:py-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="relative mx-auto max-w-[1180px] overflow-hidden rounded-2xl border border-blue-200/70 bg-white/85 p-5 shadow-xl shadow-blue-200/35 backdrop-blur-md sm:p-7 lg:max-w-[1380px]"
+      >
+        <div className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-cyan-400/10 blur-2xl" />
+        <div className="pointer-events-none absolute -bottom-8 -left-8 size-32 rounded-full bg-violet-400/10 blur-2xl" />
+        <div className="relative grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-8">
+          <div>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{promo.eyebrow}</p>
+            <h2 className="text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl">{promo.title}</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">{promo.description}</p>
+            <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-800 ring-1 ring-blue-200/70">
+              <Sparkles size={14} />
+              {promo.pilot}
+            </p>
+          </div>
+          <MotionButton
+            href="/usluge/web-stranica-bez-pocetnog-troska"
+            className="inline-flex w-full px-6 py-4 lg:w-auto lg:shrink-0"
+          >
+            {promo.cta}
+            <ArrowRight size={18} />
+          </MotionButton>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
 function FeaturedProjects({ copy }) {
   return (
     <section id="projekti" className="px-4 pt-3 pb-5 sm:py-5 scroll-mt-24">
@@ -1065,6 +1118,7 @@ function HomePage() {
       <Hero copy={copy} lang={lang} />
       <StatsBar copy={copy} />
       <Services copy={copy} />
+      <WebStartPromo copy={copy} />
       <FeaturedProjects copy={copy} />
       <About copy={copy} lang={lang} />
       <BottomCta copy={copy} />
@@ -1150,6 +1204,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/kontakt" element={<ContactPage />} />
+        <Route path="/usluge/web-stranica-bez-pocetnog-troska" element={<WebStartPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, ImagePlus, Mail, MapPin, Send, X } from "lucide-react";
 import { Background, content as siteContent, Navbar } from "./App.jsx";
@@ -77,9 +78,11 @@ export default function ContactPage() {
   const copy = contactContent[lang];
   const navCopy = siteContent[lang];
 
+  const [searchParams] = useSearchParams();
+  const initialSubject = searchParams.get("tema") || searchParams.get("subject") || "";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
+  const [subject, setSubject] = useState(initialSubject);
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
