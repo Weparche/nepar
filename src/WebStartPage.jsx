@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
@@ -8,6 +8,7 @@ import {
   ChevronDown,
   Coffee,
   Home,
+  KeyRound,
   Link2,
   Megaphone,
   MessageCircle,
@@ -109,6 +110,10 @@ const pageCopy = {
         yearlyBilled: "naplata godišnje",
         perMonth: "/mj",
         startPilotNote: "Pilot ponuda — 30 €/mj i za mjesečnu i godišnju naplatu",
+        monthlyBadge: "Otkaz u bilo kojem trenutku",
+        monthlyBadgeNote: "Bez dugoročne ugovorne obveze — otkažete kad god želite.",
+        yearlyOwnerBadge: "Plaćeno — web ostaje vlasniku",
+        yearlyOwnerNote: "Nakon uplate stranica i dizajn ostaju aktivni, bez gašenja.",
       },
       chooseTitle: "Koji paket odabrati?",
       chooseItems: [
@@ -286,6 +291,10 @@ const pageCopy = {
         yearlyBilled: "billed annually",
         perMonth: "/mo",
         startPilotNote: "Pilot offer — €30/mo for both monthly and yearly billing",
+        monthlyBadge: "Cancel anytime",
+        monthlyBadgeNote: "No long-term contract — cancel whenever you want.",
+        yearlyOwnerBadge: "Paid upfront — the site stays yours",
+        yearlyOwnerNote: "After payment, your site and design stay active with no shutdown.",
       },
       chooseTitle: "Which plan should you choose?",
       chooseItems: [
@@ -466,48 +475,109 @@ function PilotCapacityBox({ copy }) {
   );
 }
 
+function BillingTrustBadge({ billing, labels, variant = "banner" }) {
+  const isMonthly = billing === "monthly";
+  const Icon = isMonthly ? ShieldCheck : KeyRound;
+  const title = isMonthly ? labels.monthlyBadge : labels.yearlyOwnerBadge;
+  const note = isMonthly ? labels.monthlyBadgeNote : labels.yearlyOwnerNote;
+
+  if (variant === "pill") {
+    return (
+      <motion.span
+        key={billing}
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2, ease: easeOut }}
+        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold leading-tight ring-1 ${
+          isMonthly
+            ? "bg-blue-50 text-blue-700 ring-blue-200/80"
+            : "bg-violet-50 text-violet-700 ring-violet-200/80"
+        }`}
+        title={note}
+      >
+        <Icon size={12} className="shrink-0" />
+        {title}
+      </motion.span>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -6 }}
+      transition={{ duration: 0.22, ease: easeOut }}
+      className={`flex items-start gap-3 rounded-xl border px-4 py-3.5 shadow-sm ${
+        isMonthly
+          ? "border-blue-200/70 bg-gradient-to-r from-blue-50/80 to-white/80 shadow-blue-100/40"
+          : "border-violet-200/70 bg-gradient-to-r from-violet-50/80 to-white/80 shadow-violet-100/40"
+      }`}
+    >
+      <span
+        className={`grid size-9 shrink-0 place-items-center rounded-lg ring-1 ${
+          isMonthly
+            ? "bg-blue-500/15 text-blue-600 ring-blue-400/20"
+            : "bg-violet-500/15 text-violet-600 ring-violet-400/20"
+        }`}
+      >
+        <Icon size={18} />
+      </span>
+      <div>
+        <p className="text-sm font-semibold text-slate-900">{title}</p>
+        <p className="mt-0.5 text-sm leading-6 text-slate-600">{note}</p>
+      </div>
+    </motion.div>
+  );
+}
+
 function BillingToggle({ billing, onChange, labels }) {
   return (
-    <div className="mb-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <div
-        role="group"
-        aria-label={`${labels.monthly} / ${labels.yearly}`}
-        className="relative inline-flex rounded-full border border-slate-200/80 bg-white/90 p-1 text-sm font-semibold text-slate-700 shadow-sm backdrop-blur"
-      >
-        {["monthly", "yearly"].map((value) => {
-          const isActive = billing === value;
-          return (
-            <button
-              key={value}
-              type="button"
-              onClick={() => onChange(value)}
-              className="pressable relative z-10 rounded-full px-4 py-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-              aria-pressed={isActive}
-            >
-              {isActive && (
-                <motion.span
-                  layoutId="billing-toggle-pill"
-                  aria-hidden="true"
-                  className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 shadow-md shadow-blue-500/25"
-                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                />
-              )}
-              <span className={isActive ? "text-white" : "transition-colors hover:text-slate-900"}>
-                {value === "monthly" ? labels.monthly : labels.yearly}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      {billing === "yearly" && (
-        <motion.span
-          initial={{ opacity: 0, x: -8 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200/80"
+    <div className="mb-8 flex flex-col gap-4">
+      <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div
+          role="group"
+          aria-label={`${labels.monthly} / ${labels.yearly}`}
+          className="relative inline-flex rounded-full border border-slate-200/80 bg-white/90 p-1 text-sm font-semibold text-slate-700 shadow-sm backdrop-blur"
         >
-          {labels.yearlySave}
-        </motion.span>
-      )}
+          {["monthly", "yearly"].map((value) => {
+            const isActive = billing === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                onClick={() => onChange(value)}
+                className="pressable relative z-10 rounded-full px-4 py-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+                aria-pressed={isActive}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="billing-toggle-pill"
+                    aria-hidden="true"
+                    className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 shadow-md shadow-blue-500/25"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className={isActive ? "text-white" : "transition-colors hover:text-slate-900"}>
+                  {value === "monthly" ? labels.monthly : labels.yearly}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        {billing === "yearly" && (
+          <motion.span
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200/80"
+          >
+            {labels.yearlySave}
+          </motion.span>
+        )}
+      </div>
+
+      <AnimatePresence mode="wait">
+        <BillingTrustBadge key={billing} billing={billing} labels={labels} variant="banner" />
+      </AnimatePresence>
     </div>
   );
 }
@@ -566,6 +636,9 @@ function PackageCard({ pkg, index, billing, labels, onSelect }) {
         <p className="mt-1 text-xs font-medium text-blue-600">{labels.startPilotNote}</p>
       )}
       {pkg.regular && <p className="mt-0.5 text-sm text-slate-500">{pkg.regular}</p>}
+      <div className="mt-3">
+        <BillingTrustBadge billing={billing} labels={labels} variant="pill" />
+      </div>
       <p className="mt-4 text-sm leading-6 text-slate-600">{pkg.description}</p>
       <ul className="mt-5 flex-1 space-y-2.5">
         {pkg.included.map((item) => (
