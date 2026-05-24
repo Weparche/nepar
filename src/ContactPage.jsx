@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Clock, ImagePlus, Mail, MapPin, Send, X } from "lucide-react";
 import { Background, content as siteContent, Navbar } from "./App.jsx";
 
+const easeOut = [0.23, 1, 0.32, 1];
+
 const contactContent = {
   hr: {
     eyebrow: "KONTAKT",
@@ -71,7 +73,7 @@ const contactContent = {
 
 /* text-base (16px) on inputs prevents iOS Safari zoom-on-focus */
 const inputCls =
-  "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-800 placeholder:text-slate-500 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20";
+  "w-full rounded-xl border border-slate-300/90 bg-white/[0.92] px-4 py-3 text-base text-slate-800 placeholder:text-slate-500 outline-none shadow-sm shadow-slate-200/30 transition-[border-color,box-shadow,background-color] duration-200 focus:border-blue-500 focus:bg-white focus:shadow-blue-200/40 focus:ring-2 focus:ring-blue-500/20";
 
 export default function ContactPage() {
   const [lang, setLang] = useState("hr");
@@ -157,7 +159,7 @@ export default function ContactPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55 }}
+            transition={{ duration: 0.42, ease: easeOut }}
             className="mb-8 text-center sm:mb-12"
           >
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
@@ -174,9 +176,9 @@ export default function ContactPage() {
             </p>
 
             {/* Info — inline below heading, no boxes */}
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
               {copy.info.map(({ Icon, label, value, href }) => (
-                <span key={label} className="inline-flex items-center gap-2 text-sm text-slate-600">
+                <span key={label} className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1.5 text-sm text-slate-600 shadow-sm backdrop-blur">
                   <Icon size={14} className="shrink-0 text-blue-600" />
                   <span className="text-slate-500">{label}:</span>
                   {href ? (
@@ -195,19 +197,20 @@ export default function ContactPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.12 }}
-            className="relative rounded-2xl border border-slate-200 bg-white/85 p-5 shadow-2xl shadow-blue-200/30 backdrop-blur-md sm:p-8 sm:backdrop-blur-xl"
+            transition={{ duration: 0.42, delay: 0.08, ease: easeOut }}
+            className="premium-card contact-panel relative p-5 sm:p-8"
           >
             {/* Decorative blurs in their own clipped wrapper */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-              <div className="absolute -right-16 -top-16 size-56 rounded-full bg-blue-500/8 blur-3xl" />
-              <div className="absolute -bottom-12 -left-12 size-44 rounded-full bg-violet-500/8 blur-3xl" />
+              <div className="absolute -right-16 -top-16 size-56 rounded-full bg-blue-500/5 blur-3xl" />
+              <div className="absolute -bottom-12 -left-12 size-44 rounded-full bg-cyan-500/5 blur-3xl" />
             </div>
 
             {submitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.24, ease: easeOut }}
                 className="relative flex flex-col items-center justify-center gap-4 py-12 text-center"
               >
                 <div className="grid size-14 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-violet-600 shadow-lg shadow-blue-300/50">
@@ -217,7 +220,7 @@ export default function ContactPage() {
                 <p className="max-w-xs text-sm leading-6 text-slate-600">{copy.form.successDesc}</p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="mt-1 text-sm text-blue-600 transition hover:text-blue-700"
+                  className="pressable mt-1 rounded-lg px-3 py-1.5 text-sm text-blue-600 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-700"
                 >
                   {copy.form.newMessage}
                 </button>
@@ -280,7 +283,7 @@ export default function ContactPage() {
                 <div className="flex flex-col gap-2">
                   <label htmlFor="contact-file" className="text-sm font-medium text-slate-700">{copy.form.uploadLabel}</label>
                   {file ? (
-                    <div className="flex items-center gap-3 rounded-xl border border-slate-300 bg-white px-4 py-3">
+                    <div className="flex items-center gap-3 rounded-xl border border-slate-300/90 bg-white/[0.92] px-4 py-3 shadow-sm shadow-slate-200/40">
                       <div className="flex min-w-0 flex-1 items-center gap-3">
                         <img
                           src={URL.createObjectURL(file)}
@@ -297,7 +300,7 @@ export default function ContactPage() {
                       <button
                         type="button"
                         onClick={() => setFile(null)}
-                        className="shrink-0 rounded-lg p-1.5 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+                        className="pressable shrink-0 rounded-lg p-1.5 text-slate-500 transition-colors duration-200 hover:bg-slate-100 hover:text-slate-900"
                         aria-label={copy.form.uploadRemove}
                       >
                         <X size={14} />
@@ -309,10 +312,10 @@ export default function ContactPage() {
                       onDragLeave={() => setDragging(false)}
                       onDrop={handleDrop}
                       onClick={() => fileRef.current?.click()}
-                      className={`flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-xl border-2 border-dashed px-4 py-7 text-center transition ${
+                      className={`pressable flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-xl border-2 border-dashed px-4 py-7 text-center shadow-sm transition-[border-color,background-color,box-shadow,transform] duration-200 ${
                         dragging
-                          ? "border-blue-500/70 bg-blue-50"
-                          : "border-slate-300 bg-white/60 hover:border-blue-400/60 hover:bg-white"
+                          ? "border-blue-500/70 bg-blue-50 shadow-blue-200/40"
+                          : "border-slate-300 bg-white/65 hover:border-blue-400/60 hover:bg-white hover:shadow-blue-200/30"
                       }`}
                     >
                       <div className="grid size-10 place-items-center rounded-lg bg-blue-100 text-blue-600 ring-1 ring-blue-300/60">
@@ -344,9 +347,10 @@ export default function ContactPage() {
                 <motion.button
                   type="submit"
                   disabled={sending}
-                  whileHover={sending ? {} : { y: -2, scale: 1.02 }}
-                  whileTap={sending ? {} : { scale: 0.98 }}
-                  className="inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-blue-500 via-blue-500 to-violet-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition hover:shadow-blue-500/45 disabled:opacity-60 sm:w-auto"
+                  whileHover={sending ? {} : { y: -1, scale: 1.01 }}
+                  whileTap={sending ? {} : { scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 460, damping: 32 }}
+                  className="premium-button pressable inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-sm font-semibold text-white disabled:opacity-60 sm:w-auto"
                 >
                   {sending ? (
                     <svg className="size-4 animate-spin" viewBox="0 0 24 24" fill="none">
