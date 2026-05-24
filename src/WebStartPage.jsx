@@ -24,9 +24,8 @@ import { Background, MotionButton, Navbar, content as siteContent } from "./App.
 import PackageInquiryModal from "./PackageInquiryModal.jsx";
 import WebTrustSection from "./WebTrustSection.jsx";
 import { usePageMeta } from "./usePageMeta.js";
+import { PILOT_TOTAL, usePilotFillCount } from "./usePilotFillCount.js";
 
-const PILOT_FILLED = 6;
-const PILOT_TOTAL = 10;
 const easeOut = [0.22, 1, 0.36, 1];
 
 const reveal = {
@@ -441,7 +440,9 @@ function SectionEyebrow({ children }) {
 }
 
 function PilotCapacityBox({ copy }) {
-  const remaining = PILOT_TOTAL - PILOT_FILLED;
+  const filledCount = usePilotFillCount(true);
+  const remaining = PILOT_TOTAL - filledCount;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -466,10 +467,13 @@ function PilotCapacityBox({ copy }) {
             <motion.span
               key={index}
               initial={{ scaleY: 0.4, opacity: 0.5 }}
-              animate={{ scaleY: 1, opacity: 1 }}
-              transition={{ delay: 0.5 + index * 0.04, duration: 0.35, ease: easeOut }}
+              animate={{
+                scaleY: index < filledCount ? 1 : 0.85,
+                opacity: index < filledCount ? 1 : 0.55,
+              }}
+              transition={{ duration: 0.35, ease: easeOut }}
               className={`block h-9 origin-bottom rounded-md ${
-                index < PILOT_FILLED
+                index < filledCount
                   ? "bg-gradient-to-t from-blue-600 to-violet-500 shadow-sm shadow-blue-500/25"
                   : "bg-slate-100 ring-1 ring-slate-200/80"
               }`}
@@ -479,7 +483,7 @@ function PilotCapacityBox({ copy }) {
         </div>
         <div className="mt-4 flex items-end justify-between gap-3">
           <p className="text-2xl font-semibold tabular-nums text-slate-900">
-            {PILOT_FILLED}
+            {filledCount}
             <span className="text-lg font-medium text-slate-400"> / {PILOT_TOTAL}</span>
           </p>
           <p className="text-right text-sm text-slate-600">

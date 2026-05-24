@@ -35,14 +35,12 @@ import {
   BadgeEuro,
 } from "lucide-react";
 import OrbitalProjectCarousel from "./OrbitalProjectCarousel.jsx";
+import { PILOT_TOTAL, usePilotFillCount } from "./usePilotFillCount.js";
 
 const easeOut = [0.23, 1, 0.32, 1];
 const easeInOut = [0.77, 0, 0.175, 1];
 const revealTransition = { duration: 0.48, ease: easeOut };
 const quickRevealTransition = { duration: 0.32, ease: easeOut };
-
-const PILOT_FILLED = 6;
-const PILOT_TOTAL = 10;
 
 const content = {
   hr: {
@@ -869,8 +867,9 @@ function PilotCapacitySlider({ promo }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
   const reduceMotion = useReducedMotion();
-  const fillPercent = (PILOT_FILLED / PILOT_TOTAL) * 100;
-  const remaining = PILOT_TOTAL - PILOT_FILLED;
+  const filledCount = usePilotFillCount(inView);
+  const fillPercent = (filledCount / PILOT_TOTAL) * 100;
+  const remaining = PILOT_TOTAL - filledCount;
 
   return (
     <div
@@ -901,7 +900,7 @@ function PilotCapacitySlider({ promo }) {
           <motion.div
             initial={{ width: reduceMotion ? `${fillPercent}%` : "0%" }}
             animate={{ width: inView ? `${fillPercent}%` : reduceMotion ? `${fillPercent}%` : "0%" }}
-            transition={{ duration: reduceMotion ? 0 : 0.85, ease: easeOut, delay: 0.12 }}
+            transition={{ duration: reduceMotion ? 0 : 0.35, ease: easeOut }}
             className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-600 via-cyan-500 to-violet-500 shadow-sm shadow-blue-500/30"
           />
           {!reduceMotion && (
@@ -917,26 +916,25 @@ function PilotCapacitySlider({ promo }) {
             aria-hidden="true"
             initial={{ left: "0%" }}
             animate={{ left: inView ? `${fillPercent}%` : "0%" }}
-            transition={{ duration: reduceMotion ? 0 : 0.85, ease: easeOut, delay: 0.12 }}
+            transition={{ duration: reduceMotion ? 0 : 0.35, ease: easeOut }}
             className="absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-gradient-to-br from-blue-500 to-violet-600 shadow-md shadow-blue-500/35"
           />
         </div>
 
         <div className="mt-4 grid grid-cols-10 gap-1 sm:gap-1.5">
           {Array.from({ length: PILOT_TOTAL }, (_, index) => {
-            const filled = index < PILOT_FILLED;
+            const filled = index < filledCount;
             return (
               <motion.span
                 key={index}
                 initial={{ scaleY: 0.35, opacity: 0.45 }}
                 animate={
                   inView
-                    ? { scaleY: 1, opacity: 1 }
+                    ? { scaleY: filled ? 1 : 0.85, opacity: filled ? 1 : 0.55 }
                     : { scaleY: 0.35, opacity: 0.45 }
                 }
                 transition={{
-                  duration: reduceMotion ? 0 : 0.38,
-                  delay: reduceMotion ? 0 : 0.18 + index * 0.055,
+                  duration: reduceMotion ? 0 : 0.35,
                   ease: easeOut,
                 }}
                 className={`block h-8 origin-bottom rounded-md sm:h-9 ${
@@ -957,7 +955,7 @@ function PilotCapacitySlider({ promo }) {
             transition={{ duration: 0.4, ease: easeOut, delay: 0.55 }}
             className="text-xl font-semibold tabular-nums text-slate-900 sm:text-2xl"
           >
-            {PILOT_FILLED}
+            {filledCount}
             <span className="text-base font-medium text-slate-400 sm:text-lg"> / {PILOT_TOTAL}</span>
           </motion.p>
           <motion.p
