@@ -21,6 +21,10 @@ const modalCopy = {
     emailPlaceholder: "vas@email.com",
     message: "Poruka",
     messagePlaceholder: "Kratko opišite djelatnost, lokaciju i što želite istaknuti na stranici...",
+    messagePlaceholderRedesign:
+      "Zalijepite link vaše trenutne web stranice i kratko opišite što želite poboljšati...",
+    paymentType: "Vrsta usluge",
+    paymentOneTime: "Jednokratni redizajn",
     submit: "Pošalji upit",
     sending: "Šaljem…",
     successTitle: "Upit poslan!",
@@ -42,6 +46,10 @@ const modalCopy = {
     emailPlaceholder: "you@email.com",
     message: "Message",
     messagePlaceholder: "Briefly describe your business, location, and what you want to highlight...",
+    messagePlaceholderRedesign:
+      "Paste your current website link and briefly describe what you want to improve...",
+    paymentType: "Service type",
+    paymentOneTime: "One-time redesign",
     submit: "Send inquiry",
     sending: "Sending…",
     successTitle: "Inquiry sent!",
@@ -59,6 +67,7 @@ export default function PackageInquiryModal({
   packageName = "Web Start",
   billing = "monthly",
   priceLabel = "",
+  inquiryType = "subscription",
 }) {
   const copy = modalCopy[lang];
   const closeRef = useRef(null);
@@ -69,9 +78,13 @@ export default function PackageInquiryModal({
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(null);
 
+  const isRedesign = inquiryType === "redesign";
   const WORKER_URL = import.meta.env.VITE_WORKER_URL || null;
   const billingLabel = billing === "yearly" ? copy.billingYearly : copy.billingMonthly;
-  const subject = `${packageName} — ${billingLabel}${priceLabel ? ` (${priceLabel})` : ""} — besplatan prijedlog`;
+  const subject = isRedesign
+    ? `${packageName} — redizajn weba${priceLabel ? ` (${priceLabel})` : ""}`
+    : `${packageName} — ${billingLabel}${priceLabel ? ` (${priceLabel})` : ""} — besplatan prijedlog`;
+  const messagePlaceholder = isRedesign ? copy.messagePlaceholderRedesign : copy.messagePlaceholder;
 
   useEffect(() => {
     if (!open) return;
@@ -97,22 +110,33 @@ export default function PackageInquiryModal({
     setSending(true);
     setSendError(null);
 
-    const body = [
-      `Paket: ${packageName}`,
-      `Način naplate: ${billingLabel}`,
-      priceLabel ? `Cijena: ${priceLabel}` : "",
-      "",
-      `Ime: ${name}`,
-      `E-mail: ${email}`,
-      "",
-      "Poruka:",
-      message,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    const body = isRedesign
+      ? [
+          `Paket: ${packageName}`,
+          copy.paymentOneTime,
+          priceLabel ? `Cijena: ${priceLabel}` : "",
+          "",
+          `Ime: ${name}`,
+          `E-mail: ${email}`,
+          "",
+          "Poruka:",
+          message,
+        ]
+      : [
+          `Paket: ${packageName}`,
+          `Način naplate: ${billingLabel}`,
+          priceLabel ? `Cijena: ${priceLabel}` : "",
+          "",
+          `Ime: ${name}`,
+          `E-mail: ${email}`,
+          "",
+          "Poruka:",
+          message,
+        ];
+    const bodyText = body.filter(Boolean).join("\n");
 
     if (!WORKER_URL) {
-      window.location.href = `mailto:nepar@nepar.hr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = `mailto:nepar@nepar.hr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
       setSending(false);
       setSubmitted(true);
       return;
@@ -122,7 +146,7 @@ export default function PackageInquiryModal({
       const res = await fetch(WORKER_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject, message: body }),
+        body: JSON.stringify({ name, email, subject, message: bodyText }),
       });
       if (!res.ok) throw new Error("send_failed");
       setSubmitted(true);
@@ -182,16 +206,28 @@ export default function PackageInquiryModal({
             </div>
 
             <div className="relative overflow-y-auto px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6 sm:pb-4">
-              <div className="mb-4 grid gap-2 rounded-xl border border-blue-200/70 bg-blue-50/50 px-4 py-3 text-sm sm:grid-cols-2">
+              <div
+                className={`mb-4 rounded-xl border border-blue-200/70 bg-blue-50/50 px-4 py-3 text-sm ${
+                  isRedesign ? "space-y-1" : "grid gap-2 sm:grid-cols-2"
+                }`}
+              >
                 <div>
                   <span className="text-xs font-semibold uppercase tracking-wide text-blue-700">{copy.package}</span>
                   <p className="mt-0.5 font-medium text-slate-900">{packageName}</p>
+                  {isRedesign && (
+                    <>
+                      {priceLabel && <p className="mt-0.5 text-sm font-semibold text-blue-700">{priceLabel}</p>}
+                      <p className="text-xs text-slate-600">{copy.paymentOneTime}</p>
+                    </>
+                  )}
                 </div>
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wide text-blue-700">{copy.billing}</span>
-                  <p className="mt-0.5 font-medium text-slate-900">{billingLabel}</p>
-                  {priceLabel && <p className="text-xs text-slate-600">{priceLabel}</p>}
-                </div>
+                {!isRedesign && (
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wide text-blue-700">{copy.billing}</span>
+                    <p className="mt-0.5 font-medium text-slate-900">{billingLabel}</p>
+                    {priceLabel && <p className="text-xs text-slate-600">{priceLabel}</p>}
+                  </div>
+                )}
               </div>
 
               {submitted ? (
@@ -254,7 +290,7 @@ export default function PackageInquiryModal({
                       rows={4}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      placeholder={copy.messagePlaceholder}
+                      placeholder={messagePlaceholder}
                       className={`${inputCls} resize-none`}
                     />
                   </div>

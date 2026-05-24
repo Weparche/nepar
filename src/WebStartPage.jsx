@@ -12,8 +12,10 @@ import {
   Link2,
   Megaphone,
   MessageCircle,
+  Crown,
   MonitorSmartphone,
   PartyPopper,
+  RefreshCw,
   Scissors,
   Send,
   ShieldCheck,
@@ -55,9 +57,9 @@ function buildPriceLabel(pkg, billing, labels) {
 const pageCopy = {
   hr: {
     meta: {
-      title: "Web stranica bez početnog troška | Nepar",
+      title: "Web stranica bez početnog troška i redizajn weba | Nepar",
       description:
-        "Profesionalna web stranica za male biznise bez početnog troška izrade. Jedan link za Instagram, Facebook, Google Maps i WhatsApp, uz pakete od 30, 59 i 89 EUR mjesečno.",
+        "Profesionalna web stranica bez početnog troška za male biznise i redizajn postojećeg weba od 200 €. Jedan link za Instagram, Facebook, Google Maps i upite.",
     },
     hero: {
       badge: "Bez početnog troška izrade · od 30 €/mj u pilot ponudi",
@@ -200,6 +202,102 @@ const pageCopy = {
         },
       ],
     },
+    redesign: {
+      eyebrow: "REDIZAJN",
+      title: "Redizajn postojećeg weba",
+      subtitle:
+        "Imate web stranicu, ali izgleda zastarjelo, loše na mobitelu ili ne vodi korisnika prema upitu? Redizajniramo postojeći web kako bi izgledao modernije, jasnije i profesionalnije.",
+      highlight: "Osvježite postojeći web bez izrade potpuno nove stranice.",
+      problem: {
+        title: "Je li vaš web zastario?",
+        text: "Ako vaša stranica izgleda staro, sporo se snalazite u sadržaju ili na mobitelu ne izgleda profesionalno, redizajn je brži i povoljniji put od izrade potpuno nove stranice.",
+        bullets: [
+          "bolji prvi dojam",
+          "jasniji kontakt i CTA",
+          "bolji prikaz na mobitelu",
+          "moderniji izgled bez kretanja od nule",
+        ],
+      },
+      note: "Redizajn se odnosi na postojeću web stranicu i opseg se potvrđuje nakon kratkog pregleda trenutnog stanja. Ako je postojeći web tehnički zastario ili zahtijeva veću rekonstrukciju, predložit ćemo najisplativiji pristup prije početka rada.",
+      cta: {
+        title: "Imate postojeći web koji treba osvježenje?",
+        description:
+          "Pošaljite nam link svoje trenutne web stranice i predložit ćemo koji paket redizajna ima najviše smisla.",
+        button: "Pošalji link weba",
+      },
+      items: [
+        {
+          id: "basic",
+          name: "Basic redizajn",
+          price: 200,
+          oldPrice: 300,
+          badge: "Akcija",
+          badgeVariant: "promo",
+          description: "Za jednostavno osvježenje postojećeg weba i bolji prikaz na mobitelu.",
+          included: [
+            "vizualno osvježenje postojeće stranice",
+            "bolja mobilna prilagodba",
+            "čišći raspored sekcija",
+            "jasniji kontakt ili CTA gumb",
+            "osnovno sređivanje hero sekcije",
+            "osnovna provjera responzivnosti",
+          ],
+          benefit: "Brza i isplativa nadogradnja.",
+          cta: "Zatraži Basic redizajn",
+          featured: false,
+          premium: false,
+        },
+        {
+          id: "standard",
+          name: "Standard redizajn",
+          price: 450,
+          oldPrice: null,
+          badge: "Najbolji izbor",
+          badgeVariant: "featured",
+          description:
+            "Za firme koje žele moderniji izgled, bolji raspored sadržaja i jasnije vođenje korisnika prema upitu.",
+          included: [
+            "sve iz Basic redizajna",
+            "novi raspored glavnih sekcija",
+            "moderniji vizualni stil",
+            "jasniji CTA elementi",
+            "poboljšana prezentacija usluga",
+            "bolji prikaz na mobitelu i desktopu",
+            "osnovno UX poboljšanje",
+            "bolji dojam povjerenja i profesionalnosti",
+          ],
+          benefit: "Bolje korisničko iskustvo i više jasnih upita.",
+          cta: "Zatraži Standard redizajn",
+          featured: true,
+          premium: false,
+        },
+        {
+          id: "premium",
+          name: "Premium redizajn",
+          price: 700,
+          oldPrice: null,
+          badge: null,
+          badgeVariant: null,
+          description:
+            "Za ozbiljniji vizualni refresh, premium prezentaciju i bolju strukturu stranice za prodaju, upite ili rezervacije.",
+          included: [
+            "sve iz Standard redizajna",
+            "potpuni vizualni refresh stranice",
+            "UX dorade ključnih sekcija",
+            "premium prezentacija usluga ili ponude",
+            "jača hero sekcija",
+            "bolji raspored trust elemenata",
+            "bolji CTA flow",
+            "prijedlog poboljšanja sadržaja",
+            "optimizacija strukture za više upita",
+          ],
+          benefit: "Maksimalni dojam i bolji rezultat.",
+          cta: "Zatraži Premium redizajn",
+          featured: false,
+          premium: true,
+        },
+      ],
+    },
     benefits: {
       eyebrow: "ŠTO DOBIVATE",
       title: "Što dobivate osim web stranice?",
@@ -244,9 +342,9 @@ const pageCopy = {
   },
   en: {
     meta: {
-      title: "Website with no upfront cost | Nepar",
+      title: "Website with no upfront cost and web redesign | Nepar",
       description:
-        "A professional sales page for small businesses with no upfront build cost. One link for Instagram, Facebook, Google Maps, and WhatsApp, with plans from €30, €59, and €89 per month.",
+        "A professional website with no upfront build cost for small businesses and existing website redesign from €200. One link for Instagram, Facebook, Google Maps, and inquiries.",
     },
     hero: {
       badge: "No upfront build cost · from €30/mo in the pilot offer",
@@ -386,6 +484,102 @@ const pageCopy = {
           ],
           cta: "I want Web Pro",
           featured: false,
+        },
+      ],
+    },
+    redesign: {
+      eyebrow: "REDESIGN",
+      title: "Redesign of your existing website",
+      subtitle:
+        "Already have a website that looks outdated, works poorly on mobile, or does not guide visitors toward an inquiry? We redesign it to look more modern, clearer, and more professional.",
+      highlight: "Refresh your existing website without building a completely new one from scratch.",
+      problem: {
+        title: "Is your website outdated?",
+        text: "If your site looks old, is hard to navigate, or does not look professional on mobile, a redesign is a faster and more affordable path than building an entirely new website.",
+        bullets: [
+          "a stronger first impression",
+          "clearer contact and CTAs",
+          "better mobile presentation",
+          "a modern look without starting from zero",
+        ],
+      },
+      note: "Redesign applies to an existing website and the scope is confirmed after a short review of the current state. If the site is technically outdated or needs major reconstruction, we will recommend the most cost-effective approach before work begins.",
+      cta: {
+        title: "Have an existing website that needs a refresh?",
+        description:
+          "Send us your current website link and we will recommend which redesign package makes the most sense.",
+        button: "Send website link",
+      },
+      items: [
+        {
+          id: "basic",
+          name: "Basic redesign",
+          price: 200,
+          oldPrice: 300,
+          badge: "Offer",
+          badgeVariant: "promo",
+          description: "For a simple refresh of your existing website and better mobile presentation.",
+          included: [
+            "visual refresh of the existing page",
+            "better mobile adaptation",
+            "cleaner section layout",
+            "clearer contact or CTA button",
+            "basic hero section improvements",
+            "basic responsiveness check",
+          ],
+          benefit: "A fast and cost-effective upgrade.",
+          cta: "Request Basic redesign",
+          featured: false,
+          premium: false,
+        },
+        {
+          id: "standard",
+          name: "Standard redesign",
+          price: 450,
+          oldPrice: null,
+          badge: "Best choice",
+          badgeVariant: "featured",
+          description:
+            "For businesses that want a more modern look, better content structure, and clearer guidance toward inquiries.",
+          included: [
+            "everything in Basic redesign",
+            "new layout of main sections",
+            "more modern visual style",
+            "clearer CTA elements",
+            "improved service presentation",
+            "better mobile and desktop presentation",
+            "basic UX improvements",
+            "stronger trust and professionalism",
+          ],
+          benefit: "Better user experience and clearer inquiries.",
+          cta: "Request Standard redesign",
+          featured: true,
+          premium: false,
+        },
+        {
+          id: "premium",
+          name: "Premium redesign",
+          price: 700,
+          oldPrice: null,
+          badge: null,
+          badgeVariant: null,
+          description:
+            "For a stronger visual refresh, premium presentation, and better page structure for sales, inquiries, or bookings.",
+          included: [
+            "everything in Standard redesign",
+            "full visual refresh of the page",
+            "UX improvements to key sections",
+            "premium presentation of services or offers",
+            "stronger hero section",
+            "better trust element layout",
+            "improved CTA flow",
+            "content improvement suggestions",
+            "structure optimized for more inquiries",
+          ],
+          benefit: "Maximum impact and better results.",
+          cta: "Request Premium redesign",
+          featured: false,
+          premium: true,
         },
       ],
     },
@@ -681,6 +875,96 @@ function PackageCard({ pkg, index, billing, labels, onSelect }) {
   );
 }
 
+function buildRedesignPriceLabel(pkg) {
+  if (pkg.oldPrice) {
+    return `${pkg.price} € (akcija, redovno ${pkg.oldPrice} €)`;
+  }
+  return `${pkg.price} €`;
+}
+
+function RedesignPackageCard({ pkg, index, onSelect }) {
+  const featured = pkg.featured;
+  const premium = pkg.premium;
+  const promo = pkg.badgeVariant === "promo";
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: easeOut }}
+      whileHover={{ y: featured ? -6 : premium ? -5 : -4 }}
+      className={`relative flex h-full flex-col rounded-2xl border bg-white/85 p-5 shadow-xl backdrop-blur-md sm:p-6 ${
+        featured
+          ? "border-blue-300/80 pt-8 shadow-blue-200/40 ring-1 ring-blue-200/60 sm:pt-6 lg:scale-[1.03]"
+          : premium
+            ? "border-violet-200/80 shadow-violet-200/30 ring-1 ring-violet-100/60"
+            : promo
+              ? "border-amber-200/70 shadow-amber-100/30"
+              : "border-slate-200/80 shadow-slate-300/30"
+      }`}
+    >
+      {pkg.badge && (
+        <motion.span
+          initial={{ opacity: 0, y: -6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.15, duration: 0.4, ease: easeOut }}
+          className={`absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-semibold shadow-md ${
+            promo
+              ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-amber-500/25"
+              : "bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-blue-500/25"
+          }`}
+        >
+          {pkg.badge}
+        </motion.span>
+      )}
+      <div className="mb-1 flex items-start gap-2">
+        {premium && (
+          <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-violet-500/15 text-violet-600 ring-1 ring-violet-400/20">
+            <Crown size={18} />
+          </span>
+        )}
+        <h3 className="text-xl font-semibold text-slate-900">{pkg.name}</h3>
+      </div>
+      <div className="mt-2">
+        {pkg.oldPrice && (
+          <p className="text-base text-slate-400 line-through sm:text-lg">{pkg.oldPrice} €</p>
+        )}
+        <p
+          className={`font-semibold tabular-nums text-slate-900 ${
+            pkg.oldPrice ? "text-4xl text-blue-600 sm:text-5xl" : "text-3xl sm:text-4xl"
+          }`}
+        >
+          {pkg.price} €
+        </p>
+      </div>
+      <p className="mt-4 text-sm leading-6 text-slate-600">{pkg.description}</p>
+      <ul className="mt-5 flex-1 space-y-2.5">
+        {pkg.included.map((item) => (
+          <li key={item} className="flex items-start gap-2 text-sm text-slate-700">
+            <Check size={15} className="mt-0.5 shrink-0 text-blue-600" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+      {pkg.benefit && (
+        <p className="mt-4 rounded-lg border border-slate-200/80 bg-slate-50/80 px-3 py-2 text-xs font-medium leading-5 text-slate-700 sm:text-sm">
+          {pkg.benefit}
+        </p>
+      )}
+      <MotionButton
+        onClick={() => onSelect(pkg)}
+        variant={featured || promo ? "primary" : "secondary"}
+        className="mt-6 inline-flex w-full px-5 py-3.5 text-sm"
+      >
+        {pkg.cta}
+        <ArrowRight size={16} />
+      </MotionButton>
+    </motion.article>
+  );
+}
+
 function FaqItem({ question, answer, index }) {
   const [open, setOpen] = useState(index === 0);
   return (
@@ -710,19 +994,32 @@ export default function WebStartPage() {
   const [lang, setLang] = useState("hr");
   const [billing, setBilling] = useState("monthly");
   const [modalOpen, setModalOpen] = useState(false);
+  const [inquiryType, setInquiryType] = useState("subscription");
   const [selectedPackage, setSelectedPackage] = useState(null);
   const navCopy = siteContent[lang];
   const copy = pageCopy[lang];
   const defaultPackage = copy.packages.items[0];
+  const defaultRedesign = copy.redesign.items[0];
 
   function openInquiry(pkg = defaultPackage, priceLabel = "") {
+    setInquiryType("subscription");
     setSelectedPackage({ name: pkg.name, priceLabel });
+    setModalOpen(true);
+  }
+
+  function openRedesignInquiry(pkg = defaultRedesign) {
+    setInquiryType("redesign");
+    setSelectedPackage({ name: pkg.name, priceLabel: buildRedesignPriceLabel(pkg) });
     setModalOpen(true);
   }
 
   function openDefaultInquiry() {
     const priceLabel = buildPriceLabel(defaultPackage, billing, copy.packages.billing);
     openInquiry(defaultPackage, priceLabel);
+  }
+
+  function openRedesignCta() {
+    openRedesignInquiry(defaultRedesign);
   }
 
   usePageMeta({
@@ -878,6 +1175,67 @@ export default function WebStartPage() {
         </div>
       </section>
 
+      <section id="redizajn-weba" className="scroll-mt-28 px-4 py-8 sm:py-10">
+        <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
+          <motion.div {...reveal} className="mb-8 max-w-3xl">
+            <SectionEyebrow>{copy.redesign.eyebrow}</SectionEyebrow>
+            <h2 className="text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl lg:text-4xl">{copy.redesign.title}</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600 sm:mt-4 sm:text-base">{copy.redesign.subtitle}</p>
+            <p className="mt-4 rounded-xl border border-blue-200/70 bg-blue-50/60 px-4 py-3 text-sm font-medium leading-6 text-slate-800 sm:text-base">
+              {copy.redesign.highlight}
+            </p>
+          </motion.div>
+
+          <motion.div
+            {...reveal}
+            className="mb-8 rounded-2xl border border-slate-200/80 bg-white/80 p-5 shadow-lg shadow-slate-300/25 sm:p-7"
+          >
+            <div className="flex items-start gap-3">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-blue-500/15 text-blue-600 ring-1 ring-blue-400/20 sm:size-11">
+                <RefreshCw size={20} />
+              </span>
+              <div className="min-w-0">
+                <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">{copy.redesign.problem.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-slate-600 sm:text-base">{copy.redesign.problem.text}</p>
+                <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                  {copy.redesign.problem.bullets.map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-sm text-slate-700">
+                      <Check size={15} className="shrink-0 text-blue-600" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid items-stretch gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-4 xl:gap-6">
+            {copy.redesign.items.map((pkg, index) => (
+              <RedesignPackageCard key={pkg.id} pkg={pkg} index={index} onSelect={openRedesignInquiry} />
+            ))}
+          </div>
+
+          <motion.p {...reveal} className="mt-8 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base">
+            {copy.redesign.note}
+          </motion.p>
+
+          <motion.div
+            {...reveal}
+            className="relative mt-8 overflow-hidden rounded-2xl border border-violet-200/50 bg-white/85 px-5 py-8 text-center shadow-xl shadow-violet-200/25 sm:px-10 sm:py-10"
+          >
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-violet-500/6 via-blue-500/6 to-cyan-400/6" />
+            <div className="relative">
+              <h3 className="text-xl font-semibold text-slate-900 sm:text-2xl">{copy.redesign.cta.title}</h3>
+              <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">{copy.redesign.cta.description}</p>
+              <MotionButton onClick={openRedesignCta} className="mt-6 inline-flex w-full px-5 py-3.5 text-sm sm:w-auto sm:px-6 sm:py-4 sm:text-base">
+                {copy.redesign.cta.button}
+                <Send size={18} />
+              </MotionButton>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       <section className="px-4 py-8 sm:py-10">
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <motion.div {...reveal} className="mb-8 max-w-2xl">
@@ -952,9 +1310,17 @@ export default function WebStartPage() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         lang={lang}
-        packageName={selectedPackage?.name ?? defaultPackage.name}
+        inquiryType={inquiryType}
+        packageName={
+          selectedPackage?.name ?? (inquiryType === "redesign" ? defaultRedesign.name : defaultPackage.name)
+        }
         billing={billing}
-        priceLabel={selectedPackage?.priceLabel ?? buildPriceLabel(defaultPackage, billing, copy.packages.billing)}
+        priceLabel={
+          selectedPackage?.priceLabel ??
+          (inquiryType === "redesign"
+            ? buildRedesignPriceLabel(defaultRedesign)
+            : buildPriceLabel(defaultPackage, billing, copy.packages.billing))
+        }
       />
 
       <footer className="px-4 pb-[max(2.5rem,env(safe-area-inset-bottom))]">

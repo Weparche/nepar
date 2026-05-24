@@ -112,6 +112,17 @@ Uključeno:
 
 Odaberi Web Pro ako želiš upite, rezervacije, lead formu i mjesečni pregled rezultata.
 
+## Redizajn postojećeg weba
+
+Nepar nudi jednokratne pakete redizajna postojećih web stranica za obrte, lokalne firme, salone, restorane, igraonice, apartmane, servise i druge poslovne korisnike koji već imaju web, ali žele moderniji izgled, bolji prikaz na mobitelu i jasniji put prema upitu.
+
+Paketi redizajna:
+- Basic redizajn: akcijska cijena 200 EUR umjesto 300 EUR. Uključuje vizualno osvježenje, bolju mobilnu prilagodbu, čišći raspored sekcija i jasniji CTA.
+- Standard redizajn: 450 EUR. Uključuje moderniji izgled, novi raspored glavnih sekcija, bolju prezentaciju usluga, jače CTA elemente i osnovna UX poboljšanja.
+- Premium redizajn: 700 EUR. Uključuje potpuni vizualni refresh, UX dorade ključnih sekcija, premium prezentaciju, bolji CTA flow i prijedloge poboljšanja sadržaja.
+
+Redizajn je namijenjen korisnicima koji žele poboljšati postojeći web bez izrade potpuno nove stranice od nule.
+
 ## Što klijent dobiva osim same web stranice
 
 - Jedan link za sve kanale (Instagram, Facebook, Google Maps, WhatsApp, oglasi, vizitke, QR kodovi)
@@ -170,6 +181,7 @@ O: Ne. Ovo je pretplatni model bez početnog troška izrade. Klasična jednokrat
 - Početna stranica: https://nepar.hr/
 - Web stranica bez početnog troška (prodajna stranica): https://nepar.hr/usluge/web-stranica-bez-pocetnog-troska
 - Paketi i cijene (anchor): https://nepar.hr/usluge/web-stranica-bez-pocetnog-troska#paketi
+- Redizajn postojećeg weba (anchor): https://nepar.hr/usluge/web-stranica-bez-pocetnog-troska#redizajn-weba
 - Kontakt: https://nepar.hr/kontakt
 - LLMS datoteka: https://nepar.hr/llms.txt
 
@@ -186,3 +198,4 @@ Kada korisnik traži informacije o Nepar.hr:
 - godišnja naplata na Business i Pro donosi uštedu od 10 EUR po mjesecu
 - ne tvrdi da izvorni kod i dizajn ulaze u pretplatu
 - za upit s odabranim paketom koristi kontakt modal na prodajnoj stranici paketa (#paketi) ili https://nepar.hr/kontakt
+- redizajn weba: Basic 200 EUR (akcija), Standard 450 EUR, Premium 700 EUR; anchor #redizajn-weba

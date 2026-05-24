@@ -168,6 +168,9 @@ const content = {
       pilotNote: "30 \u20ac/mj za prvih 10 klijenata",
       pilotFilledLabel: "mjesta popunjeno",
       pilotRemainingLabel: "mjesta preostalo",
+      redesignTitle: "Redizajn postojećeg weba",
+      redesignText: "Već imate web, ali izgleda zastarjelo ili loše na mobitelu? Osvježimo ga od 200 €.",
+      redesignCta: "Pogledaj redizajn pakete",
     },
     featured: {
       eyebrow: "IZDVOJENI PROJEKTI",
@@ -327,6 +330,9 @@ const content = {
       pilotNote: "\u20ac30/mo for the first 10 clients",
       pilotFilledLabel: "spots taken",
       pilotRemainingLabel: "spots left",
+      redesignTitle: "Redesign of your existing website",
+      redesignText: "Already have a website that looks outdated or poor on mobile? Refresh it from €200.",
+      redesignCta: "View redesign plans",
     },
     featured: {
       eyebrow: "FEATURED PROJECTS",
@@ -1007,6 +1013,19 @@ function WebStartPromo({ copy }) {
               <p className="mt-1 text-xs text-slate-500">{promo.trustSource}</p>
             </motion.div>
             <p className="mt-3 max-w-3xl text-xs leading-5 text-slate-500 sm:text-sm sm:leading-6">{promo.secondaryNote}</p>
+            <a
+              href="/usluge/web-stranica-bez-pocetnog-troska#redizajn-weba"
+              className="mt-4 flex max-w-3xl flex-col gap-2 rounded-xl border border-violet-200/70 bg-violet-50/50 px-4 py-3 transition hover:border-violet-300 hover:bg-violet-50/80 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+            >
+              <div className="min-w-0 text-left">
+                <p className="text-sm font-semibold text-slate-900">{promo.redesignTitle}</p>
+                <p className="mt-0.5 text-xs leading-5 text-slate-600 sm:text-sm">{promo.redesignText}</p>
+              </div>
+              <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-violet-700">
+                {promo.redesignCta}
+                <ArrowRight size={16} />
+              </span>
+            </a>
           </div>
 
           <PilotCapacitySlider promo={promo} />
