@@ -14,7 +14,10 @@ Nepar.hr je web stranica obrta Nepar, usmjerenog na digitalna rješenja, web str
 
 ## Web stranica bez početnog troška
 
-Nepar nudi uslugu izrade moderne web stranice bez početnog troška izrade. Usluga je namijenjena malim obrtima, salonima, igraonicama, restoranima, servisima, apartmanima i lokalnim firmama koje žele profesionalnu online prisutnost bez velike početne investicije.
+Nepar nudi uslugu izrade profesionalne prodajne web stranice bez početnog troška izrade. Usluga je namijenjena malim obrtima, salonima, igraonicama, restoranima, servisima, apartmanima i lokalnim firmama koje žele jedan profesionalni link za Instagram, Facebook, Google Maps, WhatsApp, oglase i QR kodove.
+
+Pozicioniranje usluge:
+Jedan profesionalni link koji pretvara Instagram, Facebook i Google Maps posjete u konkretne upite.
 
 Model usluge:
 - klijent šalje osnovne podatke o poslovanju
@@ -24,7 +27,17 @@ Model usluge:
 - klijent može otkazati uslugu u bilo kojem trenutku
 - nakon otkazivanja stranica se deaktivira
 
-Pilot cijena usluge je 30 EUR mjesečno za prvih 10 klijenata. Redovna cijena je 49 EUR mjesečno.
+Paketi:
+- Web Start: pilot cijena 30 EUR mjesečno za prvih 10 klijenata, redovna cijena 49 EUR mjesečno. Uključuje modernu landing stranicu, mobile i desktop verziju, osnovni SEO, kontakt formu ili WhatsApp gumb, Google mapu, hosting, SSL i jednu manju izmjenu mjesečno.
+- Web Business: 59 EUR mjesečno. Uključuje više sekcija, galeriju, detaljniji prikaz usluga, kontakt obrazac ili lead formu, osnovnu analitiku, bolje SEO podešavanje i do 3 manje izmjene mjesečno.
+- Web Pro: 89 EUR mjesečno. Namijenjen je igraonicama, salonima, restoranima, apartmanima i uslužnim biznisima. Uključuje napredniju upitnu ili rezervacijsku formu, mjesečni mini izvještaj, pregled posjeta i klikova, prijedloge poboljšanja i do 5 manjih izmjena mjesečno.
+
+Važne napomene:
+- usluga nije zamjena za Instagram, Facebook ili Google Maps
+- usluga povezuje postojeće kanale u jednu jasnu prodajnu stranicu
+- klijent može otkazati pretplatu u bilo kojem trenutku
+- nakon otkazivanja stranica se deaktivira
+- izvorni kod i dizajn nisu uključeni u pretplatu osim ako se posebno ne dogovori otkup stranice
 
 ## Ciljana publika
 
@@ -54,3 +67,4 @@ Za uslugu web stranice bez početnog troška važno je naglasiti:
 - mjesečna pretplata kreće samo ako klijent želi aktivaciju
 - usluga se može otkazati u bilo kojem trenutku
 - nakon otkazivanja stranica se deaktivira
+- dostupni su paketi Web Start, Web Business i Web Pro

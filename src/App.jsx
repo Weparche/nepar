@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import ContactPage from "./ContactPage.jsx";
 import WebStartPage from "./WebStartPage.jsx";
 import {
@@ -32,6 +32,7 @@ import {
   Wand2,
   X,
   Zap,
+  BadgeEuro,
 } from "lucide-react";
 import OrbitalProjectCarousel from "./OrbitalProjectCarousel.jsx";
 
@@ -40,11 +41,15 @@ const easeInOut = [0.77, 0, 0.175, 1];
 const revealTransition = { duration: 0.48, ease: easeOut };
 const quickRevealTransition = { duration: 0.32, ease: easeOut };
 
+const PILOT_FILLED = 6;
+const PILOT_TOTAL = 10;
+
 const content = {
   hr: {
     navLinks: [
       ["Projekti", "#projekti"],
       ["Usluge", "#usluge"],
+      ["Cjenik", "/usluge/web-stranica-bez-pocetnog-troska#paketi", BadgeEuro],
       ["O nama", "#onama"],
       ["Kontakt", "/kontakt", Mail],
     ],
@@ -150,11 +155,16 @@ const content = {
     },
     webStartPromo: {
       eyebrow: "NOVA USLUGA",
-      title: "Web stranica bez po\u010detnog tro\u0161ka",
+      title: "Jedan profesionalni link za va\u0161 posao",
       description:
-        "Za male biznise koji \u017eele moderan web bez velike po\u010detne investicije. Prvih 7 dana pregledate prijedlog bez obveze, a ako vam odgovara \u2014 stranica ostaje aktivna od 30 \u20ac/mj u pilot ponudi.",
-      cta: "Saznaj vi\u0161e",
-      pilot: "6 / 10 pilot mjesta popunjeno",
+        "Instagram, Facebook i Google Maps ve\u0107 vam donose vidljivost. Mi dodajemo prodajnu stranicu koja sve to povezuje i pretvara posjete u konkretne upite \u2014 bez po\u010detnog tro\u0161ka izrade.",
+      cta: "Pogledaj pakete",
+      secondaryNote:
+        "Pilot ponuda od 30 \u20ac/mj za prvih 10 klijenata. Business paket od 59 \u20ac/mj i Pro paket od 89 \u20ac/mj za firme koje \u017eele vi\u0161e upita, rezervacija i analitiku.",
+      pilotLabel: "Pilot popunjenost",
+      pilotNote: "30 \u20ac/mj za prvih 10 klijenata",
+      pilotFilledLabel: "mjesta popunjeno",
+      pilotRemainingLabel: "mjesta preostalo",
     },
     featured: {
       eyebrow: "IZDVOJENI PROJEKTI",
@@ -193,6 +203,7 @@ const content = {
     navLinks: [
       ["Projects", "#projekti"],
       ["Services", "#usluge"],
+      ["Pricing", "/usluge/web-stranica-bez-pocetnog-troska#paketi", BadgeEuro],
       ["About us", "#onama"],
       ["Contact", "/kontakt", Mail],
     ],
@@ -298,11 +309,16 @@ const content = {
     },
     webStartPromo: {
       eyebrow: "NEW SERVICE",
-      title: "Website with no upfront cost",
+      title: "One professional link for your business",
       description:
-        "For small businesses that want a modern website without a large upfront investment. Review the proposal free for 7 days, then keep it live from \u20ac30/mo in the pilot offer.",
-      cta: "Learn more",
-      pilot: "6 / 10 pilot spots taken",
+        "Instagram, Facebook, and Google Maps already bring visibility. We add a sales page that connects them and turns visits into real inquiries \u2014 with no upfront build cost.",
+      cta: "View plans",
+      secondaryNote:
+        "Pilot offer from \u20ac30/mo for the first 10 clients. Business plan from \u20ac59/mo and Pro plan from \u20ac89/mo for businesses that want more inquiries, bookings, and analytics.",
+      pilotLabel: "Pilot availability",
+      pilotNote: "\u20ac30/mo for the first 10 clients",
+      pilotFilledLabel: "spots taken",
+      pilotRemainingLabel: "spots left",
     },
     featured: {
       eyebrow: "FEATURED PROJECTS",
@@ -830,6 +846,116 @@ function Services({ copy }) {
   );
 }
 
+function PilotCapacitySlider({ promo }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const reduceMotion = useReducedMotion();
+  const fillPercent = (PILOT_FILLED / PILOT_TOTAL) * 100;
+  const remaining = PILOT_TOTAL - PILOT_FILLED;
+
+  return (
+    <div
+      ref={ref}
+      className="relative overflow-hidden rounded-2xl border border-blue-200/75 bg-white/90 p-4 shadow-lg shadow-blue-200/30 sm:p-5"
+    >
+      <div className="pointer-events-none absolute -right-6 -top-6 size-24 rounded-full bg-cyan-400/12 blur-2xl" />
+      <div className="pointer-events-none absolute -bottom-8 -left-4 size-20 rounded-full bg-violet-400/10 blur-2xl" />
+
+      <div className="relative">
+        <div className="mb-3 flex items-start justify-between gap-2">
+          <div>
+            <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-blue-600">{promo.pilotLabel}</p>
+            <p className="mt-0.5 text-xs text-slate-600 sm:text-sm">{promo.pilotNote}</p>
+          </div>
+          <motion.span
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.35, ease: easeOut, delay: 0.1 }}
+            className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-semibold text-blue-700 ring-1 ring-blue-200/80 sm:text-xs"
+          >
+            <Sparkles size={12} />
+            30 €/mj
+          </motion.span>
+        </div>
+
+        <div className="relative h-2.5 overflow-hidden rounded-full bg-slate-100 ring-1 ring-slate-200/80">
+          <motion.div
+            initial={{ width: reduceMotion ? `${fillPercent}%` : "0%" }}
+            animate={{ width: inView ? `${fillPercent}%` : reduceMotion ? `${fillPercent}%` : "0%" }}
+            transition={{ duration: reduceMotion ? 0 : 0.85, ease: easeOut, delay: 0.12 }}
+            className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-600 via-cyan-500 to-violet-500 shadow-sm shadow-blue-500/30"
+          />
+          {!reduceMotion && (
+            <motion.div
+              aria-hidden="true"
+              initial={{ x: "-120%" }}
+              animate={inView ? { x: "320%" } : { x: "-120%" }}
+              transition={{ duration: 1.6, ease: "linear", repeat: Infinity, repeatDelay: 0.8 }}
+              className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+            />
+          )}
+          <motion.div
+            aria-hidden="true"
+            initial={{ left: "0%" }}
+            animate={{ left: inView ? `${fillPercent}%` : "0%" }}
+            transition={{ duration: reduceMotion ? 0 : 0.85, ease: easeOut, delay: 0.12 }}
+            className="absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-gradient-to-br from-blue-500 to-violet-600 shadow-md shadow-blue-500/35"
+          />
+        </div>
+
+        <div className="mt-4 grid grid-cols-10 gap-1 sm:gap-1.5">
+          {Array.from({ length: PILOT_TOTAL }, (_, index) => {
+            const filled = index < PILOT_FILLED;
+            return (
+              <motion.span
+                key={index}
+                initial={{ scaleY: 0.35, opacity: 0.45 }}
+                animate={
+                  inView
+                    ? { scaleY: 1, opacity: 1 }
+                    : { scaleY: 0.35, opacity: 0.45 }
+                }
+                transition={{
+                  duration: reduceMotion ? 0 : 0.38,
+                  delay: reduceMotion ? 0 : 0.18 + index * 0.055,
+                  ease: easeOut,
+                }}
+                className={`block h-8 origin-bottom rounded-md sm:h-9 ${
+                  filled
+                    ? "bg-gradient-to-t from-blue-600 to-violet-500 shadow-sm shadow-blue-500/20"
+                    : "bg-slate-100 ring-1 ring-slate-200/80"
+                }`}
+                aria-hidden="true"
+              />
+            );
+          })}
+        </div>
+
+        <div className="mt-3 flex items-end justify-between gap-3">
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, ease: easeOut, delay: 0.55 }}
+            className="text-xl font-semibold tabular-nums text-slate-900 sm:text-2xl"
+          >
+            {PILOT_FILLED}
+            <span className="text-base font-medium text-slate-400 sm:text-lg"> / {PILOT_TOTAL}</span>
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, ease: easeOut, delay: 0.62 }}
+            className="text-right text-xs text-slate-600 sm:text-sm"
+          >
+            <span className="block font-medium text-slate-800">{promo.pilotFilledLabel}</span>
+            {remaining} {promo.pilotRemainingLabel}
+          </motion.p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function WebStartPromo({ copy }) {
   const promo = copy.webStartPromo;
   return (
@@ -843,19 +969,19 @@ function WebStartPromo({ copy }) {
       >
         <div className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-cyan-400/10 blur-2xl" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 size-32 rounded-full bg-violet-400/10 blur-2xl" />
-        <div className="relative grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-8">
+        <div className="relative grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(220px,300px)_auto] lg:items-center lg:gap-6 xl:gap-8">
           <div>
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{promo.eyebrow}</p>
             <h2 className="text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl">{promo.title}</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">{promo.description}</p>
-            <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-800 ring-1 ring-blue-200/70">
-              <Sparkles size={14} />
-              {promo.pilot}
-            </p>
+            <p className="mt-3 max-w-3xl text-xs leading-5 text-slate-500 sm:text-sm sm:leading-6">{promo.secondaryNote}</p>
           </div>
+
+          <PilotCapacitySlider promo={promo} />
+
           <MotionButton
-            href="/usluge/web-stranica-bez-pocetnog-troska"
-            className="inline-flex w-full px-6 py-4 lg:w-auto lg:shrink-0"
+            href="/usluge/web-stranica-bez-pocetnog-troska#paketi"
+            className="inline-flex w-full px-6 py-4 lg:w-auto lg:shrink-0 lg:self-center"
           >
             {promo.cta}
             <ArrowRight size={18} />
