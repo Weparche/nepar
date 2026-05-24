@@ -140,7 +140,7 @@ export default function PackageInquiryModal({
           role="dialog"
           aria-modal="true"
           aria-labelledby="inquiry-modal-title"
-          className="fixed inset-0 z-[90] flex items-end justify-center p-3 sm:items-center sm:p-4"
+          className="fixed inset-0 z-[90] flex items-end justify-center p-0 sm:items-center sm:p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -158,12 +158,12 @@ export default function PackageInquiryModal({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.98 }}
             transition={{ duration: 0.32, ease: easeOut }}
-            className="relative flex max-h-[min(92vh,720px)] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 shadow-2xl shadow-blue-300/25 backdrop-blur-xl"
+            className="relative flex max-h-[min(92dvh,720px)] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl border border-slate-200/90 bg-white/95 shadow-2xl shadow-blue-300/25 backdrop-blur-xl sm:max-h-[min(92vh,720px)] sm:rounded-2xl"
           >
             <div className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-blue-500/10 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-12 -left-12 size-40 rounded-full bg-violet-500/10 blur-3xl" />
 
-            <div className="relative flex items-start justify-between gap-3 border-b border-slate-200/80 px-5 py-4 sm:px-6">
+            <div className="relative flex items-start justify-between gap-3 border-b border-slate-200/80 px-4 py-4 sm:px-6">
               <div>
                 <h2 id="inquiry-modal-title" className="text-lg font-semibold text-slate-900 sm:text-xl">
                   {copy.title}
@@ -174,14 +174,14 @@ export default function PackageInquiryModal({
                 ref={closeRef}
                 type="button"
                 onClick={onClose}
-                className="grid size-9 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-blue-200 hover:text-slate-900"
+                className="grid size-11 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-blue-200 hover:text-slate-900"
                 aria-label={copy.close}
               >
                 <X size={18} />
               </button>
             </div>
 
-            <div className="relative overflow-y-auto px-5 py-4 sm:px-6">
+            <div className="relative overflow-y-auto px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6 sm:pb-4">
               <div className="mb-4 grid gap-2 rounded-xl border border-blue-200/70 bg-blue-50/50 px-4 py-3 text-sm sm:grid-cols-2">
                 <div>
                   <span className="text-xs font-semibold uppercase tracking-wide text-blue-700">{copy.package}</span>

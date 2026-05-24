@@ -988,12 +988,12 @@ function WebStartPromo({ copy }) {
       >
         <div className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-cyan-400/10 blur-2xl" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 size-32 rounded-full bg-violet-400/10 blur-2xl" />
-        <div className="relative grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(220px,300px)_auto] lg:items-center lg:gap-6 xl:gap-8">
-          <div>
+        <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(220px,300px)_auto] lg:items-center lg:gap-6 xl:gap-8">
+          <div className="min-w-0">
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{promo.eyebrow}</p>
-            <h2 className="text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl">{promo.title}</h2>
+            <h2 className="text-xl font-semibold leading-tight text-slate-900 sm:text-2xl lg:text-3xl">{promo.title}</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">{promo.description}</p>
-            <p className="mt-3 max-w-3xl rounded-xl border border-blue-200/70 bg-blue-50/60 px-4 py-3 text-sm font-medium leading-6 text-slate-800 sm:text-base">
+            <p className="mt-3 max-w-3xl rounded-xl border border-blue-200/70 bg-blue-50/60 px-3.5 py-3 text-sm font-medium leading-6 text-slate-800 sm:px-4 sm:text-base">
               {promo.highlight}
             </p>
             <motion.div
@@ -1001,11 +1001,10 @@ function WebStartPromo({ copy }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.45, ease: easeOut, delay: 0.08 }}
-              className="mt-3 max-w-3xl rounded-xl border border-slate-200/80 bg-white/80 px-4 py-3"
+              className="mt-3 max-w-3xl rounded-xl border border-slate-200/80 bg-white/80 px-3.5 py-3 sm:px-4"
             >
               <p className="text-sm leading-6 text-slate-700">
-                <span className="font-semibold text-blue-600">84%</span>{" "}
-                {promo.trustStat}
+                <span className="font-semibold text-blue-600">84%</span> {promo.trustStat}
               </p>
               <p className="mt-1 text-xs text-slate-500">{promo.trustSource}</p>
             </motion.div>
@@ -1016,7 +1015,7 @@ function WebStartPromo({ copy }) {
 
           <MotionButton
             href="/usluge/web-stranica-bez-pocetnog-troska#paketi"
-            className="inline-flex w-full px-6 py-4 lg:w-auto lg:shrink-0 lg:self-center"
+            className="inline-flex w-full px-5 py-3.5 text-sm sm:px-6 sm:py-4 sm:text-base lg:w-auto lg:shrink-0 lg:self-center"
           >
             {promo.cta}
             <ArrowRight size={18} />

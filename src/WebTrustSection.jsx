@@ -47,25 +47,23 @@ export default function WebTrustSection({ lang = "hr", className = "", showHighl
 
         <div className="relative">
           <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{copy.eyebrow}</p>
-          <h2 className="max-w-3xl text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl">{copy.title}</h2>
-          <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">{copy.text}</p>
+          <h2 className="max-w-3xl text-xl font-semibold leading-tight text-slate-900 sm:text-2xl lg:text-3xl">{copy.title}</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:mt-4 sm:text-base">{copy.text}</p>
 
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.55, ease: easeOut, delay: 0.08 }}
-            className="relative mt-6 overflow-hidden rounded-2xl border border-blue-200/70 bg-gradient-to-br from-blue-50/90 via-white/80 to-violet-50/70 p-5 shadow-lg shadow-blue-100/40 sm:p-7"
+            className="relative mt-5 overflow-hidden rounded-2xl border border-blue-200/70 bg-gradient-to-br from-blue-50/90 via-white/80 to-violet-50/70 p-4 shadow-lg shadow-blue-100/40 sm:mt-6 sm:p-7"
           >
             <div className="pointer-events-none absolute -right-6 -top-6 size-24 rounded-full bg-blue-400/10 blur-2xl" />
-            <div className="relative flex flex-col items-center gap-3 text-center sm:flex-row sm:items-start sm:gap-5 sm:text-left">
-              <div className="grid size-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 text-white shadow-lg shadow-blue-500/25">
-                <BarChart3 size={26} />
+            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
+              <div className="grid size-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 text-white shadow-lg shadow-blue-500/25 sm:size-14">
+                <BarChart3 className="size-6 sm:size-[26px]" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-4xl font-semibold tabular-nums tracking-tight text-slate-900 sm:text-5xl">
-                  <span className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">84%</span>
-                </p>
+                <p className="text-3xl font-semibold tabular-nums tracking-tight text-blue-600 sm:text-5xl">84%</p>
                 <p className="mt-2 text-sm font-medium leading-6 text-slate-800 sm:text-base">{copy.stat}</p>
                 <p className="mt-2 text-xs text-slate-500">{copy.statSource}</p>
               </div>

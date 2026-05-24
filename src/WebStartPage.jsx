@@ -505,15 +505,15 @@ function BillingTrustBadge({ billing, labels, variant = "banner" }) {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, ease: easeOut }}
-        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold leading-tight ring-1 ${
+        className={`inline-flex w-full max-w-full items-start gap-2 rounded-xl px-3 py-2 text-xs font-semibold leading-snug ring-1 sm:inline-flex sm:w-auto sm:rounded-full sm:px-2.5 sm:py-1 sm:text-[11px] sm:leading-tight ${
           isMonthly
             ? "bg-blue-50 text-blue-700 ring-blue-200/80"
             : "bg-violet-50 text-violet-700 ring-violet-200/80"
         }`}
         title={note}
       >
-        <Icon size={12} className="shrink-0" />
-        {title}
+        <Icon size={14} className="mt-0.5 shrink-0" />
+        <span className="min-w-0 flex-1">{title}</span>
       </motion.span>
     );
   }
@@ -554,7 +554,7 @@ function BillingToggle({ billing, onChange, labels }) {
         <div
           role="group"
           aria-label={`${labels.monthly} / ${labels.yearly}`}
-          className="relative inline-flex rounded-full border border-slate-200/80 bg-white/90 p-1 text-sm font-semibold text-slate-700 shadow-sm backdrop-blur"
+          className="relative flex w-full rounded-full border border-slate-200/80 bg-white/90 p-1 text-sm font-semibold text-slate-700 shadow-sm backdrop-blur sm:inline-flex sm:w-auto"
         >
           {["monthly", "yearly"].map((value) => {
             const isActive = billing === value;
@@ -563,7 +563,7 @@ function BillingToggle({ billing, onChange, labels }) {
                 key={value}
                 type="button"
                 onClick={() => onChange(value)}
-                className="pressable relative z-10 rounded-full px-4 py-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+                className="pressable relative z-10 min-h-11 flex-1 rounded-full px-4 py-2.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:flex-none sm:min-h-0 sm:py-2"
                 aria-pressed={isActive}
               >
                 {isActive && (
@@ -614,7 +614,7 @@ function PackageCard({ pkg, index, billing, labels, onSelect }) {
       whileHover={{ y: featured ? -6 : -4 }}
       className={`relative flex h-full flex-col rounded-2xl border bg-white/85 p-5 shadow-xl backdrop-blur-md sm:p-6 ${
         featured
-          ? "border-blue-300/80 shadow-blue-200/40 ring-1 ring-blue-200/60 lg:scale-[1.03]"
+          ? "border-blue-300/80 pt-8 shadow-blue-200/40 ring-1 ring-blue-200/60 sm:pt-6 lg:scale-[1.03]"
           : "border-slate-200/80 shadow-slate-300/30"
       }`}
     >
@@ -629,10 +629,10 @@ function PackageCard({ pkg, index, billing, labels, onSelect }) {
           {pkg.badge}
         </motion.span>
       )}
-      <div className="mb-1 flex items-start justify-between gap-3">
+      <div className="mb-1 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
         <h3 className="text-xl font-semibold text-slate-900">{pkg.name}</h3>
         {featured && pkg.badgeLong && (
-          <span className="hidden text-right text-[11px] font-medium leading-tight text-blue-700 sm:block sm:max-w-[8rem]">
+          <span className="text-xs font-medium leading-snug text-blue-700 sm:max-w-[8rem] sm:text-right sm:text-[11px]">
             {pkg.badgeLong}
           </span>
         )}
@@ -687,7 +687,7 @@ function FaqItem({ question, answer, index }) {
         className="flex w-full items-center justify-between gap-4 py-4 text-left"
         aria-expanded={open}
       >
-        <span className="text-sm font-semibold text-slate-900 sm:text-base">{question}</span>
+        <span className="min-w-0 flex-1 pr-2 text-sm font-semibold text-slate-900 sm:text-base">{question}</span>
         <ChevronDown size={18} className={`shrink-0 text-slate-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
       <motion.div
@@ -735,12 +735,12 @@ export default function WebStartPage() {
       <section className="px-4 pt-24 pb-8 sm:pt-32 sm:pb-10">
         <div className="mx-auto grid max-w-[1180px] items-center gap-10 lg:max-w-[1380px] lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.55fr)] lg:gap-12">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
-            <div className="hero-kicker mb-5 inline-flex items-center gap-2 rounded-full bg-white/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] shadow-lg shadow-violet-500/10">
-              <Link2 size={15} />
-              <span className="hero-kicker-text">{copy.hero.badge}</span>
+            <div className="hero-kicker mb-5 inline-flex max-w-full items-center gap-2 rounded-full bg-white/85 px-3 py-2 text-[10px] font-bold uppercase leading-snug tracking-[0.1em] shadow-lg shadow-violet-500/10 sm:px-4 sm:text-xs sm:tracking-[0.12em]">
+              <Link2 size={15} className="shrink-0" />
+              <span className="hero-kicker-text min-w-0">{copy.hero.badge}</span>
             </div>
-            <h1 className="text-4xl font-semibold leading-[1.06] text-slate-900 sm:text-5xl xl:text-[3.35rem]">{copy.hero.title}</h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">{copy.hero.subtitle}</p>
+            <h1 className="text-3xl font-semibold leading-[1.08] text-slate-900 sm:text-4xl sm:leading-[1.06] xl:text-[3.35rem]">{copy.hero.title}</h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:mt-5 sm:text-lg sm:leading-8">{copy.hero.subtitle}</p>
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -749,12 +749,12 @@ export default function WebStartPage() {
             >
               {copy.hero.highlight}
             </motion.p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <MotionButton onClick={openDefaultInquiry} className="inline-flex px-6 py-4">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row">
+              <MotionButton onClick={openDefaultInquiry} className="inline-flex w-full px-5 py-3.5 text-sm sm:w-auto sm:px-6 sm:py-4 sm:text-base">
                 {copy.hero.primary}
                 <Send size={18} />
               </MotionButton>
-              <MotionButton href="#paketi" variant="secondary" className="inline-flex px-6 py-4">
+              <MotionButton href="#paketi" variant="secondary" className="inline-flex w-full px-5 py-3.5 text-sm sm:w-auto sm:px-6 sm:py-4 sm:text-base">
                 {copy.hero.secondary}
                 <ArrowRight size={18} />
               </MotionButton>
@@ -795,8 +795,8 @@ export default function WebStartPage() {
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <motion.div {...reveal} className="mb-8 max-w-2xl">
             <SectionEyebrow>{copy.audience.eyebrow}</SectionEyebrow>
-            <h2 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">{copy.audience.title}</h2>
-            <p className="mt-4 text-base leading-7 text-slate-600">{copy.audience.intro}</p>
+            <h2 className="text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl sm:text-4xl">{copy.audience.title}</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600 sm:mt-4 sm:text-base">{copy.audience.intro}</p>
           </motion.div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {copy.audience.items.map(({ title, description, Icon, iconCls }, index) => (
@@ -824,7 +824,7 @@ export default function WebStartPage() {
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <motion.div {...reveal} className="mb-8 max-w-2xl">
             <SectionEyebrow>{copy.steps.eyebrow}</SectionEyebrow>
-            <h2 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">{copy.steps.title}</h2>
+            <h2 className="text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl lg:text-4xl">{copy.steps.title}</h2>
           </motion.div>
           <div className="grid gap-4 lg:grid-cols-2">
             {copy.steps.items.map(({ title, description }, index) => (
@@ -844,8 +844,8 @@ export default function WebStartPage() {
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <motion.div {...reveal} className="mb-8 max-w-2xl">
             <SectionEyebrow>{copy.packages.eyebrow}</SectionEyebrow>
-            <h2 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">{copy.packages.title}</h2>
-            <p className="mt-4 text-base leading-7 text-slate-600">{copy.packages.intro}</p>
+            <h2 className="text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl lg:text-4xl">{copy.packages.title}</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600 sm:mt-4 sm:text-base">{copy.packages.intro}</p>
           </motion.div>
           <BillingToggle billing={billing} onChange={setBilling} labels={copy.packages.billing} />
           <div className="grid items-stretch gap-5 lg:grid-cols-3 lg:gap-4 xl:gap-6">
@@ -878,7 +878,7 @@ export default function WebStartPage() {
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <motion.div {...reveal} className="mb-8 max-w-2xl">
             <SectionEyebrow>{copy.benefits.eyebrow}</SectionEyebrow>
-            <h2 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">{copy.benefits.title}</h2>
+            <h2 className="text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl lg:text-4xl">{copy.benefits.title}</h2>
           </motion.div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {copy.benefits.items.map(({ title, text, Icon }, index) => (
@@ -905,8 +905,8 @@ export default function WebStartPage() {
         <div className="mx-auto max-w-[1180px] rounded-2xl border border-slate-200/80 bg-white/75 p-6 shadow-xl shadow-slate-300/30 sm:p-8 lg:max-w-[1380px]">
           <motion.div {...reveal}>
             <SectionEyebrow>{copy.risk.eyebrow}</SectionEyebrow>
-            <h2 className="max-w-3xl text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl">{copy.risk.title}</h2>
-            <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">{copy.risk.lead}</p>
+            <h2 className="max-w-3xl text-xl font-semibold leading-tight text-slate-900 sm:text-2xl lg:text-3xl">{copy.risk.title}</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:mt-4 sm:text-base">{copy.risk.lead}</p>
             <p className="mt-4 max-w-4xl text-sm leading-6 text-slate-500">{copy.risk.legal}</p>
             <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-800 ring-1 ring-blue-200/70">
               <ShieldCheck size={16} />
@@ -920,7 +920,7 @@ export default function WebStartPage() {
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <motion.div {...reveal} className="mb-6">
             <SectionEyebrow>{copy.faq.eyebrow}</SectionEyebrow>
-            <h2 className="text-3xl font-semibold text-slate-900">{copy.faq.title}</h2>
+            <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">{copy.faq.title}</h2>
           </motion.div>
           <div className="rounded-2xl border border-slate-200/80 bg-white/75 px-5 shadow-xl shadow-slate-300/30 sm:px-6">
             {copy.faq.items.map((item, index) => (
@@ -934,9 +934,9 @@ export default function WebStartPage() {
         <motion.div {...reveal} className="relative mx-auto max-w-[1180px] overflow-hidden rounded-2xl border border-blue-300/40 bg-white/85 px-6 py-8 text-center shadow-2xl shadow-blue-200/35 sm:px-10 sm:py-10 lg:max-w-[1380px]">
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-blue-500/8 via-violet-500/8 to-cyan-400/8" />
           <div className="relative">
-            <h2 className="text-2xl font-semibold text-slate-900 sm:text-3xl">{copy.finalCta.title}</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-600">{copy.finalCta.description}</p>
-            <MotionButton onClick={openDefaultInquiry} className="mt-6 inline-flex px-6 py-4">
+            <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl lg:text-3xl">{copy.finalCta.title}</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">{copy.finalCta.description}</p>
+            <MotionButton onClick={openDefaultInquiry} className="mt-6 inline-flex w-full px-5 py-3.5 text-sm sm:w-auto sm:px-6 sm:py-4 sm:text-base">
               {copy.finalCta.button}
               <Send size={18} />
             </MotionButton>
@@ -953,7 +953,7 @@ export default function WebStartPage() {
         priceLabel={selectedPackage?.priceLabel ?? buildPriceLabel(defaultPackage, billing, copy.packages.billing)}
       />
 
-      <footer className="px-4 pb-10">
+      <footer className="px-4 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <div className="border-t border-slate-200 pt-8">
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
