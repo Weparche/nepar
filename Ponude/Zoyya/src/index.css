@@ -1,0 +1,94 @@
+@import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
+
+@theme {
+  --color-zoyya-50: #f5f3ff;
+  --color-zoyya-100: #ede9fe;
+  --color-zoyya-200: #ddd6fe;
+  --color-zoyya-300: #c4b5fd;
+  --color-zoyya-400: #a78bfa;
+  --color-zoyya-500: #8b5cf6;
+  --color-zoyya-600: #7c3aed;
+  --color-zoyya-700: #6d28d9;
+  --color-zoyya-800: #5b21b6;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background: #ffffff;
+  color: #1e1b4b;
+}
+
+.leaflet-container {
+  font-family: var(--font-sans);
+  z-index: 0;
+}
+
+.zoyya-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.zoyya-marker-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.zoyya-marker-inner:hover {
+  transform: scale(1.08);
+}
+
+.zoyya-marker-pin {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+  border: 2px solid white;
+}
+
+.zoyya-marker-pin svg {
+  transform: rotate(45deg);
+  color: white;
+}
+
+.zoyya-marker-rating {
+  margin-top: 2px;
+  background: white;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #7c3aed;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

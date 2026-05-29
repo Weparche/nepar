@@ -1,0 +1,35 @@
+{
+  "name": "zoyya-marketplace-demo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test:visual": "playwright test",
+    "test:visual:ui": "playwright test --ui",
+    "design:review": "impeccable detect src/",
+    "deploy:zoyya": "node scripts/deploy-zoyya.mjs",
+    "deploy:zoyya:full": "node scripts/deploy-zoyya.mjs --with-nepar-build"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.511.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@tailwindcss/vite": "^4.1.7",
+    "@types/leaflet": "^1.9.17",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "impeccable": "^2.3.1",
+    "playwright": "^1.52.0",
+    "tailwindcss": "^4.1.7",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  }
+}
