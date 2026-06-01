@@ -100,6 +100,62 @@ Možeš li bolje?
 ${SHARE_URL}`;
 }
 
+const CHALLENGE_PARAM = {
+  name: "od",
+  attempts: "p",
+  time: "t",
+};
+
+export function buildChallengeLink({ name, attempts, elapsedSeconds }) {
+  const params = new URLSearchParams({
+    [CHALLENGE_PARAM.name]: name.trim() || "Prijatelj",
+    [CHALLENGE_PARAM.attempts]: String(attempts),
+    [CHALLENGE_PARAM.time]: String(elapsedSeconds),
+  });
+  const base =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/mozgalica`
+      : SHARE_URL;
+  return `${base}?${params.toString()}`;
+}
+
+export function parseChallengeFromSearch(search) {
+  const params = new URLSearchParams(search);
+  const name = params.get(CHALLENGE_PARAM.name);
+  const attempts = Number(params.get(CHALLENGE_PARAM.attempts));
+  const elapsedSeconds = Number(params.get(CHALLENGE_PARAM.time));
+
+  if (!name || Number.isNaN(attempts) || Number.isNaN(elapsedSeconds)) {
+    return null;
+  }
+
+  return { name, attempts, elapsedSeconds };
+}
+
+export function buildChallengeInviteText({ name, attempts, time, link }) {
+  return `Dnevne Asocijacije 🧠
+
+${name} te izaziva na današnju mozgalicu!
+Njegov rezultat: 4/4 grupe · ${attempts} pokušaja · ${time}
+
+Prihvati izazov i pokušaj pobijediti:
+${link}`;
+}
+
+export function pickChallengeWinner(challenger, responder) {
+  if (responder.attempts < challenger.attempts) return "responder";
+  if (challenger.attempts < responder.attempts) return "challenger";
+  if (responder.elapsedSeconds < challenger.elapsedSeconds) return "responder";
+  if (challenger.elapsedSeconds < responder.elapsedSeconds) return "challenger";
+  return "tie";
+}
+
+export const DEMO_CHALLENGE = {
+  name: "Ivan",
+  attempts: 7,
+  elapsedSeconds: 151,
+};
+
 export function createInitialGameState(gridItems = null) {
   const stored =
     typeof sessionStorage !== "undefined"

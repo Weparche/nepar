@@ -81,11 +81,39 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
     await expect(page.getByTestId("result-groups")).toContainText("4/4");
   });
 
-  test("landing challenge demo opens challenge screen", async ({ page }) => {
+  test("landing challenge demo opens invite screen with link", async ({ page }) => {
     await page.goto("/mozgalica");
     await page.getByTestId("landing-challenge-demo").click();
-    await expect(page.getByTestId("challenge-result")).toBeVisible();
-    await expect(page.getByText("Ivan te izazvao!")).toBeVisible();
+    await expect(page.getByTestId("challenge-invite")).toBeVisible();
+    await expect(page.getByTestId("challenge-link")).toHaveValue(/\/mozgalica\?od=/);
+    await expect(page.getByText("Izazovi prijatelja")).toBeVisible();
+  });
+
+  test("challenge friends after win shows shareable link", async ({ page }) => {
+    await startGame(page);
+    await solveAllGroups(page);
+    await expect(page.getByTestId("result-panel")).toBeVisible({ timeout: 5000 });
+    await page.getByTestId("challenge-friends").click();
+    await expect(page.getByTestId("challenge-invite")).toBeVisible();
+    await expect(page.getByTestId("challenge-link")).toHaveValue(/\/mozgalica\?od=/);
+  });
+
+  test("incoming challenge link opens accept screen and compares after play", async ({
+    page,
+  }) => {
+    await page.goto("/mozgalica?od=Ivan&p=7&t=151");
+    await expect(page.getByTestId("challenge-accept")).toBeVisible();
+    await expect(page.getByText("Ivan te izaziva!")).toBeVisible();
+
+    await page.evaluate((items) => {
+      sessionStorage.setItem("mozgalica-test-order", JSON.stringify(items));
+    }, MOCKUP_ITEMS);
+    await page.getByTestId("accept-challenge").click();
+    await expect(page.getByTestId("game-board")).toBeVisible();
+    await solveAllGroups(page);
+
+    await expect(page.getByTestId("challenge-result")).toBeVisible({ timeout: 5000 });
+    await expect(page.getByTestId("challenge-winner")).toBeVisible();
   });
 
   test("nav Izazovi prijatelja scrolls to challenge section", async ({ page, isMobile }) => {
@@ -152,15 +180,15 @@ test.describe("Dnevne Asocijacije screenshots", () => {
     );
   });
 
-  test("challenge result screenshot", async ({ page, isMobile }) => {
+  test("challenge invite screenshot", async ({ page, isMobile }) => {
     await startGame(page);
     await solveAllGroups(page);
     await expect(page.getByTestId("result-panel")).toBeVisible({ timeout: 5000 });
     await page.getByTestId("challenge-friends").click();
-    await expect(page.getByTestId("challenge-result")).toBeVisible();
+    await expect(page.getByTestId("challenge-invite")).toBeVisible();
     await page.waitForTimeout(500);
     await expect(page).toHaveScreenshot(
-      isMobile ? "challenge-result-mobile.png" : "challenge-result-desktop.png",
+      isMobile ? "challenge-invite-mobile.png" : "challenge-invite-desktop.png",
       { fullPage: true },
     );
   });

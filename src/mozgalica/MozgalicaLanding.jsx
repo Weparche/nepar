@@ -1,7 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { MozgalicaLogo } from "./MozgalicaLogo.jsx";
 import HowToPlay from "./HowToPlay.jsx";
-import { MOCKUP_ITEMS } from "./puzzle.js";
+import { DEMO_CHALLENGE, MOCKUP_ITEMS } from "./puzzle.js";
 
 const NAV_LINKS = [
   ["Kako se igra", "kako-se-igra"],
@@ -101,7 +101,7 @@ function LandingHeader({ onStart, menuOpen, setMenuOpen }) {
   );
 }
 
-function LandingContent({ onStart, onShowChallenge }) {
+function LandingContent({ onStart, onShowChallengeDemo }) {
   return (
     <>
       <section className="mz-hero" data-testid="landing-hero">
@@ -153,29 +153,31 @@ function LandingContent({ onStart, onShowChallenge }) {
       <section className="mz-section" id="izazovi" data-testid="challenge-section">
         <h2 className="mz-section__title">Izazovi prijatelja</h2>
         <p className="mz-section__subtitle">
-          Usporedi rezultate i saznaj tko je brži i precizniji.
+          Pošalji link prijatelju — on igra istu današnju mozgalicu, a pobjednik
+          se otkriva tek nakon usporedbe rezultata.
         </p>
         <div className="mz-challenge-preview">
-          <div className="mz-vs">
-            <div className="mz-vs__player">
-              <div className="mz-vs__avatar">I</div>
-              <div className="mz-vs__name">Ivan</div>
-              <div className="mz-vs__stat">4/4 · 7 pokušaja · 02:31</div>
+          <div className="mz-challenge-preview__steps">
+            <div className="mz-challenge-preview__step">
+              <span className="mz-challenge-preview__step-num">1</span>
+              Riješi igru i dobiješ link
             </div>
-            <div className="mz-vs__divider">vs</div>
-            <div className="mz-vs__player">
-              <div className="mz-vs__avatar">M</div>
-              <div className="mz-vs__name">Marko</div>
-              <div className="mz-vs__stat">4/4 · 8 pokušaja · 03:14</div>
+            <div className="mz-challenge-preview__step">
+              <span className="mz-challenge-preview__step-num">2</span>
+              Prijatelj otvara link i igra
+            </div>
+            <div className="mz-challenge-preview__step">
+              <span className="mz-challenge-preview__step-num">3</span>
+              Usporedba — tko je brži i precizniji?
             </div>
           </div>
           <button
             type="button"
             className="mozgalica-btn mozgalica-btn--primary mz-challenge-preview__cta"
-            onClick={onShowChallenge}
+            onClick={() => onShowChallengeDemo(DEMO_CHALLENGE)}
             data-testid="landing-challenge-demo"
           >
-            Pogledaj primjer izazova
+            Pogledaj primjer linka
           </button>
         </div>
       </section>
@@ -216,11 +218,16 @@ function LandingContent({ onStart, onShowChallenge }) {
   );
 }
 
-export default function MozgalicaLanding({ onStart, onShowChallenge, menuOpen, setMenuOpen }) {
+export default function MozgalicaLanding({
+  onStart,
+  onShowChallengeDemo,
+  menuOpen,
+  setMenuOpen,
+}) {
   return (
     <>
       <LandingHeader onStart={onStart} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <LandingContent onStart={onStart} onShowChallenge={onShowChallenge} />
+      <LandingContent onStart={onStart} onShowChallengeDemo={onShowChallengeDemo} />
     </>
   );
 }
