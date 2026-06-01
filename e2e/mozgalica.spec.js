@@ -96,6 +96,10 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
     await page.getByTestId("challenge-friends").click();
     await expect(page.getByTestId("challenge-invite")).toBeVisible();
     await expect(page.getByTestId("challenge-link")).toHaveValue(/\/mozgalica\?od=/);
+
+    const shareText = await page.getByTestId("challenge-share-text-hidden").inputValue();
+    const linkMatches = shareText.match(/\/mozgalica\?od=[^\s]+/g) ?? [];
+    expect(linkMatches).toHaveLength(1);
   });
 
   test("incoming challenge link opens accept screen and compares after play", async ({

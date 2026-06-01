@@ -42,7 +42,6 @@ export default function ChallengeInvite({
         await navigator.share({
           title: "Dnevne Asocijacije — izazov",
           text: shareText,
-          url: challengeLink,
         });
         return;
       } catch {
