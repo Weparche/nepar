@@ -426,7 +426,7 @@ const SOUND_ROUNDS = [
     mainLabel: "Zvuk",
     mainEmoji: "🔊",
     soundText: "Zzzzz!",
-    soundSrc: "/njamko/assets/sounds/bee.mp3",
+    soundSrc: "/njamko/assets/sounds/delon_boomkin-bee-landing-on-flower-374609.mp3",
     correctAnswer: "Pčela",
     options: [
       { name: "Pčela", emoji: "🐝" },
