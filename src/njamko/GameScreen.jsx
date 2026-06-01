@@ -4,6 +4,7 @@ import GameTopBar from "./GameTopBar.jsx";
 
 export default function GameScreen({
   round,
+  foodOptions,
   roundNumber,
   totalRounds,
   stars,
@@ -50,7 +51,7 @@ export default function GameScreen({
         </div>
 
         <div className="nj-food-grid">
-          {round.options.map((option) => (
+          {foodOptions.map((option) => (
             <FoodCard
               key={option.name}
               name={option.name}

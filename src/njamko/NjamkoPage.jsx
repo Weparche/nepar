@@ -3,7 +3,7 @@ import { usePageMeta } from "../usePageMeta.js";
 import FinishScreen from "./FinishScreen.jsx";
 import GameScreen from "./GameScreen.jsx";
 import StartScreen from "./StartScreen.jsx";
-import { ROUNDS } from "./rounds.js";
+import { ROUNDS, shuffleOptions } from "./rounds.js";
 import {
   markUserInteraction,
   playCorrectSound,
@@ -31,6 +31,7 @@ export default function NjamkoPage() {
   const [animalBounce, setAnimalBounce] = useState(false);
   const [shakeFood, setShakeFood] = useState(null);
   const [locked, setLocked] = useState(false);
+  const [foodOptions, setFoodOptions] = useState([]);
 
   const advanceTimerRef = useRef(null);
   const shakeTimerRef = useRef(null);
@@ -53,6 +54,13 @@ export default function NjamkoPage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!gameStarted || gameFinished) return;
+    const round = ROUNDS[currentRoundIndex];
+    if (!round) return;
+    setFoodOptions(shuffleOptions(round.options));
+  }, [currentRoundIndex, gameStarted, gameFinished]);
+
   const startGame = useCallback(() => {
     markUserInteraction();
     setGameStarted(true);
@@ -64,6 +72,7 @@ export default function NjamkoPage() {
     setAnimalBounce(false);
     setShakeFood(null);
     setLocked(false);
+    setFoodOptions(shuffleOptions(ROUNDS[0].options));
   }, []);
 
   const replayGame = useCallback(() => {
@@ -77,6 +86,7 @@ export default function NjamkoPage() {
     setAnimalBounce(false);
     setShakeFood(null);
     setLocked(false);
+    setFoodOptions(shuffleOptions(ROUNDS[0].options));
   }, []);
 
   const handleToggleSound = useCallback(() => {
@@ -163,6 +173,7 @@ export default function NjamkoPage() {
         {gameStarted && !gameFinished && round && (
           <GameScreen
             round={round}
+            foodOptions={foodOptions}
             roundNumber={currentRoundIndex + 1}
             totalRounds={ROUNDS.length}
             stars={stars}
