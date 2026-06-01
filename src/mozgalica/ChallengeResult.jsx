@@ -1,6 +1,14 @@
-export default function ChallengeResult({ onRematch, onShare }) {
+export default function ChallengeResult({ onRematch, onShare, onBack }) {
   return (
     <div className="mz-challenge" data-testid="challenge-result">
+      <button
+        type="button"
+        className="mz-back-btn mz-challenge__back"
+        onClick={onBack}
+        aria-label="Natrag"
+      >
+        ←
+      </button>
       <h2 className="mz-challenge__title">Ivan te izazvao!</h2>
 
       <div className="mz-challenge__compare">

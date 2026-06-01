@@ -191,11 +191,17 @@ export default function MozgalicaPage() {
     window.scrollTo(0, 0);
   }, []);
 
+  const showChallenge = useCallback(() => {
+    setScreen("challenge");
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="mozgalica" data-testid="mozgalica-page">
       {screen === "landing" && (
         <MozgalicaLanding
           onStart={startGame}
+          onShowChallenge={showChallenge}
           menuOpen={menuOpen}
           setMenuOpen={setMenuOpen}
         />
@@ -235,7 +241,7 @@ export default function MozgalicaPage() {
           <ResultPanel
             attempts={game.attempts}
             elapsedSeconds={game.elapsedSeconds}
-            onChallenge={() => setScreen("challenge")}
+            onChallenge={showChallenge}
             onShare={handleShare}
             onPlayAgain={startGame}
           />
@@ -249,7 +255,14 @@ export default function MozgalicaPage() {
               <MozgalicaLogo compact />
             </div>
           </header>
-          <ChallengeResult onRematch={startGame} onShare={handleShare} />
+          <ChallengeResult
+            onRematch={startGame}
+            onShare={handleShare}
+            onBack={() => {
+              setScreen(game.solvedGroups.length === 4 ? "result" : "landing");
+              window.scrollTo(0, 0);
+            }}
+          />
         </>
       )}
     </div>

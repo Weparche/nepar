@@ -4,11 +4,19 @@ import HowToPlay from "./HowToPlay.jsx";
 import { MOCKUP_ITEMS } from "./puzzle.js";
 
 const NAV_LINKS = [
-  ["Kako se igra", "#kako-se-igra"],
-  ["Izazovi prijatelja", "#izazovi"],
-  ["Zašto igrati", "#zasto"],
-  ["Pomoć", "#pomoc"],
+  ["Kako se igra", "kako-se-igra"],
+  ["Izazovi prijatelja", "izazovi"],
+  ["Zašto igrati", "zasto"],
+  ["Pomoć", "pomoc"],
 ];
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const headerOffset = 88;
+  const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+  window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+}
 
 const FEATURES = [
   { icon: "🔓", title: "Bez registracije", text: "Odmah igraj, bez računa." },
@@ -26,10 +34,15 @@ function LandingHeader({ onStart, menuOpen, setMenuOpen }) {
         </a>
 
         <nav className="mz-nav" aria-label="Glavna navigacija">
-          {NAV_LINKS.map(([label, href]) => (
-            <a key={href} href={href}>
+          {NAV_LINKS.map(([label, id]) => (
+            <button
+              key={id}
+              type="button"
+              className="mz-nav-link"
+              onClick={() => scrollToSection(id)}
+            >
               {label}
-            </a>
+            </button>
           ))}
         </nav>
 
@@ -59,10 +72,18 @@ function LandingHeader({ onStart, menuOpen, setMenuOpen }) {
         className={`mz-mobile-nav${menuOpen ? " mz-mobile-nav--open" : ""}`}
         aria-label="Mobilna navigacija"
       >
-        {NAV_LINKS.map(([label, href]) => (
-          <a key={href} href={href} onClick={() => setMenuOpen(false)}>
+        {NAV_LINKS.map(([label, id]) => (
+          <button
+            key={id}
+            type="button"
+            className="mz-mobile-nav-link"
+            onClick={() => {
+              setMenuOpen(false);
+              scrollToSection(id);
+            }}
+          >
             {label}
-          </a>
+          </button>
         ))}
         <button
           type="button"
@@ -80,7 +101,7 @@ function LandingHeader({ onStart, menuOpen, setMenuOpen }) {
   );
 }
 
-function LandingContent({ onStart }) {
+function LandingContent({ onStart, onShowChallenge }) {
   return (
     <>
       <section className="mz-hero" data-testid="landing-hero">
@@ -148,6 +169,14 @@ function LandingContent({ onStart }) {
               <div className="mz-vs__stat">4/4 · 8 pokušaja · 03:14</div>
             </div>
           </div>
+          <button
+            type="button"
+            className="mozgalica-btn mozgalica-btn--primary mz-challenge-preview__cta"
+            onClick={onShowChallenge}
+            data-testid="landing-challenge-demo"
+          >
+            Pogledaj primjer izazova
+          </button>
         </div>
       </section>
 
@@ -187,11 +216,11 @@ function LandingContent({ onStart }) {
   );
 }
 
-export default function MozgalicaLanding({ onStart, menuOpen, setMenuOpen }) {
+export default function MozgalicaLanding({ onStart, onShowChallenge, menuOpen, setMenuOpen }) {
   return (
     <>
       <LandingHeader onStart={onStart} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <LandingContent onStart={onStart} />
+      <LandingContent onStart={onStart} onShowChallenge={onShowChallenge} />
     </>
   );
 }

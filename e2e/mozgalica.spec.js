@@ -81,6 +81,24 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
     await expect(page.getByTestId("result-groups")).toContainText("4/4");
   });
 
+  test("landing challenge demo opens challenge screen", async ({ page }) => {
+    await page.goto("/mozgalica");
+    await page.getByTestId("landing-challenge-demo").click();
+    await expect(page.getByTestId("challenge-result")).toBeVisible();
+    await expect(page.getByText("Ivan te izazvao!")).toBeVisible();
+  });
+
+  test("nav Izazovi prijatelja scrolls to challenge section", async ({ page, isMobile }) => {
+    await page.goto("/mozgalica");
+    if (isMobile) {
+      await page.getByRole("button", { name: "Otvori izbornik" }).click();
+      await page.locator(".mz-mobile-nav").getByRole("button", { name: "Izazovi prijatelja" }).click();
+    } else {
+      await page.locator(".mz-nav").getByRole("button", { name: "Izazovi prijatelja" }).click();
+    }
+    await expect(page.getByTestId("landing-challenge-demo")).toBeVisible();
+  });
+
   test("mobile viewport layout is intact", async ({ page, isMobile }) => {
     test.skip(!isMobile, "Mobile-only layout check");
     await page.goto("/mozgalica");
