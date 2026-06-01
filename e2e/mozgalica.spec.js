@@ -137,6 +137,24 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
     expect(box?.width).toBeGreaterThan(0);
     await expect(page.getByTestId("check-selection")).toBeVisible();
   });
+
+  test("1440p desktop layout uses wide content and readable game grid", async ({
+    page,
+  }) => {
+    test.skip(test.info().project.name !== "desktop-1440", "1440p only");
+    await page.goto("/mozgalica");
+
+    const hero = await page.getByTestId("landing-hero").boundingBox();
+    expect(hero?.width).toBeGreaterThan(1100);
+
+    await startGame(page);
+    const grid = await page.getByTestId("game-grid").boundingBox();
+    expect(grid?.width).toBeGreaterThan(520);
+    expect(grid?.width).toBeLessThan(720);
+
+    const card = await page.getByTestId("game-grid").locator(".mz-card").first().boundingBox();
+    expect(card?.height).toBeGreaterThanOrEqual(84);
+  });
 });
 
 test.describe("Dnevne Asocijacije screenshots", () => {
@@ -191,5 +209,29 @@ test.describe("Dnevne Asocijacije screenshots", () => {
       isMobile ? "challenge-invite-mobile.png" : "challenge-invite-desktop.png",
       { fullPage: true },
     );
+  });
+
+  test("landing 1440p screenshot", async ({ page }) => {
+    test.skip(test.info().project.name !== "desktop-1440", "1440p only");
+    await page.goto("/mozgalica");
+    await expect(page.getByTestId("hero-title")).toBeVisible();
+    await page.waitForTimeout(500);
+    await expect(page).toHaveScreenshot("landing-1440.png", { fullPage: true });
+  });
+
+  test("game 1440p screenshot", async ({ page }) => {
+    test.skip(test.info().project.name !== "desktop-1440", "1440p only");
+    await startGame(page);
+    await page.waitForTimeout(500);
+    await expect(page).toHaveScreenshot("game-1440.png", { fullPage: true });
+  });
+
+  test("result 1440p screenshot", async ({ page }) => {
+    test.skip(test.info().project.name !== "desktop-1440", "1440p only");
+    await startGame(page);
+    await solveAllGroups(page);
+    await expect(page.getByTestId("result-panel")).toBeVisible({ timeout: 5000 });
+    await page.waitForTimeout(500);
+    await expect(page).toHaveScreenshot("result-1440.png", { fullPage: true });
   });
 });
