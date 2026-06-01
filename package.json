@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "fetch:njamko-sounds": "node scripts/fetch-njamko-sounds.js",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots"
   },

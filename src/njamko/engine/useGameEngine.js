@@ -72,7 +72,7 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
     markUserInteraction();
     setSoundRevealed(true);
     if (soundEnabled) {
-      playAnimalSound(round.soundText);
+      playAnimalSound(round.soundText, round.soundSrc);
     }
   }, [round, soundEnabled]);
 

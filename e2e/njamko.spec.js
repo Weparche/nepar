@@ -86,6 +86,9 @@ test.describe("Njamko platform /njamko", () => {
       for (const round of level.rounds) {
         expect(round.options).toHaveLength(3);
         expect(round.options.filter((option) => option.name === round.correctAnswer)).toHaveLength(1);
+        if (round.mode === "sound") {
+          expect(round.soundSrc).toMatch(/^\/njamko\/assets\/sounds\/\w+\.mp3$/);
+        }
       }
     }
   });
@@ -116,6 +119,25 @@ test.describe("Njamko platform /njamko", () => {
   });
 
   test("sound level reveals sound text and accepts correct animal", async ({ page }) => {
+    await page.goto("/njamko");
+    await page.getByTestId("start-button").click();
+    await page.getByTestId("level-sound").click();
+    await expect(page.getByTestId("game-screen")).toBeVisible();
+
+    const round = getLevelById("sound").rounds[0];
+    expect(round.soundSrc).toBeTruthy();
+
+    await page.getByTestId("sound-button").click();
+    await expect(page.getByTestId("sound-text")).toContainText(round.soundText);
+    await expect(page.getByTestId("sound-text")).toBeVisible();
+
+    await selectCorrectAnswer(page, round);
+    await expect(page.getByTestId("feedback-message")).toContainText("Bravo!");
+  });
+
+  test("sound level works when audio files are missing", async ({ page }) => {
+    await page.route("**/njamko/assets/sounds/*.mp3", (route) => route.abort());
+
     await startLevel(page, "level-sound");
     const round = getLevelById("sound").rounds[0];
 

@@ -13,6 +13,7 @@ const SOUND_FREQUENCIES = {
 
 let audioContext = null;
 let userHasInteracted = false;
+let activeAnimalAudio = null;
 
 function getAudioContext() {
   if (!userHasInteracted) return null;
@@ -61,6 +62,19 @@ function playBeep({ frequency, duration, type = "sine", volume = 0.12 }) {
   }
 }
 
+function playAnimalSoundBeep(soundText) {
+  const frequency = SOUND_FREQUENCIES[soundText] ?? 400;
+  playBeep({ frequency, duration: 0.32, type: "sawtooth", volume: 0.08 });
+  setTimeout(() => {
+    playBeep({
+      frequency: frequency * 1.12,
+      duration: 0.18,
+      type: "sine",
+      volume: 0.06,
+    });
+  }, 120);
+}
+
 export function playCorrectSound() {
   playBeep({ frequency: 660, duration: 0.12, type: "sine", volume: 0.1 });
   setTimeout(() => {
@@ -72,15 +86,35 @@ export function playWrongSound() {
   playBeep({ frequency: 340, duration: 0.16, type: "triangle", volume: 0.06 });
 }
 
-export function playAnimalSound(soundText) {
-  const frequency = SOUND_FREQUENCIES[soundText] ?? 400;
-  playBeep({ frequency, duration: 0.32, type: "sawtooth", volume: 0.08 });
-  setTimeout(() => {
-    playBeep({
-      frequency: frequency * 1.12,
-      duration: 0.18,
-      type: "sine",
-      volume: 0.06,
-    });
-  }, 120);
+export function playAnimalSound(soundText, soundSrc) {
+  if (!userHasInteracted) return;
+
+  if (!soundSrc) {
+    playAnimalSoundBeep(soundText);
+    return;
+  }
+
+  try {
+    if (activeAnimalAudio) {
+      activeAnimalAudio.pause();
+      activeAnimalAudio = null;
+    }
+
+    const audio = new Audio(soundSrc);
+    audio.volume = 0.85;
+    activeAnimalAudio = audio;
+
+    const fallbackToBeep = () => {
+      playAnimalSoundBeep(soundText);
+    };
+
+    audio.addEventListener("error", fallbackToBeep, { once: true });
+
+    const playPromise = audio.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(fallbackToBeep);
+    }
+  } catch {
+    playAnimalSoundBeep(soundText);
+  }
 }
