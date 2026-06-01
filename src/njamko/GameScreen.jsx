@@ -1,21 +1,26 @@
 import AnimalCard from "./AnimalCard.jsx";
 import FoodCard from "./FoodCard.jsx";
 import GameTopBar from "./GameTopBar.jsx";
+import SuccessStars from "./SuccessStars.jsx";
 
 export default function GameScreen({
   round,
+  roundKey,
   foodOptions,
   roundNumber,
   totalRounds,
   stars,
   feedback,
-  animalBounce,
-  shakeFood,
+  selectedFoodName,
+  showStars,
+  isAnimating,
   soundEnabled,
   onToggleSound,
   onSelectFood,
-  locked,
 }) {
+  const bubbleClass =
+    feedback === "correct" ? "success-bubble" : "try-again-bubble";
+
   return (
     <div className="nj-game">
       <GameTopBar
@@ -34,15 +39,19 @@ export default function GameScreen({
 
         <div className="nj-animal-area">
           <AnimalCard
+            key={roundKey}
+            animalName={round.animal}
             emoji={round.animalEmoji}
-            name={round.animal}
-            bounce={animalBounce}
+            bounce={feedback === "correct" && isAnimating}
+            popIn
           />
+
+          <SuccessStars visible={showStars} />
 
           {feedback && (
             <p
               data-testid="feedback-message"
-              className={`nj-speech nj-speech--${feedback}`}
+              className={`nj-bubble ${bubbleClass}`}
               role="status"
             >
               {feedback === "correct" ? "Bravo!" : "Probaj opet."}
@@ -57,8 +66,11 @@ export default function GameScreen({
               name={option.name}
               emoji={option.emoji}
               onSelect={onSelectFood}
-              shake={shakeFood === option.name}
-              disabled={locked}
+              shake={feedback === "wrong" && selectedFoodName === option.name}
+              flying={
+                feedback === "correct" && selectedFoodName === option.name
+              }
+              disabled={isAnimating}
             />
           ))}
         </div>

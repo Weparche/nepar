@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePageMeta } from "../usePageMeta.js";
+import { BACKGROUND_IMAGES } from "./assets.js";
 import FinishScreen from "./FinishScreen.jsx";
 import GameScreen from "./GameScreen.jsx";
 import StartScreen from "./StartScreen.jsx";
@@ -11,7 +12,8 @@ import {
 } from "./sounds.js";
 import "./njamko.css";
 
-const ROUND_ADVANCE_MS = 1200;
+const CORRECT_ANIMATION_MS = 1200;
+const WRONG_RESET_MS = 800;
 
 export default function NjamkoPage() {
   usePageMeta({
@@ -24,18 +26,15 @@ export default function NjamkoPage() {
   const [gameStarted, setGameStarted] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
-  const [selectedFood, setSelectedFood] = useState(null);
+  const [selectedFoodName, setSelectedFoodName] = useState(null);
   const [stars, setStars] = useState(0);
   const [feedback, setFeedback] = useState(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [animalBounce, setAnimalBounce] = useState(false);
-  const [shakeFood, setShakeFood] = useState(null);
-  const [locked, setLocked] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [showStars, setShowStars] = useState(false);
   const [foodOptions, setFoodOptions] = useState([]);
 
-  const advanceTimerRef = useRef(null);
-  const shakeTimerRef = useRef(null);
-  const bounceTimerRef = useRef(null);
+  const animationTimerRef = useRef(null);
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -48,9 +47,7 @@ export default function NjamkoPage() {
 
   useEffect(() => {
     return () => {
-      clearTimeout(advanceTimerRef.current);
-      clearTimeout(shakeTimerRef.current);
-      clearTimeout(bounceTimerRef.current);
+      clearTimeout(animationTimerRef.current);
     };
   }, []);
 
@@ -61,33 +58,30 @@ export default function NjamkoPage() {
     setFoodOptions(shuffleOptions(round.options));
   }, [currentRoundIndex, gameStarted, gameFinished]);
 
+  const resetRoundFeedback = useCallback(() => {
+    setSelectedFoodName(null);
+    setFeedback(null);
+    setShowStars(false);
+    setIsAnimating(false);
+  }, []);
+
   const startGame = useCallback(() => {
     markUserInteraction();
+    clearTimeout(animationTimerRef.current);
     setGameStarted(true);
     setGameFinished(false);
     setCurrentRoundIndex(0);
-    setSelectedFood(null);
+    setSelectedFoodName(null);
     setStars(0);
     setFeedback(null);
-    setAnimalBounce(false);
-    setShakeFood(null);
-    setLocked(false);
+    setShowStars(false);
+    setIsAnimating(false);
     setFoodOptions(shuffleOptions(ROUNDS[0].options));
   }, []);
 
   const replayGame = useCallback(() => {
-    markUserInteraction();
-    setGameStarted(true);
-    setGameFinished(false);
-    setCurrentRoundIndex(0);
-    setSelectedFood(null);
-    setStars(0);
-    setFeedback(null);
-    setAnimalBounce(false);
-    setShakeFood(null);
-    setLocked(false);
-    setFoodOptions(shuffleOptions(ROUNDS[0].options));
-  }, []);
+    startGame();
+  }, [startGame]);
 
   const handleToggleSound = useCallback(() => {
     markUserInteraction();
@@ -96,28 +90,23 @@ export default function NjamkoPage() {
 
   const handleSelectFood = useCallback(
     (foodName) => {
-      if (locked) return;
+      if (isAnimating) return;
 
       markUserInteraction();
-      setSelectedFood(foodName);
+      setSelectedFoodName(foodName);
+      setIsAnimating(true);
 
       const round = ROUNDS[currentRoundIndex];
       const isCorrect = foodName === round.correctFood;
 
       if (isCorrect) {
         setFeedback("correct");
+        setShowStars(true);
         setStars((value) => value + 1);
-        setAnimalBounce(true);
-        setShakeFood(null);
-        setLocked(true);
 
         if (soundEnabled) playCorrectSound();
 
-        bounceTimerRef.current = setTimeout(() => {
-          setAnimalBounce(false);
-        }, 600);
-
-        advanceTimerRef.current = setTimeout(() => {
+        animationTimerRef.current = setTimeout(() => {
           const nextIndex = currentRoundIndex + 1;
           if (nextIndex >= ROUNDS.length) {
             setGameFinished(true);
@@ -125,23 +114,20 @@ export default function NjamkoPage() {
           } else {
             setCurrentRoundIndex(nextIndex);
           }
-          setSelectedFood(null);
-          setFeedback(null);
-          setLocked(false);
-        }, ROUND_ADVANCE_MS);
+          resetRoundFeedback();
+        }, CORRECT_ANIMATION_MS);
         return;
       }
 
       setFeedback("wrong");
-      setShakeFood(foodName);
 
       if (soundEnabled) playWrongSound();
 
-      shakeTimerRef.current = setTimeout(() => {
-        setShakeFood(null);
-      }, 500);
+      animationTimerRef.current = setTimeout(() => {
+        resetRoundFeedback();
+      }, WRONG_RESET_MS);
     },
-    [currentRoundIndex, locked, soundEnabled],
+    [currentRoundIndex, isAnimating, resetRoundFeedback, soundEnabled],
   );
 
   const round = ROUNDS[currentRoundIndex];
@@ -151,10 +137,17 @@ export default function NjamkoPage() {
       ? "njamko--playing"
       : "njamko--start";
 
+  const bgImage = gameFinished
+    ? BACKGROUND_IMAGES.finish
+    : gameStarted
+      ? BACKGROUND_IMAGES.game
+      : BACKGROUND_IMAGES.start;
+
   return (
     <div
       className={`njamko ${sceneClass}`}
       data-testid="njamko-page"
+      style={{ "--nj-bg-image": `url(${bgImage})` }}
     >
       <div className="njamko__bg" aria-hidden="true">
         <span className="njamko__cloud njamko__cloud--1">☁️</span>
@@ -173,17 +166,18 @@ export default function NjamkoPage() {
         {gameStarted && !gameFinished && round && (
           <GameScreen
             round={round}
+            roundKey={currentRoundIndex}
             foodOptions={foodOptions}
             roundNumber={currentRoundIndex + 1}
             totalRounds={ROUNDS.length}
             stars={stars}
             feedback={feedback}
-            animalBounce={animalBounce}
-            shakeFood={shakeFood}
+            selectedFoodName={selectedFoodName}
+            showStars={showStars}
+            isAnimating={isAnimating}
             soundEnabled={soundEnabled}
             onToggleSound={handleToggleSound}
             onSelectFood={handleSelectFood}
-            locked={locked}
           />
         )}
 

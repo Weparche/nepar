@@ -1,16 +1,37 @@
-export default function FoodCard({ name, emoji, onSelect, shake, disabled }) {
+import AssetImage from "./AssetImage.jsx";
+import { getFoodImageSrc } from "./assets.js";
+
+export default function FoodCard({
+  name,
+  emoji,
+  onSelect,
+  shake,
+  flying,
+  disabled,
+}) {
+  const classes = [
+    "nj-food-card",
+    shake ? "card-shake" : "",
+    flying ? "food-fly" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <button
       type="button"
       data-testid="food-card"
-      className={`nj-food-card${shake ? " nj-food-card--shake" : ""}`}
+      className={classes}
       aria-label={`Odaberi hranu ${name}`}
       onClick={() => onSelect(name)}
       disabled={disabled}
     >
-      <span className="nj-food-card__emoji" aria-hidden="true">
-        {emoji}
-      </span>
+      <AssetImage
+        src={getFoodImageSrc(name)}
+        alt=""
+        emoji={emoji}
+        className="nj-food-card__visual"
+      />
       <span className="nj-food-card__name">{name}</span>
     </button>
   );
