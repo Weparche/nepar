@@ -1,6 +1,7 @@
 import { buildShareText, formatTime } from "./puzzle.js";
 
 export default function ResultPanel({
+  puzzleTitle,
   attempts,
   elapsedSeconds,
   onChallenge,
@@ -15,7 +16,9 @@ export default function ResultPanel({
         🏆
       </div>
       <h2 className="mz-result__title">Bravo!</h2>
-      <p className="mz-result__text">Riješio si današnju igru!</p>
+      <p className="mz-result__text">
+        Riješio si mozgalicu „{puzzleTitle}”!
+      </p>
 
       <div className="mz-result__stats">
         <div>
@@ -76,7 +79,7 @@ export default function ResultPanel({
         aria-hidden="true"
         tabIndex={-1}
         style={{ position: "absolute", left: "-9999px", opacity: 0 }}
-        value={buildShareText({ attempts, time })}
+        value={buildShareText({ attempts, time, puzzleTitle })}
         data-testid="share-text-hidden"
       />
     </div>

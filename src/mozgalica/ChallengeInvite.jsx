@@ -10,6 +10,8 @@ export default function ChallengeInvite({
   onPlayerNameChange,
   attempts,
   elapsedSeconds,
+  puzzleId,
+  puzzleTitle,
   onBack,
   onCopied,
 }) {
@@ -20,8 +22,9 @@ export default function ChallengeInvite({
         name: playerName || "Prijatelj",
         attempts,
         elapsedSeconds,
+        puzzleId,
       }),
-    [playerName, attempts, elapsedSeconds],
+    [playerName, attempts, elapsedSeconds, puzzleId],
   );
 
   const shareText = buildChallengeInviteText({
@@ -29,6 +32,7 @@ export default function ChallengeInvite({
     attempts,
     time,
     link: challengeLink,
+    puzzleTitle,
   });
 
   async function handleCopy() {
@@ -65,8 +69,8 @@ export default function ChallengeInvite({
 
       <h2 className="mz-challenge-invite__title">Izazovi prijatelja</h2>
       <p className="mz-challenge-invite__text">
-        Pošalji link prijatelju. Kad riješi današnju igru, usporedit ćemo
-        rezultate — pobjednik se tek tada otkriva.
+        Pošalji link prijatelju za temu „{puzzleTitle}”. Kad riješi istu
+        mozgalicu, usporedit ćemo rezultate.
       </p>
 
       <label className="mz-challenge-invite__label" htmlFor="challenge-name">
@@ -84,7 +88,9 @@ export default function ChallengeInvite({
       />
 
       <div className="mz-challenge-invite__stats">
-        <div className="mz-challenge-invite__stat-label">Tvoj rezultat</div>
+        <div className="mz-challenge-invite__stat-label">
+          Tvoj rezultat · {puzzleTitle}
+        </div>
         <div className="mz-challenge-invite__stat-value">
           4/4 grupe · {attempts} pokušaja · {time}
         </div>
@@ -123,8 +129,8 @@ export default function ChallengeInvite({
       </div>
 
       <p className="mz-challenge-invite__hint" data-testid="challenge-invite-hint">
-        Prijatelj otvara link, igra istu današnju mozgalicu, a zatim vidi
-        usporedbu s tvojim rezultatom.
+        Prijatelj otvara link, igra istu mozgalicu, a zatim vidi usporedbu s
+        tvojim rezultatom.
       </p>
 
       <textarea

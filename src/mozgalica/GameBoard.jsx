@@ -3,6 +3,7 @@ import SolvedGroup from "./SolvedGroup.jsx";
 import { formatTime } from "./puzzle.js";
 
 export default function GameBoard({
+  puzzleTitle,
   gridItems,
   selected,
   solvedGroups,
@@ -20,6 +21,9 @@ export default function GameBoard({
 
   return (
     <div className="mz-game" data-testid="game-board">
+      <div className="mz-game-theme" data-testid="game-theme">
+        {puzzleTitle}
+      </div>
       <div className="mz-game-header">
         <button
           type="button"

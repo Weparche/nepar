@@ -1,7 +1,8 @@
 import { Menu, X } from "lucide-react";
 import { MozgalicaLogo } from "./MozgalicaLogo.jsx";
 import HowToPlay from "./HowToPlay.jsx";
-import { DEMO_CHALLENGE, MOCKUP_ITEMS } from "./puzzle.js";
+import { DEMO_CHALLENGE, getMockupItems, DEFAULT_PUZZLE_ID } from "./puzzle.js";
+import PuzzlePicker from "./PuzzlePicker.jsx";
 
 const NAV_LINKS = [
   ["Kako se igra", "kako-se-igra"],
@@ -25,7 +26,7 @@ const FEATURES = [
   { icon: "👨‍👩‍👧", title: "Za sve uzraste", text: "Zabavno za cijelu obitelj." },
 ];
 
-function LandingHeader({ onStart, menuOpen, setMenuOpen }) {
+function LandingHeader({ onScrollToPuzzles, menuOpen, setMenuOpen }) {
   return (
     <header className="mz-header" data-testid="landing-header">
       <div className="mz-header__inner">
@@ -50,7 +51,7 @@ function LandingHeader({ onStart, menuOpen, setMenuOpen }) {
           <button
             type="button"
             className="mozgalica-btn mozgalica-btn--primary mozgalica-btn--sm"
-            onClick={onStart}
+            onClick={onScrollToPuzzles}
             data-testid="header-cta"
           >
             Igraj danas
@@ -91,7 +92,7 @@ function LandingHeader({ onStart, menuOpen, setMenuOpen }) {
           style={{ marginTop: "0.5rem" }}
           onClick={() => {
             setMenuOpen(false);
-            onStart();
+            onScrollToPuzzles();
           }}
         >
           Igraj danas
@@ -101,7 +102,14 @@ function LandingHeader({ onStart, menuOpen, setMenuOpen }) {
   );
 }
 
-function LandingContent({ onStart, onShowChallengeDemo }) {
+function LandingContent({
+  selectedPuzzleId,
+  onSelectPuzzle,
+  onScrollToPuzzles,
+  onShowChallengeDemo,
+}) {
+  const mockupItems = getMockupItems(selectedPuzzleId);
+
   return (
     <>
       <section className="mz-hero" data-testid="landing-hero">
@@ -110,17 +118,17 @@ function LandingContent({ onStart, onShowChallengeDemo }) {
             Poveži 16 pojmova u 4 skrivene grupe.
           </h1>
           <p className="mz-hero__subtitle">
-            Nova mozgalica svaki dan. Kratka je, zabavna i taman dovoljno teška da
-            te natjera na razmišljanje.
+            Odaberi temu — gaming, nogomet, muzika, NBA ili HR nostalgija. Kratka
+            igra, puno uspomena iz devedesetih.
           </p>
           <div className="mz-hero__actions">
             <button
               type="button"
               className="mozgalica-btn mozgalica-btn--primary"
-              onClick={onStart}
+              onClick={onScrollToPuzzles}
               data-testid="start-game"
             >
-              Igraj današnju igru
+              Odaberi mozgalicu
             </button>
             <button
               type="button"
@@ -139,7 +147,7 @@ function LandingContent({ onStart, onShowChallengeDemo }) {
 
         <div className="mz-mockup" aria-hidden="true" data-testid="hero-mockup">
           <div className="mz-mockup__grid">
-            {MOCKUP_ITEMS.map((item) => (
+            {mockupItems.map((item) => (
               <div key={item} className="mz-mockup__cell">
                 {item}
               </div>
@@ -147,6 +155,8 @@ function LandingContent({ onStart, onShowChallengeDemo }) {
           </div>
         </div>
       </section>
+
+      <PuzzlePicker selectedId={selectedPuzzleId} onSelect={onSelectPuzzle} />
 
       <HowToPlay />
 
@@ -219,15 +229,29 @@ function LandingContent({ onStart, onShowChallengeDemo }) {
 }
 
 export default function MozgalicaLanding({
-  onStart,
+  selectedPuzzleId,
+  onSelectPuzzle,
   onShowChallengeDemo,
   menuOpen,
   setMenuOpen,
 }) {
+  function scrollToPuzzles() {
+    document.getElementById("mozgalice")?.scrollIntoView({ behavior: "smooth" });
+  }
+
   return (
     <>
-      <LandingHeader onStart={onStart} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <LandingContent onStart={onStart} onShowChallengeDemo={onShowChallengeDemo} />
+      <LandingHeader
+        onScrollToPuzzles={scrollToPuzzles}
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
+      />
+      <LandingContent
+        selectedPuzzleId={selectedPuzzleId}
+        onSelectPuzzle={onSelectPuzzle}
+        onScrollToPuzzles={scrollToPuzzles}
+        onShowChallengeDemo={onShowChallengeDemo}
+      />
     </>
   );
 }

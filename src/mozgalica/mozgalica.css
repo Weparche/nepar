@@ -557,3 +557,129 @@
     font-size: 0.875rem;
   }
 }
+
+.mz-puzzle-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .mz-puzzle-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .mz-puzzle-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .mz-puzzle-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+  }
+}
+
+.mz-puzzle-card {
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  padding: 1.5rem;
+  border: 2px solid var(--mz-gray);
+  border-radius: var(--mz-radius);
+  background: var(--mz-card);
+  box-shadow: var(--mz-shadow);
+  font-family: inherit;
+  color: inherit;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.mz-puzzle-card:hover {
+  border-color: var(--mz-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px #5b4cf01f;
+}
+
+.mz-puzzle-card:focus-visible {
+  outline: 2px solid var(--mz-primary);
+  outline-offset: 2px;
+}
+
+.mz-puzzle-card--selected {
+  border-color: var(--mz-primary);
+  background: var(--mz-selected);
+}
+
+.mz-puzzle-card__icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.mz-puzzle-card__title {
+  margin: 0 0 0.375rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.mz-puzzle-card__subtitle {
+  margin: 0 0 1rem;
+  color: var(--mz-gray-text);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.mz-puzzle-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.mz-puzzle-card__tag {
+  background: var(--mz-bg);
+  border: 1px solid var(--mz-gray);
+  border-radius: 999px;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--mz-gray-text);
+}
+
+.mz-puzzle-card__cta {
+  color: var(--mz-primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.mz-game-theme {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: var(--mz-primary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1440px) {
+  .mz-puzzle-card {
+    padding: 1.75rem 1.5rem;
+  }
+
+  .mz-puzzle-card__title {
+    font-size: 1.125rem;
+  }
+
+  .mz-puzzle-card__subtitle {
+    font-size: 0.875rem;
+  }
+
+  .mz-game-theme {
+    font-size: 0.875rem;
+  }
+}

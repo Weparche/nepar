@@ -1,18 +1,20 @@
-import { formatTime } from "./puzzle.js";
+import { formatTime, getPuzzleById } from "./puzzle.js";
 
 export default function ChallengeAccept({ challenge, onAccept, onDecline }) {
   const time = formatTime(challenge.elapsedSeconds);
+  const puzzle = getPuzzleById(challenge.puzzleId);
 
   return (
     <div className="mz-challenge-accept" data-testid="challenge-accept">
       <div className="mz-challenge-accept__icon" aria-hidden="true">
-        ⚔️
+        {puzzle.icon}
       </div>
       <h2 className="mz-challenge-accept__title">
         {challenge.name} te izaziva!
       </h2>
       <p className="mz-challenge-accept__text">
-        Riješi današnju mozgalicu i saznaj možeš li pobijediti njegov rezultat.
+        Tema: <strong>{puzzle.title}</strong>. Riješi istu mozgalicu i saznaj
+        možeš li pobijediti njegov rezultat.
       </p>
 
       <div className="mz-challenge-accept__stats">

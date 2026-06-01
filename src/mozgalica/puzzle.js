@@ -1,59 +1,18 @@
-export const PUZZLE_ITEMS = [
-  "Fićo",
-  "Stojadin",
-  "Yugo",
-  "Golf dvojka",
-  "Teletekst",
-  "Antena",
-  "Videorekorder",
-  "Dnevnik",
-  "Vegeta",
-  "Cedevita",
-  "Kraš",
-  "Franck",
-  "Kviskoteka",
-  "Milijunaš",
-  "Potjera",
-  "Oliver Mlakar",
-];
+import {
+  DEFAULT_PUZZLE_ID,
+  PUZZLES,
+  getMockupItems,
+  getPuzzleById,
+  getPuzzleItems,
+} from "./puzzles.js";
 
-export const PUZZLE_GROUPS = [
-  {
-    name: "Auti nostalgija",
-    items: ["Fićo", "Stojadin", "Yugo", "Golf dvojka"],
-  },
-  {
-    name: "Stara televizija",
-    items: ["Teletekst", "Antena", "Videorekorder", "Dnevnik"],
-  },
-  {
-    name: "Domaći brendovi",
-    items: ["Vegeta", "Cedevita", "Kraš", "Franck"],
-  },
-  {
-    name: "TV kvizovi",
-    items: ["Kviskoteka", "Milijunaš", "Potjera", "Oliver Mlakar"],
-  },
-];
+export { PUZZLES, DEFAULT_PUZZLE_ID, getPuzzleById, getPuzzleItems, getMockupItems };
 
-export const MOCKUP_ITEMS = [
-  "Fićo",
-  "Teletekst",
-  "Vegeta",
-  "Kviskoteka",
-  "Stojadin",
-  "Antena",
-  "Cedevita",
-  "Milijunaš",
-  "Yugo",
-  "Videorekorder",
-  "Kraš",
-  "Potjera",
-  "Golf dvojka",
-  "Dnevnik",
-  "Franck",
-  "Oliver Mlakar",
-];
+const defaultPuzzle = getPuzzleById(DEFAULT_PUZZLE_ID);
+
+export const PUZZLE_ITEMS = getPuzzleItems(defaultPuzzle);
+export const PUZZLE_GROUPS = defaultPuzzle.groups;
+export const MOCKUP_ITEMS = getMockupItems(DEFAULT_PUZZLE_ID);
 
 export const SHARE_URL = "https://nepar.hr/mozgalica";
 
@@ -88,10 +47,11 @@ export function formatTime(seconds) {
   return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 }
 
-export function buildShareText({ attempts, time }) {
+export function buildShareText({ attempts, time, puzzleTitle }) {
+  const themeLine = puzzleTitle ? `\n🎯 Tema: ${puzzleTitle}` : "";
   return `Dnevne Asocijacije 🧠
 
-Riješio sam današnju igru:
+Riješio sam mozgalicu:${themeLine}
 ✅ 4/4 grupe
 🎯 ${attempts} pokušaja
 ⏱️ ${time}
@@ -104,13 +64,15 @@ const CHALLENGE_PARAM = {
   name: "od",
   attempts: "p",
   time: "t",
+  puzzle: "tema",
 };
 
-export function buildChallengeLink({ name, attempts, elapsedSeconds }) {
+export function buildChallengeLink({ name, attempts, elapsedSeconds, puzzleId }) {
   const params = new URLSearchParams({
     [CHALLENGE_PARAM.name]: name.trim() || "Prijatelj",
     [CHALLENGE_PARAM.attempts]: String(attempts),
     [CHALLENGE_PARAM.time]: String(elapsedSeconds),
+    [CHALLENGE_PARAM.puzzle]: puzzleId || DEFAULT_PUZZLE_ID,
   });
   const base =
     typeof window !== "undefined"
@@ -124,18 +86,19 @@ export function parseChallengeFromSearch(search) {
   const name = params.get(CHALLENGE_PARAM.name);
   const attempts = Number(params.get(CHALLENGE_PARAM.attempts));
   const elapsedSeconds = Number(params.get(CHALLENGE_PARAM.time));
+  const puzzleId = params.get(CHALLENGE_PARAM.puzzle) || DEFAULT_PUZZLE_ID;
 
   if (!name || Number.isNaN(attempts) || Number.isNaN(elapsedSeconds)) {
     return null;
   }
 
-  return { name, attempts, elapsedSeconds };
+  return { name, attempts, elapsedSeconds, puzzleId };
 }
 
-export function buildChallengeInviteText({ name, attempts, time, link }) {
+export function buildChallengeInviteText({ name, attempts, time, link, puzzleTitle }) {
   return `Dnevne Asocijacije 🧠
 
-${name} te izaziva na današnju mozgalicu!
+${name} te izaziva na mozgalicu „${puzzleTitle}”!
 Njegov rezultat: 4/4 grupe · ${attempts} pokušaja · ${time}
 
 Prihvati izazov i pokušaj pobijediti:
@@ -154,16 +117,21 @@ export const DEMO_CHALLENGE = {
   name: "Ivan",
   attempts: 7,
   elapsedSeconds: 151,
+  puzzleId: DEFAULT_PUZZLE_ID,
 };
 
-export function createInitialGameState(gridItems = null) {
+export function createInitialGameState(puzzleId = DEFAULT_PUZZLE_ID, gridItems = null) {
+  const puzzle = getPuzzleById(puzzleId);
   const stored =
     typeof sessionStorage !== "undefined"
       ? sessionStorage.getItem("mozgalica-test-order")
       : null;
-  const items = gridItems ?? (stored ? JSON.parse(stored) : shuffleArray(PUZZLE_ITEMS));
+  const items =
+    gridItems ??
+    (stored ? JSON.parse(stored) : shuffleArray(getPuzzleItems(puzzle)));
 
   return {
+    puzzleId: puzzle.id,
     gridItems: items,
     selected: [],
     solvedGroups: [],

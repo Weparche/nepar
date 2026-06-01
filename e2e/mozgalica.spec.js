@@ -1,12 +1,19 @@
 import { test, expect } from "@playwright/test";
-import { PUZZLE_GROUPS, MOCKUP_ITEMS } from "../src/mozgalica/puzzle.js";
+import {
+  DEFAULT_PUZZLE_ID,
+  getMockupItems,
+  getPuzzleById,
+} from "../src/mozgalica/puzzle.js";
 
-async function startGame(page) {
+const TEST_PUZZLE_ID = DEFAULT_PUZZLE_ID;
+const TEST_PUZZLE = getPuzzleById(TEST_PUZZLE_ID);
+
+async function startGame(page, puzzleId = TEST_PUZZLE_ID) {
   await page.goto("/mozgalica");
   await page.evaluate((items) => {
     sessionStorage.setItem("mozgalica-test-order", JSON.stringify(items));
-  }, MOCKUP_ITEMS);
-  await page.getByTestId("start-game").click();
+  }, getMockupItems(puzzleId));
+  await page.getByTestId(`puzzle-card-${puzzleId}`).click();
   await expect(page.getByTestId("game-board")).toBeVisible();
 }
 
@@ -18,7 +25,7 @@ async function selectGroup(page, items) {
 }
 
 async function solveAllGroups(page) {
-  for (const group of PUZZLE_GROUPS) {
+  for (const group of TEST_PUZZLE.groups) {
     await selectGroup(page, group.items);
     await expect(page.getByText(group.name)).toBeVisible({ timeout: 5000 });
   }
@@ -34,6 +41,16 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
     );
   });
 
+  test("landing shows puzzle picker with all themes", async ({ page }) => {
+    await page.goto("/mozgalica");
+    await expect(page.getByTestId("puzzle-picker")).toBeVisible();
+    await expect(page.getByTestId("puzzle-card-gaming-90s")).toBeVisible();
+    await expect(page.getByTestId("puzzle-card-nogomet-hr-90s")).toBeVisible();
+    await expect(page.getByTestId("puzzle-card-muzika-90s")).toBeVisible();
+    await expect(page.getByTestId("puzzle-card-nba-90s")).toBeVisible();
+    await expect(page.getByTestId("puzzle-card-hr-nostalgija")).toBeVisible();
+  });
+
   test("start game shows 16 cards", async ({ page }) => {
     await startGame(page);
     await expect(page.getByTestId("game-grid").locator(".mz-card")).toHaveCount(16);
@@ -41,7 +58,7 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
 
   test("can select 4 cards", async ({ page }) => {
     await startGame(page);
-    const group = PUZZLE_GROUPS[0].items;
+    const group = TEST_PUZZLE.groups[0].items;
     for (const item of group) {
       await page.getByTestId(`game-card-${item}`).click();
     }
@@ -50,7 +67,7 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
 
   test("correct group is locked", async ({ page }) => {
     await startGame(page);
-    await selectGroup(page, PUZZLE_GROUPS[0].items);
+    await selectGroup(page, TEST_PUZZLE.groups[0].items);
     await expect(page.getByTestId("game-message")).toContainText(
       "Točno! Pronašao si grupu.",
     );
@@ -61,10 +78,10 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
   test("wrong group shows error message", async ({ page }) => {
     await startGame(page);
     const wrongItems = [
-      PUZZLE_GROUPS[0].items[0],
-      PUZZLE_GROUPS[1].items[0],
-      PUZZLE_GROUPS[2].items[0],
-      PUZZLE_GROUPS[3].items[0],
+      TEST_PUZZLE.groups[0].items[0],
+      TEST_PUZZLE.groups[1].items[0],
+      TEST_PUZZLE.groups[2].items[0],
+      TEST_PUZZLE.groups[3].items[0],
     ];
     await selectGroup(page, wrongItems);
     await expect(page.getByTestId("game-message")).toContainText(
@@ -96,6 +113,7 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
     await page.getByTestId("challenge-friends").click();
     await expect(page.getByTestId("challenge-invite")).toBeVisible();
     await expect(page.getByTestId("challenge-link")).toHaveValue(/\/mozgalica\?od=/);
+    await expect(page.getByTestId("challenge-link")).toHaveValue(/tema=/);
 
     const shareText = await page.getByTestId("challenge-share-text-hidden").inputValue();
     const linkMatches = shareText.match(/\/mozgalica\?od=[^\s]+/g) ?? [];
@@ -105,13 +123,16 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
   test("incoming challenge link opens accept screen and compares after play", async ({
     page,
   }) => {
-    await page.goto("/mozgalica?od=Ivan&p=7&t=151");
+    await page.goto(
+      `/mozgalica?od=Ivan&p=7&t=151&tema=${TEST_PUZZLE_ID}`,
+    );
     await expect(page.getByTestId("challenge-accept")).toBeVisible();
     await expect(page.getByText("Ivan te izaziva!")).toBeVisible();
+    await expect(page.getByText(TEST_PUZZLE.title)).toBeVisible();
 
     await page.evaluate((items) => {
       sessionStorage.setItem("mozgalica-test-order", JSON.stringify(items));
-    }, MOCKUP_ITEMS);
+    }, getMockupItems(TEST_PUZZLE_ID));
     await page.getByTestId("accept-challenge").click();
     await expect(page.getByTestId("game-board")).toBeVisible();
     await solveAllGroups(page);
@@ -129,6 +150,12 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
       await page.locator(".mz-nav").getByRole("button", { name: "Izazovi prijatelja" }).click();
     }
     await expect(page.getByTestId("landing-challenge-demo")).toBeVisible();
+  });
+
+  test("start-game scrolls to puzzle picker", async ({ page }) => {
+    await page.goto("/mozgalica");
+    await page.getByTestId("start-game").click();
+    await expect(page.getByTestId("puzzle-picker")).toBeInViewport();
   });
 
   test("mobile viewport layout is intact", async ({ page, isMobile }) => {
