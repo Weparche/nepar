@@ -1,0 +1,7 @@
+# SPA fallback for React Router (nepar.hr main app).
+# Static subsites and assets are served as files first.
+/assets/*  /assets/:splat  200
+/brand/*   /brand/:splat   200
+/vortex/*  /vortex/:splat  200
+/zoyya/*   /zoyya/:splat   200
+/*         /index.html     200

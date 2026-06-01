@@ -3,6 +3,7 @@ import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-do
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import ContactPage from "./ContactPage.jsx";
 import WebStartPage from "./WebStartPage.jsx";
+import MozgalicaPage from "./mozgalica/MozgalicaPage.jsx";
 import {
   ArrowRight,
   Bot,
@@ -1397,6 +1398,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/kontakt" element={<ContactPage />} />
         <Route path="/usluge/web-stranica-bez-pocetnog-troska" element={<WebStartPage />} />
+        <Route path="/mozgalica" element={<MozgalicaPage />} />
       </Routes>
     </BrowserRouter>
   );

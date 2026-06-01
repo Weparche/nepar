@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/vortex/">
+  <title>Vortex informatika d.o.o. | Web aplikacije, optimizacija i IT usluge</title>
+  <meta name="description" content="Vortex informatika d.o.o. — razvoj web aplikacija, MySQL optimizacija, informacijska arhitektura i web project management.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://nepar.hr/vortex/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Vortex informatika d.o.o. | Web aplikacije, optimizacija i IT usluge">
+  <meta property="og:description" content="Vortex informatika d.o.o. — razvoj web aplikacija, MySQL optimizacija, informacijska arhitektura i web project management.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nepar.hr/vortex/">
+  <meta property="og:locale" content="hr_HR">
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Vortex informatika d.o.o.",
+    "url": "https://nepar.hr/vortex/",
+    "email": "info@vortexinformatika.hr",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Jelašićev odvojak 1",
+      "postalCode": "10110",
+      "addressLocality": "Zagreb",
+      "addressCountry": "HR"
+    },
+    "taxID": "04913992742"
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Skip link for accessibility -->
+  <a href="#main-content" class="skip-link">Preskoči na sadržaj</a>
+
+  <!-- Header -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="#pocetna" class="logo" aria-label="Vortex informatika — početna">
+        <svg class="logo-symbol" width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <path d="M6 6 L18 30 L30 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 6 L18 22 L27 6" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.45"/>
+        </svg>
+        <span class="logo-text">
+          <span class="logo-title">VORTEX</span>
+          <span class="logo-subtitle">INFORMATIKA</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Glavna navigacija">
+        <ul class="nav-list">
+          <li><a href="#pocetna" class="nav-link active">Početna</a></li>
+          <li><a href="#usluge" class="nav-link">Usluge</a></li>
+          <li><a href="#pristup" class="nav-link">Pristup</a></li>
+          <li><a href="#tehnologije" class="nav-link">Tehnologije</a></li>
+          <li><a href="#o-nama" class="nav-link">O nama</a></li>
+          <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
+        </ul>
+        <a href="#kontakt" class="btn btn-primary nav-cta">Pošalji upit</a>
+      </nav>
+
+      <button class="hamburger" id="hamburger" aria-label="Otvori navigaciju" aria-expanded="false" aria-controls="main-nav">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- Hero -->
+    <section class="hero section" id="pocetna">
+      <div class="container hero-grid">
+        <div class="hero-content reveal">
+          <p class="section-label">— RAČUNALNE DJELATNOSTI I USLUGE</p>
+          <h1 class="hero-title">Pametna rješenja.<br>Brz kod. Stabilni sustavi.</h1>
+          <p class="hero-desc">Razvoj web aplikacija s posebnim fokusom na dizajnerske uzorke, informacijsku arhitekturu i optimizaciju za brzo izvršavanje. Iskustvo, struktura i čisti kod za projekte koji rastu.</p>
+          <div class="hero-actions">
+            <a href="#usluge" class="btn btn-primary">Istražite usluge</a>
+            <a href="#kontakt" class="btn btn-outline">Kontaktirajte nas</a>
+          </div>
+        </div>
+
+        <div class="hero-terminal-wrap reveal reveal-delay-1">
+          <div class="terminal-pattern" aria-hidden="true">
+            <svg class="terminal-v-symbol" viewBox="0 0 200 200" fill="none">
+              <circle cx="100" cy="100" r="90" stroke="currentColor" stroke-width="0.5" opacity="0.15"/>
+              <circle cx="100" cy="100" r="70" stroke="currentColor" stroke-width="0.5" opacity="0.1"/>
+              <circle cx="100" cy="100" r="50" stroke="currentColor" stroke-width="0.5" opacity="0.08"/>
+              <path d="M60 50 L100 150 L140 50" stroke="currentColor" stroke-width="2" opacity="0.12"/>
+            </svg>
+          </div>
+          <div class="terminal" role="img" aria-label="Terminal prikaz: vortex@informatika whoami — Web development experts">
+            <div class="terminal-bar">
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+            </div>
+            <div class="terminal-body">
+              <p><span class="terminal-prompt">vortex@informatika:~$</span> whoami</p>
+              <p class="terminal-output">&gt; Web development experts</p>
+              <p class="terminal-output">&gt; Clean code. Smart architecture.</p>
+              <p class="terminal-output">&gt; Optimized performance.</p>
+              <p><span class="terminal-prompt">vortex@informatika:~$</span> <span class="terminal-cursor" aria-hidden="true"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usluge -->
+    <section class="section" id="usluge">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-label">— USLUGE</p>
+          <h2 class="section-title">Usluge za stabilne digitalne sustave.</h2>
+          <p class="section-desc">Od razvoja web aplikacija do optimizacije baza i tehničkog vođenja projekata.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card reveal">
+            <div class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <h3 class="service-title">Razvoj web aplikacija</h3>
+            <p class="service-text">Izrada modernih, sigurnih i skalabilnih web aplikacija po mjeri poslovanja.</p>
+          </article>
+
+          <article class="service-card reveal reveal-delay-1">
+            <div class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><line x1="10" y1="6.5" x2="14" y2="6.5"/><line x1="10" y1="17.5" x2="14" y2="17.5"/><line x1="6.5" y1="10" x2="6.5" y2="14"/><line x1="17.5" y1="10" x2="17.5" y2="14"/>
+              </svg>
+            </div>
+            <h3 class="service-title">Arhitektura i dizajn</h3>
+            <p class="service-text">Primjena dizajnerskih uzoraka i dobre arhitekture za održiv i proširiv kod koji traje.</p>
+          </article>
+
+          <article class="service-card reveal reveal-delay-2">
+            <div class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+            </div>
+            <h3 class="service-title">Optimizacija i performanse</h3>
+            <p class="service-text">Optimizacija upita, backend logike i infrastrukture za maksimalne performanse.</p>
+          </article>
+
+          <article class="service-card reveal reveal-delay-3">
+            <div class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+              </svg>
+            </div>
+            <h3 class="service-title">Upravljanje projektima</h3>
+            <p class="service-text">Planiranje, praćenje i isporuka projekata na vrijeme i u okviru dogovorenog opsega.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pristup -->
+    <section class="section section-alt" id="pristup">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-label">— NAŠ PRISTUP</p>
+          <h2 class="section-title">Prvo razumijevanje sustava, zatim razvoj.</h2>
+          <p class="section-desc">Kod poslovnih aplikacija brzina nije samo stvar servera. Ona dolazi iz dobrog modela podataka, jasnih odgovornosti u kodu, pravilno odabranih obrazaca i disciplinirane optimizacije.</p>
+        </div>
+
+        <ol class="approach-timeline">
+          <li class="approach-step reveal">
+            <span class="approach-number">01</span>
+            <div class="approach-content">
+              <h3 class="approach-title">Razumijevanje</h3>
+              <p class="approach-text">Upoznajemo ciljeve, postojeće procese i tehničke zahtjeve.</p>
+            </div>
+          </li>
+          <li class="approach-step reveal reveal-delay-1">
+            <span class="approach-number">02</span>
+            <div class="approach-content">
+              <h3 class="approach-title">Planiranje</h3>
+              <p class="approach-text">Definiramo arhitekturu, tehnologije i jasan put isporuke.</p>
+            </div>
+          </li>
+          <li class="approach-step reveal reveal-delay-2">
+            <span class="approach-number">03</span>
+            <div class="approach-content">
+              <h3 class="approach-title">Razvoj</h3>
+              <p class="approach-text">Pišemo čist, održiv i pregledan kod.</p>
+            </div>
+          </li>
+          <li class="approach-step reveal reveal-delay-3">
+            <span class="approach-number">04</span>
+            <div class="approach-content">
+              <h3 class="approach-title">Testiranje</h3>
+              <p class="approach-text">Provjeravamo stabilnost, sigurnost i performanse.</p>
+            </div>
+          </li>
+          <li class="approach-step reveal reveal-delay-4">
+            <span class="approach-number">05</span>
+            <div class="approach-content">
+              <h3 class="approach-title">Isporuka i podrška</h3>
+              <p class="approach-text">Isporučujemo rješenje i ostajemo dostupni za daljnji razvoj.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Tehnologije -->
+    <section class="section section-tech" id="tehnologije">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-label">— TEHNOLOGIJE</p>
+          <h2 class="section-title">Tehnologije i područja stručnosti.</h2>
+          <p class="section-desc">Alati, jezici i discipline koje koristimo za stabilne, brze i održive web sustave.</p>
+        </div>
+
+        <div class="tech-grid">
+          <article class="tech-card reveal">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--php" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">PHP</span>
+          </article>
+
+          <article class="tech-card reveal reveal-delay-1">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--mysql" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">MySQL</span>
+          </article>
+
+          <article class="tech-card reveal reveal-delay-2">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--cplusplus" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">C++</span>
+          </article>
+
+          <article class="tech-card reveal reveal-delay-3">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--html5" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">HTML</span>
+          </article>
+
+          <article class="tech-card reveal reveal-delay-4">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--css" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">CSS</span>
+          </article>
+
+          <article class="tech-card reveal">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--javascript" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">JavaScript</span>
+          </article>
+
+          <article class="tech-card reveal reveal-delay-1">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--git" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">Git</span>
+          </article>
+
+          <article class="tech-card reveal reveal-delay-2">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--linux" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">Linux</span>
+          </article>
+
+          <article class="tech-card reveal reveal-delay-3">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--laravel" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">Web frameworks</span>
+          </article>
+
+          <article class="tech-card reveal reveal-delay-4">
+            <div class="tech-card-icon tech-card-icon--custom" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="10" y="10" width="12" height="12" rx="1"/>
+                <rect x="26" y="10" width="12" height="12" rx="1"/>
+                <rect x="10" y="26" width="12" height="12" rx="1"/>
+                <rect x="26" y="26" width="12" height="12" rx="1"/>
+                <path d="M22 16h4M22 32h4M16 22v4M32 22v4"/>
+              </svg>
+            </div>
+            <span class="tech-card-label">Design patterns</span>
+          </article>
+
+          <article class="tech-card reveal">
+            <div class="tech-card-icon tech-card-icon--custom" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="20" y="8" width="8" height="8" rx="1"/>
+                <rect x="8" y="32" width="8" height="8" rx="1"/>
+                <rect x="32" y="32" width="8" height="8" rx="1"/>
+                <path d="M24 16v8M24 24H16v8M24 24h8v8"/>
+              </svg>
+            </div>
+            <span class="tech-card-label">Information architecture</span>
+          </article>
+
+          <article class="tech-card reveal reveal-delay-1">
+            <div class="tech-card-icon">
+              <span class="tech-card-icon--brand tech-card-icon--jira" aria-hidden="true"></span>
+            </div>
+            <span class="tech-card-label">Web project management</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- O nama -->
+    <section class="section section-alt" id="o-nama">
+      <div class="container">
+        <div class="about-grid">
+          <div class="reveal">
+            <p class="section-label">— O NAMA</p>
+            <h2 class="section-title">Iskusan pristup razvoju web aplikacija.</h2>
+            <p class="about-text">Vortex informatika d.o.o. specijalizirana je za razvoj web aplikacija, optimizaciju sustava i informacijsku arhitekturu. Poseban fokus stavlja na dizajnerske uzorke, performanse i kvalitetu izvedbe, uz stalno usavršavanje i produbljivanje znanja.</p>
+          </div>
+          <blockquote class="about-highlight reveal reveal-delay-1">
+            <p>Pristup se temelji na razumijevanju poslovnog problema, pažljivom planiranju arhitekture i tehničkoj izvedbi koja omogućuje dugoročnu održivost sustava.</p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section class="section" id="kontakt">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info reveal">
+            <p class="section-label">— KONTAKT</p>
+            <h2 class="section-title">Imate projekt ili sustav koji treba ubrzati?</h2>
+            <p class="section-desc">Pošaljite upit i ukratko opišite što želite razviti, optimizirati ili unaprijediti.</p>
+
+            <ul class="contact-details">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <a href="mailto:info@vortexinformatika.hr">info@vortexinformatika.hr</a>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Jelašićev odvojak 1, 10110 Zagreb</span>
+              </li>
+            </ul>
+          </div>
+
+          <form class="contact-form reveal reveal-delay-1" id="contact-form" novalidate>
+            <div class="form-group">
+              <label for="contact-name">Ime i prezime / tvrtka</label>
+              <input type="text" id="contact-name" name="name" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="contact-email">E-mail</label>
+              <input type="email" id="contact-email" name="email" required autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label for="contact-message">Poruka</label>
+              <textarea id="contact-message" name="message" rows="5" required></textarea>
+            </div>
+            <div class="form-group form-checkbox">
+              <input type="checkbox" id="contact-privacy" name="privacy" required>
+              <label for="contact-privacy">Slažem se da se moji podaci koriste isključivo za obradu ovog upita u skladu s <a href="privacy-policy.html">Politikom privatnosti</a>.</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Pošalji upit</button>
+            <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <div class="footer-logo">
+          <svg class="logo-symbol" width="28" height="28" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <path d="M6 6 L18 30 L30 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="logo-text">
+            <span class="logo-title">VORTEX</span>
+            <span class="logo-subtitle">INFORMATIKA</span>
+          </span>
+        </div>
+        <p class="footer-tagline">Razvoj web aplikacija, optimizacija i informacijska arhitektura.</p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Navigacija</h3>
+        <ul class="footer-links">
+          <li><a href="#pocetna">Početna</a></li>
+          <li><a href="#usluge">Usluge</a></li>
+          <li><a href="#pristup">Pristup</a></li>
+          <li><a href="#tehnologije">Tehnologije</a></li>
+          <li><a href="#o-nama">O nama</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Pravni linkovi</h3>
+        <ul class="footer-links">
+          <li><a href="legal-notice.html">Pravna napomena</a></li>
+          <li><a href="privacy-policy.html">Politika privatnosti</a></li>
+          <li><a href="cookies-policy.html">Politika kolačića</a></li>
+          <li><a href="#" id="footer-cookie-settings">Postavke kolačića</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Podaci tvrtke</h3>
+        <address class="footer-address">
+          Vortex informatika d.o.o.<br>
+          za računalne djelatnosti i usluge<br>
+          Jelašićev odvojak 1, 10110 Zagreb<br>
+          OIB: 04913992742<br>
+          IBAN: HR8223400091110481913<br>
+          SWIFT (BIC): PBZGHR2X<br>
+          <a href="mailto:info@vortexinformatika.hr">info@vortexinformatika.hr</a>
+        </address>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p class="footer-legal">
+        Društvo je upisano u registar Trgovačkog suda u Zagrebu, MBS: 080767327.
+        Temeljni kapital društva iznosi 20.000,00 kn / 2.654,46 € (fiksni tečaj konverzije 7,5345) i uplaćen je u cijelosti.
+        Direktor i član uprave je Hrvoje Novosel, zastupa društvo pojedinačno i samostalno.
+      </p>
+      <p class="footer-copy">&copy; 2026 Vortex informatika d.o.o. Sva prava pridržana.</p>
+      <p class="footer-terminal" aria-hidden="true">KOD. STRUKTURA. PERFORMANSE. &gt;_</p>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Natrag na vrh stranice" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <!-- Cookie Banner -->
+  <div class="cookie-banner" id="cookie-banner" role="region" aria-label="Obavijest o kolačićima" hidden>
+    <div class="cookie-banner-inner">
+      <p class="cookie-banner-text">Koristimo nužne kolačiće za ispravan rad stranice. Uz vašu privolu možemo koristiti analitičke i marketinške kolačiće za poboljšanje stranice i mjerenje posjećenosti.</p>
+      <div class="cookie-banner-actions">
+        <button type="button" class="btn btn-primary btn-sm" id="cookie-accept-all">Prihvati sve</button>
+        <button type="button" class="btn btn-outline btn-sm" id="cookie-reject-all">Odbij sve</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="cookie-open-settings">Postavke</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookie Settings Modal -->
+  <div class="cookie-modal-overlay" id="cookie-modal-overlay" hidden>
+    <div class="cookie-modal" id="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+      <div class="cookie-modal-header">
+        <h2 id="cookie-modal-title">Postavke kolačića</h2>
+        <button type="button" class="cookie-modal-close" id="cookie-modal-close" aria-label="Zatvori postavke kolačića">&times;</button>
+      </div>
+      <p class="cookie-modal-desc">Upravljajte privolama za pojedine kategorije kolačića. Nužni kolačići potrebni su za osnovno funkcioniranje stranice i ne mogu se isključiti.</p>
+
+      <div class="cookie-category">
+        <div class="cookie-category-header">
+          <h3>Nužni kolačići</h3>
+          <span class="cookie-always-on">Uvijek uključeno</span>
+        </div>
+        <p class="cookie-category-desc">Potrebni su za osnovni rad web stranice, sigurnost i spremanje vaših postavki privole.</p>
+      </div>
+
+      <div class="cookie-category">
+        <div class="cookie-category-header">
+          <h3>Analitički kolačići</h3>
+          <label class="toggle">
+            <input type="checkbox" id="cookie-analytics">
+            <span class="toggle-slider"></span>
+            <span class="sr-only">Analitički kolačići</span>
+          </label>
+        </div>
+        <p class="cookie-category-desc">Pomažu razumjeti kako posjetitelji koriste web stranicu kako bi se sadržaj i funkcionalnosti mogli poboljšati.</p>
+      </div>
+
+      <div class="cookie-category">
+        <div class="cookie-category-header">
+          <h3>Marketinški kolačići</h3>
+          <label class="toggle">
+            <input type="checkbox" id="cookie-marketing">
+            <span class="toggle-slider"></span>
+            <span class="sr-only">Marketinški kolačići</span>
+          </label>
+        </div>
+        <p class="cookie-category-desc">Koriste se za prilagodbu sadržaja i mjerenje učinkovitosti promotivnih aktivnosti.</p>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-full" id="cookie-save">Spremi odabir</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
