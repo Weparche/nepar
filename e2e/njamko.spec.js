@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { getLevelById } from "../src/njamko/data/njamkoLevels.js";
+import { getLevelById, NJAMKO_LEVELS } from "../src/njamko/data/njamkoLevels.js";
 
 async function assertNoHorizontalScroll(page) {
   const metrics = await page.evaluate(() => ({
@@ -42,7 +42,7 @@ async function completeLevel(page, levelId) {
     await expect(page.getByTestId("feedback-message")).toContainText("Bravo!");
     if (index < level.rounds.length - 1) {
       await expect(page.getByTestId("feedback-message")).toHaveCount(0, {
-        timeout: 3000,
+        timeout: 5000,
       });
     }
   }
@@ -59,6 +59,16 @@ test.describe("Njamko platform /njamko", () => {
     await expect(page.getByTestId("level-home")).toBeVisible();
     await expect(page.getByTestId("level-sound")).toBeVisible();
     await expect(page.getByTestId("level-baby")).toBeVisible();
+  });
+
+  test("each level has 10 rounds", () => {
+    for (const level of NJAMKO_LEVELS) {
+      expect(level.rounds).toHaveLength(10);
+      for (const round of level.rounds) {
+        expect(round.options).toHaveLength(3);
+        expect(round.options.filter((option) => option.name === round.correctAnswer)).toHaveLength(1);
+      }
+    }
   });
 
   test("food level handles wrong and correct answers", async ({ page }) => {
@@ -78,11 +88,12 @@ test.describe("Njamko platform /njamko", () => {
   test("home level advances progress after first round", async ({ page }) => {
     await startLevel(page, "level-home");
     const level = getLevelById("home");
+    const total = level.rounds.length;
 
-    await expect(page.getByText("1 / 4")).toBeVisible();
+    await expect(page.getByText(`1 / ${total}`)).toBeVisible();
     await selectCorrectAnswer(page, level.rounds[0]);
     await expect(page.getByTestId("feedback-message")).toContainText("Bravo!");
-    await expect(page.getByText("2 / 4")).toBeVisible({ timeout: 3000 });
+    await expect(page.getByText(`2 / ${total}`)).toBeVisible({ timeout: 5000 });
   });
 
   test("sound level reveals sound text and accepts correct animal", async ({ page }) => {
@@ -96,11 +107,14 @@ test.describe("Njamko platform /njamko", () => {
   });
 
   test("baby level completes all rounds and shows finish screen", async ({ page }) => {
+    test.setTimeout(120_000);
+
     await startLevel(page, "level-baby");
+    const level = getLevelById("baby");
     await completeLevel(page, "baby");
-    await expect(page.getByTestId("finish-screen")).toBeVisible({ timeout: 5000 });
+    await expect(page.getByTestId("finish-screen")).toBeVisible({ timeout: 10_000 });
     await expect(page.locator(".nj-finish__title")).toHaveText("Završio si igru!");
-    await expect(page.getByText("4 zvjezdica")).toBeVisible();
+    await expect(page.getByText(`${level.rounds.length} zvjezdica`)).toBeVisible();
     await expect(page.getByTestId("choose-level-button")).toBeVisible();
   });
 
@@ -314,19 +328,23 @@ test.describe("Njamko screenshots", () => {
 
   test("finish screen screenshot", async ({ page }) => {
     test.skip(test.info().project.name !== "desktop", "Desktop snapshot");
+    test.setTimeout(120_000);
+
     await startLevel(page, "level-baby");
     await completeLevel(page, "baby");
-    await expect(page.getByTestId("finish-screen")).toBeVisible({ timeout: 5000 });
+    await expect(page.getByTestId("finish-screen")).toBeVisible({ timeout: 10_000 });
     await page.waitForTimeout(400);
     await expect(page).toHaveScreenshot("njamko-finish-desktop.png", SCREENSHOT_OPTS);
   });
 
   test("finish screen mobile screenshot", async ({ page }) => {
     test.skip(test.info().project.name !== "mobile", "Mobile snapshot");
+    test.setTimeout(120_000);
+
     await page.setViewportSize({ width: 390, height: 844 });
     await startLevel(page, "level-baby");
     await completeLevel(page, "baby");
-    await expect(page.getByTestId("finish-screen")).toBeVisible({ timeout: 5000 });
+    await expect(page.getByTestId("finish-screen")).toBeVisible({ timeout: 10_000 });
     await page.waitForTimeout(400);
     await expect(page).toHaveScreenshot("njamko-finish-mobile.png", SCREENSHOT_OPTS);
   });

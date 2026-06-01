@@ -3,6 +3,12 @@ const SOUND_FREQUENCIES = {
   "Vau vau!": 320,
   "Mijau!": 520,
   "I-ha-ha!": 280,
+  "Kva kva!": 440,
+  "Beee!": 360,
+  "Kikiriki!": 620,
+  "Grok grok!": 240,
+  "Ribbit!": 480,
+  "Zzzzz!": 700,
 };
 
 let audioContext = null;
