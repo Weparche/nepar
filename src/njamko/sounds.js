@@ -1,3 +1,10 @@
+const SOUND_FREQUENCIES = {
+  "Muuu!": 180,
+  "Vau vau!": 320,
+  "Mijau!": 520,
+  "I-ha-ha!": 280,
+};
+
 let audioContext = null;
 let userHasInteracted = false;
 
@@ -46,4 +53,17 @@ export function playCorrectSound() {
 
 export function playWrongSound() {
   playBeep({ frequency: 320, duration: 0.18, type: "triangle", volume: 0.08 });
+}
+
+export function playAnimalSound(soundText) {
+  const frequency = SOUND_FREQUENCIES[soundText] ?? 400;
+  playBeep({ frequency, duration: 0.35, type: "sawtooth", volume: 0.09 });
+  setTimeout(() => {
+    playBeep({
+      frequency: frequency * 1.15,
+      duration: 0.2,
+      type: "sine",
+      volume: 0.07,
+    });
+  }, 120);
 }

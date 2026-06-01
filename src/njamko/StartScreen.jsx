@@ -11,9 +11,9 @@ export default function StartScreen({ onStart }) {
     <div className="nj-start">
       <div className="nj-start__hero">
         <NjamkoTitle className="nj-start__title" />
-        <p className="nj-start__subtitle">Nahrani životinju pravom hranom!</p>
+        <p className="nj-start__subtitle">Igraj, uči i otkrivaj životinje!</p>
         <div className="nj-start__mascot-wrap" aria-hidden="true">
-          <span className="nj-start__mascot">🐶</span>
+          <span className="nj-start__mascot">🦁</span>
         </div>
       </div>
 

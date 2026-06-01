@@ -1,40 +1,45 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePageMeta } from "../usePageMeta.js";
 import { BACKGROUND_IMAGES } from "./assets.js";
+import { getLevelById } from "./data/njamkoLevels.js";
+import { useGameEngine } from "./engine/useGameEngine.js";
 import FinishScreen from "./FinishScreen.jsx";
 import GameScreen from "./GameScreen.jsx";
+import LevelSelect from "./LevelSelect.jsx";
 import StartScreen from "./StartScreen.jsx";
-import { ROUNDS, shuffleOptions } from "./rounds.js";
-import {
-  markUserInteraction,
-  playCorrectSound,
-  playWrongSound,
-} from "./sounds.js";
+import { markUserInteraction } from "./sounds.js";
 import "./njamko.css";
-
-const CORRECT_ANIMATION_MS = 1200;
-const WRONG_RESET_MS = 800;
 
 export default function NjamkoPage() {
   usePageMeta({
-    title: "Njamko | Nahrani životinju",
+    title: "Njamko | Igraj, uči i otkrivaj životinje",
     description:
-      "Jednostavna edukativna igra za djecu 3+. Odaberi pravu hranu za gladnu životinju.",
+      "Jednostavna dječja edukativna mini-platforma za djecu 3+. Nahrani životinju, pronađi dom, pogodi zvuk i spoji mamu s bebom.",
     path: "/njamko",
   });
 
-  const [gameStarted, setGameStarted] = useState(false);
-  const [gameFinished, setGameFinished] = useState(false);
-  const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
-  const [selectedFoodName, setSelectedFoodName] = useState(null);
-  const [stars, setStars] = useState(0);
-  const [feedback, setFeedback] = useState(null);
+  const [screen, setScreen] = useState("start");
+  const [activeLevelId, setActiveLevelId] = useState(null);
+  const [playSession, setPlaySession] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [showStars, setShowStars] = useState(false);
-  const [foodOptions, setFoodOptions] = useState([]);
+  const [finishStars, setFinishStars] = useState(0);
+  const [finishTotal, setFinishTotal] = useState(0);
 
-  const animationTimerRef = useRef(null);
+  const activeLevel = activeLevelId ? getLevelById(activeLevelId) : null;
+
+  const handleLevelComplete = useCallback((stars) => {
+    const level = getLevelById(activeLevelId);
+    setFinishStars(stars);
+    setFinishTotal(level?.rounds.length ?? 0);
+    setScreen("finish");
+  }, [activeLevelId]);
+
+  const engine = useGameEngine({
+    rounds: activeLevel?.rounds ?? [],
+    levelId: activeLevelId ? `${activeLevelId}-${playSession}` : null,
+    soundEnabled,
+    onComplete: handleLevelComplete,
+  });
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -45,103 +50,57 @@ export default function NjamkoPage() {
     return () => link.remove();
   }, []);
 
-  useEffect(() => {
-    return () => {
-      clearTimeout(animationTimerRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!gameStarted || gameFinished) return;
-    const round = ROUNDS[currentRoundIndex];
-    if (!round) return;
-    setFoodOptions(shuffleOptions(round.options));
-  }, [currentRoundIndex, gameStarted, gameFinished]);
-
-  const resetRoundFeedback = useCallback(() => {
-    setSelectedFoodName(null);
-    setFeedback(null);
-    setShowStars(false);
-    setIsAnimating(false);
-  }, []);
-
-  const startGame = useCallback(() => {
+  const goToLevelSelect = useCallback(() => {
     markUserInteraction();
-    clearTimeout(animationTimerRef.current);
-    setGameStarted(true);
-    setGameFinished(false);
-    setCurrentRoundIndex(0);
-    setSelectedFoodName(null);
-    setStars(0);
-    setFeedback(null);
-    setShowStars(false);
-    setIsAnimating(false);
-    setFoodOptions(shuffleOptions(ROUNDS[0].options));
+    setScreen("levelSelect");
   }, []);
 
-  const replayGame = useCallback(() => {
-    startGame();
-  }, [startGame]);
+  const handleStart = useCallback(() => {
+    markUserInteraction();
+    setScreen("levelSelect");
+  }, []);
+
+  const handleSelectLevel = useCallback((levelId) => {
+    markUserInteraction();
+    setActiveLevelId(levelId);
+    setPlaySession((value) => value + 1);
+    setScreen("playing");
+  }, []);
+
+  const handleBack = useCallback(() => {
+    markUserInteraction();
+    setScreen("levelSelect");
+  }, []);
+
+  const handleReplay = useCallback(() => {
+    markUserInteraction();
+    setPlaySession((value) => value + 1);
+    setScreen("playing");
+  }, []);
+
+  const handleChooseLevel = useCallback(() => {
+    markUserInteraction();
+    setScreen("levelSelect");
+  }, []);
 
   const handleToggleSound = useCallback(() => {
     markUserInteraction();
     setSoundEnabled((value) => !value);
   }, []);
 
-  const handleSelectFood = useCallback(
-    (foodName) => {
-      if (isAnimating) return;
+  const sceneClass =
+    screen === "finish"
+      ? "njamko--finish"
+      : screen === "playing" || screen === "levelSelect"
+        ? "njamko--playing"
+        : "njamko--start";
 
-      markUserInteraction();
-      setSelectedFoodName(foodName);
-      setIsAnimating(true);
-
-      const round = ROUNDS[currentRoundIndex];
-      const isCorrect = foodName === round.correctFood;
-
-      if (isCorrect) {
-        setFeedback("correct");
-        setShowStars(true);
-        setStars((value) => value + 1);
-
-        if (soundEnabled) playCorrectSound();
-
-        animationTimerRef.current = setTimeout(() => {
-          const nextIndex = currentRoundIndex + 1;
-          if (nextIndex >= ROUNDS.length) {
-            setGameFinished(true);
-            setGameStarted(false);
-          } else {
-            setCurrentRoundIndex(nextIndex);
-          }
-          resetRoundFeedback();
-        }, CORRECT_ANIMATION_MS);
-        return;
-      }
-
-      setFeedback("wrong");
-
-      if (soundEnabled) playWrongSound();
-
-      animationTimerRef.current = setTimeout(() => {
-        resetRoundFeedback();
-      }, WRONG_RESET_MS);
-    },
-    [currentRoundIndex, isAnimating, resetRoundFeedback, soundEnabled],
-  );
-
-  const round = ROUNDS[currentRoundIndex];
-  const sceneClass = gameFinished
-    ? "njamko--finish"
-    : gameStarted
-      ? "njamko--playing"
-      : "njamko--start";
-
-  const bgImage = gameFinished
-    ? BACKGROUND_IMAGES.finish
-    : gameStarted
-      ? BACKGROUND_IMAGES.game
-      : BACKGROUND_IMAGES.start;
+  const bgImage =
+    screen === "finish"
+      ? BACKGROUND_IMAGES.finish
+      : screen === "playing" || screen === "levelSelect"
+        ? BACKGROUND_IMAGES.game
+        : BACKGROUND_IMAGES.start;
 
   return (
     <div
@@ -161,28 +120,41 @@ export default function NjamkoPage() {
       </div>
 
       <div className="njamko__container">
-        {!gameStarted && !gameFinished && <StartScreen onStart={startGame} />}
+        {screen === "start" && <StartScreen onStart={handleStart} />}
 
-        {gameStarted && !gameFinished && round && (
+        {screen === "levelSelect" && (
+          <LevelSelect onSelectLevel={handleSelectLevel} />
+        )}
+
+        {screen === "playing" && activeLevel && engine.round && (
           <GameScreen
-            round={round}
-            roundKey={currentRoundIndex}
-            foodOptions={foodOptions}
-            roundNumber={currentRoundIndex + 1}
-            totalRounds={ROUNDS.length}
-            stars={stars}
-            feedback={feedback}
-            selectedFoodName={selectedFoodName}
-            showStars={showStars}
-            isAnimating={isAnimating}
+            levelTitle={activeLevel.title}
+            round={engine.round}
+            roundKey={engine.currentRoundIndex}
+            shuffledOptions={engine.shuffledOptions}
+            roundNumber={engine.currentRoundIndex + 1}
+            totalRounds={activeLevel.rounds.length}
+            stars={engine.stars}
+            feedback={engine.feedback}
+            selectedAnswer={engine.selectedAnswer}
+            showStars={engine.showStars}
+            isAnimating={engine.isAnimating}
+            soundRevealed={engine.soundRevealed}
             soundEnabled={soundEnabled}
             onToggleSound={handleToggleSound}
-            onSelectFood={handleSelectFood}
+            onSelectAnswer={engine.handleSelectAnswer}
+            onPlaySound={engine.handlePlaySound}
+            onBack={handleBack}
           />
         )}
 
-        {gameFinished && (
-          <FinishScreen stars={stars} onReplay={replayGame} />
+        {screen === "finish" && (
+          <FinishScreen
+            stars={finishStars}
+            totalRounds={finishTotal}
+            onReplay={handleReplay}
+            onChooseLevel={handleChooseLevel}
+          />
         )}
       </div>
     </div>
