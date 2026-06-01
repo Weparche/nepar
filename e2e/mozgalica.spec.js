@@ -139,6 +139,21 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
 
     await expect(page.getByTestId("challenge-result")).toBeVisible({ timeout: 5000 });
     await expect(page.getByTestId("challenge-winner")).toBeVisible();
+    await expect(page.getByTestId("notify-challenger")).toBeVisible();
+    await expect(page.getByTestId("challenge-notify-hint")).toBeVisible();
+  });
+
+  test("result link shows comparison for challenger without playing", async ({
+    page,
+  }) => {
+    await page.goto(
+      `/mozgalica?od=Wepar&p=1&t=42&tema=${TEST_PUZZLE_ID}&rn=Marko&rp=3&rt=78`,
+    );
+    await expect(page.getByTestId("challenge-result")).toBeVisible();
+    await expect(page.getByText("Marko je odigrao izazov")).toBeVisible();
+    await expect(page.getByTestId("challenge-winner")).toBeVisible();
+    await expect(page.getByTestId("notify-challenger")).toHaveCount(0);
+    await expect(page.getByTestId("challenge-done")).toBeVisible();
   });
 
   test("nav Izazovi prijatelja scrolls to challenge section", async ({ page, isMobile }) => {

@@ -51,6 +51,28 @@
   font-size: 0.9375rem;
 }
 
+.mz-challenge__theme {
+  text-align: center;
+  color: var(--mz-primary);
+  margin: -1rem 0 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mz-challenge__notify-hint {
+  text-align: center;
+  color: var(--mz-gray-text);
+  background: var(--mz-bg);
+  border: 1px solid var(--mz-gray);
+  border-radius: var(--mz-radius-sm);
+  margin: 0 0 1.25rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
 .mz-challenge-invite,
 .mz-challenge-accept {
   position: relative;

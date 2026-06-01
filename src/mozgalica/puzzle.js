@@ -65,6 +65,9 @@ const CHALLENGE_PARAM = {
   attempts: "p",
   time: "t",
   puzzle: "tema",
+  responderName: "rn",
+  responderAttempts: "rp",
+  responderTime: "rt",
 };
 
 export function buildChallengeLink({ name, attempts, elapsedSeconds, puzzleId }) {
@@ -73,6 +76,23 @@ export function buildChallengeLink({ name, attempts, elapsedSeconds, puzzleId })
     [CHALLENGE_PARAM.attempts]: String(attempts),
     [CHALLENGE_PARAM.time]: String(elapsedSeconds),
     [CHALLENGE_PARAM.puzzle]: puzzleId || DEFAULT_PUZZLE_ID,
+  });
+  const base =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/mozgalica`
+      : SHARE_URL;
+  return `${base}?${params.toString()}`;
+}
+
+export function buildChallengeResultLink({ challenger, responder, puzzleId }) {
+  const params = new URLSearchParams({
+    [CHALLENGE_PARAM.name]: challenger.name,
+    [CHALLENGE_PARAM.attempts]: String(challenger.attempts),
+    [CHALLENGE_PARAM.time]: String(challenger.elapsedSeconds),
+    [CHALLENGE_PARAM.puzzle]: puzzleId || DEFAULT_PUZZLE_ID,
+    [CHALLENGE_PARAM.responderName]: responder.name,
+    [CHALLENGE_PARAM.responderAttempts]: String(responder.attempts),
+    [CHALLENGE_PARAM.responderTime]: String(responder.elapsedSeconds),
   });
   const base =
     typeof window !== "undefined"
@@ -92,7 +112,55 @@ export function parseChallengeFromSearch(search) {
     return null;
   }
 
-  return { name, attempts, elapsedSeconds, puzzleId };
+  const challenger = { name, attempts, elapsedSeconds, puzzleId };
+
+  const responderName = params.get(CHALLENGE_PARAM.responderName);
+  const responderAttempts = Number(params.get(CHALLENGE_PARAM.responderAttempts));
+  const responderTime = Number(params.get(CHALLENGE_PARAM.responderTime));
+
+  if (
+    responderName &&
+    !Number.isNaN(responderAttempts) &&
+    !Number.isNaN(responderTime)
+  ) {
+    return {
+      type: "result",
+      challenger,
+      responder: {
+        name: responderName,
+        attempts: responderAttempts,
+        elapsedSeconds: responderTime,
+      },
+    };
+  }
+
+  return { type: "invite", ...challenger };
+}
+
+export function buildChallengeResultShareText({
+  challenger,
+  responder,
+  puzzleTitle,
+  link,
+}) {
+  const winner = pickChallengeWinner(challenger, responder);
+  const challengerTime = formatTime(challenger.elapsedSeconds);
+  const responderTime = formatTime(responder.elapsedSeconds);
+
+  let winnerLine = "Remi!";
+  if (winner === "challenger") winnerLine = `Pobjednik: ${challenger.name} 🏆`;
+  if (winner === "responder") winnerLine = `Pobjednik: ${responder.name} 🏆`;
+
+  return `Dnevne Asocijacije — rezultat izazova 🧠
+
+Tema: ${puzzleTitle}
+${challenger.name}: ${challenger.attempts} pokušaja · ${challengerTime}
+${responder.name}: ${responder.attempts} pokušaja · ${responderTime}
+
+${winnerLine}
+
+Pogledaj usporedbu:
+${link}`;
 }
 
 export function buildChallengeInviteText({ name, attempts, time, link, puzzleTitle }) {

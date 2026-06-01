@@ -10,7 +10,8 @@ import ResultPanel from "./ResultPanel.jsx";
 import {
   DEFAULT_PUZZLE_ID,
   DEMO_CHALLENGE,
-  buildChallengeInviteText,
+  buildChallengeResultLink,
+  buildChallengeResultShareText,
   buildShareText,
   createInitialGameState,
   findBestPartialMatch,
@@ -54,6 +55,8 @@ export default function MozgalicaPage() {
   const [game, setGame] = useState(() => createInitialGameState(DEFAULT_PUZZLE_ID));
   const [playerName, setPlayerName] = useState(readPlayerName);
   const [pendingChallenge, setPendingChallenge] = useState(null);
+  const [completedChallenge, setCompletedChallenge] = useState(null);
+  const [challengeResultVariant, setChallengeResultVariant] = useState("played");
   const [inviteStats, setInviteStats] = useState(null);
   const [inviteCopied, setInviteCopied] = useState(false);
   const timerRef = useRef(null);
@@ -73,8 +76,14 @@ export default function MozgalicaPage() {
     const incoming = parseChallengeFromSearch(window.location.search);
     if (!incoming) return;
 
-    setPendingChallenge(incoming);
-    setScreen("challenge-accept");
+    if (incoming.type === "result") {
+      setCompletedChallenge(incoming);
+      setChallengeResultVariant("received");
+      setScreen("challenge-result");
+    } else {
+      setPendingChallenge(incoming);
+      setScreen("challenge-accept");
+    }
     window.history.replaceState(null, "", "/mozgalica");
   }, []);
 
@@ -99,10 +108,44 @@ export default function MozgalicaPage() {
   useEffect(() => {
     if (screen !== "game" || game.solvedGroups.length !== 4) return undefined;
 
+    if (pendingChallenge) {
+      setChallengeResultVariant("played");
+    }
     const nextScreen = pendingChallenge ? "challenge-result" : "result";
     const timeout = setTimeout(() => setScreen(nextScreen), 400);
     return () => clearTimeout(timeout);
   }, [screen, game.solvedGroups.length, pendingChallenge]);
+
+  useEffect(() => {
+    if (
+      screen !== "challenge-result" ||
+      challengeResultVariant !== "played" ||
+      !pendingChallenge
+    ) {
+      return undefined;
+    }
+
+    const responder = {
+      name: playerName.trim() || "Ti",
+      attempts: game.attempts,
+      elapsedSeconds: game.elapsedSeconds,
+    };
+    const link = buildChallengeResultLink({
+      challenger: pendingChallenge,
+      responder,
+      puzzleId: pendingChallenge.puzzleId,
+    });
+    const url = new URL(link);
+    window.history.replaceState(null, "", `${url.pathname}${url.search}`);
+    return undefined;
+  }, [
+    screen,
+    challengeResultVariant,
+    pendingChallenge,
+    playerName,
+    game.attempts,
+    game.elapsedSeconds,
+  ]);
 
   useEffect(
     () => () => {
@@ -239,33 +282,55 @@ export default function MozgalicaPage() {
     await navigator.clipboard.writeText(text);
   }, [game.attempts, game.elapsedSeconds, game.puzzleId]);
 
-  const handleChallengeShare = useCallback(async () => {
-    if (!pendingChallenge) return;
-
-    const responder = {
-      name: playerName.trim() || "Ti",
-      attempts: game.attempts,
-      elapsedSeconds: game.elapsedSeconds,
+  const getChallengeResultData = useCallback(() => {
+    if (challengeResultVariant === "received" && completedChallenge) {
+      return {
+        challenger: completedChallenge.challenger,
+        responder: completedChallenge.responder,
+        puzzleId: completedChallenge.challenger.puzzleId,
+      };
+    }
+    if (!pendingChallenge) return null;
+    return {
+      challenger: pendingChallenge,
+      responder: {
+        name: playerName.trim() || "Ti",
+        attempts: game.attempts,
+        elapsedSeconds: game.elapsedSeconds,
+      },
+      puzzleId: pendingChallenge.puzzleId,
     };
-    const puzzle = getPuzzleById(pendingChallenge.puzzleId);
-    const text = buildChallengeInviteText({
-      name: pendingChallenge.name,
-      attempts: pendingChallenge.attempts,
-      time: formatTime(pendingChallenge.elapsedSeconds),
-      link: window.location.href,
-      puzzleTitle: puzzle.title,
+  }, [
+    challengeResultVariant,
+    completedChallenge,
+    pendingChallenge,
+    playerName,
+    game.attempts,
+    game.elapsedSeconds,
+  ]);
+
+  const shareChallengeResult = useCallback(async () => {
+    const data = getChallengeResultData();
+    if (!data) return;
+
+    const puzzle = getPuzzleById(data.puzzleId);
+    const link = buildChallengeResultLink({
+      challenger: data.challenger,
+      responder: data.responder,
+      puzzleId: data.puzzleId,
     });
-
-    const comparison = `${pendingChallenge.name}: ${pendingChallenge.attempts} pokušaja · ${formatTime(pendingChallenge.elapsedSeconds)}
-${responder.name}: ${responder.attempts} pokušaja · ${formatTime(responder.elapsedSeconds)}`;
-
-    const shareBody = `Dnevne Asocijacije — rezultat izazova\n\n${comparison}\n\n${text}`;
+    const text = buildChallengeResultShareText({
+      challenger: data.challenger,
+      responder: data.responder,
+      puzzleTitle: puzzle.title,
+      link,
+    });
 
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Dnevne Asocijacije — izazov",
-          text: shareBody,
+          title: "Dnevne Asocijacije — rezultat izazova",
+          text,
         });
         return;
       } catch {
@@ -273,8 +338,30 @@ ${responder.name}: ${responder.attempts} pokušaja · ${formatTime(responder.ela
       }
     }
 
-    await navigator.clipboard.writeText(shareBody);
-  }, [pendingChallenge, playerName, game.attempts, game.elapsedSeconds]);
+    await navigator.clipboard.writeText(text);
+    setInviteCopied(true);
+    if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+    copyTimerRef.current = setTimeout(() => setInviteCopied(false), 2500);
+  }, [getChallengeResultData]);
+
+  const handleNotifyChallenger = useCallback(async () => {
+    await shareChallengeResult();
+  }, [shareChallengeResult]);
+
+  const handleCopyResultLink = useCallback(async () => {
+    const data = getChallengeResultData();
+    if (!data) return;
+
+    const link = buildChallengeResultLink({
+      challenger: data.challenger,
+      responder: data.responder,
+      puzzleId: data.puzzleId,
+    });
+    await navigator.clipboard.writeText(link);
+    setInviteCopied(true);
+    if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+    copyTimerRef.current = setTimeout(() => setInviteCopied(false), 2500);
+  }, [getChallengeResultData]);
 
   const goLanding = useCallback(() => {
     setScreen("landing");
@@ -327,6 +414,10 @@ ${responder.name}: ${responder.attempts} pokušaja · ${formatTime(responder.ela
   const inviteAttempts = inviteStats?.attempts ?? game.attempts;
   const inviteElapsed = inviteStats?.elapsedSeconds ?? game.elapsedSeconds;
   const activePuzzle = getPuzzleById(game.puzzleId);
+  const challengeResultData = getChallengeResultData();
+  const challengeResultPuzzle = challengeResultData
+    ? getPuzzleById(challengeResultData.puzzleId)
+    : null;
 
   return (
     <div className="mozgalica" data-testid="mozgalica-page">
@@ -433,7 +524,7 @@ ${responder.name}: ${responder.attempts} pokušaja · ${formatTime(responder.ela
         </>
       )}
 
-      {screen === "challenge-result" && pendingChallenge && (
+      {screen === "challenge-result" && challengeResultData && (
         <>
           <header className="mz-header">
             <div className="mz-header__inner">
@@ -441,19 +532,27 @@ ${responder.name}: ${responder.attempts} pokušaja · ${formatTime(responder.ela
             </div>
           </header>
           <ChallengeResult
-            challenger={pendingChallenge}
-            responder={{
-              name: playerName.trim() || "Ti",
-              attempts: game.attempts,
-              elapsedSeconds: game.elapsedSeconds,
-            }}
+            variant={challengeResultVariant}
+            challenger={challengeResultData.challenger}
+            responder={challengeResultData.responder}
+            puzzleTitle={challengeResultPuzzle?.title}
+            onNotifyChallenger={handleNotifyChallenger}
             onRematch={() => {
-              const puzzleId = pendingChallenge.puzzleId;
+              const puzzleId = challengeResultData.puzzleId;
               setPendingChallenge(null);
+              setCompletedChallenge(null);
               startGame(puzzleId);
             }}
-            onShare={handleChallengeShare}
-            onBack={goLanding}
+            onShare={
+              challengeResultVariant === "played"
+                ? handleCopyResultLink
+                : shareChallengeResult
+            }
+            onBack={() => {
+              setPendingChallenge(null);
+              setCompletedChallenge(null);
+              goLanding();
+            }}
           />
         </>
       )}

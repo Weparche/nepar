@@ -129,8 +129,8 @@ export default function ChallengeInvite({
       </div>
 
       <p className="mz-challenge-invite__hint" data-testid="challenge-invite-hint">
-        Prijatelj otvara link, igra istu mozgalicu, a zatim vidi usporedbu s
-        tvojim rezultatom.
+        Prijatelj otvara link, igra istu mozgalicu, a zatim ti šalje{" "}
+        <strong>link s rezultatom</strong> — tek tada vidiš tko je pobijedio.
       </p>
 
       <textarea

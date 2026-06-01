@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-mot
 import ContactPage from "./ContactPage.jsx";
 import WebStartPage from "./WebStartPage.jsx";
 import MozgalicaPage from "./mozgalica/MozgalicaPage.jsx";
+import NjamkoPage from "./njamko/NjamkoPage.jsx";
 import {
   ArrowRight,
   Bot,
@@ -1399,6 +1400,7 @@ export default function App() {
         <Route path="/kontakt" element={<ContactPage />} />
         <Route path="/usluge/web-stranica-bez-pocetnog-troska" element={<WebStartPage />} />
         <Route path="/mozgalica" element={<MozgalicaPage />} />
+        <Route path="/njamko" element={<NjamkoPage />} />
       </Routes>
     </BrowserRouter>
   );
