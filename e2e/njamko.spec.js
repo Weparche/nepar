@@ -49,13 +49,18 @@ async function selectCorrectAnswer(page, round) {
     .click();
 }
 
+async function waitForSoundAutoplay(page) {
+  await expect(page.locator('[data-sound-autoplay-ready="true"]')).toBeVisible({
+    timeout: 3000,
+  });
+}
+
 async function completeLevel(page, levelId) {
   const level = getLevelById(levelId);
   for (let index = 0; index < level.rounds.length; index += 1) {
     const round = level.rounds[index];
     if (round.mode === "sound") {
-      await page.getByTestId("sound-button").click();
-      await expect(page.getByTestId("sound-text")).toContainText(round.soundText);
+      await waitForSoundAutoplay(page);
     }
     await selectCorrectAnswer(page, round);
     await expect(page.getByTestId("feedback-message")).toContainText("Bravo!");
@@ -87,7 +92,7 @@ test.describe("Njamko platform /njamko", () => {
         expect(round.options).toHaveLength(3);
         expect(round.options.filter((option) => option.name === round.correctAnswer)).toHaveLength(1);
         if (round.mode === "sound") {
-          expect(round.soundSrc).toMatch(/^\/njamko\/assets\/sounds\/\w+\.mp3$/);
+          expect(round.soundSrc).toMatch(/^\/njamko\/assets\/sounds\/.+\.mp3$/);
         }
       }
     }
@@ -118,18 +123,28 @@ test.describe("Njamko platform /njamko", () => {
     await expect(page.getByText(`2 / ${total}`)).toBeVisible({ timeout: 5000 });
   });
 
-  test("sound level reveals sound text and accepts correct animal", async ({ page }) => {
+  test("sound level autoplays on round start with vertical choices", async ({ page }) => {
     await page.goto("/njamko");
     await page.getByTestId("start-button").click();
     await page.getByTestId("level-sound").click();
-    await expect(page.getByTestId("game-screen")).toBeVisible();
 
     const round = getLevelById("sound").rounds[0];
-    expect(round.soundSrc).toBeTruthy();
 
-    await page.getByTestId("sound-button").click();
-    await expect(page.getByTestId("sound-text")).toContainText(round.soundText);
-    await expect(page.getByTestId("sound-text")).toBeVisible();
+    await expect(page.getByTestId("game-screen")).toHaveAttribute("data-sound-round", "true");
+    await expect(page.getByText("1 / 10")).toBeVisible();
+    await waitForSoundAutoplay(page);
+
+    await expect(page.getByTestId("sound-text")).toBeAttached();
+    await expect(page.getByTestId("sound-text")).toHaveClass(/nj-sr-only/);
+    await expect(page.getByTestId("sound-text")).toHaveText(round.soundText);
+    await expect(page.getByRole("button", { name: /Poslušaj opet/i })).toBeVisible();
+
+    const cards = page.getByTestId("option-card");
+    await expect(cards).toHaveCount(3);
+    const first = await cards.nth(0).boundingBox();
+    const second = await cards.nth(1).boundingBox();
+    expect(first?.height ?? 0).toBeGreaterThanOrEqual(56);
+    expect(second?.y ?? 0).toBeGreaterThan((first?.y ?? 0) + (first?.height ?? 0) - 8);
 
     await selectCorrectAnswer(page, round);
     await expect(page.getByTestId("feedback-message")).toContainText("Bravo!");
@@ -139,10 +154,10 @@ test.describe("Njamko platform /njamko", () => {
     await page.route("**/njamko/assets/sounds/*.mp3", (route) => route.abort());
 
     await startLevel(page, "level-sound");
-    const round = getLevelById("sound").rounds[0];
+    await waitForSoundAutoplay(page);
+    await expect(page.getByTestId("sound-text")).toBeAttached();
 
-    await page.getByTestId("sound-button").click();
-    await expect(page.getByTestId("sound-text")).toContainText(round.soundText);
+    const round = getLevelById("sound").rounds[0];
     await selectCorrectAnswer(page, round);
     await expect(page.getByTestId("feedback-message")).toContainText("Bravo!");
   });
@@ -213,8 +228,7 @@ test.describe("Njamko platform /njamko", () => {
       await assertNoPageScroll(page);
 
       if (levelId === "level-sound") {
-        await page.getByTestId("sound-button").click();
-        await expect(page.getByTestId("sound-text")).toBeVisible();
+        await waitForSoundAutoplay(page);
         await assertNoPageScroll(page);
       }
 
@@ -374,7 +388,7 @@ test.describe("Njamko screenshots", () => {
   test("sound level screenshot", async ({ page }) => {
     test.skip(test.info().project.name !== "desktop", "Desktop snapshot");
     await startLevel(page, "level-sound");
-    await page.getByTestId("sound-button").click();
+    await waitForSoundAutoplay(page);
     await page.waitForTimeout(400);
     await expect(page).toHaveScreenshot("njamko-level-sound-desktop.png", SCREENSHOT_OPTS);
   });
@@ -383,7 +397,7 @@ test.describe("Njamko screenshots", () => {
     test.skip(test.info().project.name !== "mobile", "Mobile snapshot");
     await page.setViewportSize({ width: 390, height: 844 });
     await startLevel(page, "level-sound");
-    await page.getByTestId("sound-button").click();
+    await waitForSoundAutoplay(page);
     await page.waitForTimeout(400);
     await expect(page).toHaveScreenshot("njamko-level-sound-mobile.png", SCREENSHOT_OPTS);
   });

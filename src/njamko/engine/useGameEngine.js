@@ -5,10 +5,12 @@ import {
   playAnimalSound,
   playCorrectSound,
   playWrongSound,
+  stopAnimalSound,
 } from "../sounds.js";
 
 const CORRECT_ANIMATION_MS = 1200;
 const WRONG_RESET_MS = 800;
+const SOUND_AUTOPLAY_DELAY_MS = 300;
 
 export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
@@ -18,29 +20,32 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showStars, setShowStars] = useState(false);
   const [shuffledOptions, setShuffledOptions] = useState([]);
-  const [soundRevealed, setSoundRevealed] = useState(false);
+  const [soundAutoplayReady, setSoundAutoplayReady] = useState(false);
 
   const animationTimerRef = useRef(null);
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
 
   const round = rounds[currentRoundIndex] ?? null;
+  const isSoundRound = round?.mode === "sound";
 
   useEffect(() => {
     return () => {
       clearTimeout(animationTimerRef.current);
+      stopAnimalSound();
     };
   }, []);
 
   const resetLevel = useCallback(() => {
     clearTimeout(animationTimerRef.current);
+    stopAnimalSound();
     setCurrentRoundIndex(0);
     setSelectedAnswer(null);
     setStars(0);
     setFeedback(null);
     setShowStars(false);
     setIsAnimating(false);
-    setSoundRevealed(false);
+    setSoundAutoplayReady(false);
     if (rounds[0]) {
       setShuffledOptions(shuffleOptions(rounds[0].options));
     } else {
@@ -55,22 +60,36 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
 
   useEffect(() => {
     if (!round) return;
+    stopAnimalSound();
     setShuffledOptions(shuffleOptions(round.options));
-    setSoundRevealed(false);
+    setSoundAutoplayReady(false);
   }, [currentRoundIndex, round]);
+
+  useEffect(() => {
+    if (!isSoundRound || !soundEnabled || !round) return undefined;
+
+    const timer = setTimeout(() => {
+      markUserInteraction();
+      playAnimalSound(round.soundText, round.soundSrc);
+      setSoundAutoplayReady(true);
+    }, SOUND_AUTOPLAY_DELAY_MS);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [currentRoundIndex, isSoundRound, levelId, round, soundEnabled]);
 
   const resetRoundFeedback = useCallback(() => {
     setSelectedAnswer(null);
     setFeedback(null);
     setShowStars(false);
     setIsAnimating(false);
-    setSoundRevealed(false);
+    setSoundAutoplayReady(false);
   }, []);
 
   const handlePlaySound = useCallback(() => {
     if (!round || round.mode !== "sound") return;
     markUserInteraction();
-    setSoundRevealed(true);
     if (soundEnabled) {
       playAnimalSound(round.soundText, round.soundSrc);
     }
@@ -138,7 +157,7 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
     selectedAnswer,
     isAnimating,
     showStars,
-    soundRevealed,
+    soundAutoplayReady,
     handleSelectAnswer,
     handlePlaySound,
     resetLevel,

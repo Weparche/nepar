@@ -306,7 +306,7 @@ const SOUND_ROUNDS = [
     mainLabel: "Zvuk",
     mainEmoji: "🔊",
     soundText: "Vau vau!",
-    soundSrc: "/njamko/assets/sounds/dog.mp3",
+    soundSrc: "/njamko/assets/sounds/dragon-studio-free-dog-bark-419014.mp3",
     correctAnswer: "Pas",
     options: [
       { name: "Pas", emoji: "🐶" },
@@ -321,7 +321,7 @@ const SOUND_ROUNDS = [
     mainLabel: "Zvuk",
     mainEmoji: "🔊",
     soundText: "Mijau!",
-    soundSrc: "/njamko/assets/sounds/cat.mp3",
+    soundSrc: "/njamko/assets/sounds/dragon-studio-cat-meow-401729.mp3",
     correctAnswer: "Mačka",
     options: [
       { name: "Mačka", emoji: "🐱" },
@@ -336,7 +336,7 @@ const SOUND_ROUNDS = [
     mainLabel: "Zvuk",
     mainEmoji: "🔊",
     soundText: "I-ha-ha!",
-    soundSrc: "/njamko/assets/sounds/horse.mp3",
+    soundSrc: "/njamko/assets/sounds/dragon-studio-horse-neigh-390297.mp3",
     correctAnswer: "Konj",
     options: [
       { name: "Konj", emoji: "🐴" },
@@ -351,7 +351,7 @@ const SOUND_ROUNDS = [
     mainLabel: "Zvuk",
     mainEmoji: "🔊",
     soundText: "Kva kva!",
-    soundSrc: "/njamko/assets/sounds/duck.mp3",
+    soundSrc: "/njamko/assets/sounds/iedurodrigues-duck-quack-112941.mp3",
     correctAnswer: "Patka",
     options: [
       { name: "Patka", emoji: "🦆" },
@@ -366,7 +366,7 @@ const SOUND_ROUNDS = [
     mainLabel: "Zvuk",
     mainEmoji: "🔊",
     soundText: "Beee!",
-    soundSrc: "/njamko/assets/sounds/sheep.mp3",
+    soundSrc: "/njamko/assets/sounds/stu9-sheep-352668.mp3",
     correctAnswer: "Ovca",
     options: [
       { name: "Ovca", emoji: "🐑" },
@@ -381,7 +381,7 @@ const SOUND_ROUNDS = [
     mainLabel: "Zvuk",
     mainEmoji: "🔊",
     soundText: "Kikiriki!",
-    soundSrc: "/njamko/assets/sounds/rooster.mp3",
+    soundSrc: "/njamko/assets/sounds/freesound_community-rooster-call-cock-a-doodle-doo-46096.mp3",
     correctAnswer: "Pijetao",
     options: [
       { name: "Pijetao", emoji: "🐓" },
@@ -396,7 +396,7 @@ const SOUND_ROUNDS = [
     mainLabel: "Zvuk",
     mainEmoji: "🔊",
     soundText: "Grok grok!",
-    soundSrc: "/njamko/assets/sounds/pig.mp3",
+    soundSrc: "/njamko/assets/sounds/pewnaosoba7-pig-125132.mp3",
     correctAnswer: "Svinja",
     options: [
       { name: "Svinja", emoji: "🐷" },
@@ -411,7 +411,7 @@ const SOUND_ROUNDS = [
     mainLabel: "Zvuk",
     mainEmoji: "🔊",
     soundText: "Ribbit!",
-    soundSrc: "/njamko/assets/sounds/frog.mp3",
+    soundSrc: "/njamko/assets/sounds/stu9-frog-1-352709.mp3",
     correctAnswer: "Žaba",
     options: [
       { name: "Žaba", emoji: "🐸" },

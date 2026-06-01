@@ -23,7 +23,7 @@ export default function GameScreen({
   selectedAnswer,
   showStars,
   isAnimating,
-  soundRevealed,
+  soundAutoplayReady,
   soundEnabled,
   onToggleSound,
   onSelectAnswer,
@@ -31,9 +31,15 @@ export default function GameScreen({
   onBack,
 }) {
   const optionType = OPTION_TYPE_LABELS[round.mode] ?? "opciju";
+  const isSoundLevel = round.mode === "sound";
 
   return (
-    <div className="nj-game" data-testid="game-screen">
+    <div
+      className={`nj-game${isSoundLevel ? " nj-game--sound" : ""}`}
+      data-testid="game-screen"
+      data-sound-round={isSoundLevel ? "true" : undefined}
+      data-sound-autoplay-ready={isSoundLevel && soundAutoplayReady ? "true" : undefined}
+    >
       <GameTopBar
         levelTitle={levelTitle}
         currentRound={roundNumber}
@@ -50,7 +56,7 @@ export default function GameScreen({
           <p className="nj-game__question">{round.question}</p>
         </div>
 
-        {round.mode === "sound" && (
+        {isSoundLevel && (
           <div className="nj-sound-panel">
             <button
               type="button"
@@ -59,13 +65,11 @@ export default function GameScreen({
               onClick={onPlaySound}
               disabled={isAnimating}
             >
-              🔊 Poslušaj zvuk
+              🔊 Poslušaj opet
             </button>
-            {soundRevealed && round.soundText && (
-              <p className="nj-sound-panel__text" data-testid="sound-text">
-                {round.soundText}
-              </p>
-            )}
+            <span className="nj-sr-only" data-testid="sound-text">
+              {round.soundText}
+            </span>
           </div>
         )}
 

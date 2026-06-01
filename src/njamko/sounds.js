@@ -39,6 +39,18 @@ export function markUserInteraction() {
   userHasInteracted = true;
 }
 
+export function stopAnimalSound() {
+  try {
+    if (activeAnimalAudio) {
+      activeAnimalAudio.pause();
+      activeAnimalAudio.currentTime = 0;
+      activeAnimalAudio = null;
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
 function playBeep({ frequency, duration, type = "sine", volume = 0.12 }) {
   try {
     const ctx = getAudioContext();
@@ -89,17 +101,14 @@ export function playWrongSound() {
 export function playAnimalSound(soundText, soundSrc) {
   if (!userHasInteracted) return;
 
+  stopAnimalSound();
+
   if (!soundSrc) {
     playAnimalSoundBeep(soundText);
     return;
   }
 
   try {
-    if (activeAnimalAudio) {
-      activeAnimalAudio.pause();
-      activeAnimalAudio = null;
-    }
-
     const audio = new Audio(soundSrc);
     audio.volume = 0.85;
     activeAnimalAudio = audio;

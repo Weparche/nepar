@@ -139,7 +139,7 @@ export default function NjamkoPage() {
             selectedAnswer={engine.selectedAnswer}
             showStars={engine.showStars}
             isAnimating={engine.isAnimating}
-            soundRevealed={engine.soundRevealed}
+            soundAutoplayReady={engine.soundAutoplayReady}
             soundEnabled={soundEnabled}
             onToggleSound={handleToggleSound}
             onSelectAnswer={engine.handleSelectAnswer}
