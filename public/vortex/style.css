@@ -772,11 +772,79 @@ address {
   justify-content: center;
   flex: 1;
   width: 100%;
-  color: var(--color-accent-gold);
   transition: transform var(--transition-base), filter var(--transition-base);
 }
 
-.tech-card-icon svg {
+/* Official brand logos via Simple Icons (simpleicons.org, CC0) — gold tint via CSS mask */
+.tech-card-icon--brand {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+  background-color: var(--color-accent-gold);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+.tech-card-icon--php {
+  mask-image: url("icons/php.svg");
+  -webkit-mask-image: url("icons/php.svg");
+}
+
+.tech-card-icon--mysql {
+  mask-image: url("icons/mysql.svg");
+  -webkit-mask-image: url("icons/mysql.svg");
+}
+
+.tech-card-icon--cplusplus {
+  mask-image: url("icons/cplusplus.svg");
+  -webkit-mask-image: url("icons/cplusplus.svg");
+}
+
+.tech-card-icon--html5 {
+  mask-image: url("icons/html5.svg");
+  -webkit-mask-image: url("icons/html5.svg");
+}
+
+.tech-card-icon--css {
+  mask-image: url("icons/css.svg");
+  -webkit-mask-image: url("icons/css.svg");
+}
+
+.tech-card-icon--javascript {
+  mask-image: url("icons/javascript.svg");
+  -webkit-mask-image: url("icons/javascript.svg");
+}
+
+.tech-card-icon--git {
+  mask-image: url("icons/git.svg");
+  -webkit-mask-image: url("icons/git.svg");
+}
+
+.tech-card-icon--linux {
+  mask-image: url("icons/linux.svg");
+  -webkit-mask-image: url("icons/linux.svg");
+}
+
+.tech-card-icon--laravel {
+  mask-image: url("icons/laravel.svg");
+  -webkit-mask-image: url("icons/laravel.svg");
+}
+
+.tech-card-icon--jira {
+  mask-image: url("icons/jira.svg");
+  -webkit-mask-image: url("icons/jira.svg");
+}
+
+/* Conceptual areas without a single brand logo */
+.tech-card-icon--custom {
+  color: var(--color-accent-gold);
+}
+
+.tech-card-icon--custom svg {
   width: 52px;
   height: 52px;
 }
@@ -1568,7 +1636,8 @@ address {
     padding: var(--space-lg) var(--space-sm) var(--space-md);
   }
 
-  .tech-card-icon svg {
+  .tech-card-icon--brand,
+  .tech-card-icon--custom svg {
     width: 44px;
     height: 44px;
   }
@@ -1665,7 +1734,8 @@ address {
     min-height: 156px;
   }
 
-  .tech-card-icon svg {
+  .tech-card-icon--brand,
+  .tech-card-icon--custom svg {
     width: 56px;
     height: 56px;
   }
@@ -1781,7 +1851,8 @@ address {
     padding: var(--space-2xl) var(--space-lg) var(--space-xl);
   }
 
-  .tech-card-icon svg {
+  .tech-card-icon--brand,
+  .tech-card-icon--custom svg {
     width: 60px;
     height: 60px;
   }
@@ -1932,7 +2003,8 @@ address {
     min-height: 180px;
   }
 
-  .tech-card-icon svg {
+  .tech-card-icon--brand,
+  .tech-card-icon--custom svg {
     width: 64px;
     height: 64px;
   }
