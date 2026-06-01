@@ -9,6 +9,25 @@ async function assertNoHorizontalScroll(page) {
   expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1);
 }
 
+async function assertNoPageScroll(page) {
+  const metrics = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+    scrollHeight: document.documentElement.scrollHeight,
+    clientHeight: document.documentElement.clientHeight,
+  }));
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1);
+  expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight + 1);
+}
+
+async function assertInViewport(page, locator) {
+  const box = await locator.boundingBox();
+  const viewport = page.viewportSize();
+  expect(box).not.toBeNull();
+  expect(box.y).toBeGreaterThanOrEqual(-1);
+  expect(box.y + box.height).toBeLessThanOrEqual((viewport?.height ?? 0) + 1);
+}
+
 async function openLevelSelect(page) {
   await page.goto("/njamko");
   await expect(page.getByTestId("njamko-page")).toBeVisible();
@@ -113,6 +132,8 @@ test.describe("Njamko platform /njamko", () => {
     const level = getLevelById("baby");
     await completeLevel(page, "baby");
     await expect(page.getByTestId("finish-screen")).toBeVisible({ timeout: 10_000 });
+    await assertNoPageScroll(page);
+    await assertInViewport(page, page.getByTestId("replay-button"));
     await expect(page.locator(".nj-finish__title")).toHaveText("Završio si igru!");
     await expect(page.getByText(`${level.rounds.length} zvjezdica`)).toBeVisible();
     await expect(page.getByTestId("choose-level-button")).toBeVisible();
@@ -121,30 +142,64 @@ test.describe("Njamko platform /njamko", () => {
   test("390x844 mobile layout stays intact", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/njamko");
-    await assertNoHorizontalScroll(page);
+    await assertNoPageScroll(page);
 
     const startButton = page.getByTestId("start-button");
     const startBox = await startButton.boundingBox();
     expect(startBox?.height).toBeGreaterThanOrEqual(56);
+    await assertInViewport(page, startButton);
 
     await startButton.click();
     await expect(page.getByTestId("level-select")).toBeVisible();
-    await assertNoHorizontalScroll(page);
+    await assertNoPageScroll(page);
+
+    for (const levelId of ["level-food", "level-home", "level-sound", "level-baby"]) {
+      const card = page.getByTestId(levelId);
+      await expect(card).toBeVisible();
+      await assertInViewport(page, card);
+    }
 
     const cards = page.getByTestId("level-food");
-    await expect(cards).toBeVisible();
     const cardBox = await cards.boundingBox();
-    expect(cardBox?.height).toBeGreaterThanOrEqual(120);
+    expect(cardBox?.height).toBeGreaterThanOrEqual(56);
 
     await page.getByTestId("level-food").click();
     await expect(page.getByTestId("main-character")).toBeVisible();
     await expect(page.getByTestId("option-card")).toHaveCount(3);
-    await assertNoHorizontalScroll(page);
+    await assertNoPageScroll(page);
+    await assertInViewport(page, page.getByTestId("option-card").first());
 
     const optionBox = await page.getByTestId("option-card").first().boundingBox();
     expect(optionBox?.height).toBeGreaterThanOrEqual(56);
 
     await expect(page.getByRole("button", { name: /Zvuk/i })).toBeVisible();
+  });
+
+  test("390x844 fits every screen without page scroll", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+
+    await page.goto("/njamko");
+    await assertNoPageScroll(page);
+
+    await page.getByTestId("start-button").click();
+    await assertNoPageScroll(page);
+
+    const levelIds = ["level-food", "level-home", "level-sound", "level-baby"];
+    for (const levelId of levelIds) {
+      await page.getByTestId(levelId).click();
+      await expect(page.getByTestId("game-screen")).toBeVisible();
+      await assertNoPageScroll(page);
+
+      if (levelId === "level-sound") {
+        await page.getByTestId("sound-button").click();
+        await expect(page.getByTestId("sound-text")).toBeVisible();
+        await assertNoPageScroll(page);
+      }
+
+      await page.getByRole("button", { name: "Natrag na izbor levela" }).click();
+      await expect(page.getByTestId("level-select")).toBeVisible();
+      await assertNoPageScroll(page);
+    }
   });
 
   test("768x1024 tablet layout is centered and airy", async ({ page }) => {

@@ -34,7 +34,7 @@ export default function GameTopBar({
         >
           <span
             className="nj-topbar__progress-fill"
-            style={{ width: `${progress}%` }}
+            style={{ "--nj-progress": progress / 100 }}
           />
         </div>
         <p className="nj-topbar__round">
