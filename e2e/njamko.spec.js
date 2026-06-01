@@ -1,6 +1,14 @@
 import { test, expect } from "@playwright/test";
 import { getLevelById } from "../src/njamko/data/njamkoLevels.js";
 
+async function assertNoHorizontalScroll(page) {
+  const metrics = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  }));
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1);
+}
+
 async function openLevelSelect(page) {
   await page.goto("/njamko");
   await expect(page.getByTestId("njamko-page")).toBeVisible();
@@ -98,7 +106,16 @@ test.describe("Njamko platform /njamko", () => {
 
   test("390x844 mobile layout stays intact", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await openLevelSelect(page);
+    await page.goto("/njamko");
+    await assertNoHorizontalScroll(page);
+
+    const startButton = page.getByTestId("start-button");
+    const startBox = await startButton.boundingBox();
+    expect(startBox?.height).toBeGreaterThanOrEqual(56);
+
+    await startButton.click();
+    await expect(page.getByTestId("level-select")).toBeVisible();
+    await assertNoHorizontalScroll(page);
 
     const cards = page.getByTestId("level-food");
     await expect(cards).toBeVisible();
@@ -108,9 +125,62 @@ test.describe("Njamko platform /njamko", () => {
     await page.getByTestId("level-food").click();
     await expect(page.getByTestId("main-character")).toBeVisible();
     await expect(page.getByTestId("option-card")).toHaveCount(3);
+    await assertNoHorizontalScroll(page);
 
     const optionBox = await page.getByTestId("option-card").first().boundingBox();
     expect(optionBox?.height).toBeGreaterThanOrEqual(56);
+
+    await expect(page.getByRole("button", { name: /Zvuk/i })).toBeVisible();
+  });
+
+  test("768x1024 tablet layout is centered and airy", async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await openLevelSelect(page);
+    await assertNoHorizontalScroll(page);
+
+    const levelSelect = page.locator(".nj-level-select");
+    const levelBox = await levelSelect.boundingBox();
+    const viewport = page.viewportSize();
+    expect(levelBox?.width ?? 0).toBeLessThanOrEqual(640);
+    const levelCenter = (levelBox?.x ?? 0) + (levelBox?.width ?? 0) / 2;
+    expect(levelCenter).toBeGreaterThan((viewport?.width ?? 768) * 0.35);
+    expect(levelCenter).toBeLessThan((viewport?.width ?? 768) * 0.65);
+
+    await page.getByTestId("level-food").click();
+    await expect(page.getByTestId("game-screen")).toBeVisible();
+    await assertNoHorizontalScroll(page);
+
+    const panel = page.locator(".nj-game__panel");
+    const panelBox = await panel.boundingBox();
+    expect(panelBox?.width ?? 0).toBeLessThanOrEqual(680);
+    const panelCenter = (panelBox?.x ?? 0) + (panelBox?.width ?? 0) / 2;
+    expect(panelCenter).toBeGreaterThan((viewport?.width ?? 768) * 0.35);
+    expect(panelCenter).toBeLessThan((viewport?.width ?? 768) * 0.65);
+  });
+
+  test("wrong answer allows another tap before feedback clears", async ({ page }) => {
+    await startLevel(page, "level-food");
+    const round = getLevelById("food").rounds[0];
+    const wrong = round.options.find((option) => option.name !== round.correctAnswer);
+
+    await page.getByRole("button", { name: new RegExp(`Odaberi hranu ${wrong.name}`, "i") }).click();
+    await expect(page.getByTestId("feedback-message")).toContainText("Probaj opet.");
+
+    await selectCorrectAnswer(page, round);
+    await expect(page.getByTestId("feedback-message")).toContainText("Bravo!");
+  });
+
+  test("correct answer blocks taps during success animation", async ({ page }) => {
+    await startLevel(page, "level-food");
+    const round = getLevelById("food").rounds[0];
+
+    await selectCorrectAnswer(page, round);
+    await expect(page.getByTestId("feedback-message")).toContainText("Bravo!");
+
+    const other = round.options.find((option) => option.name !== round.correctAnswer);
+    await expect(
+      page.getByRole("button", { name: new RegExp(`Odaberi hranu ${other.name}`, "i") }),
+    ).toBeDisabled();
   });
 
   test("1440x900 desktop layout is centered", async ({ page }) => {
@@ -128,6 +198,14 @@ test.describe("Njamko platform /njamko", () => {
     expect((containerBox?.x ?? 0) + (containerBox?.width ?? 0)).toBeLessThan(
       (viewport?.width ?? 1440) - 300,
     );
+
+    await page.getByTestId("level-food").click();
+    const panel = page.locator(".nj-game__panel");
+    const panelBox = await panel.boundingBox();
+    expect(panelBox?.width ?? 0).toBeLessThanOrEqual(680);
+    const panelCenter = (panelBox?.x ?? 0) + (panelBox?.width ?? 0) / 2;
+    expect(panelCenter).toBeGreaterThan((viewport?.width ?? 1440) * 0.4);
+    expect(panelCenter).toBeLessThan((viewport?.width ?? 1440) * 0.6);
   });
 
   test("back button returns to level select", async ({ page }) => {

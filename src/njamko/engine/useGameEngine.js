@@ -82,11 +82,11 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
 
       markUserInteraction();
       setSelectedAnswer(answerName);
-      setIsAnimating(true);
 
       const isCorrect = answerName === round.correctAnswer;
 
       if (isCorrect) {
+        setIsAnimating(true);
         setFeedback("correct");
         setShowStars(true);
 
@@ -115,7 +115,8 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
       if (soundEnabled) playWrongSound();
 
       animationTimerRef.current = setTimeout(() => {
-        resetRoundFeedback();
+        setSelectedAnswer(null);
+        setFeedback(null);
       }, WRONG_RESET_MS);
     },
     [

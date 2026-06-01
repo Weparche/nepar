@@ -10,15 +10,22 @@ let userHasInteracted = false;
 
 function getAudioContext() {
   if (!userHasInteracted) return null;
-  if (!audioContext) {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return null;
-    audioContext = new AudioCtx();
+
+  try {
+    if (!audioContext) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return null;
+      audioContext = new AudioCtx();
+    }
+
+    if (audioContext.state === "suspended") {
+      audioContext.resume().catch(() => {});
+    }
+
+    return audioContext;
+  } catch {
+    return null;
   }
-  if (audioContext.state === "suspended") {
-    audioContext.resume();
-  }
-  return audioContext;
 }
 
 export function markUserInteraction() {
@@ -26,22 +33,26 @@ export function markUserInteraction() {
 }
 
 function playBeep({ frequency, duration, type = "sine", volume = 0.12 }) {
-  const ctx = getAudioContext();
-  if (!ctx) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
 
-  const oscillator = ctx.createOscillator();
-  const gain = ctx.createGain();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
 
-  oscillator.type = type;
-  oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
-  gain.gain.setValueAtTime(volume, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
 
-  oscillator.connect(gain);
-  gain.connect(ctx.destination);
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
 
-  oscillator.start(ctx.currentTime);
-  oscillator.stop(ctx.currentTime + duration);
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + duration);
+  } catch {
+    /* Browser blocked audio or Web Audio unavailable */
+  }
 }
 
 export function playCorrectSound() {
@@ -52,18 +63,18 @@ export function playCorrectSound() {
 }
 
 export function playWrongSound() {
-  playBeep({ frequency: 320, duration: 0.18, type: "triangle", volume: 0.08 });
+  playBeep({ frequency: 340, duration: 0.16, type: "triangle", volume: 0.06 });
 }
 
 export function playAnimalSound(soundText) {
   const frequency = SOUND_FREQUENCIES[soundText] ?? 400;
-  playBeep({ frequency, duration: 0.35, type: "sawtooth", volume: 0.09 });
+  playBeep({ frequency, duration: 0.32, type: "sawtooth", volume: 0.08 });
   setTimeout(() => {
     playBeep({
-      frequency: frequency * 1.15,
-      duration: 0.2,
+      frequency: frequency * 1.12,
+      duration: 0.18,
       type: "sine",
-      volume: 0.07,
+      volume: 0.06,
     });
   }, 120);
 }
