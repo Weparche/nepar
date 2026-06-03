@@ -6,22 +6,22 @@
 
 # Test info
 
-- Name: mozgalica.spec.js >> Dnevne Asocijacije /mozgalica >> landing shows puzzle picker with all themes
-- Location: e2e\mozgalica.spec.js:53:3
+- Name: mozgalica.spec.js >> Dnevne Asocijacije /mozgalica >> landing page loads with hero title
+- Location: e2e\mozgalica.spec.js:44:3
 
 # Error details
 
 ```
 Error: expect(locator).toBeVisible() failed
 
-Locator: getByTestId('puzzle-picker')
+Locator: getByTestId('mozgalica-page')
 Expected: visible
 Timeout: 5000ms
 Error: element(s) not found
 
 Call log:
   - Expect "toBeVisible" with timeout 5000ms
-  - waiting for getByTestId('puzzle-picker')
+  - waiting for getByTestId('mozgalica-page')
 
 ```
 
@@ -30,19 +30,7 @@ Call log:
   - link "Njamko početna":
     - /url: /
     - img "Njamko"
-  - navigation "Glavna navigacija":
-    - link "Igra":
-      - /url: "#igra"
-    - link "Kako radi":
-      - /url: "#kako-radi"
-    - link "Razine":
-      - /url: "#razine"
-    - link "Plus":
-      - /url: "#plus"
-    - link "Za roditelje":
-      - /url: "#roditelji"
-  - link "Igraj Njamko":
-    - /url: /njamko?igra=1
+  - button "Otvori izbornik"
 - main:
   - heading "Njamko - vesela edukativna igra za djecu" [level=1]
   - paragraph: "Montessori-inspirirana edukativna igra za djecu od 3 godine: mirno, jednostavno i pametno učenje kroz izbor."
@@ -68,92 +56,31 @@ Call log:
       - listitem:
         - strong: Kupnju potvrđuje roditelj
         - text: Dodatne razine su iza roditeljskog kutka, ne iza dječjeg klika.
-  - heading "Montessori-inspirirano učenje kroz igru" [level=2]
-  - paragraph: "Njamko pomaže djeci da samostalno otkrivaju svijet životinja, hrane i prirode. Svaka aktivnost je jednostavna, mirna i jasna: dijete promatra, bira i uči vlastitim tempom."
-  - article:
-    - heading "Jednostavno" [level=3]
-    - paragraph: Velike kartice, veliki gumbi i jasna pitanja.
-  - article:
-    - heading "Edukativno" [level=3]
-    - paragraph: Djeca povezuju pojmove i uče kroz ponavljanje.
-  - article:
-    - heading "Veselo" [level=3]
-    - paragraph: Mekane animacije, zvjezdice i prijateljske poruke.
   - heading "Počni besplatno, otključaj više kada želiš" [level=2]
   - article:
     - heading "Besplatno" [level=3]
     - paragraph: 0 €
-    - list:
-      - listitem: ✓ 4 besplatne razine
-      - listitem: ✓ 40 edukativnih rundi
-      - listitem: ✓ svi modovi dostupni
-      - listitem: ✓ bez prijave
-      - listitem: ✓ bez reklama
-    - link "Igraj besplatno":
-      - /url: /njamko?igra=1
   - article:
     - heading "Njamko Plus" [level=3]
     - paragraph: 4,99 €
     - text: jednokratno
-    - list:
-      - listitem: ✓ 16 dodatnih razina
-      - listitem: ✓ 160 novih rundi
-      - listitem: ✓ svi modovi otključani
-      - listitem: ✓ bez reklama
-      - listitem: ✓ bez pretplate
-    - link "Otključaj Njamko Plus":
-      - /url: /njamko?igra=1
   - paragraph: Kupnju uvijek potvrđuje roditelj.
   - heading "Četiri igre u jednom veselom svijetu" [level=2]
   - article:
     - heading "Nahrani životinju" [level=3]
     - paragraph: Odaberi što životinja voli jesti.
-    - paragraph: "Primjer: Zeko → Mrkva"
   - article:
     - heading "Pronađi dom" [level=3]
     - paragraph: Pomogni životinji pronaći gdje živi.
-    - paragraph: "Primjer: Riba → Voda"
   - article:
     - heading "Pogodi zvuk" [level=3]
     - paragraph: Poslušaj zvuk i odaberi pravu životinju.
-    - paragraph: "Primjer: Muuu! → Krava"
   - article:
     - heading "Mama i beba" [level=3]
     - paragraph: Spoji bebu životinje s mamom.
-    - paragraph: "Primjer: Pile → Kokoš"
-  - heading "Kako dijete igra?" [level=2]
-  - list:
-    - listitem:
-      - heading "Odaberi igru" [level=3]
-      - paragraph: Dijete bira jedan od četiri vesela moda.
-    - listitem:
-      - heading "Riješi zadatak" [level=3]
-      - paragraph: Velike slike i jasna pitanja vode kroz rundu.
-    - listitem:
-      - heading "Skupi zvjezdice" [level=3]
-      - paragraph: Svaki točan odgovor donosi zvjezdice i pohvalu.
-  - heading "Zašto roditelji vole Njamko?" [level=2]
-  - paragraph: Njamko nije samo još jedna glasna dječja igrica. Osmišljen je kao mirna, Montessori-inspirirana edukativna igra s velikim slikama, jednostavnim izborima i pozitivnim poticanjem samostalnog razmišljanja.
-  - heading "Što Njamko nema" [level=3]
-  - list "Što Njamko nema":
-    - listitem: ✓ bez reklama u igri
-    - listitem: ✓ bez chata
-    - listitem: ✓ bez dječjih profila
-    - listitem: ✓ bez društvenih mreža
-    - listitem: ✓ bez prijave
-    - listitem: ✓ bez vanjskih poveznica za djecu
-  - paragraph: Roditeljski kutak čuva dodatne razine iza kratke provjere, tako da kupnju uvijek potvrđuje odrasla osoba.
-  - heading "Često postavljana pitanja" [level=2]
-  - article:
-    - button "Za koju dob je Njamko?"
-  - article:
-    - button "Treba li dijete znati čitati?"
-  - article:
-    - button "Ima li reklama?"
-  - article:
-    - button "Je li potrebna prijava?"
-  - article:
-    - button "Što se plaća?"
+  - region "Dodatne informacije":
+    - button "Kako dijete igra?"
+    - button "Često pitanja"
 - contentinfo:
   - img "Njamko"
   - paragraph: Vesela edukativna igra za djecu.
@@ -228,7 +155,8 @@ Call log:
   43  | test.describe("Dnevne Asocijacije /mozgalica", () => {
   44  |   test("landing page loads with hero title", async ({ page }) => {
   45  |     await page.goto("/mozgalica");
-  46  |     await expect(page.getByTestId("mozgalica-page")).toBeVisible();
+> 46  |     await expect(page.getByTestId("mozgalica-page")).toBeVisible();
+      |                                                      ^ Error: expect(locator).toBeVisible() failed
   47  |     await expect(page.getByTestId("hero-title")).toBeVisible();
   48  |     await expect(page.getByTestId("hero-title")).toContainText(
   49  |       "Poveži 16 pojmova u 4 skrivene grupe.",
@@ -237,8 +165,7 @@ Call log:
   52  | 
   53  |   test("landing shows puzzle picker with all themes", async ({ page }) => {
   54  |     await page.goto("/mozgalica");
-> 55  |     await expect(page.getByTestId("puzzle-picker")).toBeVisible();
-      |                                                     ^ Error: expect(locator).toBeVisible() failed
+  55  |     await expect(page.getByTestId("puzzle-picker")).toBeVisible();
   56  |     const puzzleCardIds = await page.locator(".mz-puzzle-card").evaluateAll((cards) =>
   57  |       cards.map((card) => card.getAttribute("data-testid")),
   58  |     );
@@ -330,13 +257,4 @@ Call log:
   144 |     const linkMatches = shareText.match(/\/mozgalica\?od=[^\s]+/g) ?? [];
   145 |     expect(linkMatches).toHaveLength(1);
   146 |   });
-  147 | 
-  148 |   test("incoming challenge link opens accept screen and compares after play", async ({
-  149 |     page,
-  150 |   }) => {
-  151 |     await page.goto(
-  152 |       `/mozgalica?od=Ivan&p=7&t=151&tema=${TEST_PUZZLE_ID}`,
-  153 |     );
-  154 |     await expect(page.getByTestId("challenge-accept")).toBeVisible();
-  155 |     await expect(page.getByText("Ivan te izaziva!")).toBeVisible();
 ```

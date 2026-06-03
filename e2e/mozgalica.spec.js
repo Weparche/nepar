@@ -74,6 +74,7 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
     await expect(page.getByTestId("puzzle-card-muzika-90s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-nba-90s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-hr-nostalgija")).toBeVisible();
+    await expect(page.locator(".mz-puzzle-card")).toHaveCount(15);
   });
 
   test("start game shows 16 cards", async ({ page }) => {

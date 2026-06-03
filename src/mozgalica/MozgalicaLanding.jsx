@@ -1,7 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { MozgalicaLogo } from "./MozgalicaLogo.jsx";
 import HowToPlay from "./HowToPlay.jsx";
-import { DEMO_CHALLENGE, getMockupItems, DEFAULT_PUZZLE_ID } from "./puzzle.js";
+import { DEMO_CHALLENGE, getMockupItems } from "./puzzle.js";
 import PuzzlePicker from "./PuzzlePicker.jsx";
 
 const NAV_LINKS = [
