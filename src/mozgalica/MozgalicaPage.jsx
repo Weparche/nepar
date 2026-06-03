@@ -24,6 +24,8 @@ import {
 import "./mozgalica.css";
 
 const PLAYER_NAME_KEY = "mozgalica-player-name";
+const MOZGALICA_META_DESCRIPTION =
+  "Poveži 16 pojmova u 4 skrivene grupe. Odaberi temu, riješi asocijacije i izazovi prijatelja.";
 
 function readPlayerName() {
   try {
@@ -44,9 +46,12 @@ function writePlayerName(name) {
 export default function MozgalicaPage() {
   usePageMeta({
     title: "Dnevne Asocijacije | Mozgalica",
-    description:
-      "Poveži 16 pojmova u 4 skrivene grupe. Nova mozgalica svaki dan na nepar.hr.",
+    description: MOZGALICA_META_DESCRIPTION,
     path: "/mozgalica",
+    image: "/brand/og-mozgalica.png",
+    imageAlt: "Dnevne Asocijacije - Mozgalica na nepar.hr",
+    imageWidth: 1200,
+    imageHeight: 630,
   });
 
   const [screen, setScreen] = useState("landing");

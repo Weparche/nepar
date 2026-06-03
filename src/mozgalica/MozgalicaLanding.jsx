@@ -118,8 +118,8 @@ function LandingContent({
             Poveži 16 pojmova u 4 skrivene grupe.
           </h1>
           <p className="mz-hero__subtitle">
-            Odaberi temu — gaming, nogomet, muzika, NBA ili HR nostalgija. Kratka
-            igra, puno uspomena iz devedesetih.
+            Odaberi temu — gaming, nogomet, muzika, NBA ili HR filmovi. Kratka
+            igra, puno uspomena iz 2000-ih.
           </p>
           <div className="mz-hero__actions">
             <button

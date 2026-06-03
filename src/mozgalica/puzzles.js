@@ -1,5 +1,125 @@
 export const PUZZLES = [
   {
+    id: "gaming-2k",
+    title: "Gaming 2K",
+    subtitle: "Gaming 2000-ih: PC klasici, PS2 i online era",
+    icon: "\uD83C\uDFAE",
+    groups: [
+      {
+        name: "PC klasici",
+        items: ["Counter-Strike", "Warcraft III", "The Sims", "Diablo II"],
+      },
+      {
+        name: "PlayStation 2",
+        items: ["GTA San Andreas", "God of War", "Gran Turismo 3", "Tekken 5"],
+      },
+      {
+        name: "Nintendo era",
+        items: ["GameCube", "Wii Sports", "Mario Kart DS", "Nintendogs"],
+      },
+      {
+        name: "LAN i internet",
+        items: ["LAN party", "Xfire", "GameSpy", "Steam"],
+      },
+    ],
+  },
+  {
+    id: "nogomet-hr-2000s",
+    title: "Nogomet HR 2000-ih",
+    subtitle: "Vatreni, izbornici, HNL i velika natjecanja",
+    icon: "\u26BD",
+    groups: [
+      {
+        name: "Vatreni 2000-ih",
+        items: ["Srna", "Olic", "Kranjcar", "Modric"],
+      },
+      {
+        name: "Izbornici",
+        items: ["Mirko Jozic", "Otto Baric", "Cico Kranjcar", "Slaven Bilic"],
+      },
+      {
+        name: "HNL klubovi",
+        items: ["Dinamo", "Hajduk", "Rijeka", "Slaven Belupo"],
+      },
+      {
+        name: "Velika natjecanja",
+        items: ["SP 2002", "Euro 2004", "SP 2006", "Euro 2008"],
+      },
+    ],
+  },
+  {
+    id: "muzika-2000s",
+    title: "Muzika 2000-ih",
+    subtitle: "Domaca scena, strani hitovi i digitalni mediji",
+    icon: "\uD83C\uDFB5",
+    groups: [
+      {
+        name: "Domaci pop",
+        items: ["Colonia", "Severina", "Tony Cetinski", "Nina Badric"],
+      },
+      {
+        name: "Rock scena",
+        items: ["Hladno pivo", "Let 3", "Vatra", "Elemental"],
+      },
+      {
+        name: "Strani hitovi",
+        items: ["Beyonce", "Rihanna", "Eminem", "Britney"],
+      },
+      {
+        name: "Digitalna era",
+        items: ["iPod", "MP3", "MySpace", "YouTube"],
+      },
+    ],
+  },
+  {
+    id: "nba-2000s",
+    title: "NBA 2000-ih",
+    subtitle: "Dynastije, superzvijezde i košarkaška pop kultura",
+    icon: "\uD83C\uDFC0",
+    groups: [
+      {
+        name: "Lakers era",
+        items: ["Kobe", "Shaq", "Fisher", "Phil Jackson"],
+      },
+      {
+        name: "Spurs era",
+        items: ["Duncan", "Parker", "Ginobili", "Popovich"],
+      },
+      {
+        name: "Zvijezde lige",
+        items: ["Iverson", "LeBron", "Wade", "Garnett"],
+      },
+      {
+        name: "NBA kultura",
+        items: ["And1", "NBA Live", "Streetball", "Dunk contest"],
+      },
+    ],
+  },
+  {
+    id: "hr-filmovi-2000s",
+    title: "HR filmovi 2000-ih",
+    subtitle: "Domaći filmovi, glumci i festivalska scena",
+    icon: "\uD83C\uDFAC",
+    groups: [
+      {
+        name: "Filmovi",
+        items: ["Fine mrtve", "Metastaze", "Armin", "Bez brkova"],
+      },
+      {
+        name: "Redatelji",
+        items: ["Matanic", "Hribar", "Svilicic", "Bresan"],
+      },
+      {
+        name: "Glumci",
+        items: ["Bitorajac", "Nina Violic", "Leon Lucev", "Kresimir Mikic"],
+      },
+      {
+        name: "Filmska scena",
+        items: ["Pula", "Motovun", "ZagrebDox", "HAVC"],
+      },
+    ],
+  },
+  {
     id: "gaming-90s",
     title: "Gaming 90-ih",
     subtitle: "Konzole, likovi i legendarni naslovi",
@@ -121,7 +241,7 @@ export const PUZZLES = [
   },
 ];
 
-export const DEFAULT_PUZZLE_ID = "gaming-90s";
+export const DEFAULT_PUZZLE_ID = "gaming-2k";
 
 export function getPuzzleById(id) {
   return PUZZLES.find((puzzle) => puzzle.id === id) ?? PUZZLES[0];

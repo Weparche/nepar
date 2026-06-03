@@ -4,4 +4,6 @@
 /brand/*   /brand/:splat   200
 /vortex/*  /vortex/:splat  200
 /zoyya/*   /zoyya/:splat   200
+/mozgalica  /mozgalica.html  200
+/mozgalica/ /mozgalica.html  200
 /*         /index.html     200

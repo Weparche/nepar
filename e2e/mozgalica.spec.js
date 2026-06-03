@@ -31,6 +31,15 @@ async function solveAllGroups(page) {
   }
 }
 
+async function prepareScreenshotPage(page) {
+  await page.route("https://fonts.googleapis.com/**", (route) => route.abort());
+  await page.route("https://fonts.gstatic.com/**", (route) => route.abort());
+  await page.addInitScript(() => {
+    const fixedNow = new Date("2026-01-01T12:00:00Z").getTime();
+    Date.now = () => fixedNow;
+  });
+}
+
 test.describe("Dnevne Asocijacije /mozgalica", () => {
   test("landing page loads with hero title", async ({ page }) => {
     await page.goto("/mozgalica");
@@ -44,6 +53,21 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
   test("landing shows puzzle picker with all themes", async ({ page }) => {
     await page.goto("/mozgalica");
     await expect(page.getByTestId("puzzle-picker")).toBeVisible();
+    const puzzleCardIds = await page.locator(".mz-puzzle-card").evaluateAll((cards) =>
+      cards.map((card) => card.getAttribute("data-testid")),
+    );
+    expect(puzzleCardIds.slice(0, 5)).toEqual([
+      "puzzle-card-gaming-2k",
+      "puzzle-card-nogomet-hr-2000s",
+      "puzzle-card-muzika-2000s",
+      "puzzle-card-nba-2000s",
+      "puzzle-card-hr-filmovi-2000s",
+    ]);
+    await expect(page.getByTestId("puzzle-card-gaming-2k")).toBeVisible();
+    await expect(page.getByTestId("puzzle-card-nogomet-hr-2000s")).toBeVisible();
+    await expect(page.getByTestId("puzzle-card-muzika-2000s")).toBeVisible();
+    await expect(page.getByTestId("puzzle-card-nba-2000s")).toBeVisible();
+    await expect(page.getByTestId("puzzle-card-hr-filmovi-2000s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-gaming-90s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-nogomet-hr-90s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-muzika-90s")).toBeVisible();
@@ -204,6 +228,10 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
 });
 
 test.describe("Dnevne Asocijacije screenshots", () => {
+  test.beforeEach(async ({ page }) => {
+    await prepareScreenshotPage(page);
+  });
+
   test("landing desktop screenshot", async ({ page, isMobile }) => {
     test.skip(isMobile, "Desktop-only screenshot");
     await page.goto("/mozgalica");
