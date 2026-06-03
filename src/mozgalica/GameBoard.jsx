@@ -1,9 +1,12 @@
+import { useEffect, useRef } from "react";
 import GameCard from "./GameCard.jsx";
+import ResultPanel from "./ResultPanel.jsx";
 import SolvedGroup from "./SolvedGroup.jsx";
 import { formatTime } from "./puzzle.js";
 
 export default function GameBoard({
   puzzleTitle,
+  solutionGroups,
   gridItems,
   selected,
   solvedGroups,
@@ -11,17 +14,36 @@ export default function GameBoard({
   elapsedSeconds,
   message,
   wrongItems,
+  completed,
   onSelect,
   onCheck,
   onDeselect,
   onShuffle,
   onBack,
+  onChallenge,
+  onShare,
+  onPlayAgain,
+  onBackToHome,
 }) {
   const canCheck = selected.length === 4;
   const progressPercent = (solvedGroups.length / 4) * 100;
+  const resultRef = useRef(null);
+
+  useEffect(() => {
+    if (!completed || !resultRef.current) return undefined;
+
+    const timeout = setTimeout(() => {
+      resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 450);
+
+    return () => clearTimeout(timeout);
+  }, [completed]);
 
   return (
-    <div className="mz-game" data-testid="game-board">
+    <div
+      className={`mz-game${completed ? " mz-game--completed" : ""}`}
+      data-testid="game-board"
+    >
       <div className="mz-game-top">
         <button
           type="button"
@@ -62,19 +84,17 @@ export default function GameBoard({
           </span>
           <span className="mz-stat-pill mz-stat-pill--accent" data-testid="stat-groups">
             <span className="mz-stat-pill__label">Grupe</span>
-            <strong>
-              {solvedGroups.length}/4
-            </strong>
+            <strong>{solvedGroups.length}/4</strong>
           </span>
         </div>
-        {selected.length > 0 && (
+        {!completed && selected.length > 0 && (
           <p className="mz-game-selection" aria-live="polite">
             Odabrano: <strong>{selected.length}/4</strong>
           </p>
         )}
       </div>
 
-      {solvedGroups.length > 0 && (
+      {!completed && solvedGroups.length > 0 && (
         <div className="mz-solved-groups">
           {solvedGroups.map((group, index) => (
             <SolvedGroup
@@ -87,7 +107,7 @@ export default function GameBoard({
         </div>
       )}
 
-      {message && (
+      {!completed && message && (
         <div
           className={`mz-message mz-message--${message.type}`}
           role="status"
@@ -97,48 +117,91 @@ export default function GameBoard({
         </div>
       )}
 
-      <div className="mz-grid" data-testid="game-grid">
-        {gridItems.map((label) => (
-          <GameCard
-            key={label}
-            label={label}
-            selected={selected.includes(label)}
-            wrong={wrongItems.includes(label)}
-            onClick={() => onSelect(label)}
-            disabled={false}
-          />
-        ))}
-      </div>
+      {!completed && (
+        <>
+          <div className="mz-grid" data-testid="game-grid">
+            {gridItems.map((label) => (
+              <GameCard
+                key={label}
+                label={label}
+                selected={selected.includes(label)}
+                wrong={wrongItems.includes(label)}
+                onClick={() => onSelect(label)}
+                disabled={false}
+              />
+            ))}
+          </div>
 
-      <div className="mz-game-actions">
-        <button
-          type="button"
-          className="mozgalica-btn mozgalica-btn--primary"
-          disabled={!canCheck}
-          onClick={onCheck}
-          data-testid="check-selection"
+          <div className="mz-game-actions">
+            <button
+              type="button"
+              className="mozgalica-btn mozgalica-btn--primary"
+              disabled={!canCheck}
+              onClick={onCheck}
+              data-testid="check-selection"
+            >
+              Provjeri odabir
+            </button>
+            <div className="mz-game-actions__row">
+              <button
+                type="button"
+                className="mozgalica-btn mozgalica-btn--ghost"
+                onClick={onDeselect}
+                data-testid="deselect-all"
+              >
+                Poništi
+              </button>
+              <button
+                type="button"
+                className="mozgalica-btn mozgalica-btn--orange"
+                onClick={onShuffle}
+                data-testid="shuffle-cards"
+              >
+                Promiješaj
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {completed && (
+        <section
+          className="mz-game-complete"
+          aria-labelledby="mz-game-complete-title"
         >
-          Provjeri odabir
-        </button>
-        <div className="mz-game-actions__row">
-          <button
-            type="button"
-            className="mozgalica-btn mozgalica-btn--ghost"
-            onClick={onDeselect}
-            data-testid="deselect-all"
-          >
-            Poništi
-          </button>
-          <button
-            type="button"
-            className="mozgalica-btn mozgalica-btn--orange"
-            onClick={onShuffle}
-            data-testid="shuffle-cards"
-          >
-            Promiješaj
-          </button>
-        </div>
-      </div>
+          <div className="mz-game-solutions" data-testid="game-all-solutions">
+            <h2 id="mz-game-complete-title" className="mz-game-solutions__title">
+              Sva rješenja
+            </h2>
+            <p className="mz-game-solutions__subtitle">
+              Čestitamo — sve 4 grupe su pronađene.
+            </p>
+            <div className="mz-game-solutions__list">
+              {solutionGroups.map((group, index) => (
+                <SolvedGroup
+                  key={group.name}
+                  name={group.name}
+                  items={group.items}
+                  index={index}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div ref={resultRef} className="mz-game-result" id="mz-game-result">
+            <ResultPanel
+              embedded
+              puzzleTitle={puzzleTitle}
+              attempts={attempts}
+              elapsedSeconds={elapsedSeconds}
+              onChallenge={onChallenge}
+              onShare={onShare}
+              onPlayAgain={onPlayAgain}
+              onBackToHome={onBackToHome}
+            />
+          </div>
+        </section>
+      )}
     </div>
   );
 }

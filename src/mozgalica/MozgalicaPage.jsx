@@ -6,7 +6,6 @@ import ChallengeResult from "./ChallengeResult.jsx";
 import GameBoard from "./GameBoard.jsx";
 import MozgalicaLanding from "./MozgalicaLanding.jsx";
 import { MozgalicaLogo } from "./MozgalicaLogo.jsx";
-import ResultPanel from "./ResultPanel.jsx";
 import {
   DEFAULT_PUZZLE_ID,
   DEMO_CHALLENGE,
@@ -111,13 +110,12 @@ export default function MozgalicaPage() {
   }, [screen]);
 
   useEffect(() => {
-    if (screen !== "game" || game.solvedGroups.length !== 4) return undefined;
-
-    if (pendingChallenge) {
-      setChallengeResultVariant("played");
+    if (screen !== "game" || game.solvedGroups.length !== 4 || !pendingChallenge) {
+      return undefined;
     }
-    const nextScreen = pendingChallenge ? "challenge-result" : "result";
-    const timeout = setTimeout(() => setScreen(nextScreen), 400);
+
+    setChallengeResultVariant("played");
+    const timeout = setTimeout(() => setScreen("challenge-result"), 400);
     return () => clearTimeout(timeout);
   }, [screen, game.solvedGroups.length, pendingChallenge]);
 
@@ -466,6 +464,7 @@ export default function MozgalicaPage() {
           </header>
           <GameBoard
             puzzleTitle={activePuzzle.title}
+            solutionGroups={activePuzzle.groups}
             gridItems={game.gridItems}
             selected={game.selected}
             solvedGroups={game.solvedGroups}
@@ -473,26 +472,12 @@ export default function MozgalicaPage() {
             elapsedSeconds={game.elapsedSeconds}
             message={game.message}
             wrongItems={game.wrongItems}
+            completed={game.solvedGroups.length === 4}
             onSelect={handleSelect}
             onCheck={handleCheck}
             onDeselect={handleDeselect}
             onShuffle={handleShuffle}
             onBack={goLanding}
-          />
-        </>
-      )}
-
-      {screen === "result" && (
-        <>
-          <header className="mz-header">
-            <div className="mz-header__inner">
-              <MozgalicaLogo compact />
-            </div>
-          </header>
-          <ResultPanel
-            puzzleTitle={activePuzzle.title}
-            attempts={game.attempts}
-            elapsedSeconds={game.elapsedSeconds}
             onChallenge={showChallengeInvite}
             onShare={handleShare}
             onPlayAgain={() => startGame(game.puzzleId)}
@@ -521,8 +506,12 @@ export default function MozgalicaPage() {
               if (inviteStats?.demo) {
                 goLanding();
               } else {
-                setScreen("result");
-                window.scrollTo(0, 0);
+                setScreen("game");
+                requestAnimationFrame(() => {
+                  document
+                    .getElementById("mz-game-result")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                });
               }
             }}
             onCopied={handleInviteCopied}

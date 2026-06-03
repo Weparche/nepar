@@ -1120,3 +1120,71 @@
 .mz-result__home {
   margin-top: 0.125rem;
 }
+
+.mz-game--completed {
+  padding-bottom: 2.5rem;
+}
+
+.mz-game-complete {
+  margin-top: 0.5rem;
+  scroll-margin-top: 5.5rem;
+}
+
+.mz-game-solutions {
+  margin-bottom: 1.25rem;
+}
+
+.mz-game-solutions__title {
+  margin: 0 0 0.375rem;
+  font-size: 1.375rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--mz-green);
+}
+
+.mz-game-solutions__subtitle {
+  margin: 0 0 1.25rem;
+  text-align: center;
+  color: var(--mz-gray-text);
+  font-size: 0.9375rem;
+}
+
+.mz-game-solutions__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.mz-game-solutions__list .mz-solved-group {
+  padding: 1rem 1.125rem;
+}
+
+.mz-game-solutions__list .mz-solved-group__name {
+  font-size: 0.9375rem;
+}
+
+.mz-game-result {
+  scroll-margin-top: 5.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--mz-gray);
+}
+
+.mz-result--embedded {
+  max-width: none;
+  margin: 0;
+  padding: 0 0 0.5rem;
+}
+
+.mz-result--embedded .mz-result__trophy {
+  font-size: 3rem;
+}
+
+.mz-result--embedded .mz-result__title {
+  font-size: 1.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mz-game-complete {
+    scroll-margin-top: 5.5rem;
+  }
+}

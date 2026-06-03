@@ -119,7 +119,10 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
   test("completing all groups shows result", async ({ page }) => {
     await startGame(page);
     await solveAllGroups(page);
-    await expect(page.getByTestId("result-panel")).toBeVisible({ timeout: 5000 });
+    await expect(page.getByTestId("game-board")).toBeVisible({ timeout: 5000 });
+    await expect(page.getByTestId("game-all-solutions")).toBeVisible();
+    await expect(page.getByTestId("result-panel")).toBeVisible();
+    await expect(page.getByTestId("solved-group")).toHaveCount(4);
     await expect(page.getByText("Bravo!")).toBeVisible();
     await expect(page.getByTestId("result-groups")).toContainText("4/4");
   });

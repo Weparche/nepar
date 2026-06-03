@@ -4,6 +4,7 @@ export default function ResultPanel({
   puzzleTitle,
   attempts,
   elapsedSeconds,
+  embedded = false,
   onChallenge,
   onShare,
   onPlayAgain,
@@ -12,7 +13,10 @@ export default function ResultPanel({
   const time = formatTime(elapsedSeconds);
 
   return (
-    <div className="mz-result" data-testid="result-panel">
+    <div
+      className={`mz-result${embedded ? " mz-result--embedded" : ""}`}
+      data-testid="result-panel"
+    >
       <div className="mz-result__trophy" aria-hidden="true">
         🏆
       </div>
