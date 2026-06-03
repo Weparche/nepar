@@ -1,7 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const DEFAULT_SOCIAL = {
@@ -137,7 +137,13 @@ export default defineConfig(({ mode }) => {
           writeFileSync(
             mozgalicaPath,
             replaceBuiltMeta(indexHtml, MOZGALICA_SOCIAL, siteUrl),
+            "utf8",
           );
+          // Windows + some hosts treat dist/mozgalica/ as a static route and loop redirects.
+          const mozgalicaDir = resolve(outDir, "mozgalica");
+          if (existsSync(mozgalicaDir)) {
+            rmSync(mozgalicaDir, { recursive: true, force: true });
+          }
         },
       },
     ],

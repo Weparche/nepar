@@ -4,6 +4,6 @@
 /brand/*   /brand/:splat   200
 /vortex/*  /vortex/:splat  200
 /zoyya/*   /zoyya/:splat   200
-/mozgalica  /mozgalica.html  200
-/mozgalica/ /mozgalica.html  200
+# /mozgalica is a React Router route — use index.html (see public/deploy/nginx-nepar.conf).
+# Do not rewrite to mozgalica.html: it can loop with extensionless-URL redirects on Cloudflare.
 /*         /index.html     200

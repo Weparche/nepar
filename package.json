@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/verify-dist.js",
     "preview": "vite preview",
     "fetch:njamko-sounds": "node scripts/fetch-njamko-sounds.js",
     "test:e2e": "playwright test",
