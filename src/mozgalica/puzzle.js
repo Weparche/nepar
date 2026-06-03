@@ -1,6 +1,7 @@
 import {
   DEFAULT_PUZZLE_ID,
   PUZZLES,
+  PUZZLES_2020S,
   PUZZLES_2010S,
   PUZZLES_LEGACY,
   getMockupItems,
@@ -10,6 +11,7 @@ import {
 
 export {
   PUZZLES,
+  PUZZLES_2020S,
   PUZZLES_2010S,
   PUZZLES_LEGACY,
   DEFAULT_PUZZLE_ID,

@@ -1,5 +1,130 @@
 export const PUZZLES = [
   {
+    id: "digital-2020s",
+    title: "Digitalne 2020-e",
+    subtitle: "AI, kratki video i alati za rad od kuće",
+    icon: "🤖",
+    era: "2020s",
+    groups: [
+      {
+        name: "Umjetna inteligencija",
+        items: ["ChatGPT", "Prompt", "Odgovor", "Robot"],
+      },
+      {
+        name: "Video trendovi",
+        items: ["TikTok", "Reels", "Kratki video", "Viralno"],
+      },
+      {
+        name: "Rad na daljinu",
+        items: ["Zoom", "Teams", "Kamera", "Sastanak"],
+      },
+      {
+        name: "Digitalni alati",
+        items: ["Aplikacija", "Pretplata", "Cloud", "Automatizacija"],
+      },
+    ],
+  },
+  {
+    id: "croatia-2020s",
+    title: "Hrvatska u 2020-ima",
+    subtitle: "Euro, Schengen, potres i Eurosong",
+    icon: "🇭🇷",
+    era: "2020s",
+    groups: [
+      {
+        name: "Nova valuta",
+        items: ["Kuna", "Euro", "Kovanice", "Tečaj"],
+      },
+      {
+        name: "Slobodno kretanje",
+        items: ["Schengen", "Granica", "Putovnica", "Putovanje"],
+      },
+      {
+        name: "Potres",
+        items: ["Zagreb", "Banovina", "Treslo se", "Obnova"],
+      },
+      {
+        name: "Glazbeni uspjeh",
+        items: ["Baby Lasagna", "Rim Tim Tagi Dim", "Eurosong", "Publika"],
+      },
+    ],
+  },
+  {
+    id: "internet-2020s",
+    title: "Internet kultura 2020-ih",
+    subtitle: "Memeovi, influenceri i viralni sadržaj",
+    icon: "🌐",
+    era: "2020s",
+    groups: [
+      {
+        name: "Meme kultura",
+        items: ["Meme", "Screenshot", "Viralno", "Reakcija"],
+      },
+      {
+        name: "Društvene mreže",
+        items: ["Influencer", "Story", "Reels", "Pratitelji"],
+      },
+      {
+        name: "Novi mediji",
+        items: ["Podcast", "Mikrofon", "Gost", "Epizoda"],
+      },
+      {
+        name: "Viralni sadržaj",
+        items: ["Trend", "Hashtag", "Challenge", "Pregledi"],
+      },
+    ],
+  },
+  {
+    id: "world-2020s",
+    title: "Svijet 2020-ih",
+    subtitle: "Pandemija, rat, inflacija i klima",
+    icon: "🌍",
+    era: "2020s",
+    groups: [
+      {
+        name: "Pandemija",
+        items: ["Maska", "Test", "Izolacija", "Cjepivo"],
+      },
+      {
+        name: "Rat u Ukrajini",
+        items: ["Ukrajina", "Invazija", "Europa", "Rat"],
+      },
+      {
+        name: "Poskupljenja",
+        items: ["Inflacija", "Cijene", "Gorivo", "Računi"],
+      },
+      {
+        name: "Klimatske promjene",
+        items: ["Vrućine", "Požari", "Poplave", "Klima"],
+      },
+    ],
+  },
+  {
+    id: "tech-2020s",
+    title: "Tehnologija 2020-ih",
+    subtitle: "EV, kripto, SpaceX i nosiva tehnologija",
+    icon: "🚀",
+    era: "2020s",
+    groups: [
+      {
+        name: "Elektromobilnost",
+        items: ["Električni auto", "Punjač", "Baterija", "Domet"],
+      },
+      {
+        name: "Kripto svijet",
+        items: ["Bitcoin", "NFT", "Blockchain", "Novčanik"],
+      },
+      {
+        name: "Svemirska utrka",
+        items: ["Raketa", "Satelit", "Mars", "SpaceX"],
+      },
+      {
+        name: "Nosiva tehnologija",
+        items: ["Pametni sat", "Senzor", "Koraci", "Aplikacija"],
+      },
+    ],
+  },
+  {
     id: "digital-2010s",
     title: "Digitalne 2010-e",
     subtitle: "Društvene mreže, streaming i smartphone era",
@@ -366,10 +491,13 @@ export const PUZZLES = [
   },
 ];
 
-export const DEFAULT_PUZZLE_ID = "digital-2010s";
+export const DEFAULT_PUZZLE_ID = "digital-2020s";
 
+export const PUZZLES_2020S = PUZZLES.filter((p) => p.era === "2020s");
 export const PUZZLES_2010S = PUZZLES.filter((p) => p.era === "2010s");
-export const PUZZLES_LEGACY = PUZZLES.filter((p) => p.era !== "2010s");
+export const PUZZLES_LEGACY = PUZZLES.filter(
+  (p) => p.era !== "2010s" && p.era !== "2020s",
+);
 
 export function getPuzzleById(id) {
   return PUZZLES.find((puzzle) => puzzle.id === id) ?? PUZZLES[0];

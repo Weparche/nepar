@@ -57,12 +57,13 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
       cards.map((card) => card.getAttribute("data-testid")),
     );
     expect(puzzleCardIds.slice(0, 5)).toEqual([
-      "puzzle-card-digital-2010s",
-      "puzzle-card-music-2010s",
-      "puzzle-card-film-2010s",
-      "puzzle-card-world-2010s",
-      "puzzle-card-croatia-2010s",
+      "puzzle-card-digital-2020s",
+      "puzzle-card-croatia-2020s",
+      "puzzle-card-internet-2020s",
+      "puzzle-card-world-2020s",
+      "puzzle-card-tech-2020s",
     ]);
+    await expect(page.getByTestId("puzzle-card-digital-2020s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-digital-2010s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-gaming-2k")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-nogomet-hr-2000s")).toBeVisible();
@@ -74,7 +75,7 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
     await expect(page.getByTestId("puzzle-card-muzika-90s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-nba-90s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-hr-nostalgija")).toBeVisible();
-    await expect(page.locator(".mz-puzzle-card")).toHaveCount(15);
+    await expect(page.locator(".mz-puzzle-card")).toHaveCount(20);
   });
 
   test("start game shows 16 cards", async ({ page }) => {

@@ -1,7 +1,13 @@
-import { PUZZLES_2010S, PUZZLES_LEGACY } from "./puzzles.js";
+import { PUZZLES_2010S, PUZZLES_2020S, PUZZLES_LEGACY } from "./puzzles.js";
+
+const ERA_BADGES = {
+  "2020s": "2020-e",
+  "2010s": "2010-e",
+};
 
 function PuzzleCard({ puzzle, selectedId, onSelect, featured = false }) {
   const isSelected = selectedId === puzzle.id;
+  const badge = ERA_BADGES[puzzle.era];
 
   return (
     <button
@@ -13,9 +19,7 @@ function PuzzleCard({ puzzle, selectedId, onSelect, featured = false }) {
       data-testid={`puzzle-card-${puzzle.id}`}
       aria-pressed={isSelected}
     >
-      {puzzle.era === "2010s" && (
-        <span className="mz-puzzle-card__badge">2010-e</span>
-      )}
+      {badge && <span className="mz-puzzle-card__badge">{badge}</span>}
       <div className="mz-puzzle-card__icon" aria-hidden="true">
         {puzzle.icon}
       </div>
@@ -81,12 +85,20 @@ export default function PuzzlePicker({ onSelect, selectedId }) {
       </div>
 
       <PuzzleGroup
-        title="2010-e — novo"
+        title="2020-e — novo"
+        description="AI, TikTok, pandemija, Hrvatska i tehnologija"
+        puzzles={PUZZLES_2020S}
+        selectedId={selectedId}
+        onSelect={onSelect}
+        featuredFirst
+      />
+
+      <PuzzleGroup
+        title="2010-e"
         description="Digitalna era, hitovi, filmovi, svijet i Hrvatska"
         puzzles={PUZZLES_2010S}
         selectedId={selectedId}
         onSelect={onSelect}
-        featuredFirst
       />
 
       <PuzzleGroup
