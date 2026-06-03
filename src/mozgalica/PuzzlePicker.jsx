@@ -1,40 +1,101 @@
-import { PUZZLES } from "./puzzles.js";
+import { PUZZLES_2010S, PUZZLES_LEGACY } from "./puzzles.js";
+
+function PuzzleCard({ puzzle, selectedId, onSelect, featured = false }) {
+  const isSelected = selectedId === puzzle.id;
+
+  return (
+    <button
+      type="button"
+      className={`mz-puzzle-card${featured ? " mz-puzzle-card--featured" : ""}${
+        isSelected ? " mz-puzzle-card--selected" : ""
+      }`}
+      onClick={() => onSelect(puzzle.id)}
+      data-testid={`puzzle-card-${puzzle.id}`}
+      aria-pressed={isSelected}
+    >
+      {puzzle.era === "2010s" && (
+        <span className="mz-puzzle-card__badge">2010-e</span>
+      )}
+      <div className="mz-puzzle-card__icon" aria-hidden="true">
+        {puzzle.icon}
+      </div>
+      <h3 className="mz-puzzle-card__title">{puzzle.title}</h3>
+      <p className="mz-puzzle-card__subtitle">{puzzle.subtitle}</p>
+      <div className="mz-puzzle-card__tags" aria-hidden="true">
+        {puzzle.groups.map((group) => (
+          <span key={group.name} className="mz-puzzle-card__tag">
+            {group.name}
+          </span>
+        ))}
+      </div>
+      <span className="mz-puzzle-card__cta">
+        {isSelected ? "Odabrano" : "Igraj"}
+        <span className="mz-puzzle-card__cta-arrow" aria-hidden="true">
+          →
+        </span>
+      </span>
+    </button>
+  );
+}
+
+function PuzzleGroup({ title, description, puzzles, selectedId, onSelect, featuredFirst }) {
+  return (
+    <div className="mz-puzzle-group">
+      <div className="mz-puzzle-group__head">
+        <h3 className="mz-puzzle-group__title">{title}</h3>
+        <p className="mz-puzzle-group__desc">{description}</p>
+      </div>
+      <div
+        className={`mz-puzzle-grid${
+          featuredFirst ? " mz-puzzle-grid--featured" : ""
+        }`}
+      >
+        {puzzles.map((puzzle, index) => (
+          <PuzzleCard
+            key={puzzle.id}
+            puzzle={puzzle}
+            selectedId={selectedId}
+            onSelect={onSelect}
+            featured={featuredFirst && index === 0}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function PuzzlePicker({ onSelect, selectedId }) {
   return (
-    <section className="mz-section" id="mozgalice" data-testid="puzzle-picker">
-      <h2 className="mz-section__title">Odaberi mozgalicu</h2>
-      <p className="mz-section__subtitle">
-        Svaka tema ima 16 pojmova u 4 skrivene grupe. Izaberi onu koja te najviše
-        vuče — ili probaj sve.
-      </p>
-      <div className="mz-puzzle-grid">
-        {PUZZLES.map((puzzle) => (
-          <button
-            key={puzzle.id}
-            type="button"
-            className={`mz-puzzle-card${
-              selectedId === puzzle.id ? " mz-puzzle-card--selected" : ""
-            }`}
-            onClick={() => onSelect(puzzle.id)}
-            data-testid={`puzzle-card-${puzzle.id}`}
-          >
-            <div className="mz-puzzle-card__icon" aria-hidden="true">
-              {puzzle.icon}
-            </div>
-            <h3 className="mz-puzzle-card__title">{puzzle.title}</h3>
-            <p className="mz-puzzle-card__subtitle">{puzzle.subtitle}</p>
-            <div className="mz-puzzle-card__tags">
-              {puzzle.groups.map((group) => (
-                <span key={group.name} className="mz-puzzle-card__tag">
-                  {group.name}
-                </span>
-              ))}
-            </div>
-            <span className="mz-puzzle-card__cta">Igraj →</span>
-          </button>
-        ))}
+    <section
+      className="mz-section mz-section--puzzles"
+      id="mozgalice"
+      data-testid="puzzle-picker"
+    >
+      <div className="mz-section__intro">
+        <p className="mz-section__eyebrow">Odaberi temu</p>
+        <h2 className="mz-section__title">Mozgalice po desetljećima</h2>
+        <p className="mz-section__subtitle">
+          Svaka tema ima 16 pojmova u 4 skrivene grupe. Klikni karticu i odmah
+          kreće igra — bez registracije.
+        </p>
       </div>
+
+      <PuzzleGroup
+        title="2010-e — novo"
+        description="Digitalna era, hitovi, filmovi, svijet i Hrvatska"
+        puzzles={PUZZLES_2010S}
+        selectedId={selectedId}
+        onSelect={onSelect}
+        featuredFirst
+      />
+
+      <PuzzleGroup
+        title="2000-e i 90-e"
+        description="Gaming, sport, glazba, NBA i nostalgija"
+        puzzles={PUZZLES_LEGACY}
+        selectedId={selectedId}
+        onSelect={onSelect}
+      />
     </section>
   );
 }

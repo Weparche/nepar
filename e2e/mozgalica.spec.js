@@ -57,12 +57,13 @@ test.describe("Dnevne Asocijacije /mozgalica", () => {
       cards.map((card) => card.getAttribute("data-testid")),
     );
     expect(puzzleCardIds.slice(0, 5)).toEqual([
-      "puzzle-card-gaming-2k",
-      "puzzle-card-nogomet-hr-2000s",
-      "puzzle-card-muzika-2000s",
-      "puzzle-card-nba-2000s",
-      "puzzle-card-hr-filmovi-2000s",
+      "puzzle-card-digital-2010s",
+      "puzzle-card-music-2010s",
+      "puzzle-card-film-2010s",
+      "puzzle-card-world-2010s",
+      "puzzle-card-croatia-2010s",
     ]);
+    await expect(page.getByTestId("puzzle-card-digital-2010s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-gaming-2k")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-nogomet-hr-2000s")).toBeVisible();
     await expect(page.getByTestId("puzzle-card-muzika-2000s")).toBeVisible();

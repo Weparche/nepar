@@ -1,5 +1,130 @@
 export const PUZZLES = [
   {
+    id: "digital-2010s",
+    title: "Digitalne 2010-e",
+    subtitle: "Društvene mreže, streaming i smartphone era",
+    icon: "📱",
+    era: "2010s",
+    groups: [
+      {
+        name: "Društvene mreže",
+        items: ["Instagram", "Story", "Filter", "Selfie"],
+      },
+      {
+        name: "Streaming",
+        items: ["Netflix", "Binge", "Serija", "Pretplata"],
+      },
+      {
+        name: "Dostava i prijevoz",
+        items: ["Uber", "Glovo", "Wolt", "Aplikacija"],
+      },
+      {
+        name: "Smartphone",
+        items: ["iPhone", "Android", "Notifikacija", "Touchscreen"],
+      },
+    ],
+  },
+  {
+    id: "music-2010s",
+    title: "Glazba 2010-ih",
+    subtitle: "Hitovi, playliste i viralni plesovi",
+    icon: "🎧",
+    era: "2010s",
+    groups: [
+      {
+        name: "Ljetni hit",
+        items: ["Despacito", "Luis Fonsi", "YouTube", "Reggaeton"],
+      },
+      {
+        name: "Pop diva",
+        items: ["Adele", "Hello", "Balada", "Glas"],
+      },
+      {
+        name: "Slušanje glazbe",
+        items: ["Spotify", "Playlist", "Shuffle", "Premium"],
+      },
+      {
+        name: "Internet hit",
+        items: ["Gangnam Style", "Psy", "Ples", "Viralno"],
+      },
+    ],
+  },
+  {
+    id: "film-2010s",
+    title: "Filmovi i serije 2010-ih",
+    subtitle: "Marvel, HBO i animirani hitovi",
+    icon: "🎬",
+    era: "2010s",
+    groups: [
+      {
+        name: "Frozen",
+        items: ["Zima", "Elsa", "Anna", "Let It Go"],
+      },
+      {
+        name: "Game of Thrones",
+        items: ["Zmajevi", "Prijestolje", "Westeros", "Jon Snow"],
+      },
+      {
+        name: "Marvel",
+        items: ["Iron Man", "Thanos", "Infinity", "Osvetnici"],
+      },
+      {
+        name: "Joker",
+        items: ["Klaun", "Gotham", "Oscar", "Joaquin"],
+      },
+    ],
+  },
+  {
+    id: "world-2010s",
+    title: "Svijet 2010-ih",
+    subtitle: "Sport, politika i klimatski pokreti",
+    icon: "🌍",
+    era: "2010s",
+    groups: [
+      {
+        name: "Svjetsko prvenstvo",
+        items: ["Brazil", "Nogomet", "2014", "Njemačka"],
+      },
+      {
+        name: "Olimpijske igre",
+        items: ["London", "Rio", "Soči", "Olimpijada"],
+      },
+      {
+        name: "Politika",
+        items: ["Brexit", "Referendum", "Britanija", "EU"],
+      },
+      {
+        name: "Klimatske promjene",
+        items: ["Greta", "Klima", "Prosvjed", "Budućnost"],
+      },
+    ],
+  },
+  {
+    id: "croatia-2010s",
+    title: "Hrvatska 2010-ih",
+    subtitle: "EU, Vatreni i domaća pop scena",
+    icon: "🇭🇷",
+    era: "2010s",
+    groups: [
+      {
+        name: "EU",
+        items: ["Europska unija", "2013", "Zvjezdice", "Ulazak"],
+      },
+      {
+        name: "Svjetsko prvenstvo",
+        items: ["Rusija", "2018", "Vatreni", "Srebro"],
+      },
+      {
+        name: "Hrvatska glazbena scena",
+        items: ["Ines", "Visine", "Eurosong", "Roko"],
+      },
+      {
+        name: "Online život",
+        items: ["Pametni telefon", "Facebook", "Instagram", "Komentari"],
+      },
+    ],
+  },
+  {
     id: "gaming-2k",
     title: "Gaming 2K",
     subtitle: "Gaming 2000-ih: PC klasici, PS2 i online era",
@@ -241,7 +366,10 @@ export const PUZZLES = [
   },
 ];
 
-export const DEFAULT_PUZZLE_ID = "gaming-2k";
+export const DEFAULT_PUZZLE_ID = "digital-2010s";
+
+export const PUZZLES_2010S = PUZZLES.filter((p) => p.era === "2010s");
+export const PUZZLES_LEGACY = PUZZLES.filter((p) => p.era !== "2010s");
 
 export function getPuzzleById(id) {
   return PUZZLES.find((puzzle) => puzzle.id === id) ?? PUZZLES[0];

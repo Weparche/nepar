@@ -17,7 +17,12 @@ export default function GameCard({ label, selected, wrong, onClick, disabled }) 
       aria-label={label}
       data-testid={`game-card-${label}`}
     >
-      {label}
+      <span className="mz-card__label">{label}</span>
+      {selected && (
+        <span className="mz-card__check" aria-hidden="true">
+          ✓
+        </span>
+      )}
     </button>
   );
 }

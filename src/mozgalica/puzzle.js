@@ -1,12 +1,22 @@
 import {
   DEFAULT_PUZZLE_ID,
   PUZZLES,
+  PUZZLES_2010S,
+  PUZZLES_LEGACY,
   getMockupItems,
   getPuzzleById,
   getPuzzleItems,
 } from "./puzzles.js";
 
-export { PUZZLES, DEFAULT_PUZZLE_ID, getPuzzleById, getPuzzleItems, getMockupItems };
+export {
+  PUZZLES,
+  PUZZLES_2010S,
+  PUZZLES_LEGACY,
+  DEFAULT_PUZZLE_ID,
+  getPuzzleById,
+  getPuzzleItems,
+  getMockupItems,
+};
 
 const defaultPuzzle = getPuzzleById(DEFAULT_PUZZLE_ID);
 

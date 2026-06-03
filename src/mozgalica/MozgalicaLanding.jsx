@@ -88,8 +88,7 @@ function LandingHeader({ onScrollToPuzzles, menuOpen, setMenuOpen }) {
         ))}
         <button
           type="button"
-          className="mozgalica-btn mozgalica-btn--primary"
-          style={{ marginTop: "0.5rem" }}
+          className="mozgalica-btn mozgalica-btn--primary mz-mobile-nav__cta"
           onClick={() => {
             setMenuOpen(false);
             onScrollToPuzzles();
@@ -118,8 +117,8 @@ function LandingContent({
             Poveži 16 pojmova u 4 skrivene grupe.
           </h1>
           <p className="mz-hero__subtitle">
-            Odaberi temu — gaming, nogomet, muzika, NBA ili HR filmovi. Kratka
-            igra, puno uspomena iz 2000-ih.
+            Poveži pojmove u skrivene grupe — od Instagrama i Marvela do
+            Vatrenih i EU. Nove teme iz 2010-ih i klasici iz 2000-ih i 90-ih.
           </p>
           <div className="mz-hero__actions">
             <button
@@ -146,9 +145,13 @@ function LandingContent({
         </div>
 
         <div className="mz-mockup" aria-hidden="true" data-testid="hero-mockup">
+          <p className="mz-mockup__label">Primjer kartica</p>
           <div className="mz-mockup__grid">
-            {mockupItems.map((item) => (
-              <div key={item} className="mz-mockup__cell">
+            {mockupItems.map((item, index) => (
+              <div
+                key={item}
+                className={`mz-mockup__cell mz-mockup__cell--${index % 4}`}
+              >
                 {item}
               </div>
             ))}
