@@ -1116,3 +1116,7 @@
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
+.mz-result__home {
+  margin-top: 0.125rem;
+}

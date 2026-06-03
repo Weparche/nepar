@@ -7,6 +7,7 @@ export default function ResultPanel({
   onChallenge,
   onShare,
   onPlayAgain,
+  onBackToHome,
 }) {
   const time = formatTime(elapsedSeconds);
 
@@ -71,6 +72,14 @@ export default function ResultPanel({
           data-testid="play-again"
         >
           Igraj ponovno
+        </button>
+        <button
+          type="button"
+          className="mozgalica-btn mozgalica-btn--ghost mz-result__home"
+          onClick={onBackToHome}
+          data-testid="result-back-home"
+        >
+          Natrag na početnu
         </button>
       </div>
 

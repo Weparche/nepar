@@ -496,6 +496,7 @@ export default function MozgalicaPage() {
             onChallenge={showChallengeInvite}
             onShare={handleShare}
             onPlayAgain={() => startGame(game.puzzleId)}
+            onBackToHome={goLanding}
           />
         </>
       )}
