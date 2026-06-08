@@ -6,7 +6,7 @@ import PuzzlePicker from "./PuzzlePicker.jsx";
 
 const NAV_LINKS = [
   ["Kako se igra", "kako-se-igra"],
-  ["Izazovi prijatelja", "izazovi"],
+  ["Izazovi prijateljicu", "izazovi"],
   ["Zašto igrati", "zasto"],
   ["Pomoć", "pomoc"],
 ];
@@ -20,10 +20,10 @@ function scrollToSection(id) {
 }
 
 const FEATURES = [
-  { icon: "🔓", title: "Bez registracije", text: "Odmah igraj, bez računa." },
-  { icon: "📅", title: "Nova igra svaki dan", text: "Svježa mozgalica svaki dan." },
-  { icon: "⏱️", title: "Samo nekoliko minuta", text: "Kratka pauza za mozak." },
-  { icon: "👨‍👩‍👧", title: "Za sve uzraste", text: "Zabavno za cijelu obitelj." },
+  { icon: "☕", title: "Kratka pauza", text: "Riješi je uz kavu, bez žurbe." },
+  { icon: "💄", title: "Teme iz života", text: "Šminka, njega, dom i wellness." },
+  { icon: "⏱️", title: "Samo nekoliko minuta", text: "Dovoljno kratko za svaki dan." },
+  { icon: "👭", title: "Za podijeliti", text: "Pošalji izazov prijateljici." },
 ];
 
 function LandingHeader({ onScrollToPuzzles, menuOpen, setMenuOpen }) {
@@ -114,11 +114,11 @@ function LandingContent({
       <section className="mz-hero" data-testid="landing-hero">
         <div>
           <h1 className="mz-hero__title" data-testid="hero-title">
-            Poveži 16 pojmova u 4 skrivene grupe.
+            Mozgalica za žene 40+.
           </h1>
           <p className="mz-hero__subtitle">
-            Poveži pojmove u skrivene grupe — od ChatGPT-a i TikToka do
-            Marvela i Fiće. Teme iz 2020-ih, 2010-ih i klasici iz 2000-ih i 90-ih.
+            Poveži 16 pojmova u 4 skrivene grupe, od ruža, SPF-a i retinola do
+            čišćenja doma, wellnessa i malih rituala koji čuvaju mir u danu.
           </p>
           <div className="mz-hero__actions">
             <button
@@ -164,10 +164,10 @@ function LandingContent({
       <HowToPlay />
 
       <section className="mz-section" id="izazovi" data-testid="challenge-section">
-        <h2 className="mz-section__title">Izazovi prijatelja</h2>
+        <h2 className="mz-section__title">Izazovi prijateljicu</h2>
         <p className="mz-section__subtitle">
-          Pošalji link prijatelju — on igra istu današnju mozgalicu, a pobjednik
-          se otkriva tek nakon usporedbe rezultata.
+          Pošalji link, ona igra istu mozgalicu, a pobjednica se vidi nakon
+          usporedbe rezultata.
         </p>
         <div className="mz-challenge-preview">
           <div className="mz-challenge-preview__steps">
@@ -177,11 +177,11 @@ function LandingContent({
             </div>
             <div className="mz-challenge-preview__step">
               <span className="mz-challenge-preview__step-num">2</span>
-              Prijatelj otvara link i igra
+              Prijateljica otvara link i igra
             </div>
             <div className="mz-challenge-preview__step">
               <span className="mz-challenge-preview__step-num">3</span>
-              Usporedba — tko je brži i precizniji?
+              Usporedba, tko je brži i precizniji?
             </div>
           </div>
           <button
@@ -196,9 +196,9 @@ function LandingContent({
       </section>
 
       <section className="mz-section" id="zasto" data-testid="features-section">
-        <h2 className="mz-section__title">Jedna igra dnevno</h2>
+        <h2 className="mz-section__title">Jedna mala igra za svaki dan</h2>
         <p className="mz-section__subtitle">
-          Dovoljno da te natjera na razmišljanje, premalo da ti oduzme cijeli dan.
+          Dovoljno da pokrene mozak, premalo da pojede cijelo popodne.
         </p>
         <div className="mz-features">
           {FEATURES.map((feature) => (

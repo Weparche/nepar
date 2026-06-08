@@ -1,5 +1,80 @@
 export const PUZZLES = [
   {
+    id: "zene-40-beauty",
+    title: "Beauty 40+",
+    subtitle: "Sminka, njega koze i mali rituali koji rade razliku",
+    icon: "\uD83D\uDC84",
+    era: "women40",
+    groups: [
+      {
+        name: "Make-up baza",
+        items: ["Primer", "Puder", "Korektor", "Fiksator"],
+      },
+      {
+        name: "Oci i obrve",
+        items: ["Maskara", "Sjenilo", "Olovka", "Gel za obrve"],
+      },
+      {
+        name: "Njega koze",
+        items: ["Retinol", "Hijaluron", "SPF", "Serum"],
+      },
+      {
+        name: "Torba za izlazak",
+        items: ["Ruž", "Parfem", "Maramice", "Puder u kamenu"],
+      },
+    ],
+  },
+  {
+    id: "zene-40-dom",
+    title: "Dom i čišćenje 40+",
+    subtitle: "Kuhinja, kupaonica, rublje i trikovi za uredan dom",
+    icon: "\uD83E\uDDFC",
+    era: "women40",
+    groups: [
+      {
+        name: "Kuhinja",
+        items: ["Odmašćivač", "Sudoper", "Spužvica", "Perilica posuda"],
+      },
+      {
+        name: "Kupaonica",
+        items: ["Kamenac", "Tus kabina", "Ogledalo", "Fuge"],
+      },
+      {
+        name: "Rublje",
+        items: ["Omekšivač", "Mrlje", "Sušilica", "Pegla"],
+      },
+      {
+        name: "Organizacija",
+        items: ["Kutije", "Police", "Etikete", "Ladice"],
+      },
+    ],
+  },
+  {
+    id: "zene-40-wellness",
+    title: "Wellness 40+",
+    subtitle: "Zdravlje, odmor, prijateljice i vrijeme za sebe",
+    icon: "\uD83C\uDF3F",
+    era: "women40",
+    groups: [
+      {
+        name: "Malo mira",
+        items: ["Kava", "Knjiga", "Svijeca", "Kupka"],
+      },
+      {
+        name: "Kretanje",
+        items: ["Setnja", "Pilates", "Joga", "Stepenice"],
+      },
+      {
+        name: "Zdravlje",
+        items: ["Magnezij", "Kolagen", "Pregled", "San"],
+      },
+      {
+        name: "Druzenje",
+        items: ["Prijateljice", "Brunch", "Kino", "Vino"],
+      },
+    ],
+  },
+  {
     id: "digital-2020s",
     title: "Digitalne 2020-e",
     subtitle: "AI, kratki video i alati za rad od kuće",
@@ -491,12 +566,13 @@ export const PUZZLES = [
   },
 ];
 
-export const DEFAULT_PUZZLE_ID = "digital-2020s";
+export const DEFAULT_PUZZLE_ID = "zene-40-beauty";
 
 export const PUZZLES_2020S = PUZZLES.filter((p) => p.era === "2020s");
 export const PUZZLES_2010S = PUZZLES.filter((p) => p.era === "2010s");
+export const PUZZLES_WOMEN_40 = PUZZLES.filter((p) => p.era === "women40");
 export const PUZZLES_LEGACY = PUZZLES.filter(
-  (p) => p.era !== "2010s" && p.era !== "2020s",
+  (p) => p.era !== "2010s" && p.era !== "2020s" && p.era !== "women40",
 );
 
 export function getPuzzleById(id) {

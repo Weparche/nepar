@@ -1,8 +1,14 @@
-import { PUZZLES_2010S, PUZZLES_2020S, PUZZLES_LEGACY } from "./puzzles.js";
+import {
+  PUZZLES_2010S,
+  PUZZLES_2020S,
+  PUZZLES_WOMEN_40,
+  PUZZLES_LEGACY,
+} from "./puzzles.js";
 
 const ERA_BADGES = {
   "2020s": "2020-e",
   "2010s": "2010-e",
+  women40: "40+",
 };
 
 function PuzzleCard({ puzzle, selectedId, onSelect, featured = false }) {
@@ -77,20 +83,28 @@ export default function PuzzlePicker({ onSelect, selectedId }) {
     >
       <div className="mz-section__intro">
         <p className="mz-section__eyebrow">Odaberi temu</p>
-        <h2 className="mz-section__title">Mozgalice po desetljećima</h2>
+        <h2 className="mz-section__title">Mozgalice po temama</h2>
         <p className="mz-section__subtitle">
           Svaka tema ima 16 pojmova u 4 skrivene grupe. Klikni karticu i odmah
-          kreće igra — bez registracije.
+          kreće igra, bez registracije.
         </p>
       </div>
 
       <PuzzleGroup
-        title="2020-e — novo"
+        title="Za žene 40+"
+        description="Šminka, njega, dom, čišćenje, wellness i male svakodnevne pobjede"
+        puzzles={PUZZLES_WOMEN_40}
+        selectedId={selectedId}
+        onSelect={onSelect}
+        featuredFirst
+      />
+
+      <PuzzleGroup
+        title="2020-e"
         description="AI, TikTok, pandemija, Hrvatska i tehnologija"
         puzzles={PUZZLES_2020S}
         selectedId={selectedId}
         onSelect={onSelect}
-        featuredFirst
       />
 
       <PuzzleGroup
