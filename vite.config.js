@@ -29,7 +29,7 @@ const MOZGALICA_SOCIAL = {
 };
 
 /** Static HTML sites in public/ (served at /vortex/, /zoyya/, etc.) */
-const PUBLIC_STATIC_SITES = ["vortex", "zoyya"];
+const PUBLIC_STATIC_SITES = ["vortex", "zoyya", "lime"];
 
 function escapeAttr(value) {
   return String(value)

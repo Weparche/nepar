@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand — aligned with Lime logo sage-green */
+  --color-lime-50: #f4faf6;
+  --color-lime-100: #e3f3e9;
+  --color-lime-200: #c5e6d2;
+  --color-lime-300: #9ed4b3;
+  --color-lime-400: #6fb98a;
+  --color-lime-500: #4fa872;
+  --color-lime-600: #3d8d5e;
+  --color-lime-700: #33704d;
+  --color-lime-800: #2b5a40;
+  --color-lime-900: #254a36;
+
+  --color-ink: #0f172a;
+  --color-ink-muted: #475569;
+  --color-ink-subtle: #94a3b8;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f8fafc;
+  --color-surface-elevated: #ffffff;
+  --color-border: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
+
+  --font-sans: "Plus Jakarta Sans", "DM Sans", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 4px 16px rgb(15 23 42 / 0.06);
+  --shadow-card-hover: 0 4px 8px rgb(15 23 42 / 0.06), 0 12px 32px rgb(15 23 42 / 0.1);
+  --shadow-search: 0 8px 40px rgb(15 23 42 / 0.08), 0 2px 8px rgb(79 168 114 / 0.08);
+
+  --radius-card: 1rem;
+  --radius-card-lg: 1.25rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --z-sticky: 20;
+  --z-header: 30;
+  --z-dropdown: 30;
+  --z-overlay: 40;
+  --z-modal: 50;
+
+  --search-panel-height: calc(100vh - 12rem);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-surface text-ink antialiased font-sans;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  ::selection {
+    @apply bg-lime-200 text-lime-900;
+  }
+}
+
+@layer components {
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .search-results-layout {
+    overflow: visible;
+  }
+
+  .section-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-widest text-lime-600;
+  }
+
+  .heading-display {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight text-ink;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-2xl border border-border-subtle;
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-elevated-interactive {
+    @apply bg-white rounded-2xl border border-border-subtle transition-[box-shadow,border-color,transform] duration-300;
+    box-shadow: var(--shadow-card);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card-elevated-interactive:hover {
+      box-shadow: var(--shadow-card-hover);
+      @apply border-lime-200/80 -translate-y-0.5;
+    }
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-border rounded-xl text-sm text-ink
+      placeholder:text-ink-subtle
+      focus:outline-none focus:ring-2 focus:ring-lime-500/25 focus:border-lime-400
+      disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .hero-grid {
+    background-image:
+      linear-gradient(to right, rgb(226 232 240 / 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(226 232 240 / 0.4) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, black 20%, transparent 75%);
+  }
+
+  .salon-cover-pattern {
+    background-size: 24px 24px;
+  }
+
+  .salons-leaflet-map {
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    border-radius: inherit;
+    font-family: var(--font-sans);
+  }
+
+  .salon-map-marker {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .salon-map-marker__stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .salon-map-marker__score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    padding: 2px 7px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-top: 3px;
+    font-family: var(--font-sans);
+    box-shadow: 0 2px 6px rgb(61 141 94 / 0.35);
+  }
+
+  .salon-map-marker__pin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .salon-map-marker__pin-head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgb(15 23 42 / 0.2);
+  }
+
+  .salon-map-marker__pin-tail {
+    width: 4px;
+    height: 6px;
+    border-radius: 0 0 2px 2px;
+    margin-top: -1px;
+  }
+
+  .map-zoom-hint {
+    position: absolute !important;
+    left: 50% !important;
+    top: 12px !important;
+    transform: translateX(-50%);
+    margin: 0 !important;
+    pointer-events: none;
+    z-index: 800;
+    width: max-content;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .map-zoom-hint__pill {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    background: rgb(255 255 255 / 0.95);
+    box-shadow:
+      0 0 0 1px var(--color-border-subtle),
+      0 2px 8px rgb(15 23 42 / 0.1);
+    font-family: var(--font-sans);
+    white-space: nowrap;
+  }
+
+  .salon-map-popup__thumb {
+    display: block;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    box-shadow: var(--shadow-card-hover);
+    padding: 0;
+  }
+
+  .leaflet-popup-content {
+    margin: 12px 14px;
+    line-height: 1.4;
+  }
+
+  .salon-leaflet-popup .leaflet-popup-close-button {
+    top: 8px;
+    right: 8px;
+    color: var(--color-ink-subtle);
+  }
+
+  .leaflet-control-attribution {
+    font-size: 10px;
+    background: rgb(255 255 255 / 0.85) !important;
+  }
+
+  .search-filters-panel {
+    border-radius: 1rem;
+  }
+
+  .search-filters-categories {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-lime-300) transparent;
+  }
+
+  .search-filter-category {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.625rem;
+    margin-bottom: 0.125rem;
+    border-radius: 0.75rem;
+    color: var(--color-ink-muted);
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  .search-filter-category:hover {
+    background-color: var(--color-lime-50);
+    color: var(--color-ink);
+  }
+
+  .search-filter-category.is-active {
+    background-color: var(--color-lime-100);
+    color: var(--color-lime-800);
+    box-shadow: inset 0 0 0 1px var(--color-lime-200);
+  }
+
+  .search-filter-category__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .search-filter-category__icon--all {
+    background: var(--color-surface-muted);
+    color: var(--color-ink-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .salon-map-tooltip {
+    font-family: var(--font-sans);
+    border: none !important;
+    box-shadow: var(--shadow-card-hover);
+    padding: 0.35rem 0.6rem !important;
+    border-radius: 0.5rem !important;
+  }
+}
