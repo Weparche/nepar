@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom'
 
+const logoUrl = `${import.meta.env.BASE_URL}logo.png`
+
 export function Footer() {
   return (
     <footer className="bg-ink text-slate-300 mt-auto">
       <div className="page-container py-14 sm:py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8">
           <div className="md:col-span-5">
-            <img src="/logo.png" alt="Lime Booking" className="h-8 mb-5 brightness-0 invert opacity-95" width={120} height={32} />
+            <img src={logoUrl} alt="Lime Booking" className="h-8 mb-5 brightness-0 invert opacity-95" width={120} height={32} />
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
               Hrvatski marketplace za online rezervacije u salonima, barbershopovima i wellness centrima.
             </p>

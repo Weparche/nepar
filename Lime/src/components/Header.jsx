@@ -9,6 +9,8 @@ const nav = [
   { label: 'Za salone', to: '/za-salone' },
 ]
 
+const logoUrl = `${import.meta.env.BASE_URL}logo.png`
+
 export function Header({ transparent = false }) {
   const location = useLocation()
   const isHome = location.pathname === '/'
@@ -35,7 +37,7 @@ export function Header({ transparent = false }) {
             to="/"
             className="flex items-center gap-2.5 shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500"
           >
-            <img src="/logo.png" alt="Lime Booking" className="h-7 sm:h-8 w-auto" width={120} height={32} />
+            <img src={logoUrl} alt="Lime Booking" className="h-7 sm:h-8 w-auto" width={120} height={32} />
           </Link>
 
           <nav className="hidden md:flex items-center gap-0.5" aria-label="Glavna navigacija">
