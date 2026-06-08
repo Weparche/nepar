@@ -42,21 +42,20 @@ function analyticsDayKey(date, path) {
   return `analytics:day:${date}:${encodeURIComponent(path)}`;
 }
 
+function analyticsVisitorKey(visitorId) {
+  return `analytics:visitor:${encodeURIComponent(visitorId)}`;
+}
+
+function analyticsDayVisitorKey(date, visitorId) {
+  return `analytics:dayvisitor:${date}:${encodeURIComponent(visitorId)}`;
+}
+
 function getClientIp(request) {
   return (
     request.headers.get("CF-Connecting-IP") ||
     request.headers.get("X-Forwarded-For")?.split(",")[0]?.trim() ||
     ""
   );
-}
-
-function isOwnerIp(request, env) {
-  const clientIp = getClientIp(request);
-  const ownerIps = String(env.OWNER_IPS || "")
-    .split(",")
-    .map((ip) => ip.trim())
-    .filter(Boolean);
-  return Boolean(clientIp && ownerIps.includes(clientIp));
 }
 
 async function addToIndex(kv, key, value) {
@@ -115,6 +114,33 @@ async function incrementStoredJson(kv, key, update) {
   return next;
 }
 
+function normalizeDevice(value) {
+  return ["desktop", "mobile", "tablet"].includes(value) ? value : "unknown";
+}
+
+function sourceFromReferrer(referrer) {
+  if (!referrer) return "Direct";
+  try {
+    const host = new URL(referrer).hostname.replace(/^www\./, "").toLowerCase();
+    if (host.includes("google.")) return "Google";
+    if (host.includes("facebook.") || host.includes("fb.")) return "Facebook";
+    if (host.includes("instagram.")) return "Instagram";
+    if (host.includes("linkedin.")) return "LinkedIn";
+    if (host.includes("nepar.hr")) return "Nepar";
+    return host;
+  } catch {
+    return "Other";
+  }
+}
+
+async function appendRecentEvent(kv, event) {
+  const key = "analytics:recent";
+  const current = await kv.get(key, "json");
+  const next = Array.isArray(current) ? current : [];
+  next.unshift(event);
+  await kv.put(key, JSON.stringify(next.slice(0, 50)));
+}
+
 async function handlePageview(request, env, origin) {
   if (!env.ANALYTICS) {
     return json({ error: "Analytics storage is not configured" }, 500, origin);
@@ -138,9 +164,12 @@ async function handlePageview(request, env, origin) {
   const dayKey = analyticsDayKey(date, path);
   const referrer = typeof body.referrer === "string" ? body.referrer.slice(0, 240) : "";
   const title = typeof body.title === "string" ? body.title.slice(0, 160) : "";
-  const isOwner = body.ownerDevice === true || isOwnerIp(request, env);
+  const isOwner = body.ownerDevice === true;
   const ownerIncrement = isOwner ? 1 : 0;
   const visitorIncrement = isOwner ? 0 : 1;
+  const visitorId = typeof body.visitorId === "string" ? body.visitorId.slice(0, 80) : "";
+  const device = normalizeDevice(body.device);
+  const source = sourceFromReferrer(referrer);
 
   const page = await incrementStoredJson(env.ANALYTICS, pageKey, (current) => ({
     path,
@@ -163,6 +192,37 @@ async function handlePageview(request, env, origin) {
     ownerTotal: (current?.ownerTotal || 0) + ownerIncrement,
     visitorTotal: (current?.visitorTotal || current?.otherTotal || 0) + visitorIncrement,
   }));
+  await incrementStoredJson(env.ANALYTICS, "analytics:meta", (current) => ({
+    total: (current?.total || 0) + 1,
+    sources: {
+      ...(current?.sources || {}),
+      [source]: ((current?.sources || {})[source] || 0) + 1,
+    },
+    devices: {
+      ...(current?.devices || {}),
+      [device]: ((current?.devices || {})[device] || 0) + 1,
+    },
+  }));
+  if (visitorId) {
+    await env.ANALYTICS.put(analyticsVisitorKey(visitorId), JSON.stringify({
+      visitorId,
+      firstSeen: now,
+      lastSeen: now,
+    }));
+    await env.ANALYTICS.put(analyticsDayVisitorKey(date, visitorId), JSON.stringify({
+      visitorId,
+      date,
+    }));
+  }
+  await appendRecentEvent(env.ANALYTICS, {
+    at: now,
+    path,
+    title: title || path,
+    referrer,
+    source,
+    device,
+    owner: isOwner,
+  });
   await addToIndex(env.ANALYTICS, "analytics:index:pages", path);
   await addToIndex(env.ANALYTICS, "analytics:index:days", `${date}|${path}`);
 
@@ -189,6 +249,38 @@ async function listJson(kv, prefix) {
     cursor = listed.list_complete ? undefined : listed.cursor;
   } while (cursor);
   return items;
+}
+
+async function listKeys(kv, prefix) {
+  const keys = [];
+  let cursor;
+  do {
+    const listed = await kv.list({ prefix, cursor });
+    keys.push(...listed.keys.map((entry) => entry.name));
+    cursor = listed.list_complete ? undefined : listed.cursor;
+  } while (cursor);
+  return keys;
+}
+
+async function handleAnalyticsReset(request, env, origin) {
+  if (!(await requireAdmin(request, env))) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: {
+        ...corsHeaders(origin),
+        "WWW-Authenticate": 'Basic realm="Nepar admin"',
+      },
+    });
+  }
+
+  if (!env.ANALYTICS) {
+    return json({ error: "Analytics storage is not configured" }, 500, origin);
+  }
+
+  const keys = await listKeys(env.ANALYTICS, "analytics:");
+  await Promise.all(keys.map((key) => env.ANALYTICS.delete(key)));
+
+  return json({ ok: true, deleted: keys.length }, 200, origin);
 }
 
 async function handleAnalyticsSummary(request, env, origin) {
@@ -221,6 +313,10 @@ async function handleAnalyticsSummary(request, env, origin) {
 
   const listedPages = await listJson(env.ANALYTICS, "analytics:page:");
   const listedDaily = await listJson(env.ANALYTICS, "analytics:day:");
+  const visitors = await listJson(env.ANALYTICS, "analytics:visitor:");
+  const dayVisitors = await listJson(env.ANALYTICS, "analytics:dayvisitor:");
+  const meta = await env.ANALYTICS.get("analytics:meta", "json") || {};
+  const recent = await env.ANALYTICS.get("analytics:recent", "json") || [];
   const pageMap = new Map();
   const dayMap = new Map();
 
@@ -235,6 +331,33 @@ async function handleAnalyticsSummary(request, env, origin) {
   const pages = [...pageMap.values()].sort((a, b) => (b.total || 0) - (a.total || 0));
   const daily = [...dayMap.values()]
     .sort((a, b) => `${b.date}:${b.path}`.localeCompare(`${a.date}:${a.path}`));
+  const trendMap = new Map();
+  const uniqueByDay = new Map();
+
+  for (const row of daily) {
+    const current = trendMap.get(row.date) || { date: row.date, total: 0, ownerTotal: 0, visitorTotal: 0 };
+    current.total += row.total || 0;
+    current.ownerTotal += row.ownerTotal || 0;
+    current.visitorTotal += row.visitorTotal ?? Math.max(0, (row.total || 0) - (row.ownerTotal || 0));
+    trendMap.set(row.date, current);
+  }
+
+  for (const row of dayVisitors) {
+    if (!row?.date || !row?.visitorId) continue;
+    const set = uniqueByDay.get(row.date) || new Set();
+    set.add(row.visitorId);
+    uniqueByDay.set(row.date, set);
+  }
+
+  const trend = [...trendMap.values()]
+    .map((row) => ({ ...row, uniqueVisitors: uniqueByDay.get(row.date)?.size || 0 }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const sources = Object.entries(meta.sources || {})
+    .map(([name, total]) => ({ name, total }))
+    .sort((a, b) => b.total - a.total);
+  const devices = Object.entries(meta.devices || {})
+    .map(([name, total]) => ({ name, total }))
+    .sort((a, b) => b.total - a.total);
 
   return json({
     generatedAt: new Date().toISOString(),
@@ -242,6 +365,7 @@ async function handleAnalyticsSummary(request, env, origin) {
     totals: {
       pages: pages.length,
       visits: pages.reduce((sum, page) => sum + (page.total || 0), 0),
+      uniqueVisitors: new Set(visitors.map((visitor) => visitor?.visitorId).filter(Boolean)).size,
       ownerVisits: pages.reduce((sum, page) => sum + (page.ownerTotal || 0), 0),
       visitorVisits: pages.reduce((sum, page) => sum + (
         page.visitorTotal ?? Math.max(0, (page.total || 0) - (page.ownerTotal || 0))
@@ -249,6 +373,12 @@ async function handleAnalyticsSummary(request, env, origin) {
     },
     pages,
     daily,
+    trend,
+    trend7: trend.slice(-7),
+    trend30: trend.slice(-30),
+    sources,
+    devices,
+    recent: Array.isArray(recent) ? recent : [],
   }, 200, origin);
 }
 
@@ -324,6 +454,10 @@ export default {
 
     if (url.pathname === "/analytics/summary" && request.method === "GET") {
       return handleAnalyticsSummary(request, env, origin);
+    }
+
+    if (url.pathname === "/analytics/reset" && request.method === "POST") {
+      return handleAnalyticsReset(request, env, origin);
     }
 
     return handleContact(request, env, origin);

@@ -1,9 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
-import { BarChart3, Laptop, Lock, LogOut, RefreshCw } from "lucide-react";
+import {
+  Activity,
+  BarChart3,
+  Laptop,
+  Lock,
+  LogOut,
+  Monitor,
+  RefreshCw,
+  Smartphone,
+  Tablet,
+  Trash2,
+  Users,
+} from "lucide-react";
 import {
   fetchAnalyticsSummary,
   hasAnalyticsApi,
   isOwnerDevice,
+  resetAnalytics,
   setOwnerDevice,
 } from "./analytics.js";
 import { usePageMeta } from "./usePageMeta.js";
@@ -48,6 +61,24 @@ function formatDate(value) {
 
 function visitorTotal(row) {
   return row.visitorTotal ?? Math.max(0, (row.total || 0) - (row.ownerTotal || 0));
+}
+
+function percent(value, total) {
+  if (!total) return 0;
+  return Math.round((value / total) * 100);
+}
+
+function deviceLabel(name) {
+  if (name === "mobile") return "Mobile";
+  if (name === "tablet") return "Tablet";
+  if (name === "desktop") return "Desktop";
+  return "Nepoznato";
+}
+
+function DeviceIcon({ name }) {
+  if (name === "mobile") return <Smartphone size={16} />;
+  if (name === "tablet") return <Tablet size={16} />;
+  return <Monitor size={16} />;
 }
 
 function AdminLogin({ onLogin, error, loading }) {
@@ -121,7 +152,9 @@ export default function AdminPage() {
   const [auth, setAuth] = useState(readStoredAuth);
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const [ownerDeviceEnabled, setOwnerDeviceEnabled] = useState(isOwnerDevice);
 
   usePageMeta({
@@ -131,10 +164,17 @@ export default function AdminPage() {
   });
 
   const topPages = summary?.pages || [];
+  const sources = summary?.sources || [];
+  const devices = summary?.devices || [];
+  const recent = summary?.recent || [];
+  const trend7 = summary?.trend7 || [];
+  const trend30 = summary?.trend30 || [];
   const recentDays = useMemo(() => {
     const rows = summary?.daily || [];
     return rows.slice(0, 30);
   }, [summary]);
+  const maxTrend7 = Math.max(...trend7.map((row) => row.total || 0), 1);
+  const maxTrend30 = Math.max(...trend30.map((row) => row.total || 0), 1);
 
   async function load(nextAuth = auth) {
     if (!nextAuth) return;
@@ -166,12 +206,34 @@ export default function AdminPage() {
     setAuth(null);
     setSummary(null);
     setError("");
+    setNotice("");
   }
 
   function toggleOwnerDevice() {
     const next = !ownerDeviceEnabled;
     setOwnerDevice(next);
     setOwnerDeviceEnabled(next);
+  }
+
+  async function resetAllVisits() {
+    if (!auth) return;
+    const confirmed = window.confirm(
+      "Resetirati sve zabiljezene posjete? Ovo se ne moze vratiti.",
+    );
+    if (!confirmed) return;
+
+    setResetting(true);
+    setError("");
+    setNotice("");
+    try {
+      const result = await resetAnalytics(auth);
+      await load(auth);
+      setNotice(`Reset gotovo. Obrisano zapisa: ${result.deleted || 0}.`);
+    } catch (err) {
+      setError(err.message || "Reset nije uspio.");
+    } finally {
+      setResetting(false);
+    }
   }
 
   if (!auth || !summary) {
@@ -193,15 +255,24 @@ export default function AdminPage() {
               </p>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => load()}
-              disabled={loading}
+              disabled={loading || resetting}
               className="inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-950 px-3.5 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-blue-400 hover:text-white disabled:cursor-wait disabled:opacity-60"
             >
               <RefreshCw size={16} />
               Osvjezi
+            </button>
+            <button
+              type="button"
+              onClick={resetAllVisits}
+              disabled={loading || resetting}
+              className="inline-flex items-center gap-2 rounded-xl border border-red-400/35 bg-red-500/10 px-3.5 py-2.5 text-sm font-semibold text-red-100 transition hover:border-red-300 hover:bg-red-500/20 disabled:cursor-wait disabled:opacity-60"
+            >
+              <Trash2 size={16} />
+              {resetting ? "Resetiram..." : "Reset"}
             </button>
             <button
               type="button"
@@ -214,11 +285,17 @@ export default function AdminPage() {
           </div>
         </header>
 
-        <section className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
             <p className="text-sm text-slate-400">Ukupno posjeta</p>
             <p className="mt-2 text-3xl font-semibold tabular-nums text-white">
               {summary.totals.visits}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
+            <p className="text-sm text-slate-400">Jedinstveni</p>
+            <p className="mt-2 text-3xl font-semibold tabular-nums text-violet-200">
+              {summary.totals.uniqueVisitors ?? 0}
             </p>
           </div>
           <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
@@ -253,8 +330,8 @@ export default function AdminPage() {
                 <span className="font-medium text-slate-200">{summary.requesterIp || "-"}</span>
               </p>
               <p className="mt-1 max-w-2xl text-sm text-slate-500">
-                Computer name se ne moze citati iz browsera. IP se moze usporediti preko
-                Worker varijable OWNER_IPS, a ovaj browser mozes oznaciti kao svoj.
+                Computer name se ne moze citati iz browsera, a IP nije dobar ako se mijenja.
+                Zato ovaj browser mozes oznaciti kao svoj i tvoji posjeti idu pod Moji.
               </p>
             </div>
           </div>
@@ -271,11 +348,173 @@ export default function AdminPage() {
           </button>
         </section>
 
+        {notice && (
+          <p className="mb-6 rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
+            {notice}
+          </p>
+        )}
+
         {error && (
           <p className="mb-6 rounded-xl border border-red-400/25 bg-red-500/10 px-4 py-3 text-sm text-red-200">
             {error}
           </p>
         )}
+
+        <section className="mb-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-semibold text-white">Trend posjeta</h2>
+                <p className="text-sm text-slate-500">7 dana i 30 dana</p>
+              </div>
+              <Activity className="text-blue-200" size={22} />
+            </div>
+
+            <div className="grid gap-5">
+              <div>
+                <div className="mb-2 flex items-center justify-between text-sm">
+                  <span className="font-medium text-slate-300">Zadnjih 7 dana</span>
+                  <span className="tabular-nums text-slate-500">
+                    {trend7.reduce((sum, row) => sum + (row.total || 0), 0)}
+                  </span>
+                </div>
+                <div className="flex h-32 items-end gap-2">
+                  {trend7.length > 0 ? trend7.map((row) => (
+                    <div key={row.date} className="flex min-w-0 flex-1 flex-col items-center gap-2">
+                      <div
+                        className="w-full rounded-t bg-blue-400/80"
+                        style={{ height: `${Math.max(6, percent(row.total || 0, maxTrend7))}%` }}
+                        title={`${row.date}: ${row.total || 0}`}
+                      />
+                      <span className="w-full truncate text-center text-[10px] text-slate-500">
+                        {row.date.slice(5)}
+                      </span>
+                    </div>
+                  )) : (
+                    <p className="w-full self-center text-center text-sm text-slate-500">
+                      Jos nema trenda.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-2 flex items-center justify-between text-sm">
+                  <span className="font-medium text-slate-300">Zadnjih 30 dana</span>
+                  <span className="tabular-nums text-slate-500">
+                    {trend30.reduce((sum, row) => sum + (row.total || 0), 0)}
+                  </span>
+                </div>
+                <div className="flex h-20 items-end gap-1">
+                  {trend30.length > 0 ? trend30.map((row) => (
+                    <div
+                      key={row.date}
+                      className="min-w-[3px] flex-1 rounded-t bg-emerald-300/75"
+                      style={{ height: `${Math.max(5, percent(row.total || 0, maxTrend30))}%` }}
+                      title={`${row.date}: ${row.total || 0}`}
+                    />
+                  )) : (
+                    <p className="w-full self-center text-center text-sm text-slate-500">
+                      Jos nema 30-dnevnog pregleda.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-6">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-white">Odakle dolaze</h2>
+                <Users className="text-violet-200" size={20} />
+              </div>
+              <div className="grid gap-3">
+                {sources.slice(0, 6).map((source) => (
+                  <div key={source.name}>
+                    <div className="mb-1 flex items-center justify-between gap-3 text-sm">
+                      <span className="truncate text-slate-300">{source.name}</span>
+                      <span className="tabular-nums text-slate-500">{source.total}</span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+                      <div
+                        className="h-full rounded-full bg-violet-300"
+                        style={{ width: `${percent(source.total, summary.totals.visits)}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+                {sources.length === 0 && (
+                  <p className="text-sm text-slate-500">Izvori ce se pojaviti nakon novih posjeta.</p>
+                )}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
+              <h2 className="mb-4 text-lg font-semibold text-white">Uredaji</h2>
+              <div className="grid gap-3">
+                {devices.map((device) => (
+                  <div key={device.name} className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2.5">
+                    <span className="inline-flex items-center gap-2 text-sm font-medium text-slate-200">
+                      <DeviceIcon name={device.name} />
+                      {deviceLabel(device.name)}
+                    </span>
+                    <span className="tabular-nums text-slate-400">{device.total}</span>
+                  </div>
+                ))}
+                {devices.length === 0 && (
+                  <p className="text-sm text-slate-500">Uredaji ce se pojaviti nakon novih posjeta.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-6 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/80">
+          <div className="border-b border-slate-800 px-5 py-4">
+            <h2 className="text-lg font-semibold text-white">Zadnji posjeti</h2>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[780px] text-left text-sm">
+              <thead className="bg-slate-950/60 text-xs uppercase tracking-wide text-slate-500">
+                <tr>
+                  <th className="px-5 py-3">Vrijeme</th>
+                  <th className="px-5 py-3">Stranica</th>
+                  <th className="px-5 py-3">Tip</th>
+                  <th className="px-5 py-3">Uredaj</th>
+                  <th className="px-5 py-3">Izvor</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {recent.slice(0, 25).map((event, index) => (
+                  <tr key={`${event.at}-${event.path}-${index}`} className="text-slate-300">
+                    <td className="px-5 py-3 text-slate-400">{formatDate(event.at)}</td>
+                    <td className="px-5 py-3 font-medium text-white">{event.path}</td>
+                    <td className="px-5 py-3">
+                      <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                        event.owner ? "bg-blue-400/15 text-blue-200" : "bg-emerald-400/15 text-emerald-200"
+                      }`}
+                      >
+                        {event.owner ? "Moje" : "Ostali"}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3">{deviceLabel(event.device)}</td>
+                    <td className="max-w-[16rem] truncate px-5 py-3 text-slate-400">
+                      {event.source || "Direct"}
+                    </td>
+                  </tr>
+                ))}
+                {recent.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="px-5 py-8 text-center text-slate-500">
+                      Zadnji posjeti ce se pojaviti nakon novih posjeta.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
 
         <section className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
           <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/80">
