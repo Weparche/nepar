@@ -11,10 +11,11 @@
     screen: (window.screen && window.screen.width ? window.screen.width : 0) +
       "x" +
       (window.screen && window.screen.height ? window.screen.height : 0),
+    ownerDevice: localStorage.getItem("nepar-analytics-owner-device") === "1",
   });
 
   if (navigator.sendBeacon) {
-    navigator.sendBeacon(endpoint, new Blob([payload], { type: "application/json" }));
+    navigator.sendBeacon(endpoint, new Blob([payload], { type: "text/plain;charset=UTF-8" }));
     return;
   }
 
