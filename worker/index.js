@@ -42,6 +42,32 @@ function analyticsDayKey(date, path) {
   return `analytics:day:${date}:${encodeURIComponent(path)}`;
 }
 
+function getClientIp(request) {
+  return (
+    request.headers.get("CF-Connecting-IP") ||
+    request.headers.get("X-Forwarded-For")?.split(",")[0]?.trim() ||
+    ""
+  );
+}
+
+function isOwnerIp(request, env) {
+  const clientIp = getClientIp(request);
+  const ownerIps = String(env.OWNER_IPS || "")
+    .split(",")
+    .map((ip) => ip.trim())
+    .filter(Boolean);
+  return Boolean(clientIp && ownerIps.includes(clientIp));
+}
+
+async function addToIndex(kv, key, value) {
+  const current = await kv.get(key, "json");
+  const next = Array.isArray(current) ? current : [];
+  if (!next.includes(value)) {
+    next.push(value);
+    await kv.put(key, JSON.stringify(next));
+  }
+}
+
 function getBasicAuth(request) {
   const header = request.headers.get("Authorization") || "";
   const [scheme, encoded] = header.split(" ");
@@ -112,11 +138,16 @@ async function handlePageview(request, env, origin) {
   const dayKey = analyticsDayKey(date, path);
   const referrer = typeof body.referrer === "string" ? body.referrer.slice(0, 240) : "";
   const title = typeof body.title === "string" ? body.title.slice(0, 160) : "";
+  const isOwner = body.ownerDevice === true || isOwnerIp(request, env);
+  const ownerIncrement = isOwner ? 1 : 0;
+  const visitorIncrement = isOwner ? 0 : 1;
 
   const page = await incrementStoredJson(env.ANALYTICS, pageKey, (current) => ({
     path,
     title: title || current?.title || path,
     total: (current?.total || 0) + 1,
+    ownerTotal: (current?.ownerTotal || 0) + ownerIncrement,
+    visitorTotal: (current?.visitorTotal || current?.otherTotal || 0) + visitorIncrement,
     firstSeen: current?.firstSeen || now,
     lastSeen: now,
     referrers: {
@@ -129,9 +160,21 @@ async function handlePageview(request, env, origin) {
     path,
     date,
     total: (current?.total || 0) + 1,
+    ownerTotal: (current?.ownerTotal || 0) + ownerIncrement,
+    visitorTotal: (current?.visitorTotal || current?.otherTotal || 0) + visitorIncrement,
   }));
+  await addToIndex(env.ANALYTICS, "analytics:index:pages", path);
+  await addToIndex(env.ANALYTICS, "analytics:index:days", `${date}|${path}`);
 
-  return json({ ok: true, page: { path: page.path, total: page.total } }, 200, origin);
+  return json({
+    ok: true,
+    page: {
+      path: page.path,
+      total: page.total,
+      ownerTotal: page.ownerTotal || 0,
+      visitorTotal: page.visitorTotal || 0,
+    },
+  }, 200, origin);
 }
 
 async function listJson(kv, prefix) {
@@ -163,16 +206,46 @@ async function handleAnalyticsSummary(request, env, origin) {
     return json({ error: "Analytics storage is not configured" }, 500, origin);
   }
 
-  const pages = (await listJson(env.ANALYTICS, "analytics:page:"))
-    .sort((a, b) => (b.total || 0) - (a.total || 0));
-  const daily = (await listJson(env.ANALYTICS, "analytics:day:"))
+  const pageIndex = await env.ANALYTICS.get("analytics:index:pages", "json");
+  const dayIndex = await env.ANALYTICS.get("analytics:index:days", "json");
+
+  const indexedPages = Array.isArray(pageIndex)
+    ? await Promise.all(pageIndex.map((path) => env.ANALYTICS.get(analyticsKey(path), "json")))
+    : [];
+  const indexedDaily = Array.isArray(dayIndex)
+    ? await Promise.all(dayIndex.map((entry) => {
+        const [date, path] = String(entry).split("|");
+        return env.ANALYTICS.get(analyticsDayKey(date, path), "json");
+      }))
+    : [];
+
+  const listedPages = await listJson(env.ANALYTICS, "analytics:page:");
+  const listedDaily = await listJson(env.ANALYTICS, "analytics:day:");
+  const pageMap = new Map();
+  const dayMap = new Map();
+
+  for (const page of [...indexedPages, ...listedPages]) {
+    if (page?.path) pageMap.set(page.path, page);
+  }
+
+  for (const day of [...indexedDaily, ...listedDaily]) {
+    if (day?.path && day?.date) dayMap.set(`${day.date}|${day.path}`, day);
+  }
+
+  const pages = [...pageMap.values()].sort((a, b) => (b.total || 0) - (a.total || 0));
+  const daily = [...dayMap.values()]
     .sort((a, b) => `${b.date}:${b.path}`.localeCompare(`${a.date}:${a.path}`));
 
   return json({
     generatedAt: new Date().toISOString(),
+    requesterIp: getClientIp(request),
     totals: {
       pages: pages.length,
       visits: pages.reduce((sum, page) => sum + (page.total || 0), 0),
+      ownerVisits: pages.reduce((sum, page) => sum + (page.ownerTotal || 0), 0),
+      visitorVisits: pages.reduce((sum, page) => sum + (
+        page.visitorTotal ?? Math.max(0, (page.total || 0) - (page.ownerTotal || 0))
+      ), 0),
     },
     pages,
     daily,
