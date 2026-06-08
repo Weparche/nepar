@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import ContactPage from "./ContactPage.jsx";
+import AdminPage from "./AdminPage.jsx";
 import WebStartPage from "./WebStartPage.jsx";
 import MozgalicaPage from "./mozgalica/MozgalicaPage.jsx";
 import NjamkoPage from "./njamko/NjamkoPage.jsx";
@@ -38,6 +39,7 @@ import {
 } from "lucide-react";
 import OrbitalProjectCarousel from "./OrbitalProjectCarousel.jsx";
 import { PILOT_TOTAL, usePilotFillCount } from "./usePilotFillCount.js";
+import { trackPageView } from "./analytics.js";
 
 const easeOut = [0.23, 1, 0.32, 1];
 const easeInOut = [0.77, 0, 0.175, 1];
@@ -1391,13 +1393,32 @@ function ScrollToTop() {
   return null;
 }
 
+function PageViewTracker() {
+  const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      trackPageView({
+        path: `${pathname}${search}`,
+        title: document.title,
+      });
+    }, 250);
+
+    return () => window.clearTimeout(timer);
+  }, [pathname, search]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <PageViewTracker />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/kontakt" element={<ContactPage />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/usluge/web-stranica-bez-pocetnog-troska" element={<WebStartPage />} />
         <Route path="/mozgalica" element={<MozgalicaPage />} />
         <Route path="/njamko" element={<NjamkoPage />} />

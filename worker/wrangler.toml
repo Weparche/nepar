@@ -1,5 +1,14 @@
 name = "nepar-contact"
 main = "index.js"
-compatibility_date = "2024-09-23"
+compatibility_date = "2026-06-08"
 
-# Secret: wrangler secret put RESEND_API_KEY
+# Secrets:
+# wrangler secret put RESEND_API_KEY
+# wrangler secret put ADMIN_USER
+# wrangler secret put ADMIN_PASS
+#
+# Create once, then paste the returned id below:
+# wrangler kv namespace create ANALYTICS
+[[kv_namespaces]]
+binding = "ANALYTICS"
+id = "018bf45fad444fadbec1a02544a7cbe7"
