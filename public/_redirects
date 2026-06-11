@@ -1,11 +1,2 @@
-# SPA fallback for React Router (nepar.hr main app).
-# Static subsites and assets are served as files first.
-/assets/*  /assets/:splat  200
-/brand/*   /brand/:splat   200
-/vortex/*  /vortex/:splat  200
-/zoyya/*   /zoyya/:splat   200
-/lime      /lime/          301
-/lime/*    /lime/:splat    200
-# /mozgalica is a React Router route; use index.html (see public/deploy/nginx-nepar.conf).
-# Do not rewrite to mozgalica.html: it can loop with extensionless-URL redirects on Cloudflare.
-/*         /index.html     200
+# Cloudflare Pages SPA fallback (static files are served first)
+/*          /index.html 200

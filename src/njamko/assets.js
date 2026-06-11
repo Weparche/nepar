@@ -1,3 +1,5 @@
+﻿import { assetPath } from "./assetPath.js";
+
 function slugify(value) {
   return value
     .toLowerCase()
@@ -9,20 +11,29 @@ function slugify(value) {
 }
 
 export function getAnimalImageSrc(animalName) {
-  return `/njamko/assets/animals/${slugify(animalName)}.png`;
+  return assetPath(`/assets/animals/${slugify(animalName)}.png`);
 }
 
 export function getFoodImageSrc(foodName) {
-  return `/njamko/assets/foods/${slugify(foodName)}.png`;
+  return assetPath(`/assets/foods/${slugify(foodName)}.png`);
 }
 
 export const BACKGROUND_IMAGES = {
-  start: "/njamko/assets/backgrounds/start.png",
-  game: "/njamko/assets/backgrounds/game.png",
-  finish: "/njamko/assets/backgrounds/finish.png",
+  start: null,
+  game: null,
+  finish: null,
 };
 
 export const UI_IMAGES = {
-  medal: "/njamko/assets/ui/medal.png",
-  star: "/njamko/assets/ui/star.png",
+  medal: assetPath("/assets/ui/medal.png"),
+  star: assetPath("/assets/ui/star.png"),
+};
+
+export const MUSIC = {
+  campaignMap: assetPath("/assets/music/Njam njam Njamko.mp3"),
+  food: assetPath("/assets/music/Njam njam Njamko.mp3"),
+  home: assetPath("/assets/music/Njam njam Njamko - dom.mp3"),
+  sound: assetPath("/assets/music/Njam njam Njamko  - zvuk.mp3"),
+  baby: assetPath("/assets/music/Njam njam Njamko - beba.mp3"),
+  counting: assetPath("/assets/music/Njamko plaza.mp3"),
 };

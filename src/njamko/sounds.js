@@ -1,19 +1,43 @@
+import { assetPath } from "./assetPath.js";
+
 const SOUND_FREQUENCIES = {
   "Muuu!": 180,
   "Vau vau!": 320,
   "Mijau!": 520,
   "I-ha-ha!": 280,
+  "I-ha!": 280,
   "Kva kva!": 440,
   "Beee!": 360,
-  "Kikiriki!": 620,
+  "Kukuriku!": 620,
   "Grok grok!": 240,
+  "Kre kre!": 480,
   "Ribbit!": 480,
-  "Zzzzz!": 700,
+  "Bzzzz!": 700,
+  "Kokoda!": 560,
+  "Meeeh!": 340,
+  "Ga ga!": 420,
+  "Njihaha!": 300,
+  "Ciju ciju!": 640,
+  "Piju piju!": 580,
+  "Šššš!": 200,
+  "Hu hu!": 260,
+  "Roooar!": 120,
+  "Auuu!": 220,
+  "Truuu!": 160,
+  "Grrr!": 140,
+  "Klap klap!": 380,
+  "Kri kri!": 500,
 };
 
 let audioContext = null;
 let userHasInteracted = false;
 let activeAnimalAudio = null;
+let backgroundMusicAudio = null;
+let backgroundMusicVolume = 0.42;
+let backgroundMusicDuckingTimer = null;
+
+const BACKGROUND_MUSIC_DUCKED_VOLUME = 0.12;
+const ANIMAL_BEEP_DUCK_MS = 750;
 
 function getAudioContext() {
   if (!userHasInteracted) return null;
@@ -39,6 +63,97 @@ export function markUserInteraction() {
   userHasInteracted = true;
 }
 
+export function startBackgroundMusic(src, { volume = 0.42 } = {}) {
+  if (!userHasInteracted || !src) return;
+
+  try {
+    if (!backgroundMusicAudio || backgroundMusicAudio.dataset.src !== src) {
+      stopBackgroundMusic();
+      const audio = new Audio(src);
+      audio.dataset.src = src;
+      audio.loop = true;
+      audio.volume = volume;
+      backgroundMusicAudio = audio;
+    }
+
+    backgroundMusicVolume = volume;
+    if (backgroundMusicAudio.volume > BACKGROUND_MUSIC_DUCKED_VOLUME) {
+      backgroundMusicAudio.volume = volume;
+    }
+
+    const playPromise = backgroundMusicAudio.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+export function stopBackgroundMusic() {
+  try {
+    clearTimeout(backgroundMusicDuckingTimer);
+    backgroundMusicDuckingTimer = null;
+    if (backgroundMusicAudio) {
+      backgroundMusicAudio.pause();
+      backgroundMusicAudio.currentTime = 0;
+      backgroundMusicAudio = null;
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+function restoreBackgroundMusicVolume() {
+  clearTimeout(backgroundMusicDuckingTimer);
+  backgroundMusicDuckingTimer = null;
+
+  try {
+    if (backgroundMusicAudio) {
+      backgroundMusicAudio.volume = backgroundMusicVolume;
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+function duckBackgroundMusic(durationMs = ANIMAL_BEEP_DUCK_MS) {
+  if (!backgroundMusicAudio) return;
+
+  try {
+    clearTimeout(backgroundMusicDuckingTimer);
+    backgroundMusicAudio.volume = Math.min(
+      backgroundMusicAudio.volume,
+      BACKGROUND_MUSIC_DUCKED_VOLUME,
+    );
+    if (durationMs) {
+      backgroundMusicDuckingTimer = setTimeout(
+        restoreBackgroundMusicVolume,
+        durationMs,
+      );
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+export function setBackgroundMusicEnabled(enabled) {
+  if (!backgroundMusicAudio) return;
+
+  try {
+    if (enabled) {
+      const playPromise = backgroundMusicAudio.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
+    } else {
+      backgroundMusicAudio.pause();
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
 export function stopAnimalSound() {
   try {
     if (activeAnimalAudio) {
@@ -46,6 +161,7 @@ export function stopAnimalSound() {
       activeAnimalAudio.currentTime = 0;
       activeAnimalAudio = null;
     }
+    restoreBackgroundMusicVolume();
   } catch {
     /* ignore */
   }
@@ -104,26 +220,40 @@ export function playAnimalSound(soundText, soundSrc) {
   stopAnimalSound();
 
   if (!soundSrc) {
+    duckBackgroundMusic();
     playAnimalSoundBeep(soundText);
     return;
   }
 
   try {
-    const audio = new Audio(soundSrc);
+    const audio = new Audio(assetPath(soundSrc));
     audio.volume = 0.85;
     activeAnimalAudio = audio;
 
     const fallbackToBeep = () => {
+      duckBackgroundMusic();
       playAnimalSoundBeep(soundText);
+    };
+    const handleAnimalSoundDone = () => {
+      if (activeAnimalAudio === audio) {
+        activeAnimalAudio = null;
+      }
+      restoreBackgroundMusicVolume();
     };
 
     audio.addEventListener("error", fallbackToBeep, { once: true });
+    audio.addEventListener("ended", handleAnimalSoundDone, { once: true });
 
+    duckBackgroundMusic(null);
     const playPromise = audio.play();
     if (playPromise && typeof playPromise.catch === "function") {
-      playPromise.catch(fallbackToBeep);
+      playPromise.catch(() => {
+        handleAnimalSoundDone();
+        fallbackToBeep();
+      });
     }
   } catch {
+    duckBackgroundMusic();
     playAnimalSoundBeep(soundText);
   }
 }

@@ -1,3 +1,5 @@
+import { motion, useReducedMotion } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
 import FeedbackBubble from "./FeedbackBubble.jsx";
 import GameTopBar from "./GameTopBar.jsx";
 import MainCharacter from "./MainCharacter.jsx";
@@ -12,18 +14,17 @@ const OPTION_TYPE_LABELS = {
 };
 
 export default function GameScreen({
+  modeTitle,
   levelTitle,
   round,
   roundKey,
   shuffledOptions,
   roundNumber,
   totalRounds,
-  stars,
   feedback,
   selectedAnswer,
   showStars,
   isAnimating,
-  soundAutoplayReady,
   soundEnabled,
   onToggleSound,
   onSelectAnswer,
@@ -32,19 +33,60 @@ export default function GameScreen({
 }) {
   const optionType = OPTION_TYPE_LABELS[round.mode] ?? "opciju";
   const isSoundLevel = round.mode === "sound";
+  const isFoodLevel = round.mode === "food";
+  const isPremiumLayout = true;
+  const [soundRevealed, setSoundRevealed] = useState(isSoundLevel);
+  const [soundPulseKey, setSoundPulseKey] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+
+  const playSoundCue = useCallback(() => {
+    onPlaySound();
+    setSoundPulseKey((key) => key + 1);
+  }, [onPlaySound]);
+
+  useEffect(() => {
+    if (!isSoundLevel) {
+      setSoundRevealed(false);
+      return;
+    }
+
+    setSoundRevealed(true);
+    if (!soundEnabled) return undefined;
+
+    const timer = setTimeout(() => {
+      playSoundCue();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [roundKey, isSoundLevel, soundEnabled, playSoundCue]);
+
+  const handlePlaySound = () => {
+    playSoundCue();
+    setSoundRevealed(true);
+  };
+
+  const gameClass = [
+    "nj-game",
+    isPremiumLayout ? "nj-game--premium" : "",
+    isSoundLevel ? "nj-game--sound" : "",
+    round.mobileAnswerRow ? "nj-game--mobile-answer-row" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div
-      className={`nj-game${isSoundLevel ? " nj-game--sound" : ""}`}
+      className={gameClass}
       data-testid="game-screen"
       data-sound-round={isSoundLevel ? "true" : undefined}
-      data-sound-autoplay-ready={isSoundLevel && soundAutoplayReady ? "true" : undefined}
+      data-sound-autoplay-ready={isSoundLevel && soundRevealed ? "true" : undefined}
     >
       <GameTopBar
+        variant={isPremiumLayout ? "premium" : "default"}
+        modeTitle={modeTitle}
         levelTitle={levelTitle}
         currentRound={roundNumber}
         totalRounds={totalRounds}
-        stars={stars}
         soundEnabled={soundEnabled}
         onToggleSound={onToggleSound}
         onBack={onBack}
@@ -52,8 +94,14 @@ export default function GameScreen({
 
       <div className="nj-game__panel">
         <div className="nj-game__hints">
-          <p className="nj-game__prompt">{round.prompt}</p>
-          <p className="nj-game__question">{round.question}</p>
+          <p className="nj-game__prompt" data-testid="round-prompt">
+            {round.prompt}
+          </p>
+          {round.question && (
+            <p className="nj-game__question" data-testid="round-question">
+              {round.question}
+            </p>
+          )}
         </div>
 
         {isSoundLevel && (
@@ -62,20 +110,31 @@ export default function GameScreen({
               type="button"
               data-testid="sound-button"
               className="nj-btn nj-btn--secondary nj-sound-panel__button"
-              onClick={onPlaySound}
+              onClick={handlePlaySound}
               disabled={isAnimating}
             >
-              🔊 Poslušaj opet
+              🔊 {soundRevealed ? "Poslušaj opet" : "Poslušaj zvuk"}
             </button>
-            <span className="nj-sr-only" data-testid="sound-text">
-              {round.soundText}
-            </span>
+            {soundRevealed && (
+              <motion.p
+                key={`${roundKey}-${soundPulseKey}`}
+                className="nj-sound-panel__text"
+                data-testid="sound-text"
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 10, scale: 0.92 }}
+                animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {round.soundText}
+              </motion.p>
+            )}
           </div>
         )}
 
         <div className="nj-animal-area">
           <MainCharacter
             key={roundKey}
+            variant="premium"
+            showGrass={isFoodLevel}
             label={round.mainLabel}
             emoji={round.mainEmoji}
             image={round.mainImage}
@@ -88,18 +147,20 @@ export default function GameScreen({
         </div>
 
         <div className="nj-option-grid">
-          {shuffledOptions.map((option) => (
+          {shuffledOptions.map((option, index) => (
             <OptionCard
               key={option.name}
+              index={index}
               name={option.name}
               emoji={option.emoji}
               image={option.image}
               optionType={optionType}
+              premiumLayout={isPremiumLayout}
+              isCorrect={feedback === "correct" && selectedAnswer === option.name}
+              isWrong={feedback === "wrong" && selectedAnswer === option.name}
               onSelect={onSelectAnswer}
               shake={feedback === "wrong" && selectedAnswer === option.name}
-              flying={
-                feedback === "correct" && selectedAnswer === option.name
-              }
+              flying={feedback === "correct" && selectedAnswer === option.name}
               disabled={isAnimating}
             />
           ))}

@@ -14,7 +14,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-const SOUNDS_DIR = join(ROOT, "public", "njamko", "assets", "sounds");
+const SOUNDS_DIR = join(ROOT, "public", "assets", "sounds");
 const LICENSES_JSON = join(SOUNDS_DIR, "licenses.json");
 const LICENSES_MD = join(SOUNDS_DIR, "LICENSES.md");
 

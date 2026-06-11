@@ -1,42 +1,78 @@
 import Confetti from "./Confetti.jsx";
-import AssetImage from "./AssetImage.jsx";
-import { UI_IMAGES } from "./assets.js";
 
-export default function FinishScreen({ stars, totalRounds, onReplay, onChooseLevel }) {
+export default function FinishScreen({
+  stars,
+  totalRounds,
+  modeId,
+  levelId,
+  onReplay,
+  onNextLevel,
+  onNextGame,
+  onChooseLevel,
+  onChooseMode,
+}) {
+  const isFoodMode = modeId === "food";
+  const isLastFoodLevel = isFoodMode && levelId === 5;
+
   return (
-    <div className="nj-finish" data-testid="finish-screen">
+    <div
+      className={`nj-finish${isFoodMode ? " nj-finish--food" : ""}`}
+      data-testid="finish-screen"
+    >
       <Confetti />
 
       <h2 className="nj-finish__bravo">Bravo!</h2>
       <p className="nj-finish__title">Završio si igru!</p>
-      <p className="nj-finish__title-full">Bravo, završio si igru!</p>
 
-      <div className="nj-finish__star-wrap finish-pulse" aria-hidden="true">
-        <AssetImage
-          src={UI_IMAGES.star}
-          alt=""
-          emoji="⭐"
-          className="nj-finish__star"
-        />
-        <span className="nj-finish__badge">
-          {stars} / {totalRounds}
-        </span>
+      <div className="nj-finish__stats">
+        <p className="nj-finish__stat-label">Razina završena</p>
+        <p className="nj-finish__stat-value">
+          {totalRounds}/{totalRounds} rundi
+        </p>
       </div>
 
-      <p className="nj-finish__stars">{stars} zvjezdica</p>
+      <div className="nj-finish__stars-row" aria-label={`${stars} zvjezdica`}>
+        {Array.from({ length: stars }, (_, index) => (
+          <span key={index} className="nj-finish__star-item star-pop" aria-hidden="true">
+            ⭐
+          </span>
+        ))}
+      </div>
 
       <div className="nj-finish__actions">
-        <button
-          type="button"
-          data-testid="replay-button"
-          className="nj-btn nj-btn--primary nj-finish__replay finish-pulse"
-          onClick={onReplay}
-        >
-          <span className="nj-btn__icon" aria-hidden="true">
-            ↻
-          </span>
-          Igraj opet
-        </button>
+        {isFoodMode ? (
+          <>
+            <button
+              type="button"
+              data-testid={isLastFoodLevel ? "next-game-button" : "next-level-button"}
+              className="nj-btn nj-btn--primary nj-finish__primary finish-pulse"
+              onClick={isLastFoodLevel ? onNextGame : onNextLevel}
+            >
+              {isLastFoodLevel ? "Sljedeća igra" : "Sljedeća razina"}
+            </button>
+
+            <button
+              type="button"
+              data-testid="replay-button"
+              className="nj-btn nj-btn--secondary nj-finish__choose"
+              onClick={onReplay}
+            >
+              Ponovi istu
+            </button>
+          </>
+        ) : (
+          <button
+            type="button"
+            data-testid="replay-button"
+            className="nj-btn nj-btn--primary nj-finish__replay finish-pulse"
+            onClick={onReplay}
+          >
+            <span className="nj-btn__icon" aria-hidden="true">
+              ↻
+            </span>
+            Igraj opet
+          </button>
+        )}
 
         <button
           type="button"
@@ -44,7 +80,16 @@ export default function FinishScreen({ stars, totalRounds, onReplay, onChooseLev
           className="nj-btn nj-btn--secondary nj-finish__choose"
           onClick={onChooseLevel}
         >
-          Odaberi drugi level
+          Odaberi drugu razinu
+        </button>
+
+        <button
+          type="button"
+          data-testid="choose-mode-button"
+          className="nj-btn nj-btn--secondary nj-finish__choose"
+          onClick={onChooseMode}
+        >
+          Odaberi drugu igru
         </button>
       </div>
     </div>

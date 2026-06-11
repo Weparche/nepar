@@ -1,53 +1,57 @@
 import SoundToggle from "./SoundToggle.jsx";
 
 export default function GameTopBar({
+  modeTitle,
   levelTitle,
   currentRound,
   totalRounds,
-  stars,
   soundEnabled,
   onToggleSound,
   onBack,
+  variant = "default",
 }) {
-  const progress = Math.round((stars / totalRounds) * 100);
+  const isPremium = variant === "premium";
 
   return (
-    <header className="nj-topbar">
+    <header
+      className={`nj-topbar${isPremium ? " nj-topbar--premium" : ""}`}
+      data-testid="game-topbar"
+    >
       <button
         type="button"
         className="nj-topbar__back"
         onClick={onBack}
-        aria-label="Natrag na izbor levela"
+        aria-label="Natrag na izbor razine"
       >
-        ← Natrag
+        {isPremium ? <span aria-hidden="true">←</span> : "← Natrag"}
       </button>
 
       <div className="nj-topbar__center">
-        <p className="nj-topbar__level">{levelTitle}</p>
-        <div
-          className="nj-topbar__progress"
-          role="progressbar"
-          aria-valuenow={progress}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label="Napredak igre"
-        >
-          <span
-            className="nj-topbar__progress-fill"
-            style={{ "--nj-progress": progress / 100 }}
-          />
-        </div>
-        <p className="nj-topbar__round">
-          {currentRound} / {totalRounds}
-        </p>
+        {isPremium ? (
+          <p className="nj-topbar__mode-title">{modeTitle}</p>
+        ) : (
+          <>
+            <p className="nj-topbar__level">
+              {modeTitle} · {levelTitle}
+            </p>
+            <p className="nj-topbar__round" data-testid="game-progress">
+              {currentRound}/{totalRounds}
+            </p>
+          </>
+        )}
       </div>
 
       <div className="nj-topbar__actions">
-        <SoundToggle enabled={soundEnabled} onToggle={onToggleSound} />
-        <div className="nj-topbar__stars" aria-label={`${stars} zvjezdica`}>
-          <span aria-hidden="true">⭐</span>
-          <span>{stars}</span>
-        </div>
+        {isPremium ? (
+          <>
+            <SoundToggle enabled={soundEnabled} onToggle={onToggleSound} compact />
+            <span className="nj-topbar__badge" data-testid="game-progress">
+              {currentRound}/{totalRounds}
+            </span>
+          </>
+        ) : (
+          <SoundToggle enabled={soundEnabled} onToggle={onToggleSound} />
+        )}
       </div>
     </header>
   );

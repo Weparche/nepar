@@ -10,7 +10,6 @@ import {
 
 const CORRECT_ANIMATION_MS = 1200;
 const WRONG_RESET_MS = 800;
-const SOUND_AUTOPLAY_DELAY_MS = 300;
 
 export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
@@ -20,14 +19,12 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showStars, setShowStars] = useState(false);
   const [shuffledOptions, setShuffledOptions] = useState([]);
-  const [soundAutoplayReady, setSoundAutoplayReady] = useState(false);
 
   const animationTimerRef = useRef(null);
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
 
   const round = rounds[currentRoundIndex] ?? null;
-  const isSoundRound = round?.mode === "sound";
 
   useEffect(() => {
     return () => {
@@ -45,7 +42,6 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
     setFeedback(null);
     setShowStars(false);
     setIsAnimating(false);
-    setSoundAutoplayReady(false);
     if (rounds[0]) {
       setShuffledOptions(shuffleOptions(rounds[0].options));
     } else {
@@ -62,29 +58,13 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
     if (!round) return;
     stopAnimalSound();
     setShuffledOptions(shuffleOptions(round.options));
-    setSoundAutoplayReady(false);
   }, [currentRoundIndex, round]);
-
-  useEffect(() => {
-    if (!isSoundRound || !soundEnabled || !round) return undefined;
-
-    const timer = setTimeout(() => {
-      markUserInteraction();
-      playAnimalSound(round.soundText, round.soundSrc);
-      setSoundAutoplayReady(true);
-    }, SOUND_AUTOPLAY_DELAY_MS);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [currentRoundIndex, isSoundRound, levelId, round, soundEnabled]);
 
   const resetRoundFeedback = useCallback(() => {
     setSelectedAnswer(null);
     setFeedback(null);
     setShowStars(false);
     setIsAnimating(false);
-    setSoundAutoplayReady(false);
   }, []);
 
   const handlePlaySound = useCallback(() => {
@@ -157,7 +137,6 @@ export function useGameEngine({ rounds, levelId, soundEnabled, onComplete }) {
     selectedAnswer,
     isAnimating,
     showStars,
-    soundAutoplayReady,
     handleSelectAnswer,
     handlePlaySound,
     resetLevel,

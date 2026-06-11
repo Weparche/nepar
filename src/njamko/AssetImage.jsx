@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { assetPath } from "./assetPath.js";
 
 export default function AssetImage({ src, alt, emoji, className = "" }) {
-  const [useEmoji, setUseEmoji] = useState(!src);
+  const resolvedSrc = src ? assetPath(src) : src;
+  const [useEmoji, setUseEmoji] = useState(!resolvedSrc);
   const [loaded, setLoaded] = useState(false);
 
-  if (useEmoji || !src) {
+  if (useEmoji || !resolvedSrc) {
     return (
       <span className={`nj-asset-emoji ${className}`.trim()} aria-hidden={alt === ""}>
         {emoji}
@@ -20,7 +22,7 @@ export default function AssetImage({ src, alt, emoji, className = "" }) {
         </span>
       )}
       <img
-        src={src}
+        src={resolvedSrc}
         alt={alt}
         className="nj-asset-img"
         onLoad={(event) => {
