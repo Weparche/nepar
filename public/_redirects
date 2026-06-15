@@ -1,5 +1,1 @@
-# Cloudflare Pages SPA fallback (static files are served first)
-# Embedded ZG Vrtić Radar app — its API is handled by functions/zgvrticradar/api,
-# and deep links fall back to its own index.html (must come before the root /*).
-/zgvrticradar/*   /zgvrticradar/index.html   200
-/*          /index.html 200
+/* /index.html 200
