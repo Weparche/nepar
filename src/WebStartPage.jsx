@@ -16,6 +16,7 @@ const pageCopy = {
       title: "Web-stranica koja pripada vašem poslovanju.",
       description: "Od jednostavne profesionalne prezentacije do napredne SEO strukture i prilagođenih upita. Izradu plaćate jednokratno, a održavanje birate samo ako vam treba.",
       ownership: "Web-stranica je nakon plaćanja u vlasništvu klijenta. Održavanje nije obavezno i ugovara se zasebno.",
+      startingPrice: "Izrada već od",
       primary: "Pogledaj pakete izrade",
       secondary: "Pošalji upit",
       facts: ["Napredni tehnički i on-page SEO", "Responzivan dizajn", "Search Console i analitika", "Dogovoreni opseg i broj dorada"],
@@ -66,6 +67,7 @@ const pageCopy = {
       title: "A website that belongs to your business.",
       description: "From a clear professional presence to advanced SEO architecture and custom inquiry flows. Development is paid once, while maintenance remains your choice.",
       ownership: "The website belongs to the client after payment. Maintenance is optional and contracted separately.",
+      startingPrice: "Development from",
       primary: "View development packages",
       secondary: "Send an inquiry",
       facts: ["Advanced technical and on-page SEO", "Responsive design", "Search Console and analytics", "Agreed scope and revision rounds"],
@@ -115,26 +117,30 @@ function SectionHeading({ title, intro }) {
 function OfferCard({ item, lang, copy, offerKind, onSelect }) {
   return (
     <article className={`offer-card ${item.featured ? "is-featured" : ""}`}>
-      {item.badge && <span className="status-badge">{item.badge}</span>}
-      <div className="offer-card-header">
-        <h3>{item.name}</h3>
-        <p className="offer-price"><strong>{formatOfferPrice(item.price, lang)}</strong><span>{item.payment}</span></p>
+      <div className="offer-card-summary">
+        {item.badge && <span className="status-badge">{item.badge}</span>}
+        <div className="offer-card-header">
+          <h3>{item.name}</h3>
+          <p className="offer-price"><strong>{formatOfferPrice(item.price, lang)}</strong><span>{item.payment}</span></p>
+        </div>
+        {item.description && <p className="offer-description">{item.description}</p>}
+        <button type="button" className={item.featured ? "button button-primary" : "button button-secondary"} onClick={() => onSelect(item, offerKind)}>
+          {copy.cta}<Send aria-hidden="true" size={17} />
+        </button>
       </div>
-      {item.description && <p className="offer-description">{item.description}</p>}
-      <div className="offer-included">
-        <h4>{copy.included}</h4>
-        <ul>{item.included.map((benefit) => <li key={benefit}><Check aria-hidden="true" size={17} />{benefit}</li>)}</ul>
+      <div className="offer-card-details">
+        <div className="offer-included">
+          <h4>{copy.included}</h4>
+          <ul>{item.included.map((benefit) => <li key={benefit}><Check aria-hidden="true" size={17} />{benefit}</li>)}</ul>
+        </div>
+        {item.note && <p className="offer-note"><Info aria-hidden="true" size={17} />{item.note}</p>}
+        {item.project && (
+          <a href={item.project.href} target="_blank" rel="noreferrer" className="project-proof-link">
+            <span><strong>{item.project.label}</strong><small>{item.project.cta}</small></span>
+            <ArrowUpRight aria-hidden="true" size={18} />
+          </a>
+        )}
       </div>
-      {item.note && <p className="offer-note"><Info aria-hidden="true" size={17} />{item.note}</p>}
-      {item.project && (
-        <a href={item.project.href} target="_blank" rel="noreferrer" className="project-proof-link">
-          <span><strong>{item.project.label}</strong><small>{item.project.cta}</small></span>
-          <ArrowUpRight aria-hidden="true" size={18} />
-        </a>
-      )}
-      <button type="button" className={item.featured ? "button button-primary" : "button button-secondary"} onClick={() => onSelect(item, offerKind)}>
-        {copy.cta}<Send aria-hidden="true" size={17} />
-      </button>
     </article>
   );
 }
@@ -179,9 +185,16 @@ export default function WebStartPage() {
               <MotionButton onClick={() => openInquiry()} variant="secondary">{text.hero.secondary}<Send aria-hidden="true" size={17} /></MotionButton>
             </div>
           </div>
-          <aside className="ownership-panel">
-            <ShieldCheck aria-hidden="true" size={28} />
-            <p>{text.hero.ownership}</p>
+          <aside className="pricing-hero-proof">
+            <div className="pricing-hero-price">
+              <span>{text.hero.startingPrice}</span>
+              <strong>{formatOfferPrice(offer.buildPackages[0].price, lang)}</strong>
+              <small>{offer.buildPackages[0].payment}</small>
+            </div>
+            <div className="ownership-panel">
+              <ShieldCheck aria-hidden="true" size={28} />
+              <p>{text.hero.ownership}</p>
+            </div>
           </aside>
         </div>
         <div className="section-shell pricing-facts">

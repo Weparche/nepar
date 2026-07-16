@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useAnimationFrame, useMotionValue, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   Bot,
@@ -171,6 +171,8 @@ const content = {
         "potro\u0161a\u010da smatra da je poslovanje s web stranicom vjerodostojnije od poslovanja koje ima samo profil na dru\u0161tvenim mre\u017eama.",
       trustSource: "Izvor: Verisign Online Survey",
       cta: "Pogledaj pakete",
+      ctaLabel: "Paketi web-stranica",
+      ctaNote: "Usporedite opseg, cijene i što je uključeno u svaki paket.",
       secondaryNote:
         "Pilot ponuda od 30 \u20ac/mj za prvih 10 klijenata. Business paket od 59 \u20ac/mj i Pro paket od 89 \u20ac/mj za firme koje \u017eele vi\u0161e upita, rezervacija i analitiku.",
       redesignTitle: "Redizajn postojećeg weba",
@@ -339,6 +341,8 @@ const content = {
         "of consumers believe a business with a website is more credible than one with social media profiles only.",
       trustSource: "Source: Verisign Online Survey",
       cta: "View plans",
+      ctaLabel: "Website packages",
+      ctaNote: "Compare the scope, pricing, and what is included in each package.",
       secondaryNote:
         "Pilot offer from \u20ac30/mo for the first 10 clients. Business plan from \u20ac59/mo and Pro plan from \u20ac89/mo for businesses that want more inquiries, bookings, and analytics.",
       redesignTitle: "Redesign of your existing website",
@@ -616,23 +620,30 @@ export function MotionButton({ href, onClick, children, className = "", variant 
   );
 }
 
-function ProjectPreviewSmall({ type, copy }) {
+function FeaturedProjectImage({ type, copy }) {
+  const frameClass = "featured-project-media";
+
   if (type === "autogubic") {
     return (
-      <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-xl border border-cyan-300/50 bg-gradient-to-br from-blue-50 to-cyan-100">
-        <CarFront size={34} className="text-blue-700" aria-hidden="true" />
+      <div className={frameClass}>
+        <img
+          src="/brand/autogubic.webp"
+          alt="Auto Gubić web-stranica"
+          loading="lazy"
+          className="featured-project-media-image"
+        />
       </div>
     );
   }
 
   if (type === "invite") {
     return (
-      <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-xl border border-fuchsia-300/50 bg-slate-100">
+      <div className={frameClass}>
         <img
           src="/brand/vidimose.webp"
           alt={copy.previewAlts.invite}
           loading="lazy"
-          className="h-full w-full object-cover object-top"
+          className="featured-project-media-image"
         />
       </div>
     );
@@ -640,70 +651,50 @@ function ProjectPreviewSmall({ type, copy }) {
 
   if (type === "ai") {
     return (
-      <div className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-blue-300/50 bg-slate-100">
+      <div className={frameClass}>
         <img
           src="/brand/kpdinfo.webp"
           alt="KPDinfo.com"
           loading="lazy"
-          className="absolute inset-0 size-full object-cover object-top"
+          className="featured-project-media-image"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent" />
-        <div className="absolute inset-x-1.5 bottom-1.5 flex h-4 items-end gap-0.5">
-          {[35, 62, 50, 74].map((height) => (
-            <span
-              key={height}
-              className="flex-1 rounded-t bg-gradient-to-t from-blue-600 to-cyan-300 opacity-80"
-              style={{ height: `${height}%` }}
-            />
-          ))}
-        </div>
       </div>
     );
   }
 
   if (type === "geo") {
     return (
-      <div className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-blue-300/50 bg-slate-100">
+      <div className={frameClass}>
         <img
           src="/brand/geoadrese.webp"
           alt={copy.previewAlts.geo}
           loading="lazy"
-          className="absolute inset-0 size-full object-cover object-top"
+          className="featured-project-media-image"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-transparent to-transparent" />
-        <MapPin className="absolute bottom-2 right-2 text-cyan-200 drop-shadow" size={18} />
       </div>
     );
   }
 
   if (type === "kadigra") {
     return (
-      <div className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-red-300/50 bg-slate-100">
+      <div className={frameClass}>
         <img
           src="/brand/kadigrahrvatska.webp"
           alt={copy.previewAlts.kadigra}
           loading="lazy"
-          className="absolute inset-0 size-full object-cover object-center"
+          className="featured-project-media-image featured-project-media-image-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-transparent to-transparent" />
       </div>
     );
   }
 
   return (
-    <div className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-blue-300/50 bg-slate-100">
+    <div className={frameClass}>
       <img
-        src="/brand/bezstruje.png"
+        src="/brand/bezstruje.webp"
         alt={copy.previewAlts.outage}
         loading="lazy"
-        className="absolute inset-0 size-full object-cover object-top opacity-90"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-transparent to-transparent" />
-      <img
-        src="/brand/bezstruje_logo.png"
-        alt=""
-        loading="lazy"
-        className="absolute bottom-1.5 left-1.5 h-5 w-auto rounded bg-white/85 p-0.5"
+        className="featured-project-media-image"
       />
     </div>
   );
@@ -899,7 +890,7 @@ function WebStartPromo({ copy }) {
       >
         <div className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-cyan-400/10 blur-2xl" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 size-32 rounded-full bg-violet-400/10 blur-2xl" />
-        <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-6 xl:gap-8">
+        <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-stretch lg:gap-7 xl:grid-cols-[minmax(0,1fr)_290px] xl:gap-9">
           <div className="min-w-0">
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{promo.eyebrow}</p>
             <h2 className="text-xl font-semibold leading-tight text-slate-900 sm:text-2xl lg:text-3xl">{promo.title}</h2>
@@ -935,60 +926,100 @@ function WebStartPromo({ copy }) {
             </a>
           </div>
 
-          <MotionButton
-            href="/usluge/web-stranica-bez-pocetnog-troska#paketi"
-            className="inline-flex w-full px-5 py-3.5 text-sm sm:px-6 sm:py-4 sm:text-base lg:w-auto lg:shrink-0 lg:self-center"
-          >
-            {promo.cta}
-            <ArrowRight size={18} />
-          </MotionButton>
+          <div className="flex flex-col justify-between gap-5 border-t border-slate-200 pt-5 lg:border-l lg:border-t-0 lg:py-1 lg:pl-7">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">{promo.ctaLabel}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{promo.ctaNote}</p>
+            </div>
+            <MotionButton
+              href="/usluge/izrada-web-stranica#paketi"
+              className="inline-flex w-full px-5 py-3.5 text-sm sm:px-6 sm:py-4 sm:text-base"
+            >
+              {promo.cta}
+              <ArrowRight size={18} />
+            </MotionButton>
+          </div>
         </div>
       </motion.div>
     </section>
   );
 }
 
-function FeaturedProjects({ copy }) {
+function FeaturedProjectCard({ project, copy, duplicate = false }) {
+  const Icon = project.Icon;
+  const ProjectShell = project.href ? motion.a : motion.article;
+  const linkProps = project.href
+    ? {
+        href: project.href,
+        target: "_blank",
+        rel: "noreferrer",
+        ...(duplicate ? { tabIndex: -1 } : {}),
+      }
+    : {};
+
   return (
-    <section id="projekti" className="px-4 py-8 scroll-mt-24 sm:py-10">
-      <div className="mx-auto max-w-[1180px] border-t border-slate-200/80 pt-5 lg:max-w-[1380px]">
-        <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-slate-900 sm:mb-5">
+    <ProjectShell
+      {...linkProps}
+      whileHover={duplicate ? undefined : { y: -4 }}
+      whileTap={duplicate ? undefined : { scale: 0.99 }}
+      transition={{ duration: 0.18, ease: easeOut }}
+      className="featured-project-card group"
+    >
+      <FeaturedProjectImage type={project.preview} copy={copy} />
+      <div className="featured-project-card-copy">
+        <div className="featured-project-card-heading">
+          <span className={`grid size-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${project.accent} text-white`}>
+            <Icon size={16} aria-hidden="true" />
+          </span>
+          <h3>{project.title}</h3>
+          {project.href && <ArrowRight className="featured-project-card-arrow" size={17} aria-hidden="true" />}
+        </div>
+        <p>{project.description}</p>
+      </div>
+    </ProjectShell>
+  );
+}
+
+function FeaturedProjects({ copy }) {
+  const projects = [...copy.projects, ...copy.featuredOnlyProjects];
+  const trackX = useMotionValue(0);
+  const trackRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const reduceMotion = useReducedMotion();
+
+  useAnimationFrame((_, delta) => {
+    if (reduceMotion || isPaused || !trackRef.current) return;
+    const loopWidth = trackRef.current.scrollWidth / 2;
+    if (!loopWidth) return;
+    const nextX = trackX.get() - Math.min(delta, 64) * 0.038;
+    trackX.set(nextX <= -loopWidth ? nextX + loopWidth : nextX);
+  });
+
+  return (
+    <section id="projekti" className="featured-projects-section py-9 scroll-mt-24 sm:py-12">
+      <div className="mx-auto max-w-[1180px] border-t border-slate-200/80 px-4 pt-6 lg:max-w-[1380px]">
+        <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-slate-900 sm:mb-6">
           {copy.featured.eyebrow}
         </p>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            {[...copy.projects, ...copy.featuredOnlyProjects].map((project, index) => {
-              const Icon = project.Icon;
-              const ProjectShell = project.href ? motion.a : motion.article;
-              const linkProps = project.href
-                ? { href: project.href, target: "_blank", rel: "noreferrer" }
-                : {};
-
-              return (
-                <ProjectShell
-                  {...linkProps}
-                  key={project.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-70px" }}
-                  transition={{ duration: 0.34, delay: index * 0.045, ease: easeOut }}
-                  whileHover={{ y: -3, scale: 1.006 }}
-                  whileTap={{ scale: 0.99 }}
-                  className="premium-card group flex min-h-[112px] items-center gap-3 p-3"
-                >
-                  <ProjectPreviewSmall type={project.preview} copy={copy} />
-                  <div className="min-w-0">
-                    <div className="mb-1 flex items-center gap-2">
-                      <span className={`grid size-7 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${project.accent} text-white`}>
-                        <Icon size={15} />
-                      </span>
-                      <h3 className="truncate text-sm font-semibold text-slate-900 transition-colors duration-200 group-hover:text-blue-700">{project.title}</h3>
-                    </div>
-                    <p className="text-sm leading-5 text-slate-600">{project.description}</p>
-                  </div>
-                </ProjectShell>
-              );
-            })}
-        </div>
+      </div>
+      <div
+        className={`featured-projects-viewport ${reduceMotion ? "is-reduced-motion" : ""}`}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocusCapture={() => setIsPaused(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) setIsPaused(false);
+        }}
+        aria-label={copy.featured.eyebrow}
+      >
+        <motion.div ref={trackRef} className="featured-projects-track" style={{ x: trackX }} data-testid="featured-projects-track">
+          <div className="featured-projects-group">
+            {projects.map((project) => <FeaturedProjectCard key={project.title} project={project} copy={copy} />)}
+          </div>
+          <div className="featured-projects-group" aria-hidden="true">
+            {projects.map((project) => <FeaturedProjectCard key={`duplicate-${project.title}`} project={project} copy={copy} duplicate />)}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
