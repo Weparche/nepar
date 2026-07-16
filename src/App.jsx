@@ -110,28 +110,28 @@ const content = {
         description: "Pretvaramo ideje u brze, sigurne i skalabilne web aplikacije prilago\u0111ene va\u0161em poslovanju \u2014 od prototipa do produkcije.",
         Icon: Globe,
         iconCls: "bg-blue-500/15 text-blue-300 ring-blue-400/20",
-        blurCls: "bg-blue-400/12",
+        backgroundSrc: "/brand/service-web-apps.webp",
       },
       {
         title: "Portali i alati",
         description: "Specijalizirani portali i pametni alati koji rje\u0161avaju prave probleme va\u0161ih korisnika \u2014 br\u017ee, jednostavnije, u\u010dinkovitije.",
         Icon: Layers,
         iconCls: "bg-violet-500/15 text-violet-300 ring-violet-400/20",
-        blurCls: "bg-violet-400/12",
+        backgroundSrc: "/brand/service-portals.webp",
       },
       {
         title: "AI i automatizacija",
         description: "AI asistenti i automatizacija koja preuzima repetitivne zadatke, ubrzava procese i osloba\u0111a va\u0161 tim za ono \u0161to je zaista va\u017eno.",
         Icon: Wand2,
         iconCls: "bg-cyan-500/15 text-cyan-300 ring-cyan-400/20",
-        blurCls: "bg-cyan-400/12",
+        backgroundSrc: "/brand/service-ai-automation.webp",
       },
       {
         title: "Mape i podaci",
         description: "Geo rje\u0161enja, pretraga adresa i prostorne analize integrirane direktno u va\u0161 sustav \u2014 precizno, pouzdano i u stvarnom vremenu.",
         Icon: Database,
         iconCls: "bg-amber-500/15 text-amber-300 ring-amber-400/20",
-        blurCls: "bg-amber-400/12",
+        backgroundSrc: "/brand/service-maps-data.webp",
       },
     ],
     stats: [
@@ -280,28 +280,28 @@ const content = {
         description: "We turn ideas into fast, secure, and scalable web applications built for your business — from prototype to production.",
         Icon: Globe,
         iconCls: "bg-blue-500/15 text-blue-300 ring-blue-400/20",
-        blurCls: "bg-blue-400/12",
+        backgroundSrc: "/brand/service-web-apps.webp",
       },
       {
         title: "Portals and tools",
         description: "Specialized portals and smart tools that solve real user problems — faster, simpler, and more effectively.",
         Icon: Layers,
         iconCls: "bg-violet-500/15 text-violet-300 ring-violet-400/20",
-        blurCls: "bg-violet-400/12",
+        backgroundSrc: "/brand/service-portals.webp",
       },
       {
         title: "AI and automation",
         description: "AI assistants and automation that take over repetitive tasks, speed up processes, and free your team for what truly matters.",
         Icon: Wand2,
         iconCls: "bg-cyan-500/15 text-cyan-300 ring-cyan-400/20",
-        blurCls: "bg-cyan-400/12",
+        backgroundSrc: "/brand/service-ai-automation.webp",
       },
       {
         title: "Maps and data",
         description: "Geo solutions, address search, and spatial analytics integrated directly into your system — precise, reliable, and real-time.",
         Icon: Database,
         iconCls: "bg-amber-500/15 text-amber-300 ring-amber-400/20",
-        blurCls: "bg-amber-400/12",
+        backgroundSrc: "/brand/service-maps-data.webp",
       },
     ],
     stats: [
@@ -849,7 +849,7 @@ function Services({ copy }) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {copy.services.map(({ title, description, Icon, iconCls, blurCls }, index) => (
+          {copy.services.map(({ title, description, Icon, iconCls, backgroundSrc }, index) => (
             <motion.article
               key={title}
               initial={{ opacity: 0, y: 16 }}
@@ -858,16 +858,19 @@ function Services({ copy }) {
               transition={{ duration: 0.42, delay: index * 0.055, ease: easeOut }}
               whileHover={{ y: -4, scale: 1.008 }}
               whileTap={{ scale: 0.99 }}
-              className="premium-card service-card group relative min-h-[230px] overflow-hidden p-5"
+              className="premium-card service-card group relative min-h-[320px] overflow-hidden p-5"
             >
-              <div className={`absolute -right-10 -top-10 size-28 rounded-full opacity-70 blur-2xl transition-opacity duration-300 group-hover:opacity-100 ${blurCls}`} />
-              <div className="relative mb-4 flex items-center gap-3">
-                <div className={`grid size-12 place-items-center rounded-2xl ring-1 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-3 group-hover:scale-105 ${iconCls}`}>
-                  <Icon size={23} />
+              <img src={backgroundSrc} alt="" loading="lazy" className="service-card-art" />
+              <div className="service-card-shade" aria-hidden="true" />
+              <div className="service-card-content">
+                <div className="flex items-center gap-3">
+                  <div className={`grid size-12 place-items-center rounded-xl ring-1 backdrop-blur-sm transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-3 group-hover:scale-105 ${iconCls}`}>
+                    <Icon size={23} aria-hidden="true" />
+                  </div>
+                  <h3 className="text-base font-semibold text-white">{title}</h3>
                 </div>
-                <h3 className="text-base font-semibold text-slate-900 transition-colors duration-300 group-hover:text-blue-700">{title}</h3>
+                <p className="text-sm leading-6 text-slate-100">{description}</p>
               </div>
-              <p className="relative text-sm leading-6 text-slate-600">{description}</p>
             </motion.article>
           ))}
         </div>
