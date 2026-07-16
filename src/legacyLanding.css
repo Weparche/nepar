@@ -123,6 +123,8 @@
 .featured-projects-viewport {
   overflow: hidden;
   padding: 0.25rem 0 0.75rem max(1rem, calc((100vw - 1380px) / 2 + 1rem));
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 clamp(24px, 4vw, 64px), #000 calc(100% - clamp(24px, 4vw, 64px)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 clamp(24px, 4vw, 64px), #000 calc(100% - clamp(24px, 4vw, 64px)), transparent 100%);
 }
 
 .featured-projects-track,
@@ -139,7 +141,7 @@
 .featured-project-card {
   display: flex;
   width: clamp(270px, 21vw, 300px);
-  min-height: 330px;
+  min-height: 380px;
   flex: 0 0 auto;
   flex-direction: column;
   overflow: hidden;
@@ -152,7 +154,8 @@
 
 .featured-project-media {
   position: relative;
-  aspect-ratio: 16 / 10;
+  height: 220px;
+  flex: 0 0 auto;
   overflow: hidden;
   border-bottom: 1px solid rgba(226, 232, 240, 0.95);
   background: #f1f5f9;
@@ -168,30 +171,6 @@
 
 .featured-project-media-image-center {
   object-position: center;
-}
-
-.featured-project-media-fallback {
-  display: grid;
-  place-content: center;
-  gap: 0.75rem;
-  color: #1e3a8a;
-  background:
-    linear-gradient(135deg, rgba(219, 234, 254, 0.95), rgba(207, 250, 254, 0.9));
-  font-size: 1rem;
-  font-weight: 700;
-  text-align: center;
-}
-
-.featured-project-media-mark {
-  display: grid;
-  width: 72px;
-  height: 72px;
-  place-items: center;
-  margin-inline: auto;
-  border: 1px solid rgba(37, 99, 235, 0.22);
-  border-radius: 50%;
-  color: #1d4ed8;
-  background: rgba(255, 255, 255, 0.75);
 }
 
 .featured-project-card-copy {
@@ -379,6 +358,11 @@
 
   .featured-project-card {
     width: min(82vw, 310px);
+    min-height: 365px;
+  }
+
+  .featured-project-media {
+    height: 210px;
   }
 }
 

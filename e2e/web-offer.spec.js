@@ -54,6 +54,7 @@ test("restored landing keeps its original structure and adds Auto Gubić below",
   await expect(projectLink).toHaveAttribute("target", "_blank");
   await expect(projectLink).toHaveAttribute("rel", /noreferrer/);
   await expect(projectLink.getByRole("heading", { name: "Auto Gubić" })).toBeVisible();
+  await expect(projectLink.locator('img[src="/brand/autogubic.webp"]')).toHaveAttribute("alt", "Auto Gubić web-stranica");
 
   await expectNoHorizontalOverflow(page);
   await expectTouchTargets(page);
