@@ -45,7 +45,9 @@ test("restored landing keeps its original structure and adds Auto Gubić below",
   ).toBeVisible();
   await expect(page.getByText("Pilot popunjenost")).toHaveCount(0);
   await expect(page.getByText("mjesta popunjeno")).toHaveCount(0);
-  await expect(page.locator("#usluge .service-card-art")).toHaveCount(4);
+  const serviceImages = page.locator("#usluge .service-card-art");
+  await expect(serviceImages).toHaveCount(4);
+  await expect.poll(() => serviceImages.evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0))).toBe(true);
 
   const projects = page.locator("#projekti");
   await projects.scrollIntoViewIfNeeded();

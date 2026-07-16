@@ -111,6 +111,7 @@ const content = {
         Icon: Globe,
         iconCls: "bg-white/90 text-blue-700 ring-blue-200/80",
         backgroundSrc: "/brand/service-web-apps-light.webp",
+        artCls: "service-card-art-emphasis",
       },
       {
         title: "Portali i alati",
@@ -118,6 +119,7 @@ const content = {
         Icon: Layers,
         iconCls: "bg-white/90 text-violet-700 ring-violet-200/80",
         backgroundSrc: "/brand/service-portals-light.webp",
+        artCls: "service-card-art-emphasis",
       },
       {
         title: "AI i automatizacija",
@@ -281,6 +283,7 @@ const content = {
         Icon: Globe,
         iconCls: "bg-white/90 text-blue-700 ring-blue-200/80",
         backgroundSrc: "/brand/service-web-apps-light.webp",
+        artCls: "service-card-art-emphasis",
       },
       {
         title: "Portals and tools",
@@ -288,6 +291,7 @@ const content = {
         Icon: Layers,
         iconCls: "bg-white/90 text-violet-700 ring-violet-200/80",
         backgroundSrc: "/brand/service-portals-light.webp",
+        artCls: "service-card-art-emphasis",
       },
       {
         title: "AI and automation",
@@ -849,7 +853,7 @@ function Services({ copy }) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {copy.services.map(({ title, description, Icon, iconCls, backgroundSrc }, index) => (
+          {copy.services.map(({ title, description, Icon, iconCls, backgroundSrc, artCls = "" }, index) => (
             <motion.article
               key={title}
               initial={{ opacity: 0, y: 16 }}
@@ -860,7 +864,7 @@ function Services({ copy }) {
               whileTap={{ scale: 0.99 }}
               className="premium-card service-card group relative min-h-[320px] overflow-hidden p-5"
             >
-              <img src={backgroundSrc} alt="" loading="lazy" className="service-card-art" />
+              <img src={backgroundSrc} alt="" loading="eager" className={`service-card-art ${artCls}`} />
               <div className="service-card-shade" aria-hidden="true" />
               <div className="service-card-content">
                 <div className="flex items-center gap-3">

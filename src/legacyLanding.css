@@ -72,6 +72,10 @@
   transition: transform 420ms var(--ease-out-strong), filter 420ms ease;
 }
 
+.service-card-art-emphasis {
+  filter: saturate(1.08) contrast(1.11) brightness(0.94);
+}
+
 .service-card-shade {
   z-index: -1;
   background: linear-gradient(180deg, rgba(248, 250, 252, 0.08) 0%, rgba(248, 250, 252, 0.36) 48%, rgba(248, 250, 252, 0.97) 100%);
@@ -376,6 +380,10 @@
   .service-card:hover .service-card-art {
     transform: scale(1.035);
     filter: saturate(1.02) contrast(1.04);
+  }
+
+  .service-card:hover .service-card-art-emphasis {
+    filter: saturate(1.12) contrast(1.12) brightness(0.96);
   }
 
   .featured-project-card:hover {
