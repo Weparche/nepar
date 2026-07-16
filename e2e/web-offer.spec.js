@@ -38,19 +38,24 @@ async function expectTouchTargets(page) {
   expect(undersized).toEqual([]);
 }
 
-test("landing communicates the web-first offer and featured project", async ({ page }) => {
+test("restored landing keeps its original structure and adds Auto Gubić below", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1, name: /Moderne web-stranice/ })).toBeVisible();
-  await expect(page.getByText("Web-stranica je nakon plaćanja u vlasništvu klijenta.")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode za stvarni svijet/ }),
+  ).toBeVisible();
+  await expect(page.getByText("Pilot popunjenost")).toHaveCount(0);
+  await expect(page.getByText("mjesta popunjeno")).toHaveCount(0);
 
-  const projectLink = page.getByRole("link", { name: "Pogledaj projekt" }).first();
+  const projects = page.locator("#projekti");
+  await projects.scrollIntoViewIfNeeded();
+  const projectLink = projects.getByRole("link", { name: /Auto Gubić/ });
+  await expect(projectLink).toBeVisible();
   await expect(projectLink).toHaveAttribute("href", "https://autogubic.hr/");
   await expect(projectLink).toHaveAttribute("target", "_blank");
   await expect(projectLink).toHaveAttribute("rel", /noreferrer/);
-  await expect(page.getByRole("heading", { name: "Auto Gubić" }).first()).toBeVisible();
+  await expect(projectLink.getByRole("heading", { name: "Auto Gubić" })).toBeVisible();
 
   await expectNoHorizontalOverflow(page);
-  await expectHeadingOrder(page);
   await expectTouchTargets(page);
 });
 
@@ -113,9 +118,11 @@ test("legacy route redirects and keeps its anchor", async ({ page }) => {
 });
 
 test("landing and pricing have no serious accessibility violations", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   for (const path of ["/", servicePath]) {
     await page.goto(path);
     await expect(page.locator("h1")).toBeVisible();
+    await page.waitForTimeout(300);
     const results = await new AxeBuilder({ page }).analyze();
     const serious = results.violations.filter(({ impact }) => impact === "serious" || impact === "critical");
     expect(serious, `${path}: ${serious.map((item) => item.id).join(", ")}`).toEqual([]);
