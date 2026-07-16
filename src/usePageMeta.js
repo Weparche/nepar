@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-const DEFAULT_TITLE = "Nepar Solutions | Digitalna rješenja po mjeri";
+const DEFAULT_TITLE = "Izrada modernih i SEO optimiziranih web-stranica | Nepar";
 const DEFAULT_DESCRIPTION =
-  "Nepar Solutions gradi web aplikacije, AI alate, portale i digitalna rješenja po mjeri.";
+  "Nepar izrađuje moderne, brze i SEO optimizirane web-stranice za obrte i tvrtke, uz jasne jednokratne cijene i opcionalno održavanje.";
 const DEFAULT_IMAGE = "/brand/web-app-manifest-512x512.png";
 const DEFAULT_IMAGE_ALT = "Nepar Solutions";
 const DEFAULT_SITE_URL = "https://nepar.hr";
@@ -15,6 +15,16 @@ function upsertMeta(attr, key, value) {
     document.head.appendChild(el);
   }
   el.setAttribute("content", value);
+}
+
+function upsertLink(rel, href) {
+  let element = document.querySelector(`link[rel="${rel}"]`);
+  if (!element) {
+    element = document.createElement("link");
+    element.setAttribute("rel", rel);
+    document.head.appendChild(element);
+  }
+  element.setAttribute("href", href);
 }
 
 function absoluteMetaUrl(siteUrl, value) {
@@ -50,6 +60,7 @@ export function usePageMeta({
   imageAlt = DEFAULT_IMAGE_ALT,
   imageWidth = 512,
   imageHeight = 512,
+  canonicalPath = path,
 }) {
   useEffect(() => {
     document.title = title;
@@ -64,6 +75,9 @@ export function usePageMeta({
       (typeof window !== "undefined" ? window.location.origin : DEFAULT_SITE_URL);
     if (siteUrl && path) {
       upsertMeta("property", "og:url", `${siteUrl}${path}`);
+    }
+    if (siteUrl && canonicalPath) {
+      upsertLink("canonical", `${siteUrl}${canonicalPath}`);
     }
     upsertSocialImageMeta({
       image,
@@ -81,6 +95,7 @@ export function usePageMeta({
       upsertMeta("name", "twitter:title", DEFAULT_TITLE);
       upsertMeta("name", "twitter:description", DEFAULT_DESCRIPTION);
       if (siteUrl) upsertMeta("property", "og:url", `${siteUrl}/`);
+      if (siteUrl) upsertLink("canonical", `${siteUrl}/`);
       upsertSocialImageMeta({
         image: DEFAULT_IMAGE,
         imageAlt: DEFAULT_IMAGE_ALT,
@@ -89,5 +104,5 @@ export function usePageMeta({
         siteUrl,
       });
     };
-  }, [description, image, imageAlt, imageHeight, imageWidth, path, title]);
+  }, [canonicalPath, description, image, imageAlt, imageHeight, imageWidth, path, title]);
 }

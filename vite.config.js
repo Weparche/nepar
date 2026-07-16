@@ -5,9 +5,9 @@ import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const DEFAULT_SOCIAL = {
-  title: "Nepar Solutions | Digitalna rješenja po mjeri",
+  title: "Izrada modernih i SEO optimiziranih web-stranica | Nepar",
   description:
-    "Nepar Solutions gradi web aplikacije, AI alate, portale i digitalna rješenja po mjeri.",
+    "Nepar izrađuje moderne, brze i SEO optimizirane web-stranice za obrte i tvrtke, uz jasne jednokratne cijene i opcionalno održavanje.",
   path: "/",
   imagePath: "/brand/web-app-manifest-512x512.png",
   imageAlt: "Nepar Solutions",

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, ImagePlus, Mail, MapPin, Send, X } from "lucide-react";
-import { Background, content as siteContent, Navbar } from "./App.jsx";
+import { Background, Navbar, siteContent } from "./SiteChrome.jsx";
 
 const easeOut = [0.23, 1, 0.32, 1];
 

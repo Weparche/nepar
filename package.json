@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "lint": "eslint src/App.jsx src/HomePage.jsx src/SiteChrome.jsx src/WebStartPage.jsx src/PackageInquiryModal.jsx src/usePageMeta.js src/webOfferContent.js e2e/web-offer.spec.js",
+    "typecheck": "tsc -p tsconfig.marketing.json --noEmit",
     "build": "vite build && node scripts/verify-dist.js",
     "preview": "vite preview",
     "fetch:njamko-sounds": "node scripts/fetch-njamko-sounds.js",
@@ -23,7 +25,16 @@
     "vite": "^8.0.10"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.60.0",
-    "playwright": "^1.60.0"
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^10.7.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "playwright": "^1.60.0",
+    "typescript": "^7.0.2"
   }
 }

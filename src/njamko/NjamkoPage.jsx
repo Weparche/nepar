@@ -35,6 +35,8 @@ import {
 } from "./sounds.js";
 import "./njamko.css";
 
+const EMPTY_ROUNDS = [];
+
 function getInitialScreen() {
   return "modeSelect";
 }
@@ -92,13 +94,15 @@ export default function NjamkoPage() {
   const isCountingMode = activeModeId === "counting";
 
   const engine = useGameEngine({
-    rounds: isCountingMode ? [] : activeLevel?.rounds ?? [],
+    rounds: isCountingMode ? EMPTY_ROUNDS : activeLevel?.rounds ?? EMPTY_ROUNDS,
     levelId: levelSessionKey,
     soundEnabled,
     onComplete: handleLevelComplete,
   });
   const countingEngine = useCountingGame({
-    rounds: isCountingMode ? activeLevel?.tasks ?? activeLevel?.rounds ?? [] : [],
+    rounds: isCountingMode
+      ? activeLevel?.tasks ?? activeLevel?.rounds ?? EMPTY_ROUNDS
+      : EMPTY_ROUNDS,
     levelId: levelSessionKey,
     soundEnabled,
     onComplete: handleLevelComplete,

@@ -5,29 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Poveži 16 pojmova u 4 skrivene grupe. Odaberi temu, riješi asocijacije i izazovi prijatelja." />
     <title>Dnevne Asocijacije | Mozgalica</title>
-    <script>
-      (function () {
-        try {
-          if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-          if (location.hash) history.replaceState(null, "", location.pathname + location.search);
-          var root = document.documentElement;
-          var prev = root.style.scrollBehavior;
-          root.style.scrollBehavior = "auto";
-          var snap = function () { window.scrollTo(0, 0); };
-          snap();
-          if (typeof requestAnimationFrame === "function") {
-            requestAnimationFrame(function () {
-              snap();
-              requestAnimationFrame(snap);
-            });
-          }
-          setTimeout(function () { snap(); root.style.scrollBehavior = prev; }, 50);
-          setTimeout(snap, 200);
-          setTimeout(snap, 600);
-          window.addEventListener("load", snap, { once: true });
-        } catch (e) {}
-      })();
-    </script>
     <link rel="icon" href="/brand/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
     <link
@@ -57,8 +34,9 @@
     <meta name="twitter:image" content="https://nepar.hr/brand/og-mozgalica.png" />
     <meta name="twitter:image:alt" content="Dnevne Asocijacije - Mozgalica na nepar.hr" />
     <!-- social-meta:end -->
-    <script type="module" crossorigin src="/assets/index-Bn95xPDQ.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-WgR8VW_N.css">
+    <script type="module" crossorigin src="/assets/index-BVc7Nwn6.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/jsx-runtime-2UHhqg_S.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-C9FDi7Mw.css">
   </head>
   <body>
     <div id="root"></div>

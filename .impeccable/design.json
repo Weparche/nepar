@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-16T13:30:00+02:00",
+  "title": "Design System: Nepar Solutions",
+  "extensions": {
+    "colorMeta": {
+      "action-blue": { "role": "primary", "displayName": "Akcijska plava", "canonical": "#2563eb" },
+      "signal-cyan": { "role": "secondary", "displayName": "Signalni cijan", "canonical": "#0891b2" },
+      "depth-violet": { "role": "tertiary", "displayName": "Dubinski ljubičasti", "canonical": "#6d28d9" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Glavni hero naslovi." },
+      "body": { "displayName": "Body", "purpose": "Čitljiv sadržaj do 70 znakova po retku." }
+    },
+    "shadows": [
+      { "name": "interactive-lift", "value": "0 6px 8px rgba(15, 23, 42, 0.08)", "purpose": "Samo hover ili aktivni dijalog." }
+    ],
+    "motion": [
+      { "name": "ease-out-strong", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Kratke promjene interaktivnog stanja." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Puna plava akcija s jasnim fokusom.",
+      "html": "<button class=\"ds-btn-primary\">Pogledaj pakete</button>",
+      "css": ".ds-btn-primary{min-height:44px;border:0;border-radius:12px;background:#2563eb;color:#fff;padding:14px 22px;font:600 16px/1.2 Inter,sans-serif;transition:background .18s,transform .18s}.ds-btn-primary:hover{background:#1d4ed8;transform:translateY(-1px)}.ds-btn-primary:focus-visible{outline:2px solid #2563eb;outline-offset:3px}"
+    },
+    {
+      "name": "Package Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Jasna cijena, opseg i način plaćanja bez dekorativne sjene.",
+      "html": "<article class=\"ds-package\"><h3>Web Business</h3><strong>500 €</strong><span>jednokratno</span></article>",
+      "css": ".ds-package{max-width:360px;border:1px solid #bfdbfe;border-radius:16px;background:#fff;color:#334155;padding:24px;font:400 16px/1.6 Inter,sans-serif}.ds-package h3{margin:0;color:#0f172a;font-size:22px}.ds-package strong{display:block;margin-top:16px;color:#0f172a;font-size:36px}.ds-package span{color:#64748b}.ds-package:focus-within{outline:2px solid #2563eb;outline-offset:3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Tehnički dokaz",
+    "overview": "Precizan, čitljiv i dokaziv web-studio identitet koji koristi postojeće Nepar boje disciplinirano.",
+    "keyCharacteristics": ["Jasna ponuda", "Stvarni projekti", "Mobilna čitljivost", "Kontrolirani akcenti"],
+    "rules": [
+      { "name": "Pravilo jedne akcijske boje", "body": "Jedna komponenta koristi jednu dominantnu akcijsku boju.", "section": "colors" },
+      { "name": "Ravno prema zadanim postavkama", "body": "Kartice koriste obrub ili tonalnu podlogu, ne široku dekorativnu sjenu.", "section": "elevation" }
+    ],
+    "dos": ["Zadržati logo i potvrđenu paletu.", "Pokazati cijenu, vlasništvo i opseg bez skrivanja."],
+    "donts": ["Ne koristiti generički agency predložak.", "Ne koristiti pretplatnički jezik ili SEO garancije."]
+  }
+}

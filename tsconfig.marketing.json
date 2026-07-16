@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "allowJs": true,
+    "checkJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+    "noEmit": true,
+    "strict": false
+  },
+  "include": [
+    "src/HomePage.jsx",
+    "src/SiteChrome.jsx",
+    "src/WebStartPage.jsx",
+    "src/PackageInquiryModal.jsx",
+    "src/usePageMeta.js",
+    "src/webOfferContent.js"
+  ]
+}
