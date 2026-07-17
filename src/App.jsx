@@ -893,16 +893,25 @@ function WebStartPromo({ copy }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mx-auto max-w-[1180px] overflow-hidden rounded-2xl border border-blue-200/70 bg-white/85 p-5 shadow-xl shadow-blue-200/35 backdrop-blur-md sm:p-7 lg:max-w-[1380px]"
+        className="relative mx-auto max-w-[1180px] overflow-hidden rounded-2xl bg-white p-5 shadow-[0_8px_24px_rgba(59,130,246,0.14)] sm:p-7 lg:max-w-[1380px]"
       >
-        <div className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-cyan-400/10 blur-2xl" />
-        <div className="pointer-events-none absolute -bottom-8 -left-8 size-32 rounded-full bg-violet-400/10 blur-2xl" />
+        <picture className="pointer-events-none absolute inset-0 block" aria-hidden="true">
+          <source media="(max-width: 1023px)" srcSet="/nepar-background-mobile-900x1600.webp" />
+          <img
+            src="/nepar-background-desktop-2400x900.webp"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="size-full object-cover object-center"
+          />
+        </picture>
+        <div className="pointer-events-none absolute inset-0 bg-white/10" aria-hidden="true" />
         <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-stretch lg:gap-7 xl:grid-cols-[minmax(0,1fr)_290px] xl:gap-9">
           <div className="min-w-0">
-            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{promo.eyebrow}</p>
-            <h2 className="text-xl font-semibold leading-tight text-slate-900 sm:text-2xl lg:text-3xl">{promo.title}</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">{promo.description}</p>
-            <p className="mt-3 max-w-3xl rounded-xl border border-blue-200/70 bg-blue-50/60 px-3.5 py-3 text-sm font-medium leading-6 text-slate-800 sm:px-4 sm:text-base">
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-700">{promo.eyebrow}</p>
+            <h2 className="text-xl font-bold leading-tight tracking-[-0.02em] text-slate-950 sm:text-2xl lg:text-3xl">{promo.title}</h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-6 text-slate-700 sm:text-base sm:leading-7">{promo.description}</p>
+            <p className="mt-3 max-w-3xl rounded-xl border border-blue-200/70 bg-blue-50/70 px-3.5 py-3 text-sm font-semibold leading-6 text-slate-900 sm:px-4 sm:text-base">
               {promo.highlight}
             </p>
             <motion.div
@@ -910,21 +919,21 @@ function WebStartPromo({ copy }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.45, ease: easeOut, delay: 0.08 }}
-              className="mt-3 max-w-3xl rounded-xl border border-slate-200/80 bg-white/80 px-3.5 py-3 sm:px-4"
+              className="mt-3 max-w-3xl rounded-xl border border-slate-200/80 bg-white/90 px-3.5 py-3 sm:px-4"
             >
-              <p className="text-sm leading-6 text-slate-700">
-                <span className="font-semibold text-blue-600">84%</span> {promo.trustStat}
+              <p className="text-sm font-medium leading-6 text-slate-800">
+                <span className="font-bold text-blue-700">84%</span> {promo.trustStat}
               </p>
-              <p className="mt-1 text-xs text-slate-500">{promo.trustSource}</p>
+              <p className="mt-1 text-xs font-medium text-slate-600">{promo.trustSource}</p>
             </motion.div>
-            <p className="mt-3 max-w-3xl text-xs leading-5 text-slate-500 sm:text-sm sm:leading-6">{promo.secondaryNote}</p>
+            <p className="mt-3 max-w-3xl text-xs font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6">{promo.secondaryNote}</p>
             <a
               href="/usluge/web-stranica-bez-pocetnog-troska#redizajn-weba"
               className="mt-4 flex max-w-3xl flex-col gap-2 rounded-xl border border-violet-200/70 bg-violet-50/50 px-4 py-3 transition hover:border-violet-300 hover:bg-violet-50/80 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
             >
               <div className="min-w-0 text-left">
                 <p className="text-sm font-semibold text-slate-900">{promo.redesignTitle}</p>
-                <p className="mt-0.5 text-xs leading-5 text-slate-600 sm:text-sm">{promo.redesignText}</p>
+                <p className="mt-0.5 text-xs font-medium leading-5 text-slate-700 sm:text-sm">{promo.redesignText}</p>
               </div>
               <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-violet-700">
                 {promo.redesignCta}
@@ -936,7 +945,7 @@ function WebStartPromo({ copy }) {
           <div className="flex flex-col justify-between gap-5 border-t border-slate-200 pt-5 lg:border-l lg:border-t-0 lg:py-1 lg:pl-7">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">{promo.ctaLabel}</p>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{promo.ctaNote}</p>
+              <p className="mt-2 text-sm font-bold leading-6 text-slate-800">{promo.ctaNote}</p>
             </div>
             <MotionButton
               href="/usluge/izrada-web-stranica#paketi"
