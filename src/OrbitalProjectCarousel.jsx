@@ -9,9 +9,7 @@ import {
   DatabaseZap,
   Heart,
   MapPin,
-  Plus,
   RotateCw,
-  Search,
   Trophy,
   Zap,
 } from "lucide-react";
@@ -368,7 +366,7 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, 
   );
 }
 
-function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMobile, copy }) {
+function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMobile, isAnimating, copy }) {
   const x = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).x);
   const y = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).y);
   const scale = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).scale);
@@ -406,7 +404,7 @@ function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMob
         rotateY,
         zIndex,
         transformStyle: "preserve-3d",
-        willChange: "transform",
+        willChange: isAnimating ? "transform" : "auto",
         backfaceVisibility: "hidden",
       }}
     >
@@ -418,6 +416,43 @@ function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMob
           boxShadow={isMobile ? "0 6px 18px rgba(15,23,42,0.28)" : boxShadow}
           borderColor={borderColor}
           isMobile={isMobile}
+          copy={copy}
+        />
+      </div>
+    </motion.div>
+  );
+}
+
+function MobileOrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isAnimating, copy }) {
+  const x = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).x);
+  const y = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).y);
+  const scale = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).scale);
+  const zIndex = useTransform(
+    angle,
+    (value) => getOrbitalPosition(value, index, radiusX, radiusY).zIndex + 20,
+  );
+
+  return (
+    <motion.div
+      className="orbital-item absolute left-1/2"
+      style={{
+        top: orbitCenterY,
+        x,
+        y,
+        scale,
+        zIndex,
+        willChange: isAnimating ? "transform" : "auto",
+        backfaceVisibility: "hidden",
+      }}
+    >
+      <div className="-translate-x-1/2 -translate-y-full">
+        <OrbitalCard
+          card={card}
+          opacity={1}
+          filter="none"
+          boxShadow="0 4px 10px rgba(15,23,42,0.16)"
+          borderColor="rgba(147,197,253,0.62)"
+          isMobile
           copy={copy}
         />
       </div>
@@ -442,6 +477,17 @@ function OrbitDot({ card, index, angle, radiusX, radiusY, onClick, label }) {
       style={{ opacity, width }}
       whileTap={{ scale: 0.92 }}
       className="pressable h-2.5 rounded-full bg-blue-500 transition-colors duration-200 hover:bg-cyan-500"
+      aria-label={`${label} ${card.title}`}
+    />
+  );
+}
+
+function StaticOrbitDot({ card, onClick, label }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="pressable h-2.5 w-3.5 rounded-full bg-blue-500 transition-colors duration-200 active:scale-90"
       aria-label={`${label} ${card.title}`}
     />
   );
@@ -475,7 +521,8 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
   useAnimationFrame((time, delta) => {
     if (prefersReducedMotion) return;
     if (!inView) return;
-    const next = (angle.get() + delta * (isMobile ? 0.0136 : 0.0046)) % 360;
+    if (document.visibilityState !== "visible") return;
+    const next = (angle.get() + delta * (isMobile ? 0.0066 : 0.0046)) % 360;
     angle.set(next);
   });
 
@@ -619,32 +666,37 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
           </svg>
         </div>
 
-        {cards.map((card, index) => (
-          <OrbitalItem
-            key={card.title}
-            card={card}
-            index={index}
-            angle={angle}
-            radiusX={radiusX}
-            radiusY={radiusY}
-            orbitCenterY={orbitCenterY}
-            isMobile={isMobile}
-            copy={preview}
-          />
-        ))}
+        {cards.map((card, index) => {
+          const Item = isMobile ? MobileOrbitalItem : OrbitalItem;
+          return (
+            <Item
+              key={card.title}
+              card={card}
+              index={index}
+              angle={angle}
+              radiusX={radiusX}
+              radiusY={radiusY}
+              orbitCenterY={orbitCenterY}
+              isMobile={isMobile}
+              isAnimating={inView && !prefersReducedMotion}
+              copy={preview}
+            />
+          );
+        })}
 
-        <svg
-          className="pointer-events-none absolute left-1/2 z-[132] hidden overflow-visible sm:block"
-          style={{
-            top: orbitCenterY - radiusY - 24,
-            width: radiusX * 2 + 48,
-            height: radiusY * 2 + 48,
-            transform: "translateX(-50%)",
-          }}
-          viewBox="0 0 1000 180"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
+        {!isMobile && (
+          <svg
+            className="pointer-events-none absolute left-1/2 z-[132] overflow-visible"
+            style={{
+              top: orbitCenterY - radiusY - 24,
+              width: radiusX * 2 + 48,
+              height: radiusY * 2 + 48,
+              transform: "translateX(-50%)",
+            }}
+            viewBox="0 0 1000 180"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
           <defs>
             <motion.linearGradient
               id="orbitFront"
@@ -695,7 +747,8 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
             strokeLinecap="round"
             opacity="0.85"
           />
-        </svg>
+          </svg>
+        )}
 
         <div className="pointer-events-none absolute left-1/2 z-[126] h-3 w-3 -translate-x-1/2 rounded-full border border-blue-400/45 bg-white/85 shadow-[0_0_12px_rgba(59,130,246,0.18)] sm:h-5 sm:w-5 sm:border-blue-400/55 sm:shadow-[0_0_24px_rgba(59,130,246,0.22)]"
           style={{
@@ -706,28 +759,39 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
         <div className="absolute bottom-2 left-1/2 z-[120] flex -translate-x-1/2 flex-wrap items-center justify-center gap-2 sm:bottom-4 sm:gap-4">
           <div className="flex items-center gap-2">
             {cards.map((card, index) => (
-              <OrbitDot
-                key={card.title}
-                card={card}
-                index={index}
-                angle={angle}
-                radiusX={radiusX}
-                radiusY={radiusY}
-                onClick={() => jumpTo(index)}
-                label={preview.show}
-              />
+              isMobile ? (
+                <StaticOrbitDot
+                  key={card.title}
+                  card={card}
+                  onClick={() => jumpTo(index)}
+                  label={preview.show}
+                />
+              ) : (
+                <OrbitDot
+                  key={card.title}
+                  card={card}
+                  index={index}
+                  angle={angle}
+                  radiusX={radiusX}
+                  radiusY={radiusY}
+                  onClick={() => jumpTo(index)}
+                  label={preview.show}
+                />
+              )
             ))}
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs text-slate-700 shadow-sm backdrop-blur-xl max-[767px]:hidden">
-            <motion.span
-              animate={{ rotate: 360 }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
-              className="text-violet-600"
-            >
-              <RotateCw size={15} />
-            </motion.span>
-            {preview.rotating}
-          </div>
+          {!isMobile && (
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs text-slate-700 shadow-sm backdrop-blur-xl">
+              <motion.span
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
+                className="text-violet-600"
+              >
+                <RotateCw size={15} />
+              </motion.span>
+              {preview.rotating}
+            </div>
+          )}
         </div>
       </div>
     </motion.div>

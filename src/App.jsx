@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { AnimatePresence, motion, useAnimationFrame, useMotionValue, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   Bot,
@@ -40,6 +40,22 @@ const NjamkoPage = lazy(() => import("./njamko/NjamkoPage.jsx"));
 const easeOut = [0.23, 1, 0.32, 1];
 const revealTransition = { duration: 0.48, ease: easeOut };
 const quickRevealTransition = { duration: 0.32, ease: easeOut };
+
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(() => (
+    typeof window !== "undefined" ? window.matchMedia(query).matches : false
+  ));
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setMatches(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, [query]);
+
+  return matches;
+}
 
 const content = {
   hr: {
@@ -395,7 +411,7 @@ export function LanguageToggle({ lang, setLang }) {
     <div
       role="group"
       aria-label="Language"
-      className="relative inline-flex shrink-0 rounded-full border border-slate-200/80 bg-white/90 p-0.5 text-[11px] font-semibold text-slate-700 shadow-sm backdrop-blur"
+      className="language-toggle relative inline-flex shrink-0 rounded-full border border-slate-200/80 bg-white/90 p-0.5 text-[11px] font-semibold text-slate-700 shadow-sm backdrop-blur"
     >
       {["hr", "en"].map((value) => {
         const isActive = lang === value;
@@ -705,6 +721,10 @@ function FeaturedProjectImage({ type, copy }) {
 }
 
 function Hero({ copy, lang }) {
+  const reduceMotion = useReducedMotion();
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const animateMobileDetails = !reduceMotion && !isMobile;
+
   return (
     <section id="top" className="relative px-4 pt-24 sm:pt-32 lg:pt-[7.25rem]">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[540px] bg-[radial-gradient(ellipse_at_52%_8%,rgba(59,130,246,0.13),transparent_56%)]" />
@@ -772,7 +792,7 @@ function Hero({ copy, lang }) {
             {copy.hero.trust.map(([point, Icon]) => (
               <span
                 key={point}
-                className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1.5 text-sm text-slate-600 shadow-sm backdrop-blur"
+                className="hero-trust-chip inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1.5 text-sm text-slate-600 shadow-sm backdrop-blur"
               >
                 <Icon size={16} className="text-blue-600" />
                 {point}
@@ -786,18 +806,18 @@ function Hero({ copy, lang }) {
             transition={{ ...quickRevealTransition, delay: 0.34 }}
             className="mt-3 -mb-3 lg:hidden"
           >
-            <div className="inline-flex items-center gap-3 rounded-full border border-cyan-400/50 bg-white/85 px-4 py-2 text-sm font-semibold text-slate-800 shadow-lg shadow-cyan-500/10 backdrop-blur">
+            <div className="mobile-projects-pill inline-flex items-center gap-3 rounded-full border border-cyan-400/50 bg-white/85 px-4 py-2 text-sm font-semibold text-slate-800 shadow-lg shadow-cyan-500/10 backdrop-blur">
               <motion.span
                 aria-hidden="true"
-                animate={{ scale: [1, 1.25, 1], opacity: [0.65, 1, 0.65] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                animate={animateMobileDetails ? { scale: [1, 1.25, 1], opacity: [0.65, 1, 0.65] } : false}
+                transition={animateMobileDetails ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" } : undefined}
                 className="size-2.5 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.8)]"
               />
               {copy.hero.mobileProjects}
               <motion.span
                 aria-hidden="true"
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                animate={animateMobileDetails ? { x: [0, 5, 0] } : false}
+                transition={animateMobileDetails ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" } : undefined}
                 className="h-px w-8 bg-gradient-to-r from-cyan-300 to-transparent"
               />
             </div>
@@ -837,6 +857,8 @@ function StatsBar({ copy }) {
 }
 
 function Services({ copy }) {
+  const isMobile = useMediaQuery("(max-width: 767px)");
+
   return (
     <section id="usluge" className="overflow-x-hidden px-4 py-8 scroll-mt-24 sm:py-10">
       <div className="mx-auto grid max-w-[1180px] gap-6 lg:max-w-[1380px] xl:grid-cols-[280px_1fr]">
@@ -856,11 +878,11 @@ function Services({ copy }) {
           {copy.services.map(({ title, description, Icon, iconCls, backgroundSrc, artCls = "" }, index) => (
             <motion.article
               key={title}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: isMobile ? 8 : 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "0px 0px -120px 0px", amount: 0.24 }}
-              transition={{ duration: 0.42, delay: index * 0.055, ease: easeOut }}
-              whileHover={{ y: -4, scale: 1.008 }}
+              transition={{ duration: isMobile ? 0.28 : 0.42, delay: index * (isMobile ? 0.025 : 0.055), ease: easeOut }}
+              whileHover={isMobile ? undefined : { y: -4, scale: 1.008 }}
               whileTap={{ scale: 0.99 }}
               className="premium-card service-card group relative min-h-[320px] overflow-hidden p-5"
             >
@@ -999,20 +1021,24 @@ function FeaturedProjectCard({ project, copy, duplicate = false }) {
 function FeaturedProjects({ copy }) {
   const projects = [...copy.projects, ...copy.featuredOnlyProjects];
   const trackX = useMotionValue(0);
+  const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const reduceMotion = useReducedMotion();
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isInView = useInView(sectionRef, { margin: "240px 0px 240px 0px" });
+  const isMoving = !reduceMotion && !isPaused && isInView;
 
   useAnimationFrame((_, delta) => {
-    if (reduceMotion || isPaused || !trackRef.current) return;
+    if (!isMoving || document.visibilityState !== "visible" || !trackRef.current) return;
     const loopWidth = trackRef.current.scrollWidth / 2;
     if (!loopWidth) return;
-    const nextX = trackX.get() - Math.min(delta, 64) * 0.038;
+    const nextX = trackX.get() - Math.min(delta, 48) * (isMobile ? 0.028 : 0.038);
     trackX.set(nextX <= -loopWidth ? nextX + loopWidth : nextX);
   });
 
   return (
-    <section id="projekti" className="featured-projects-section py-9 scroll-mt-24 sm:py-12">
+    <section ref={sectionRef} id="projekti" className="featured-projects-section py-9 scroll-mt-24 sm:py-12">
       <div className="mx-auto max-w-[1180px] border-t border-slate-200/80 px-4 pt-6 lg:max-w-[1380px]">
         <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-slate-900 sm:mb-6">
           {copy.featured.eyebrow}
@@ -1028,7 +1054,12 @@ function FeaturedProjects({ copy }) {
         }}
         aria-label={copy.featured.eyebrow}
       >
-        <motion.div ref={trackRef} className="featured-projects-track" style={{ x: trackX }} data-testid="featured-projects-track">
+        <motion.div
+          ref={trackRef}
+          className={`featured-projects-track ${isMoving ? "is-moving" : ""}`}
+          style={{ x: trackX }}
+          data-testid="featured-projects-track"
+        >
           <div className="featured-projects-group">
             {projects.map((project) => <FeaturedProjectCard key={project.title} project={project} copy={copy} />)}
           </div>
@@ -1131,6 +1162,8 @@ function About({ copy, lang }) {
 
 function BottomCta({ copy }) {
   const reduceMotion = useReducedMotion();
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const animateDecoration = !reduceMotion && !isMobile;
 
   return (
     <section id="kontakt" className="fixed inset-x-0 bottom-0 z-40 px-2 pb-2 sm:px-5 sm:pb-5">
@@ -1207,13 +1240,13 @@ function BottomCta({ copy }) {
           <div className="flex items-center gap-2.5 sm:gap-4">
             <div className="relative shrink-0">
               <motion.div
-                animate={reduceMotion ? false : { rotate: 360 }}
-                transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+                animate={animateDecoration ? { rotate: 360 } : false}
+                transition={animateDecoration ? { duration: 9, repeat: Infinity, ease: "linear" } : undefined}
                 className="absolute -inset-1 rounded-full border border-blue-300/25 shadow-[0_0_14px_rgba(59,130,246,0.18)] sm:-inset-2 sm:border-blue-300/35 sm:shadow-[0_0_28px_rgba(59,130,246,0.26)]"
               />
               <motion.div
-                animate={reduceMotion ? false : { y: [0, -3, 0], rotate: [0, 3, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                animate={animateDecoration ? { y: [0, -3, 0], rotate: [0, 3, 0] } : false}
+                transition={animateDecoration ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : undefined}
                 className="grid size-8 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-violet-600 text-white shadow-lg shadow-violet-500/20 sm:size-14 sm:shadow-xl sm:shadow-violet-500/30"
               >
                 <Rocket className="size-4 sm:size-6" />
