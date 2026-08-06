@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { MotionConfig } from "framer-motion";
 import App from "./App.jsx";
+import "@fontsource-variable/inter";
 import "./styles.css";
 
 if ("scrollRestoration" in window.history) {

@@ -41,6 +41,11 @@ const NjamkoPage = lazy(() => import("./njamko/NjamkoPage.jsx"));
 const easeOut = [0.23, 1, 0.32, 1];
 const revealTransition = { duration: 0.48, ease: easeOut };
 const quickRevealTransition = { duration: 0.32, ease: easeOut };
+const cardHoverProps = {
+  whileHover: { y: -3, scale: 1.008 },
+  transition: { type: "spring", stiffness: 380, damping: 30 },
+};
+const eyebrowClass = "text-xs font-bold uppercase tracking-[0.18em] text-blue-600";
 
 function useMediaQuery(query) {
   const [matches, setMatches] = useState(() => (
@@ -439,7 +444,7 @@ export function LanguageToggle({ lang, setLang }) {
             key={value}
             type="button"
             onClick={() => setLang(value)}
-            className="pressable relative z-10 rounded-full px-2.5 py-1 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+            className="pressable relative z-10 rounded-full px-2.5 py-1 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             aria-pressed={isActive}
           >
             {isActive && (
@@ -558,7 +563,7 @@ export function Navbar({ lang, setLang, copy }) {
 
         <a
           href="mailto:nepar@nepar.hr"
-          className="premium-button pressable hidden select-all items-center gap-2.5 rounded-xl px-4 py-2.5 text-base font-semibold text-white lg:inline-flex"
+          className="premium-button pressable hidden items-center gap-2.5 rounded-xl px-4 py-2.5 text-base font-semibold text-white lg:inline-flex"
         >
           <Mail className="shrink-0" size={18} />
           nepar@nepar.hr
@@ -615,7 +620,7 @@ export function Navbar({ lang, setLang, copy }) {
                   </Comp>
                 );
               })}
-              <MotionButton href="/kontakt" className="mt-1 justify-self-start rounded-xl px-5 py-3 text-sm sm:mt-2 sm:justify-self-stretch sm:rounded-xl sm:px-6 sm:py-4 sm:text-base">
+              <MotionButton href="/kontakt" size="md" className="mt-1 justify-self-start sm:mt-2 sm:justify-self-stretch">
                 <Send className="size-4 sm:size-5" />
                 {copy.navCta}
               </MotionButton>
@@ -629,9 +634,15 @@ export function Navbar({ lang, setLang, copy }) {
 
 const MotionLink = motion(Link);
 
-export function MotionButton({ href, onClick, children, className = "", variant = "primary", type = "button" }) {
+const buttonSizes = {
+  sm: "min-h-11 px-4 py-2.5 text-sm",
+  md: "min-h-11 px-5 py-3 text-base",
+  lg: "min-h-12 px-6 py-4 text-base",
+};
+
+export function MotionButton({ href, onClick, children, className = "", variant = "primary", size = "md", type = "button" }) {
   const primary = variant === "primary";
-  const cls = `pressable inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition ${
+  const cls = `pressable inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition ${buttonSizes[size] ?? buttonSizes.md} ${
     primary
       ? "premium-button text-white"
       : "border border-slate-200 bg-white/85 text-slate-700 shadow-sm backdrop-blur hover:border-blue-200 hover:bg-white hover:text-slate-950 hover:shadow-blue-200/30"
@@ -759,7 +770,7 @@ function Hero({ copy, lang }) {
 
   return (
     <section id="top" className="relative px-4 pt-24 sm:pt-32 lg:pt-[7.25rem]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[540px] bg-[radial-gradient(ellipse_at_52%_8%,rgba(59,130,246,0.13),transparent_56%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[540px] bg-[radial-gradient(ellipse_at_52%_8%,rgba(37,99,235,0.12),transparent_56%)]" />
       <div className="mx-auto grid max-w-[1180px] items-center gap-2 sm:gap-8 lg:max-w-[1380px] lg:grid-cols-[minmax(360px,0.72fr)_minmax(0,1.28fr)]">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -781,7 +792,7 @@ function Hero({ copy, lang }) {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...revealTransition, delay: 0.1 }}
-            className="text-4xl font-semibold leading-[1.03] tracking-normal text-slate-950 sm:text-5xl xl:text-[4rem]"
+            className="text-4xl font-semibold leading-[1.03] tracking-[-0.03em] text-slate-950 sm:text-5xl xl:text-[4rem]"
           >
             {copy.hero.lead}{" "}
             <span className="bg-gradient-to-r from-blue-600 via-cyan-600 to-violet-600 bg-clip-text text-transparent">
@@ -805,11 +816,11 @@ function Hero({ copy, lang }) {
             transition={{ ...quickRevealTransition, delay: 0.22 }}
             className="mt-7 flex flex-col gap-3 sm:flex-row"
           >
-            <MotionButton href="#projekti" className="inline-flex px-6 py-4">
+            <MotionButton href="#projekti" size="lg">
               {copy.hero.primary}
               <ArrowRight size={18} />
             </MotionButton>
-            <MotionButton href="/kontakt" variant="secondary" className="inline-flex px-6 py-4">
+            <MotionButton href="/kontakt" variant="secondary" size="lg">
               {copy.hero.secondary}
               <Mail size={18} />
             </MotionButton>
@@ -892,13 +903,13 @@ function Services({ copy }) {
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   return (
-    <section id="usluge" className="overflow-x-hidden px-4 py-8 scroll-mt-24 sm:py-10">
+    <section id="usluge" className="overflow-x-hidden px-4 py-8 scroll-mt-24 sm:py-12">
       <div className="mx-auto grid max-w-[1180px] gap-6 lg:max-w-[1380px] xl:grid-cols-[280px_1fr]">
         <div className="xl:pt-3">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
+          <p className={`mb-3 ${eyebrowClass}`}>
             {copy.servicesSection.eyebrow}
           </p>
-          <h2 className="text-3xl font-semibold leading-tight tracking-normal text-slate-900 sm:text-4xl">
+          <h2 className="text-3xl font-semibold leading-tight tracking-[-0.02em] text-slate-900 sm:text-4xl">
             {copy.servicesSection.title}
           </h2>
           <p className="mt-4 text-sm leading-6 text-slate-600">
@@ -914,7 +925,7 @@ function Services({ copy }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "0px 0px -120px 0px", amount: 0.24 }}
               transition={{ duration: isMobile ? 0.28 : 0.42, delay: index * (isMobile ? 0.025 : 0.055), ease: easeOut }}
-              whileHover={isMobile ? undefined : { y: -4, scale: 1.008 }}
+              whileHover={isMobile ? undefined : cardHoverProps.whileHover}
               whileTap={{ scale: 0.99 }}
               className="premium-card service-card group relative min-h-[320px] overflow-hidden p-5"
             >
@@ -946,8 +957,8 @@ function WebStartPromo({ copy }) {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mx-auto max-w-[1180px] overflow-hidden rounded-2xl bg-white p-5 shadow-[0_8px_24px_rgba(59,130,246,0.14)] sm:p-7 lg:max-w-[1380px]"
+        transition={revealTransition}
+        className="relative mx-auto max-w-[1180px] overflow-hidden rounded-2xl bg-white p-5 shadow-raised sm:p-7 lg:max-w-[1380px]"
       >
         <picture className="pointer-events-none absolute inset-0 block" aria-hidden="true">
           <source media="(max-width: 1023px)" srcSet="/nepar-background-mobile-900x1600.webp" />
@@ -962,8 +973,8 @@ function WebStartPromo({ copy }) {
         <div className="pointer-events-none absolute inset-0 bg-white/10" aria-hidden="true" />
         <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-stretch lg:gap-7 xl:grid-cols-[minmax(0,1fr)_290px] xl:gap-9">
           <div className="min-w-0">
-            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-700">{promo.eyebrow}</p>
-            <h2 className="text-xl font-bold leading-tight tracking-[-0.02em] text-slate-950 sm:text-2xl lg:text-3xl">{promo.title}</h2>
+            <p className={`mb-2 ${eyebrowClass}`}>{promo.eyebrow}</p>
+            <h2 className="text-xl font-semibold leading-tight tracking-[-0.02em] text-slate-900 sm:text-2xl lg:text-3xl">{promo.title}</h2>
             <p className="mt-3 max-w-3xl text-sm font-medium leading-6 text-slate-700 sm:text-base sm:leading-7">{promo.description}</p>
             <p className="mt-3 max-w-3xl rounded-xl border border-blue-200/70 bg-blue-50/70 px-3.5 py-3 text-sm font-semibold leading-6 text-slate-900 sm:px-4 sm:text-base">
               {promo.highlight}
@@ -998,12 +1009,13 @@ function WebStartPromo({ copy }) {
 
           <div className="flex flex-col justify-between gap-5 border-t border-slate-200 pt-5 lg:border-l lg:border-t-0 lg:py-1 lg:pl-7">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">{promo.ctaLabel}</p>
+              <p className={eyebrowClass}>{promo.ctaLabel}</p>
               <p className="mt-2 text-sm font-bold leading-6 text-slate-800">{promo.ctaNote}</p>
             </div>
             <MotionButton
               href="/usluge/izrada-web-stranica#paketi"
-              className="inline-flex w-full px-5 py-3.5 text-sm sm:px-6 sm:py-4 sm:text-base"
+              size="lg"
+              className="w-full"
             >
               {promo.cta}
               <ArrowRight size={18} />
@@ -1030,9 +1042,9 @@ function FeaturedProjectCard({ project, copy, duplicate = false }) {
   return (
     <ProjectShell
       {...linkProps}
-      whileHover={duplicate ? undefined : { y: -4 }}
+      whileHover={duplicate ? undefined : cardHoverProps.whileHover}
       whileTap={duplicate ? undefined : { scale: 0.99 }}
-      transition={{ duration: 0.18, ease: easeOut }}
+      transition={cardHoverProps.transition}
       className="featured-project-card group"
     >
       <FeaturedProjectImage type={project.preview} copy={copy} />
@@ -1041,7 +1053,7 @@ function FeaturedProjectCard({ project, copy, duplicate = false }) {
           <span className={`grid size-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${project.accent} text-white`}>
             <Icon size={16} aria-hidden="true" />
           </span>
-          <h3>{project.title}</h3>
+          <h3 className={project.title.length > 18 ? "featured-project-title-long" : undefined}>{project.title}</h3>
           {project.href && <ArrowRight className="featured-project-card-arrow" size={17} aria-hidden="true" />}
         </div>
         <p>{project.description}</p>
@@ -1070,13 +1082,20 @@ function FeaturedProjects({ copy }) {
   });
 
   return (
-    <section ref={sectionRef} id="projekti" className="featured-projects-section py-9 scroll-mt-24 sm:py-12">
-      <div className="mx-auto max-w-[1180px] border-t border-slate-200/80 px-4 pt-6 lg:max-w-[1380px]">
-        <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-slate-900 sm:mb-6">
+    <section ref={sectionRef} id="projekti" className="py-8 scroll-mt-24 sm:py-12">
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={revealTransition}
+        className="mx-auto max-w-[1180px] border-t border-slate-200/80 px-4 pt-6 lg:max-w-[1380px]"
+      >
+        <h2 className={`mb-5 ${eyebrowClass} sm:mb-6`}>
           {copy.featured.eyebrow}
-        </p>
-      </div>
+        </h2>
+      </motion.div>
       <div
+        role="region"
         className={`featured-projects-viewport ${reduceMotion ? "is-reduced-motion" : ""}`}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -1123,8 +1142,14 @@ function About({ copy, lang }) {
   }, [open]);
 
   return (
-    <section id="onama" className="px-4 py-10 scroll-mt-24 sm:py-12">
-      <div className="premium-card mx-auto grid max-w-[1180px] gap-6 p-5 lg:max-w-[1380px] lg:grid-cols-[0.72fr_1.28fr]">
+    <section id="onama" className="px-4 py-8 scroll-mt-24 sm:py-12">
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={revealTransition}
+        className="premium-card mx-auto grid max-w-[1180px] gap-6 p-5 lg:max-w-[1380px] lg:grid-cols-[0.72fr_1.28fr]"
+      >
         <button
           ref={triggerRef}
           type="button"
@@ -1141,17 +1166,17 @@ function About({ copy, lang }) {
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/18 via-transparent to-violet-500/18" />
         </button>
         <div className="flex flex-col justify-center p-2 lg:p-5">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
+          <p className={`mb-3 ${eyebrowClass}`}>
             {copy.about.eyebrow}
           </p>
-          <h2 className="text-3xl font-semibold leading-tight tracking-normal text-slate-900">
+          <h2 className="text-3xl font-semibold leading-tight tracking-[-0.02em] text-slate-900 sm:text-4xl">
             {copy.about.title}
           </h2>
           <p className="mt-4 max-w-4xl text-base leading-7 text-slate-600">
             {copy.about.description}
           </p>
         </div>
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {open && (
@@ -1285,7 +1310,7 @@ function BottomCta({ copy }) {
               </motion.div>
             </div>
             <div>
-              <h2 className="text-sm font-semibold tracking-normal text-slate-900 sm:text-2xl">
+              <h2 className="text-lg font-semibold leading-tight tracking-[-0.02em] text-slate-900 sm:text-2xl">
                 {copy.cta.title}
               </h2>
               <p className="mt-0.5 max-w-2xl text-xs leading-4 text-slate-600 sm:mt-1 sm:text-sm sm:leading-normal">
@@ -1295,7 +1320,8 @@ function BottomCta({ copy }) {
           </div>
           <MotionButton
             href="/kontakt"
-            className="inline-flex w-full px-4 py-2 text-xs sm:w-auto sm:px-5 sm:py-3 sm:text-sm"
+            size="sm"
+            className="w-full sm:w-auto"
           >
             {copy.cta.button}
             <Send className="size-4 sm:size-[17px]" />
@@ -1320,6 +1346,13 @@ function HomePage() {
   const [lang, setLang] = useState("hr");
   const copy = content[lang];
 
+  useEffect(() => {
+    document.documentElement.lang = lang === "en" ? "en" : "hr";
+    return () => {
+      document.documentElement.lang = "hr";
+    };
+  }, [lang]);
+
   return (
     <main className="legacy-home relative min-h-screen overflow-x-hidden font-sans text-slate-800" data-testid="landing-page">
       <Background />
@@ -1333,10 +1366,16 @@ function HomePage() {
       <BottomCta copy={copy} />
       <footer className="px-4 pb-20 sm:pb-32">
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
-          <div className="border-t border-slate-200 pt-8 sm:pt-10">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+            transition={revealTransition}
+            className="border-t border-slate-200 pt-8 sm:pt-10"
+          >
             <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="mb-2 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-700">
+                <p className={`mb-2 ${eyebrowClass}`}>
                   {copy.footer.infoLabel}
                 </p>
                 <p className="text-sm font-medium text-slate-700">{copy.footer.companyName}</p>
@@ -1355,7 +1394,7 @@ function HomePage() {
                 {copy.footer.top}
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
       </footer>
     </main>
