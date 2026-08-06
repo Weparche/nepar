@@ -6,6 +6,7 @@ import {
   ChartNoAxesColumnIncreasing,
   ChevronLeft,
   ChevronRight,
+  CloudSun,
   DatabaseZap,
   Heart,
   MapPin,
@@ -62,6 +63,15 @@ const carouselContent = {
         preview: "kadigra",
         href: "https://kadigrahrvatska.hr",
       },
+      {
+        title: "VremenskaPrognoza.hr",
+        description: "To\u010dna vremenska prognoza za Hrvatsku \u2014 temperature, oborine i upozorenja.",
+        Icon: CloudSun,
+        accent: "from-sky-300 to-blue-600",
+        iconTone: "text-sky-200",
+        preview: "weather",
+        href: "https://vremenskaprognoza.hr",
+      },
     ],
     preview: {
       outageAlt: "Bezstruje.hr prikaz",
@@ -78,6 +88,7 @@ const carouselContent = {
       geoTitle: "Pretraga adresa",
       geoSubtitle: "Koordinate i prostorni podaci",
       kadigraAlt: "KadigraHrvatska.hr prikaz",
+      weatherAlt: "VremenskaPrognoza.hr prikaz",
       more: "Pogledaj sve",
       rotating: "Rotiraju\u0107i prikaz projekata",
       previous: "Prethodni projekt",
@@ -132,6 +143,15 @@ const carouselContent = {
         preview: "kadigra",
         href: "https://kadigrahrvatska.hr",
       },
+      {
+        title: "VremenskaPrognoza.hr",
+        description: "Accurate weather forecasts for Croatia — temperatures, rainfall, and alerts.",
+        Icon: CloudSun,
+        accent: "from-sky-300 to-blue-600",
+        iconTone: "text-sky-200",
+        preview: "weather",
+        href: "https://vremenskaprognoza.hr",
+      },
     ],
     preview: {
       outageAlt: "Bezstruje.hr preview",
@@ -148,6 +168,7 @@ const carouselContent = {
       geoTitle: "Address search",
       geoSubtitle: "Coordinates and spatial data",
       kadigraAlt: "KadigraHrvatska.hr preview",
+      weatherAlt: "VremenskaPrognoza.hr preview",
       more: "View all",
       rotating: "Rotating project view",
       previous: "Previous project",
@@ -211,7 +232,7 @@ function OutagePreview({ copy }) {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-slate-900/5 to-transparent" />
       <img
-        src="/brand/bezstruje_logo.png"
+        src="/brand/bezstruje_logo.webp"
         alt={copy.outageLogoAlt}
         loading="lazy"
         className="absolute left-2 top-2 h-7 w-auto rounded-md bg-white/85 p-1 shadow-lg shadow-slate-300/60 sm:left-3 sm:top-3 sm:h-9"
@@ -294,6 +315,22 @@ function KadigraPreview({ compact = false, copy }) {
   );
 }
 
+function WeatherPreview({ compact = false, copy }) {
+  return (
+    <div className="relative h-[138px] overflow-hidden rounded-xl border border-sky-400/40 bg-slate-100 sm:h-[238px] sm:rounded-2xl">
+      <motion.img
+        src="/brand/vremenskaprognoza.webp"
+        alt={copy.weatherAlt}
+        loading="lazy"
+        animate={compact ? false : { scale: [1, 1.025, 1] }}
+        transition={compact ? undefined : { duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-0 size-full object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-slate-900/5 to-transparent" />
+    </div>
+  );
+}
+
 function MorePreview({ compact = false, copy }) {
   return (
     <div className="h-[138px] rounded-xl border border-violet-400/40 bg-white/70 p-2 sm:h-[238px] sm:rounded-2xl sm:p-3">
@@ -324,6 +361,7 @@ function Preview({ type, compact = false, copy }) {
   if (type === "ai") return <AiPreview compact={compact} copy={copy} />;
   if (type === "geo") return <GeoPreview copy={copy} />;
   if (type === "kadigra") return <KadigraPreview compact={compact} copy={copy} />;
+  if (type === "weather") return <WeatherPreview compact={compact} copy={copy} />;
   return <MorePreview compact={compact} copy={copy} />;
 }
 
@@ -357,7 +395,13 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, 
           <Icon size={17} />
         </span>
         <div className="min-w-0">
-          <h3 className="truncate text-xs font-semibold text-slate-900 sm:text-lg">{card.title}</h3>
+          <h3
+            className={`truncate font-semibold text-slate-900 ${
+              card.title.length > 18 ? "text-[9px] sm:text-sm xl:text-base" : "text-xs sm:text-lg"
+            }`}
+          >
+            {card.title}
+          </h3>
           <p className="mt-0.5 line-clamp-2 text-[10px] leading-3.5 text-slate-600 sm:mt-1 sm:text-xs sm:leading-5">{card.description}</p>
         </div>
       </div>

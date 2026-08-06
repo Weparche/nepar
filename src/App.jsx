@@ -7,6 +7,7 @@ import {
   BrainCircuit,
   CarFront,
   CheckCircle2,
+  CloudSun,
   Database,
   Globe,
   Grid3X3,
@@ -108,6 +109,14 @@ const content = {
         accent: "from-red-400 to-rose-600",
         preview: "kadigra",
         href: "https://kadigrahrvatska.hr",
+      },
+      {
+        title: "VremenskaPrognoza.hr",
+        description: "Točna vremenska prognoza za Hrvatsku — temperature, oborine i upozorenja.",
+        Icon: CloudSun,
+        accent: "from-sky-300 to-blue-600",
+        preview: "weather",
+        href: "https://vremenskaprognoza.hr",
       },
     ],
     featuredOnlyProjects: [
@@ -228,6 +237,7 @@ const content = {
       geo: "GeoAdrese.com.hr prikaz",
       outage: "Bezstruje.hr prikaz",
       kadigra: "KadigraHrvatska.hr prikaz",
+      weather: "VremenskaPrognoza.hr prikaz",
     },
   },
   en: {
@@ -280,6 +290,14 @@ const content = {
         accent: "from-red-400 to-rose-600",
         preview: "kadigra",
         href: "https://kadigrahrvatska.hr",
+      },
+      {
+        title: "VremenskaPrognoza.hr",
+        description: "Accurate weather forecasts for Croatia — temperatures, rainfall, and alerts.",
+        Icon: CloudSun,
+        accent: "from-sky-300 to-blue-600",
+        preview: "weather",
+        href: "https://vremenskaprognoza.hr",
       },
     ],
     featuredOnlyProjects: [
@@ -400,6 +418,7 @@ const content = {
       geo: "GeoAdrese.com.hr preview",
       outage: "Bezstruje.hr preview",
       kadigra: "KadigraHrvatska.hr preview",
+      weather: "VremenskaPrognoza.hr preview",
     },
   },
 };
@@ -701,6 +720,19 @@ function FeaturedProjectImage({ type, copy }) {
         <img
           src="/brand/kadigrahrvatska.webp"
           alt={copy.previewAlts.kadigra}
+          loading="lazy"
+          className="featured-project-media-image featured-project-media-image-center"
+        />
+      </div>
+    );
+  }
+
+  if (type === "weather") {
+    return (
+      <div className={frameClass}>
+        <img
+          src="/brand/vremenskaprognoza.webp"
+          alt={copy.previewAlts.weather}
           loading="lazy"
           className="featured-project-media-image featured-project-media-image-center"
         />

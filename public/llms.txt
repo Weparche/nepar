@@ -64,6 +64,7 @@ Sve web-stranice uključuju naprednu tehničku i on-page SEO optimizaciju. Razli
 - KPDinfo.com — KPD 2026 AI tražilica
 - GeoAdrese.net — pretraga adresa i geo podaci
 - KadigraHrvatska.hr — fanhub navijača Hrvatske
+- VremenskaPrognoza.hr — vremenska prognoza za Hrvatsku
 
 ## Važne stranice
 
