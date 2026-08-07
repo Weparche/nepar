@@ -1077,7 +1077,7 @@ function FeaturedProjects({ copy }) {
     if (!isMoving || document.visibilityState !== "visible" || !trackRef.current) return;
     const loopWidth = trackRef.current.scrollWidth / 2;
     if (!loopWidth) return;
-    const nextX = trackX.get() - Math.min(delta, 48) * (isMobile ? 0.028 : 0.038);
+    const nextX = trackX.get() - Math.min(delta, 48) * (isMobile ? 0.056 : 0.076);
     trackX.set(nextX <= -loopWidth ? nextX + loopWidth : nextX);
   });
 
