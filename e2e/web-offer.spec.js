@@ -63,7 +63,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
   await expect(page.getByText("Internet je povezao cijeli svijet.", { exact: true })).toBeVisible();
   await expect.poll(async () => {
     const currentTime = await evolutionFrameTime(page);
-    return Math.abs(currentTime - 8.3);
+    return Math.abs(currentTime - 8.1);
   }).toBeLessThanOrEqual(0.5);
 
   await page.evaluate(() => window.scrollTo(0, window.innerHeight * 3));
@@ -120,7 +120,7 @@ test("every discrete mouse-wheel gesture advances exactly one visual scene", asy
   await wheelStep(120);
   await expect(intro).toHaveAttribute("data-active-scene", "2");
   await expect(page.getByText("Internet je povezao cijeli svijet.", { exact: true })).toBeVisible();
-  await expect.poll(async () => Math.abs(await evolutionFrameTime(page) - 8.3)).toBeLessThanOrEqual(0.5);
+  await expect.poll(async () => Math.abs(await evolutionFrameTime(page) - 8.1)).toBeLessThanOrEqual(0.5);
 
   await wheelStep(-120);
   await expect(intro).toHaveAttribute("data-active-scene", "1");
@@ -165,11 +165,11 @@ test("scene 2 to 3 is slightly quicker and the extended final brand segment loop
   expect(Math.abs(copyLayout.left - copyLayout.storyLeft)).toBeLessThanOrEqual(1);
   expect(copyLayout.right).toBeLessThanOrEqual(copyLayout.viewport);
 
-  await page.waitForTimeout(200);
+  await page.waitForTimeout(400);
   await page.mouse.wheel(0, 120);
   await expect(intro).toHaveAttribute("data-active-scene", "2");
   await page.waitForTimeout(1200);
-  await expect.poll(async () => Math.abs(await evolutionFrameTime(page) - 8.3)).toBeLessThanOrEqual(0.18);
+  await expect.poll(async () => Math.abs(await evolutionFrameTime(page) - 8.1)).toBeLessThanOrEqual(0.18);
 
   await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
   await expect(intro).toHaveAttribute("data-active-scene", "6");

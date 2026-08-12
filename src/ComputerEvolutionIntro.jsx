@@ -6,7 +6,7 @@ export const EVOLUTION_INTRO_SESSION_KEY = "nepar:evolution-intro-seen";
 
 const SCENE_TRANSITION_MS = 1350;
 const SECOND_TO_THIRD_TRANSITION_MS = 1150;
-const FINAL_LOOP_START = 18;
+const FINAL_LOOP_START = 18.2;
 const FRAME_RATE = 6;
 const FRAME_COUNT = 120;
 
@@ -21,7 +21,7 @@ const frameSource = (index) => (
 export const evolutionScenes = [
   { time: 0.2, copy: "Računalo je počelo kao alat na jednom stolu." },
   { time: 3.8, copy: "Grafička sučelja približila su tehnologiju svima." },
-  { time: 8.3, copy: "Internet je povezao cijeli svijet." },
+  { time: 8.1, copy: "Internet je povezao cijeli svijet." },
   { time: 10.3, copy: "Cloud je rad preselio na svaki uređaj." },
   { time: 13, copy: "Digitalni alati postali su radno okruženje." },
   { time: 16, copy: "AI danas razumije, automatizira i stvara." },
