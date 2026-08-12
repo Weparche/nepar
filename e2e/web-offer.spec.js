@@ -43,11 +43,15 @@ async function skipEvolutionIntro(page) {
   if (await skipButton.isVisible().catch(() => false)) await skipButton.click();
 }
 
+async function evolutionFrameTime(page) {
+  return Number(await page.getByTestId("evolution-frame").getAttribute("data-frame-time"));
+}
+
 test("cinematic intro follows scene markers and completes after the final viewport", async ({ page }) => {
   await page.goto("/");
 
   const intro = page.getByTestId("evolution-intro");
-  const video = page.getByTestId("evolution-video");
+  const frame = page.getByTestId("evolution-frame");
   await expect(intro).toBeVisible();
   await expect(intro).toHaveAttribute("data-active-scene", "0");
   await expect(page.getByTestId("evolution-copy")).toContainText("Računalo je počelo");
@@ -58,7 +62,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
   await expect(intro).toHaveAttribute("data-active-scene", "2");
   await expect(page.getByText("Internet je povezao cijeli svijet.", { exact: true })).toBeVisible();
   await expect.poll(async () => {
-    const currentTime = await video.evaluate((element) => element.currentTime);
+    const currentTime = await evolutionFrameTime(page);
     return Math.abs(currentTime - 8.3);
   }).toBeLessThanOrEqual(0.5);
 
@@ -66,7 +70,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
   await expect(intro).toHaveAttribute("data-active-scene", "3");
   await expect(page.getByText("Cloud je rad preselio na svaki uređaj.", { exact: true })).toBeVisible();
   await expect.poll(async () => {
-    const currentTime = await video.evaluate((element) => element.currentTime);
+    const currentTime = await evolutionFrameTime(page);
     return Math.abs(currentTime - 10.3);
   }).toBeLessThanOrEqual(0.5);
 
@@ -74,7 +78,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
   await expect(intro).toHaveAttribute("data-active-scene", "4");
   await expect(page.getByText("Digitalni alati postali su radno okruženje.", { exact: true })).toBeVisible();
   await expect.poll(async () => {
-    const currentTime = await video.evaluate((element) => element.currentTime);
+    const currentTime = await evolutionFrameTime(page);
     return Math.abs(currentTime - 13);
   }).toBeLessThanOrEqual(0.5);
 
@@ -82,15 +86,15 @@ test("cinematic intro follows scene markers and completes after the final viewpo
   await expect(intro).toHaveAttribute("data-active-scene", "5");
   await expect(page.getByText("AI danas razumije, automatizira i stvara.", { exact: true })).toBeVisible();
   await expect.poll(async () => {
-    const currentTime = await video.evaluate((element) => element.currentTime);
+    const currentTime = await evolutionFrameTime(page);
     return Math.abs(currentTime - 16);
   }).toBeLessThanOrEqual(0.5);
 
   await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
   await expect(intro).toHaveAttribute("data-active-scene", "6");
   await expect(page.getByTestId("evolution-copy")).toHaveCount(0);
-  await expect.poll(() => video.evaluate((element) => element.paused)).toBe(false);
-  await expect.poll(() => video.evaluate((element) => element.currentTime)).toBeGreaterThanOrEqual(17.95);
+  await expect.poll(() => evolutionFrameTime(page)).toBeGreaterThanOrEqual(17.95);
+  await expect(frame).toHaveAttribute("src", "/evolution-loop.webp");
   await expect(intro).toBeVisible();
 
   await page.evaluate(() => window.scrollTo(0, window.innerHeight * 7 + 4));
@@ -102,7 +106,6 @@ test("cinematic intro follows scene markers and completes after the final viewpo
 test("every discrete mouse-wheel gesture advances exactly one visual scene", async ({ page }) => {
   await page.goto("/");
   const intro = page.getByTestId("evolution-intro");
-  const video = page.getByTestId("evolution-video");
   await expect(intro).toHaveAttribute("data-active-scene", "0");
 
   const wheelStep = async (deltaY) => {
@@ -117,7 +120,7 @@ test("every discrete mouse-wheel gesture advances exactly one visual scene", asy
   await wheelStep(120);
   await expect(intro).toHaveAttribute("data-active-scene", "2");
   await expect(page.getByText("Internet je povezao cijeli svijet.", { exact: true })).toBeVisible();
-  await expect.poll(async () => Math.abs(await video.evaluate((element) => element.currentTime) - 8.3)).toBeLessThanOrEqual(0.5);
+  await expect.poll(async () => Math.abs(await evolutionFrameTime(page) - 8.3)).toBeLessThanOrEqual(0.5);
 
   await wheelStep(-120);
   await expect(intro).toHaveAttribute("data-active-scene", "1");
@@ -126,16 +129,15 @@ test("every discrete mouse-wheel gesture advances exactly one visual scene", asy
 test("scene 2 to 3 is slightly quicker and the extended final brand segment loops", async ({ page }) => {
   await page.goto("/");
   const intro = page.getByTestId("evolution-intro");
-  const video = page.getByTestId("evolution-video");
 
   await page.mouse.wheel(0, 120);
   await expect(intro).toHaveAttribute("data-active-scene", "1");
   await expect(page.getByTestId("evolution-copy")).toHaveCount(1);
   await page.waitForTimeout(600);
-  const firstMidpoint = await video.evaluate((element) => element.currentTime);
+  const firstMidpoint = await evolutionFrameTime(page);
   expect(firstMidpoint).toBeGreaterThan(0.2);
   expect(firstMidpoint).toBeLessThan(3.8);
-  await expect.poll(async () => Math.abs(await video.evaluate((element) => element.currentTime) - 3.8)).toBeLessThanOrEqual(0.12);
+  await expect.poll(async () => Math.abs(await evolutionFrameTime(page) - 3.8)).toBeLessThanOrEqual(0.18);
   const copyLayout = await page.getByTestId("evolution-copy").evaluate((element) => {
     const rect = element.getBoundingClientRect();
     const storyRect = element.parentElement.getBoundingClientRect();
@@ -148,17 +150,14 @@ test("scene 2 to 3 is slightly quicker and the extended final brand segment loop
   await page.mouse.wheel(0, 120);
   await expect(intro).toHaveAttribute("data-active-scene", "2");
   await page.waitForTimeout(1200);
-  await expect.poll(async () => Math.abs(await video.evaluate((element) => element.currentTime) - 8.3)).toBeLessThanOrEqual(0.12);
+  await expect.poll(async () => Math.abs(await evolutionFrameTime(page) - 8.3)).toBeLessThanOrEqual(0.18);
 
   await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
   await expect(intro).toHaveAttribute("data-active-scene", "6");
-  await expect.poll(() => video.evaluate((element) => element.paused)).toBe(false);
-  await video.evaluate((element) => {
-    element.currentTime = 20.01;
-    element.dispatchEvent(new Event("timeupdate"));
-  });
-  await expect.poll(() => video.evaluate((element) => element.currentTime)).toBeLessThan(18.6);
-  await expect.poll(() => video.evaluate((element) => element.currentTime)).toBeGreaterThanOrEqual(17.95);
+  await expect.poll(() => evolutionFrameTime(page)).toBeGreaterThanOrEqual(17.95);
+  const loopFrame = page.getByTestId("evolution-frame");
+  await expect(loopFrame).toHaveAttribute("src", "/evolution-loop.webp");
+  await expect.poll(() => loopFrame.evaluate((element) => element.complete && element.naturalWidth > 0)).toBe(true);
 });
 
 test("cinematic intro can be skipped and stays dismissed for the tab session", async ({ page }) => {

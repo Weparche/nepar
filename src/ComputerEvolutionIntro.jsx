@@ -7,7 +7,16 @@ export const EVOLUTION_INTRO_SESSION_KEY = "nepar:evolution-intro-seen";
 const SCENE_TRANSITION_MS = 1350;
 const SECOND_TO_THIRD_TRANSITION_MS = 1150;
 const FINAL_LOOP_START = 18;
-const FINAL_LOOP_END = 20;
+const FRAME_RATE = 6;
+const FRAME_COUNT = 120;
+
+const frameIndexForTime = (time) => Math.max(
+  0,
+  Math.min(FRAME_COUNT - 1, Math.round(time * FRAME_RATE)),
+);
+const frameSource = (index) => (
+  `/evolution-frames/evolution-frame-${String(index + 1).padStart(3, "0")}.webp`
+);
 
 export const evolutionScenes = [
   { time: 0.2, copy: "Računalo je počelo kao alat na jednom stolu." },
@@ -31,7 +40,9 @@ const sceneEase = (value) => (
  */
 export default function ComputerEvolutionIntro({ onComplete }) {
   const [activeScene, setActiveScene] = useState(0);
-  const videoRef = useRef(null);
+  const [frameIndex, setFrameIndex] = useState(() => (
+    frameIndexForTime(evolutionScenes[0].time)
+  ));
   const panelRefs = useRef([]);
   const sentinelRef = useRef(null);
   const sceneObserverRef = useRef(null);
@@ -41,8 +52,8 @@ export default function ComputerEvolutionIntro({ onComplete }) {
   const previousSceneRef = useRef(0);
   const wheelGestureRef = useRef(false);
   const wheelGestureTimerRef = useRef(null);
-  const pendingTargetRef = useRef(0);
-  const pendingDurationRef = useRef(SCENE_TRANSITION_MS);
+  const timelineTimeRef = useRef(evolutionScenes[0].time);
+  const frameIndexRef = useRef(frameIndex);
   const completedRef = useRef(false);
 
   const cancelTween = useCallback(() => {
@@ -58,23 +69,30 @@ export default function ComputerEvolutionIntro({ onComplete }) {
     cancelTween();
     sceneObserverRef.current?.disconnect();
     sentinelObserverRef.current?.disconnect();
-    videoRef.current?.pause();
     onComplete(reason);
   }, [cancelTween, onComplete]);
 
   const tweenTo = useCallback((targetTime, transitionDuration = SCENE_TRANSITION_MS) => {
-    pendingTargetRef.current = targetTime;
-    pendingDurationRef.current = transitionDuration;
     cancelTween();
 
-    const video = videoRef.current;
-    if (!video || video.readyState < 1) return;
-
-    video.pause();
-    const startTime = Number.isFinite(video.currentTime) ? video.currentTime : 0;
+    const startTime = timelineTimeRef.current;
     const distance = targetTime - startTime;
+
+    const renderTime = (time) => {
+      timelineTimeRef.current = time;
+      const nextFrameIndex = frameIndexForTime(time);
+      if (nextFrameIndex === frameIndexRef.current) return;
+      frameIndexRef.current = nextFrameIndex;
+      setFrameIndex(nextFrameIndex);
+    };
+
+    const startFinalLoop = () => {
+      renderTime(FINAL_LOOP_START);
+    };
+
     if (Math.abs(distance) < 0.02) {
-      video.currentTime = targetTime;
+      renderTime(targetTime);
+      if (targetTime === evolutionScenes.at(-1).time) startFinalLoop();
       return;
     }
 
@@ -82,28 +100,44 @@ export default function ComputerEvolutionIntro({ onComplete }) {
 
     const step = (now) => {
       const progress = Math.min(1, (now - startedAt) / transitionDuration);
-      video.currentTime = startTime + distance * sceneEase(progress);
+      renderTime(startTime + distance * sceneEase(progress));
 
       if (progress < 1) {
         animationFrameRef.current = window.requestAnimationFrame(step);
         return;
       }
 
-      video.currentTime = targetTime;
+      renderTime(targetTime);
       animationFrameRef.current = null;
 
       if (
         targetTime === evolutionScenes.at(-1).time
         && activeSceneRef.current === evolutionScenes.length - 1
       ) {
-        video.play().catch(() => {
-          // The stable brand frame remains visible if playback is unavailable.
-        });
+        startFinalLoop();
       }
     };
 
     animationFrameRef.current = window.requestAnimationFrame(step);
   }, [cancelTween]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const sources = Array.from({ length: FRAME_COUNT }, (_, index) => frameSource(index));
+    const loadSequence = async (offset) => {
+      for (let index = offset; index < sources.length && !cancelled; index += 6) {
+        await new Promise((resolve) => {
+          const image = new Image();
+          image.onload = resolve;
+          image.onerror = resolve;
+          image.src = sources[index];
+        });
+      }
+    };
+
+    Promise.all([0, 1, 2, 3, 4, 5].map(loadSequence));
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     const previousScene = previousSceneRef.current;
@@ -239,24 +273,8 @@ export default function ComputerEvolutionIntro({ onComplete }) {
 
   useEffect(() => () => cancelTween(), [cancelTween]);
 
-  const onLoadedMetadata = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.pause();
-    video.currentTime = 0;
-    tweenTo(pendingTargetRef.current, pendingDurationRef.current);
-  };
-
   const isFinalScene = activeScene === evolutionScenes.length - 1;
-
-  const keepFinalSceneLooping = () => {
-    const video = videoRef.current;
-    if (!video || !isFinalScene || video.currentTime < FINAL_LOOP_END) return;
-    video.currentTime = FINAL_LOOP_START;
-    video.play().catch(() => {
-      // The stable brand frame remains visible if playback is unavailable.
-    });
-  };
+  const showFinalLoop = isFinalScene && frameIndex >= frameIndexForTime(FINAL_LOOP_START);
 
   return (
     <section
@@ -273,19 +291,19 @@ export default function ComputerEvolutionIntro({ onComplete }) {
             className={`evolution-intro__media-frame${isFinalScene ? " is-contained" : ""}`}
             transition={{ layout: { duration: 0.82, ease: [0.16, 1, 0.3, 1] } }}
           >
-            <video
-              ref={videoRef}
-              className="evolution-intro__video"
-              src="/nepar-animacija.mp4"
-              muted
-              playsInline
-              preload="auto"
-              tabIndex={-1}
-              data-testid="evolution-video"
-              onLoadedMetadata={onLoadedMetadata}
-              onTimeUpdate={keepFinalSceneLooping}
+            <img
+              className="evolution-intro__sequence-frame evolution-intro__sequence-frame--backdrop"
+              src={frameSource(showFinalLoop ? frameIndexForTime(FINAL_LOOP_START) : frameIndex)}
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="evolution-intro__sequence-frame evolution-intro__sequence-frame--picture"
+              src={showFinalLoop ? "/evolution-loop.webp" : frameSource(frameIndex)}
+              alt=""
+              data-frame-time={(showFinalLoop ? FINAL_LOOP_START : frameIndex / FRAME_RATE).toFixed(2)}
+              data-testid="evolution-frame"
               onError={() => completeIntro("error")}
-              onEnded={keepFinalSceneLooping}
             />
           </motion.div>
         </div>
