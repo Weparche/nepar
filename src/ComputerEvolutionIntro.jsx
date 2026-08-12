@@ -52,6 +52,7 @@ export default function ComputerEvolutionIntro({ onComplete }) {
   const previousSceneRef = useRef(0);
   const wheelGestureRef = useRef(false);
   const wheelGestureTimerRef = useRef(null);
+  const sceneAlignmentRef = useRef(false);
   const timelineTimeRef = useRef(evolutionScenes[0].time);
   const frameIndexRef = useRef(frameIndex);
   const completedRef = useRef(false);
@@ -191,12 +192,22 @@ export default function ComputerEvolutionIntro({ onComplete }) {
       );
 
       activeSceneRef.current = next;
+      sceneAlignmentRef.current = true;
       setActiveScene(next);
 
       const targetPanel = panelRefs.current[next];
       if (targetPanel) {
         const targetTop = targetPanel.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: targetTop, left: 0, behavior: "auto" });
+        const root = document.documentElement;
+        const previousScrollBehavior = root.style.scrollBehavior;
+        root.style.scrollBehavior = "auto";
+        window.scrollTo(0, targetTop);
+        window.requestAnimationFrame(() => {
+          sceneAlignmentRef.current = false;
+          root.style.scrollBehavior = previousScrollBehavior;
+        });
+      } else {
+        sceneAlignmentRef.current = false;
       }
     };
 
@@ -242,6 +253,7 @@ export default function ComputerEvolutionIntro({ onComplete }) {
     };
 
     const observer = new IntersectionObserver(() => {
+      if (sceneAlignmentRef.current) return;
       chooseActivePanel();
     }, { threshold: observerThresholds });
 

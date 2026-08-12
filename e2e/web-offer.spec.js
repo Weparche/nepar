@@ -126,6 +126,25 @@ test("every discrete mouse-wheel gesture advances exactly one visual scene", asy
   await expect(intro).toHaveAttribute("data-active-scene", "1");
 });
 
+test("wheel alignment never briefly reverses the active scene", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => {
+    window.__evolutionSceneChanges = [];
+    const intro = document.querySelector('[data-testid="evolution-intro"]');
+    const observer = new MutationObserver(() => {
+      window.__evolutionSceneChanges.push(intro.getAttribute("data-active-scene"));
+    });
+    observer.observe(intro, { attributes: true, attributeFilter: ["data-active-scene"] });
+  });
+
+  await page.mouse.wheel(0, 120);
+  await page.waitForTimeout(450);
+
+  const changes = await page.evaluate(() => window.__evolutionSceneChanges);
+  expect(changes).toEqual(["1"]);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(await page.evaluate(() => window.innerHeight));
+});
+
 test("scene 2 to 3 is slightly quicker and the extended final brand segment loops", async ({ page }) => {
   await page.goto("/");
   const intro = page.getByTestId("evolution-intro");
