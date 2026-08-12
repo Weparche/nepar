@@ -38,8 +38,150 @@ async function expectTouchTargets(page) {
   expect(undersized).toEqual([]);
 }
 
+async function skipEvolutionIntro(page) {
+  const skipButton = page.getByRole("button", { name: "Preskoči uvod i idi na web" });
+  if (await skipButton.isVisible().catch(() => false)) await skipButton.click();
+}
+
+test("cinematic intro follows scene markers and completes after the final viewport", async ({ page }) => {
+  await page.goto("/");
+
+  const intro = page.getByTestId("evolution-intro");
+  const video = page.getByTestId("evolution-video");
+  await expect(intro).toBeVisible();
+  await expect(intro).toHaveAttribute("data-active-scene", "0");
+  await expect(page.getByTestId("evolution-copy")).toContainText("Računalo je počelo");
+  await expect(page.getByRole("button", { name: "Preskoči uvod i idi na web" })).toBeVisible();
+  await expect(page.getByTestId("landing-page")).toHaveAttribute("inert", "");
+
+  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 2));
+  await expect(intro).toHaveAttribute("data-active-scene", "2");
+  await expect(page.getByText("Internet je povezao cijeli svijet.", { exact: true })).toBeVisible();
+  await expect.poll(async () => {
+    const currentTime = await video.evaluate((element) => element.currentTime);
+    return Math.abs(currentTime - 8.3);
+  }).toBeLessThanOrEqual(0.5);
+
+  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 3));
+  await expect(intro).toHaveAttribute("data-active-scene", "3");
+  await expect(page.getByText("Cloud je rad preselio na svaki uređaj.", { exact: true })).toBeVisible();
+  await expect.poll(async () => {
+    const currentTime = await video.evaluate((element) => element.currentTime);
+    return Math.abs(currentTime - 10.3);
+  }).toBeLessThanOrEqual(0.5);
+
+  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 4));
+  await expect(intro).toHaveAttribute("data-active-scene", "4");
+  await expect(page.getByText("Digitalni alati postali su radno okruženje.", { exact: true })).toBeVisible();
+  await expect.poll(async () => {
+    const currentTime = await video.evaluate((element) => element.currentTime);
+    return Math.abs(currentTime - 13);
+  }).toBeLessThanOrEqual(0.5);
+
+  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 5));
+  await expect(intro).toHaveAttribute("data-active-scene", "5");
+  await expect(page.getByText("AI danas razumije, automatizira i stvara.", { exact: true })).toBeVisible();
+  await expect.poll(async () => {
+    const currentTime = await video.evaluate((element) => element.currentTime);
+    return Math.abs(currentTime - 16);
+  }).toBeLessThanOrEqual(0.5);
+
+  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
+  await expect(intro).toHaveAttribute("data-active-scene", "6");
+  await expect(page.getByTestId("evolution-copy")).toHaveCount(0);
+  await expect.poll(() => video.evaluate((element) => element.paused)).toBe(false);
+  await expect.poll(() => video.evaluate((element) => element.currentTime)).toBeGreaterThanOrEqual(17.95);
+  await expect(intro).toBeVisible();
+
+  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 7 + 4));
+  await expect(intro).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
+});
+
+test("every discrete mouse-wheel gesture advances exactly one visual scene", async ({ page }) => {
+  await page.goto("/");
+  const intro = page.getByTestId("evolution-intro");
+  const video = page.getByTestId("evolution-video");
+  await expect(intro).toHaveAttribute("data-active-scene", "0");
+
+  const wheelStep = async (deltaY) => {
+    await page.mouse.wheel(0, deltaY);
+    await page.waitForTimeout(1550);
+  };
+
+  await wheelStep(120);
+  await expect(intro).toHaveAttribute("data-active-scene", "1");
+  await expect(page.getByText("Grafička sučelja približila su tehnologiju svima.", { exact: true })).toBeVisible();
+
+  await wheelStep(120);
+  await expect(intro).toHaveAttribute("data-active-scene", "2");
+  await expect(page.getByText("Internet je povezao cijeli svijet.", { exact: true })).toBeVisible();
+  await expect.poll(async () => Math.abs(await video.evaluate((element) => element.currentTime) - 8.3)).toBeLessThanOrEqual(0.5);
+
+  await wheelStep(-120);
+  await expect(intro).toHaveAttribute("data-active-scene", "1");
+});
+
+test("scene 2 to 3 is slightly quicker and the extended final brand segment loops", async ({ page }) => {
+  await page.goto("/");
+  const intro = page.getByTestId("evolution-intro");
+  const video = page.getByTestId("evolution-video");
+
+  await page.mouse.wheel(0, 120);
+  await expect(intro).toHaveAttribute("data-active-scene", "1");
+  await expect(page.getByTestId("evolution-copy")).toHaveCount(1);
+  await page.waitForTimeout(600);
+  const firstMidpoint = await video.evaluate((element) => element.currentTime);
+  expect(firstMidpoint).toBeGreaterThan(0.2);
+  expect(firstMidpoint).toBeLessThan(3.8);
+  await expect.poll(async () => Math.abs(await video.evaluate((element) => element.currentTime) - 3.8)).toBeLessThanOrEqual(0.12);
+  const copyLayout = await page.getByTestId("evolution-copy").evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    const storyRect = element.parentElement.getBoundingClientRect();
+    return { left: rect.left, storyLeft: storyRect.left, right: rect.right, viewport: window.innerWidth };
+  });
+  expect(Math.abs(copyLayout.left - copyLayout.storyLeft)).toBeLessThanOrEqual(1);
+  expect(copyLayout.right).toBeLessThanOrEqual(copyLayout.viewport);
+
+  await page.waitForTimeout(200);
+  await page.mouse.wheel(0, 120);
+  await expect(intro).toHaveAttribute("data-active-scene", "2");
+  await page.waitForTimeout(1200);
+  await expect.poll(async () => Math.abs(await video.evaluate((element) => element.currentTime) - 8.3)).toBeLessThanOrEqual(0.12);
+
+  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
+  await expect(intro).toHaveAttribute("data-active-scene", "6");
+  await expect.poll(() => video.evaluate((element) => element.paused)).toBe(false);
+  await video.evaluate((element) => {
+    element.currentTime = 20.01;
+    element.dispatchEvent(new Event("timeupdate"));
+  });
+  await expect.poll(() => video.evaluate((element) => element.currentTime)).toBeLessThan(18.6);
+  await expect.poll(() => video.evaluate((element) => element.currentTime)).toBeGreaterThanOrEqual(17.95);
+});
+
+test("cinematic intro can be skipped and stays dismissed for the tab session", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Preskoči uvod i idi na web" }).click();
+
+  await expect(page.getByTestId("evolution-intro")).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  await page.reload();
+  await expect(page.getByTestId("evolution-intro")).toHaveCount(0);
+  await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
+});
+
+test("reduced motion bypasses the cinematic intro before first paint", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect(page.getByTestId("evolution-intro")).toHaveCount(0);
+  await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
+});
+
 test("restored landing keeps its original structure and adds Auto Gubić below", async ({ page }) => {
   await page.goto("/");
+  await skipEvolutionIntro(page);
   await expect(
     page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode za stvarni svijet/ }),
   ).toBeVisible();

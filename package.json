@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "lint": "eslint src/App.jsx src/HomePage.jsx src/SiteChrome.jsx src/WebStartPage.jsx src/PackageInquiryModal.jsx src/usePageMeta.js src/webOfferContent.js e2e/web-offer.spec.js",
+    "lint": "eslint src/App.jsx src/ComputerEvolutionIntro.jsx src/HomePage.jsx src/SiteChrome.jsx src/WebStartPage.jsx src/PackageInquiryModal.jsx src/usePageMeta.js src/webOfferContent.js e2e/web-offer.spec.js",
     "typecheck": "tsc -p tsconfig.marketing.json --noEmit",
     "build": "vite build && node scripts/verify-dist.js",
     "preview": "vite preview",

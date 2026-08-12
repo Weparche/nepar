@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion } from "framer-motion";
 import {
@@ -29,6 +29,7 @@ import {
   BadgeEuro,
 } from "lucide-react";
 import OrbitalProjectCarousel from "./OrbitalProjectCarousel.jsx";
+import ComputerEvolutionIntro, { EVOLUTION_INTRO_SESSION_KEY } from "./ComputerEvolutionIntro.jsx";
 import { trackPageView } from "./analytics.js";
 import "./legacyLanding.css";
 
@@ -1342,9 +1343,53 @@ export function Background() {
   );
 }
 
+function shouldShowEvolutionIntro() {
+  if (typeof window === "undefined") return false;
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return false;
+
+  try {
+    return window.sessionStorage.getItem(EVOLUTION_INTRO_SESSION_KEY) !== "1";
+  } catch {
+    return true;
+  }
+}
+
 function HomePage() {
   const [lang, setLang] = useState("hr");
+  const [showEvolutionIntro, setShowEvolutionIntro] = useState(() => shouldShowEvolutionIntro());
+  const resetScrollAfterIntroRef = useRef(false);
   const copy = content[lang];
+
+  const completeEvolutionIntro = useCallback(() => {
+    try {
+      window.sessionStorage.setItem(EVOLUTION_INTRO_SESSION_KEY, "1");
+    } catch {
+      // The intro remains dismissible even when storage is unavailable.
+    }
+    resetScrollAfterIntroRef.current = true;
+    setShowEvolutionIntro(false);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (showEvolutionIntro || !resetScrollAfterIntroRef.current) return;
+    resetScrollAfterIntroRef.current = false;
+
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    root.style.scrollBehavior = previousScrollBehavior;
+  }, [showEvolutionIntro]);
+
+  useEffect(() => {
+    if (!showEvolutionIntro || !window.matchMedia) return undefined;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onPreferenceChange = (event) => {
+      if (event.matches) completeEvolutionIntro();
+    };
+    media.addEventListener("change", onPreferenceChange);
+    return () => media.removeEventListener("change", onPreferenceChange);
+  }, [completeEvolutionIntro, showEvolutionIntro]);
 
   useEffect(() => {
     document.documentElement.lang = lang === "en" ? "en" : "hr";
@@ -1354,7 +1399,14 @@ function HomePage() {
   }, [lang]);
 
   return (
-    <main className="legacy-home relative min-h-screen overflow-x-hidden font-sans text-slate-800" data-testid="landing-page">
+    <>
+      {showEvolutionIntro && <ComputerEvolutionIntro onComplete={completeEvolutionIntro} />}
+      <main
+        className={`legacy-home relative min-h-screen overflow-x-hidden font-sans text-slate-800${showEvolutionIntro ? " landing-is-inert" : ""}`}
+        data-testid="landing-page"
+        inert={showEvolutionIntro ? true : undefined}
+        aria-hidden={showEvolutionIntro ? "true" : undefined}
+      >
       <Background />
       <Navbar lang={lang} setLang={setLang} copy={copy} />
       <Hero copy={copy} lang={lang} />
@@ -1397,7 +1449,8 @@ function HomePage() {
           </motion.div>
         </div>
       </footer>
-    </main>
+      </main>
+    </>
   );
 }
 
@@ -1424,6 +1477,10 @@ function ScrollToTop() {
       isInitialMount.current = false;
       if (hash && window.history.replaceState) {
         window.history.replaceState(null, "", pathname);
+      }
+      if (document.querySelector('[data-testid="evolution-intro"]')) {
+        forceScrollTop();
+        return undefined;
       }
       forceScrollTop();
       const t1 = setTimeout(forceScrollTop, 100);
