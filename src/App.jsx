@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { AnimatePresence, motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   Bot,
@@ -123,6 +123,33 @@ const content = {
         accent: "from-sky-300 to-blue-600",
         preview: "weather",
         href: "https://vremenskaprognoza.hr",
+      },
+      {
+        title: "Njamko",
+        description: "Igra u kojoj djeca kroz zabavne zadatke uče o životinjama.",
+        accent: "from-lime-400 to-emerald-500",
+        preview: "njamko",
+        href: "/njamko",
+        internal: true,
+      },
+      {
+        title: "Bajkoteka",
+        description: "Interaktivna edukativna aplikacija o djelima Ivane Brlić-Mažuranić.",
+        accent: "from-rose-400 to-amber-500",
+        preview: "bajkoteka",
+        href: "https://izradi.croatianmakers.hr/projekti/bajkoteka/",
+      },
+      {
+        title: "Handyman",
+        description: "Digitalni projekt za usluge, upite i jednostavniju organizaciju posla.",
+        accent: "from-orange-400 to-amber-500",
+        preview: "handyman",
+      },
+      {
+        title: "Hackosaur",
+        description: "Digitalni proizvod iz svijeta programiranja i tehnologije.",
+        accent: "from-emerald-400 to-cyan-500",
+        preview: "hackosaur",
       },
     ],
     featuredOnlyProjects: [
@@ -304,6 +331,33 @@ const content = {
         accent: "from-sky-300 to-blue-600",
         preview: "weather",
         href: "https://vremenskaprognoza.hr",
+      },
+      {
+        title: "Njamko",
+        description: "A game where children learn about animals through playful activities.",
+        accent: "from-lime-400 to-emerald-500",
+        preview: "njamko",
+        href: "/njamko",
+        internal: true,
+      },
+      {
+        title: "Bajkoteka",
+        description: "An interactive educational app about the works of Ivana Brlić-Mažuranić.",
+        accent: "from-rose-400 to-amber-500",
+        preview: "bajkoteka",
+        href: "https://izradi.croatianmakers.hr/projekti/bajkoteka/",
+      },
+      {
+        title: "Handyman",
+        description: "A digital project for services, inquiries, and simpler work organization.",
+        accent: "from-orange-400 to-amber-500",
+        preview: "handyman",
+      },
+      {
+        title: "Hackosaur",
+        description: "A digital product from the world of coding and technology.",
+        accent: "from-emerald-400 to-cyan-500",
+        preview: "hackosaur",
       },
     ],
     featuredOnlyProjects: [
@@ -674,6 +728,37 @@ export function MotionButton({ href, onClick, children, className = "", variant 
 function FeaturedProjectImage({ type, copy }) {
   const frameClass = "featured-project-media";
 
+  if (type === "njamko") {
+    return (
+      <div className={`${frameClass} featured-project-media-njamko`}>
+        <img
+          src="/njamko.png"
+          alt="Njamko"
+          loading="lazy"
+          className="featured-project-media-image featured-project-media-image-contain"
+        />
+      </div>
+    );
+  }
+
+  if (type === "bajkoteka" || type === "handyman" || type === "hackosaur") {
+    const imageSrc = {
+      bajkoteka: "/brand/bajkoteka-project.jpg",
+      handyman: "/brand/handyman-project.jpg",
+      hackosaur: "/brand/hackosaur-project.jpg",
+    }[type];
+    return (
+      <div className={frameClass}>
+        <img
+          src={imageSrc}
+          alt=""
+          loading="lazy"
+          className="featured-project-media-image featured-project-media-image-center"
+        />
+      </div>
+    );
+  }
+
   if (type === "autogubic") {
     return (
       <div className={frameClass}>
@@ -768,20 +853,63 @@ function Hero({ copy, lang }) {
   const reduceMotion = useReducedMotion();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const sectionRef = useRef(null);
+  const videoRef = useRef(null);
   const animateMobileDetails = !reduceMotion && !isMobile;
   const showHeroVideo = isDesktop && !reduceMotion;
 
+  useEffect(() => {
+    if (!showHeroVideo || !sectionRef.current || !videoRef.current) return undefined;
+    const video = videoRef.current;
+    let isVisible = true;
+    let playbackReady = false;
+    const syncPlayback = (isVisible) => {
+      if (playbackReady && isVisible && document.visibilityState === "visible") {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        syncPlayback(isVisible);
+      },
+      { threshold: 0.05 },
+    );
+    const onVisibilityChange = () => syncPlayback(isVisible);
+    const activatePlayback = () => {
+      playbackReady = true;
+      syncPlayback(isVisible);
+    };
+    const idleHandle = window.requestIdleCallback
+      ? window.requestIdleCallback(activatePlayback, { timeout: 900 })
+      : window.setTimeout(activatePlayback, 450);
+    observer.observe(sectionRef.current);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      if (window.cancelIdleCallback && window.requestIdleCallback) window.cancelIdleCallback(idleHandle);
+      else window.clearTimeout(idleHandle);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      video.pause();
+    };
+  }, [showHeroVideo]);
+
   return (
-    <section id="top" className="relative overflow-hidden px-4 pt-24 sm:pt-32 lg:pt-[7.25rem]">
+    <section ref={sectionRef} id="top" className="relative overflow-hidden px-4 pt-24 sm:pt-32 lg:pt-[7.25rem]">
       {showHeroVideo && (
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <video
-            className="size-full object-cover"
-            autoPlay
+            ref={videoRef}
+            className="hero-background-video size-full object-cover"
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
+            poster="/nepar-background-desktop-2400x900.webp"
+            disablePictureInPicture
+            disableRemotePlayback
           >
             <source src="/hero.webm" type="video/webm" />
             <source src="/hero.mp4" type="video/mp4" />
@@ -1047,9 +1175,10 @@ function WebStartPromo({ copy }) {
 }
 
 function FeaturedProjectCard({ project, copy, duplicate = false }) {
-  const Icon = project.Icon;
-  const ProjectShell = project.href ? motion.a : motion.article;
-  const linkProps = project.href
+  const ProjectShell = project.internal ? MotionLink : project.href ? motion.a : motion.article;
+  const linkProps = project.internal
+    ? { to: project.href }
+    : project.href
     ? {
         href: project.href,
         target: "_blank",
@@ -1069,11 +1198,7 @@ function FeaturedProjectCard({ project, copy, duplicate = false }) {
       <FeaturedProjectImage type={project.preview} copy={copy} />
       <div className="featured-project-card-copy">
         <div className="featured-project-card-heading">
-          <span className={`grid size-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${project.accent} text-white`}>
-            <Icon size={16} aria-hidden="true" />
-          </span>
           <h3 className={project.title.length > 18 ? "featured-project-title-long" : undefined}>{project.title}</h3>
-          {project.href && <ArrowRight className="featured-project-card-arrow" size={17} aria-hidden="true" />}
         </div>
         <p>{project.description}</p>
       </div>
@@ -1083,61 +1208,27 @@ function FeaturedProjectCard({ project, copy, duplicate = false }) {
 
 function FeaturedProjects({ copy }) {
   const projects = [...copy.projects, ...copy.featuredOnlyProjects];
-  const trackX = useMotionValue(0);
-  const sectionRef = useRef(null);
-  const trackRef = useRef(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const reduceMotion = useReducedMotion();
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  const isInView = useInView(sectionRef, { margin: "240px 0px 240px 0px" });
-  const isMoving = !reduceMotion && !isPaused && isInView;
-
-  useAnimationFrame((_, delta) => {
-    if (!isMoving || document.visibilityState !== "visible" || !trackRef.current) return;
-    const loopWidth = trackRef.current.scrollWidth / 2;
-    if (!loopWidth) return;
-    const nextX = trackX.get() - Math.min(delta, 48) * (isMobile ? 0.056 : 0.076);
-    trackX.set(nextX <= -loopWidth ? nextX + loopWidth : nextX);
-  });
 
   return (
-    <section ref={sectionRef} id="projekti" className="py-8 scroll-mt-24 sm:py-12">
+    <section id="projekti" className="px-4 py-5 scroll-mt-24 sm:py-8">
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={revealTransition}
-        className="mx-auto max-w-[1180px] border-t border-slate-200/80 px-4 pt-6 lg:max-w-[1380px]"
+        className="mx-auto max-w-[1180px] border-t border-slate-200/80 pt-4 lg:max-w-[1380px]"
       >
-        <h2 className={`mb-5 ${eyebrowClass} sm:mb-6`}>
+        <h2 className={`mb-3 ${eyebrowClass} sm:mb-4`}>
           {copy.featured.eyebrow}
         </h2>
+        <div className="featured-projects-grid" role="list" aria-label={copy.featured.eyebrow}>
+          {projects.map((project) => (
+            <div key={project.title} role="listitem">
+              <FeaturedProjectCard project={project} copy={copy} />
+            </div>
+          ))}
+        </div>
       </motion.div>
-      <div
-        role="region"
-        className={`featured-projects-viewport ${reduceMotion ? "is-reduced-motion" : ""}`}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onFocusCapture={() => setIsPaused(true)}
-        onBlurCapture={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) setIsPaused(false);
-        }}
-        aria-label={copy.featured.eyebrow}
-      >
-        <motion.div
-          ref={trackRef}
-          className={`featured-projects-track ${isMoving ? "is-moving" : ""}`}
-          style={{ x: trackX }}
-          data-testid="featured-projects-track"
-        >
-          <div className="featured-projects-group">
-            {projects.map((project) => <FeaturedProjectCard key={project.title} project={project} copy={copy} />)}
-          </div>
-          <div className="featured-projects-group" aria-hidden="true">
-            {projects.map((project) => <FeaturedProjectCard key={`duplicate-${project.title}`} project={project} copy={copy} duplicate />)}
-          </div>
-        </motion.div>
-      </div>
     </section>
   );
 }

@@ -194,10 +194,22 @@ function useCarouselSize() {
   );
 
   useEffect(() => {
-    const update = () => setSize(computeCarouselSize(window.innerWidth));
+    let resizeFrame = 0;
+    const update = () => {
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(() => {
+        setSize((current) => {
+          const next = computeCarouselSize(window.innerWidth);
+          return current.radiusX === next.radiusX ? current : next;
+        });
+      });
+    };
     update();
     window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    return () => {
+      cancelAnimationFrame(resizeFrame);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   return size;
@@ -365,7 +377,7 @@ function Preview({ type, compact = false, copy }) {
   return <MorePreview compact={compact} copy={copy} />;
 }
 
-function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, copy }) {
+function OrbitalCard({ card, opacity, isMobile, copy }) {
   const Icon = card.Icon;
   const CardShell = card.href ? motion.a : motion.article;
   const linkProps = card.href
@@ -380,9 +392,8 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, 
       }`}
       style={{
         opacity,
-        filter,
-        boxShadow,
-        borderColor,
+        boxShadow: isMobile ? "0 4px 10px rgba(15,23,42,0.16)" : "0 18px 38px rgba(15,23,42,0.18)",
+        borderColor: "rgba(147,197,253,0.62)",
       }}
       whileHover={isMobile ? undefined : { y: -3, scale: 1.008 }}
       whileTap={card.href ? { scale: 0.985 } : undefined}
@@ -405,37 +416,19 @@ function OrbitalCard({ card, opacity, filter, boxShadow, borderColor, isMobile, 
           <p className="mt-0.5 line-clamp-2 text-[10px] leading-3.5 text-slate-600 sm:mt-1 sm:text-xs sm:leading-5">{card.description}</p>
         </div>
       </div>
-      <Preview type={card.preview} compact={isMobile} copy={copy} />
+      <Preview type={card.preview} compact copy={copy} />
     </CardShell>
   );
 }
 
 function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMobile, isAnimating, copy }) {
-  const x = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).x);
-  const y = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).y);
-  const scale = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).scale);
-  const rotateY = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).rotateY);
-  const zIndex = useTransform(
-    angle,
-    (value) => getOrbitalPosition(value, index, radiusX, radiusY).zIndex + 20,
-  );
-  const opacity = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).opacity);
-  const filter = useTransform(angle, (value) => {
-    const depth = getOrbitalPosition(value, index, radiusX, radiusY).depth;
-    const brightness = 0.72 + depth * 0.36;
-    const saturation = 0.9 + depth * 0.18;
-    return `brightness(${brightness}) saturate(${saturation})`;
-  });
-  const boxShadow = useTransform(angle, (value) => {
-    const depth = getOrbitalPosition(value, index, radiusX, radiusY).depth;
-    const alpha = 0.1 + depth * 0.18;
-    return `0 ${10 + depth * 14}px ${22 + depth * 24}px rgba(15,23,42,${alpha})`;
-  });
-  const borderColor = useTransform(angle, (value) => {
-    const depth = getOrbitalPosition(value, index, radiusX, radiusY).depth;
-    const alpha = 0.24 + depth * 0.56;
-    return `rgba(147,197,253,${alpha})`;
-  });
+  const position = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY));
+  const x = useTransform(position, (value) => value.x);
+  const y = useTransform(position, (value) => value.y);
+  const scale = useTransform(position, (value) => value.scale);
+  const rotateY = useTransform(position, (value) => value.rotateY);
+  const zIndex = useTransform(position, (value) => value.zIndex + 20);
+  const opacity = useTransform(position, (value) => value.opacity);
 
   return (
     <motion.div
@@ -456,9 +449,6 @@ function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMob
         <OrbitalCard
           card={card}
           opacity={opacity}
-          filter={isMobile ? "brightness(0.96) saturate(1)" : filter}
-          boxShadow={isMobile ? "0 6px 18px rgba(15,23,42,0.28)" : boxShadow}
-          borderColor={borderColor}
           isMobile={isMobile}
           copy={copy}
         />
@@ -468,13 +458,11 @@ function OrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isMob
 }
 
 function MobileOrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY, isAnimating, copy }) {
-  const x = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).x);
-  const y = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).y);
-  const scale = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY).scale);
-  const zIndex = useTransform(
-    angle,
-    (value) => getOrbitalPosition(value, index, radiusX, radiusY).zIndex + 20,
-  );
+  const position = useTransform(angle, (value) => getOrbitalPosition(value, index, radiusX, radiusY));
+  const x = useTransform(position, (value) => value.x);
+  const y = useTransform(position, (value) => value.y);
+  const scale = useTransform(position, (value) => value.scale);
+  const zIndex = useTransform(position, (value) => value.zIndex + 20);
 
   return (
     <motion.div
@@ -493,9 +481,6 @@ function MobileOrbitalItem({ card, index, angle, radiusX, radiusY, orbitCenterY,
         <OrbitalCard
           card={card}
           opacity={1}
-          filter="none"
-          boxShadow="0 4px 10px rgba(15,23,42,0.16)"
-          borderColor="rgba(147,197,253,0.62)"
           isMobile
           copy={copy}
         />
@@ -577,7 +562,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
     if (prefersReducedMotion) return;
     if (!inView || isPaused) return;
     if (document.visibilityState !== "visible") return;
-    const next = (angle.get() + delta * (isMobile ? 0.0066 : 0.0046)) % 360;
+    const next = (angle.get() + Math.min(delta, 32) * (isMobile ? 0.0066 : 0.0046)) % 360;
     angle.set(next);
   });
 
@@ -699,7 +684,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               strokeLinecap="round"
             />
             {!isMobile && (
-              <motion.ellipse
+              <ellipse
                 cx="500"
                 cy="90"
                 rx="470"
@@ -708,8 +693,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
                 stroke="url(#orbitSheen)"
                 strokeWidth="7"
                 strokeLinecap="round"
-                animate={{ opacity: [0.26, 0.72, 0.26] }}
-                transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
+                opacity="0.5"
               />
             )}
             <ellipse
@@ -758,19 +742,12 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
             aria-hidden="true"
           >
           <defs>
-            <motion.linearGradient
+            <linearGradient
               id="orbitFront"
               x1="0%"
               x2="100%"
               y1="40%"
               y2="60%"
-              animate={{
-                x1: ["0%", "100%", "100%", "0%", "0%"],
-                y1: ["40%", "20%", "84%", "60%", "40%"],
-                x2: ["100%", "0%", "0%", "100%", "100%"],
-                y2: ["60%", "80%", "16%", "40%", "60%"],
-              }}
-              transition={{ duration: 7.2, repeat: Infinity, ease: "linear" }}
             >
               <stop offset="0%" stopColor="rgba(37,99,235,0)" />
               <stop offset="12%" stopColor="rgba(59,130,246,0.34)" />
@@ -778,7 +755,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               <stop offset="52%" stopColor="rgba(37,99,235,0.54)" />
               <stop offset="74%" stopColor="rgba(124,58,237,0.48)" />
               <stop offset="100%" stopColor="rgba(37,99,235,0)" />
-            </motion.linearGradient>
+            </linearGradient>
             <filter id="orbitFrontGlow" x="-20%" y="-140%" width="140%" height="360%">
               <feGaussianBlur stdDeviation="7" />
             </filter>
