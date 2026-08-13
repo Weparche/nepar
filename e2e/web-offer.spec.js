@@ -126,6 +126,41 @@ test("every discrete mouse-wheel gesture advances exactly one visual scene", asy
   await expect(intro).toHaveAttribute("data-active-scene", "1");
 });
 
+test("a short touch swipe advances exactly one visual scene", async ({ page }) => {
+  await page.goto("/");
+  const hasTouch = await page.evaluate(() => "ontouchstart" in window);
+  test.skip(!hasTouch, "touch emulation not enabled for this project");
+
+  const intro = page.getByTestId("evolution-intro");
+  await expect(intro).toHaveAttribute("data-active-scene", "0");
+
+  const swipeUp = async (distance) => {
+    await page.evaluate((swipeDistance) => {
+      const target = document.body;
+      const makeTouch = (clientY) => new Touch({ identifier: 1, target, clientX: 200, clientY });
+      const dispatch = (type, clientY, touches) => target.dispatchEvent(new TouchEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        touches,
+        changedTouches: [makeTouch(clientY)],
+      }));
+      const startY = 500;
+      const endY = startY - swipeDistance;
+      dispatch("touchstart", startY, [makeTouch(startY)]);
+      dispatch("touchmove", endY, [makeTouch(endY)]);
+      dispatch("touchend", endY, []);
+    }, distance);
+    await page.waitForTimeout(1550);
+  };
+
+  // A 40px drag is far short of the ~half-viewport native scroll that used
+  // to be required — one short swipe should snap exactly one scene forward.
+  await swipeUp(40);
+  await expect(intro).toHaveAttribute("data-active-scene", "1");
+  await expect(page.getByText("Grafička sučelja približila su tehnologiju svima.", { exact: true })).toBeVisible();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(await page.evaluate(() => window.innerHeight));
+});
+
 test("wheel alignment never briefly reverses the active scene", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => {

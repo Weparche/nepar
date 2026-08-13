@@ -153,23 +153,20 @@ export default function ComputerEvolutionIntro({ onComplete }) {
   }, [activeScene, tweenTo]);
 
   useEffect(() => {
+    const TOUCH_STEP_PX = 24;
+
     const endWheelGesture = () => {
       wheelGestureRef.current = false;
       wheelGestureTimerRef.current = null;
     };
 
-    const onWheel = (event) => {
-      if (completedRef.current || Math.abs(event.deltaY) < 2) return;
-      event.preventDefault();
-
-      if (wheelGestureRef.current) return;
+    const jumpToScene = (direction) => {
       wheelGestureRef.current = true;
       wheelGestureTimerRef.current = window.setTimeout(
         endWheelGesture,
         SCENE_TRANSITION_MS + 120,
       );
 
-      const direction = event.deltaY > 0 ? 1 : -1;
       const current = activeSceneRef.current;
 
       if (direction > 0 && current === evolutionScenes.length - 1) {
@@ -211,9 +208,60 @@ export default function ComputerEvolutionIntro({ onComplete }) {
       }
     };
 
+    const onWheel = (event) => {
+      if (completedRef.current || Math.abs(event.deltaY) < 2) return;
+      event.preventDefault();
+      if (wheelGestureRef.current) return;
+      jumpToScene(event.deltaY > 0 ? 1 : -1);
+    };
+
+    // Touch devices never fire "wheel" events, so without this a swipe only
+    // moves the scene once native scrolling has dragged the panel stack
+    // through roughly half of a full 100vh panel. Mirror the wheel gesture
+    // instead: a short swipe past TOUCH_STEP_PX advances exactly one scene,
+    // same as a single mouse-wheel tick.
+    let touchStartY = null;
+
+    const onTouchStart = (event) => {
+      if (completedRef.current || event.touches.length !== 1) {
+        touchStartY = null;
+        return;
+      }
+      touchStartY = event.touches[0].clientY;
+    };
+
+    const onTouchMove = (event) => {
+      if (completedRef.current || touchStartY === null || event.touches.length !== 1) return;
+      event.preventDefault();
+
+      const currentY = event.touches[0].clientY;
+      const delta = touchStartY - currentY;
+
+      if (wheelGestureRef.current) {
+        touchStartY = currentY;
+        return;
+      }
+
+      if (Math.abs(delta) < TOUCH_STEP_PX) return;
+      touchStartY = currentY;
+      jumpToScene(delta > 0 ? 1 : -1);
+    };
+
+    const onTouchEnd = () => {
+      touchStartY = null;
+    };
+
     window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true, capture: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true, capture: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true, capture: true });
     return () => {
       window.removeEventListener("wheel", onWheel, { capture: true });
+      window.removeEventListener("touchstart", onTouchStart, { capture: true });
+      window.removeEventListener("touchmove", onTouchMove, { capture: true });
+      window.removeEventListener("touchend", onTouchEnd, { capture: true });
+      window.removeEventListener("touchcancel", onTouchEnd, { capture: true });
       if (wheelGestureTimerRef.current !== null) {
         window.clearTimeout(wheelGestureTimerRef.current);
       }
