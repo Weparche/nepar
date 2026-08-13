@@ -767,10 +767,28 @@ function FeaturedProjectImage({ type, copy }) {
 function Hero({ copy, lang }) {
   const reduceMotion = useReducedMotion();
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
   const animateMobileDetails = !reduceMotion && !isMobile;
+  const showHeroVideo = isDesktop && !reduceMotion;
 
   return (
-    <section id="top" className="relative px-4 pt-24 sm:pt-32 lg:pt-[7.25rem]">
+    <section id="top" className="relative overflow-hidden px-4 pt-24 sm:pt-32 lg:pt-[7.25rem]">
+      {showHeroVideo && (
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <video
+            className="size-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          >
+            <source src="/hero.webm" type="video/webm" />
+            <source src="/hero.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.62)_0%,rgba(255,255,255,0.08)_20%,rgba(255,255,255,0.08)_55%,rgba(255,255,255,0.65)_82%,#fff_100%)]" />
+        </div>
+      )}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[540px] bg-[radial-gradient(ellipse_at_52%_8%,rgba(37,99,235,0.12),transparent_56%)]" />
       <div className="mx-auto grid max-w-[1180px] items-center gap-2 sm:gap-8 lg:max-w-[1380px] lg:grid-cols-[minmax(360px,0.72fr)_minmax(0,1.28fr)]">
         <motion.div
