@@ -95,7 +95,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
   await expect(page.getByTestId("evolution-copy")).toHaveCount(0);
   await expect.poll(() => evolutionFrameTime(page)).toBeGreaterThanOrEqual(17.95);
   await expect(frame).toHaveAttribute("src", "/evolution-loop.webp");
-  await expect(frame).toHaveAttribute("data-frame-time", "18.60");
+  await expect(frame).toHaveAttribute("data-frame-time", "18.80");
   await expect(intro).toBeVisible();
 
   await page.evaluate(() => window.scrollTo(0, window.innerHeight * 7 + 4));

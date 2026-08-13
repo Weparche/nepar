@@ -6,7 +6,7 @@ export const EVOLUTION_INTRO_SESSION_KEY = "nepar:evolution-intro-seen";
 
 const SCENE_TRANSITION_MS = 1350;
 const SECOND_TO_THIRD_TRANSITION_MS = 1150;
-const FINAL_LOOP_START = 18.6;
+const FINAL_LOOP_START = 18.8;
 const FRAME_RATE = 6;
 const FRAME_COUNT = 120;
 
