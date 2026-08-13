@@ -6,7 +6,7 @@ export const EVOLUTION_INTRO_SESSION_KEY = "nepar:evolution-intro-seen";
 
 const SCENE_TRANSITION_MS = 1350;
 const SECOND_TO_THIRD_TRANSITION_MS = 1150;
-const FINAL_LOOP_START = 18.5;
+const FINAL_LOOP_START = 18.6;
 const FRAME_RATE = 6;
 const FRAME_COUNT = 120;
 
@@ -370,7 +370,7 @@ export default function ComputerEvolutionIntro({ onComplete }) {
 
         <div className="evolution-intro__veil" aria-hidden="true" />
 
-        {isFinalScene && (
+        {!isFinalScene && (
           <button
             type="button"
             className="evolution-intro__brand-title"

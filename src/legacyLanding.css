@@ -782,8 +782,12 @@
   }
 
   .evolution-intro__brand-title {
+    /* The 16:9 frame is object-fit: contain inside the full-height mobile
+       stage, so it renders as a 56.25vw-tall band vertically centered in
+       100svh, leaving an empty letterboxed gap above it. Center the title
+       in that gap, between the very top edge and where the frame starts. */
     position: absolute;
-    top: max(1.4rem, env(safe-area-inset-top));
+    top: calc((100svh - 56.25vw) / 4);
     left: 50%;
     z-index: 4;
     display: block;
@@ -817,12 +821,12 @@
 @keyframes evolution-brand-title-in {
   0% {
     opacity: 0;
-    translate: -50% -14px;
+    translate: -50% calc(-50% - 14px);
   }
 
   100% {
     opacity: 1;
-    translate: -50% 0;
+    translate: -50% -50%;
   }
 }
 
