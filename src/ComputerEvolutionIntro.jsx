@@ -6,7 +6,7 @@ export const EVOLUTION_INTRO_SESSION_KEY = "nepar:evolution-intro-seen";
 
 const SCENE_TRANSITION_MS = 1350;
 const SECOND_TO_THIRD_TRANSITION_MS = 1150;
-const FINAL_LOOP_START = 18.4;
+const FINAL_LOOP_START = 18.5;
 const FRAME_RATE = 6;
 const FRAME_COUNT = 120;
 
@@ -369,6 +369,17 @@ export default function ComputerEvolutionIntro({ onComplete }) {
         </div>
 
         <div className="evolution-intro__veil" aria-hidden="true" />
+
+        {isFinalScene && (
+          <button
+            type="button"
+            className="evolution-intro__brand-title"
+            aria-label="Nepar Solutions — idi na web"
+            onClick={() => completeIntro("skip")}
+          >
+            Nepar Solutions
+          </button>
+        )}
 
         <div className="evolution-intro__story" aria-live="polite" aria-atomic="true">
           <AnimatePresence initial={false} mode="wait">

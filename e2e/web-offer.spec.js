@@ -95,6 +95,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
   await expect(page.getByTestId("evolution-copy")).toHaveCount(0);
   await expect.poll(() => evolutionFrameTime(page)).toBeGreaterThanOrEqual(17.95);
   await expect(frame).toHaveAttribute("src", "/evolution-loop.webp");
+  await expect(frame).toHaveAttribute("data-frame-time", "18.50");
   await expect(intro).toBeVisible();
 
   await page.evaluate(() => window.scrollTo(0, window.innerHeight * 7 + 4));
@@ -212,6 +213,36 @@ test("scene 2 to 3 is slightly quicker and the extended final brand segment loop
   const loopFrame = page.getByTestId("evolution-frame");
   await expect(loopFrame).toHaveAttribute("src", "/evolution-loop.webp");
   await expect.poll(() => loopFrame.evaluate((element) => element.complete && element.naturalWidth > 0)).toBe(true);
+});
+
+test("mobile shows an animated brand title on the final scene that returns to the site", async ({ page }) => {
+  await page.goto("/");
+  const intro = page.getByTestId("evolution-intro");
+  const brandTitle = page.getByRole("button", { name: "Nepar Solutions — idi na web" });
+
+  await expect(brandTitle).toBeHidden();
+
+  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
+  await expect(intro).toHaveAttribute("data-active-scene", "6");
+
+  const isMobileViewport = (page.viewportSize()?.width ?? 0) <= 700;
+  if (!isMobileViewport) {
+    await expect(brandTitle).toBeHidden();
+    return;
+  }
+
+  await expect(brandTitle).toBeVisible();
+  await expect(brandTitle).toHaveText("Nepar Solutions");
+
+  // force:true — the button lives on a sticky, scroll-jacked overlay that's
+  // already fully on-screen; Playwright's default scrollIntoViewIfNeeded
+  // pre-click step nudges window scroll, which fights the intro's own
+  // IntersectionObserver-driven scene detection and flickers the button
+  // out of the DOM. No real tap ever triggers that extra scroll.
+  await brandTitle.click({ force: true });
+  await expect(intro).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
 });
 
 test("cinematic intro can be skipped and stays dismissed for the tab session", async ({ page }) => {
