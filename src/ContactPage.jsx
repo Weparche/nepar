@@ -17,6 +17,12 @@ const contactContent = {
       { Icon: Clock, label: "Odgovor", value: "Unutar 24h", href: null },
       { Icon: MapPin, label: "Lokacija", value: "Hrvatska", href: null },
     ],
+    processEyebrow: "ŠTO SLIJEDI",
+    process: [
+      ["01", "Kratki pregled", "Pročitamo opis, cilj i priloženi materijal."],
+      ["02", "Realna preporuka", "Javljamo se s pitanjima i prijedlogom opsega."],
+      ["03", "Jasan sljedeći korak", "Dobivate konkretan smjer bez skrivenih obveza."],
+    ],
     form: {
       name: "Ime i prezime",
       namePlaceholder: "Vaše ime i prezime",
@@ -47,6 +53,12 @@ const contactContent = {
       { Icon: Mail, label: "Email", value: "nepar@nepar.hr", href: "mailto:nepar@nepar.hr" },
       { Icon: Clock, label: "Response", value: "Within 24h", href: null },
       { Icon: MapPin, label: "Location", value: "Croatia", href: null },
+    ],
+    processEyebrow: "WHAT HAPPENS NEXT",
+    process: [
+      ["01", "A quick review", "We read the brief, goal, and attached material."],
+      ["02", "A realistic recommendation", "We reply with questions and a suggested scope."],
+      ["03", "A clear next step", "You get a concrete direction with no hidden obligation."],
     ],
     form: {
       name: "Full name",
@@ -153,44 +165,27 @@ export default function ContactPage() {
       <Navbar lang={lang} setLang={setLang} copy={navCopy} />
 
       <section className="px-4 pt-24 pb-16 sm:pt-32 sm:pb-24">
-        <div className="mx-auto max-w-4xl">
+        <div className="contact-brief-grid mx-auto max-w-[1180px] lg:max-w-[1380px]">
 
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, ease: easeOut }}
-            className="mb-8 text-center sm:mb-12"
+            className="contact-brief-header"
           >
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
               {copy.eyebrow}
             </p>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl xl:text-6xl">
               {copy.title}{" "}
-              <span className="bg-gradient-to-r from-blue-600 via-cyan-600 to-violet-600 bg-clip-text text-transparent">
+              <span className="text-blue-600">
                 {copy.titleHighlight}
               </span>
             </h1>
-            <p className="mx-auto mt-4 max-w-md text-base leading-7 text-slate-600">
+            <p className="mt-4 max-w-md text-base leading-7 text-slate-600">
               {copy.description}
             </p>
-
-            {/* Info — inline below heading, no boxes */}
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-              {copy.info.map(({ Icon, label, value, href }) => (
-                <span key={label} className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1.5 text-sm text-slate-600 shadow-sm backdrop-blur">
-                  <Icon size={14} className="shrink-0 text-blue-600" />
-                  <span className="text-slate-500">{label}:</span>
-                  {href ? (
-                    <a href={href} className="font-medium text-slate-700 transition hover:text-slate-900 select-all">
-                      {value}
-                    </a>
-                  ) : (
-                    <span className="font-medium text-slate-700">{value}</span>
-                  )}
-                </span>
-              ))}
-            </div>
           </motion.div>
 
           {/* Form card — no overflow-hidden so focus ring is never clipped */}
@@ -198,14 +193,8 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, delay: 0.08, ease: easeOut }}
-            className="premium-card contact-panel relative p-5 sm:p-8"
+            className="premium-card contact-panel contact-brief-form relative p-5 sm:p-8"
           >
-            {/* Decorative blurs in their own clipped wrapper */}
-            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-              <div className="absolute -right-16 -top-16 size-56 rounded-full bg-blue-500/5 blur-3xl" />
-              <div className="absolute -bottom-12 -left-12 size-44 rounded-full bg-cyan-500/5 blur-3xl" />
-            </div>
-
             {submitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -213,7 +202,7 @@ export default function ContactPage() {
                 transition={{ duration: 0.24, ease: easeOut }}
                 className="relative flex flex-col items-center justify-center gap-4 py-12 text-center"
               >
-                <div className="grid size-14 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-violet-600 shadow-lg shadow-blue-300/50">
+                <div className="grid size-14 place-items-center rounded-full bg-blue-600">
                   <CheckCircle2 size={26} className="text-white" />
                 </div>
                 <h2 className="text-xl font-semibold text-slate-900">{copy.form.successTitle}</h2>
@@ -366,7 +355,33 @@ export default function ContactPage() {
             )}
           </motion.div>
 
-          <div className="mt-6 text-center">
+          <motion.aside
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, delay: 0.12, ease: easeOut }}
+            className="contact-brief-proof"
+          >
+            <div className="contact-info-list">
+              {copy.info.map(({ Icon, label, value, href }) => (
+                <div key={label}>
+                  <Icon size={17} aria-hidden="true" />
+                  <span>{label}</span>
+                  {href ? <a href={href}>{value}</a> : <strong>{value}</strong>}
+                </div>
+              ))}
+            </div>
+            <p className="contact-process-eyebrow">{copy.processEyebrow}</p>
+            <ol className="contact-process">
+              {copy.process.map(([step, title, description]) => (
+                <li key={step}>
+                  <span>{step}</span>
+                  <div><h2>{title}</h2><p>{description}</p></div>
+                </li>
+              ))}
+            </ol>
+          </motion.aside>
+
+          <div className="contact-back-home mt-6 text-center">
             <a href="/" className="text-sm text-slate-500 transition hover:text-slate-900">
               {copy.form.backHome}
             </a>
@@ -376,7 +391,7 @@ export default function ContactPage() {
       </section>
 
       <footer className="px-4 pb-8">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <div className="border-t border-slate-200 pt-8">
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>

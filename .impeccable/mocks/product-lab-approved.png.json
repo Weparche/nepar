@@ -1,0 +1,18 @@
+{
+  "approved": true,
+  "delegatedApproval": "User requested direct implementation of the approved Product Lab plan.",
+  "direction": "Light technical editorial page with an orbital hero, proof rail, asymmetric capabilities, one dark product-lab reveal, compact project wall, process line, and inline CTA.",
+  "doNotLiteralize": [
+    "invented project names or metrics",
+    "navigation items not present in the product",
+    "generic dashboard imagery in place of real Nepar projects"
+  ],
+  "inventory": {
+    "hero": "Existing semantic React/CSS, existing video and OrbitalProjectCarousel",
+    "proofRail": "Semantic HTML/CSS using existing verified stats",
+    "capabilityBento": "Semantic HTML/CSS and existing service raster assets",
+    "projectLab": "Semantic HTML/CSS with existing project raster assets and pointer-only CSS spotlight",
+    "process": "Semantic HTML/CSS using existing factual copy",
+    "cta": "Existing router link/button components, inline rather than fixed"
+  }
+}

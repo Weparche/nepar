@@ -221,27 +221,20 @@ const content = {
       description: "Od ideje do stabilnog proizvoda, brzo i fokusirano na korisnika.",
     },
     webStartPromo: {
-      eyebrow: "NOVA USLUGA",
-      title: "Jedan profesionalni link za va\u0161 posao",
+      eyebrow: "JASNA PONUDA",
+      title: "Web-stranica koja pripada va\u0161em poslovanju",
       description:
-        "Instagram, Facebook i Google Maps ve\u0107 vam donose vidljivost. Mi dodajemo prodajnu stranicu koja sve to povezuje i pretvara posjete u konkretne upite \u2014 bez po\u010detnog tro\u0161ka izrade.",
-      highlight:
-        "Jedan profesionalni link koji pretvara Instagram, Facebook i Google Maps posjete u konkretne upite.",
-      trustStat:
-        "potro\u0161a\u010da smatra da je poslovanje s web stranicom vjerodostojnije od poslovanja koje ima samo profil na dru\u0161tvenim mre\u017eama.",
-      trustSource: "Izvor: Verisign Online Survey",
+        "Izradu pla\u0107ate jednokratno, a odr\u017eavanje birate samo ako vam treba. Opseg, cijena i broj dorada poznati su prije po\u010detka rada.",
+      highlight: "Paketi izrade kre\u0107u od 300 \u20ac jednokratno.",
       cta: "Pogledaj pakete",
       ctaLabel: "Paketi web-stranica",
       ctaNote: "Usporedite opseg, cijene i što je uključeno u svaki paket.",
-      secondaryNote:
-        "Pilot ponuda od 30 \u20ac/mj za prvih 10 klijenata. Business paket od 59 \u20ac/mj i Pro paket od 89 \u20ac/mj za firme koje \u017eele vi\u0161e upita, rezervacija i analitiku.",
-      redesignTitle: "Redizajn postojećeg weba",
-      redesignText: "Već imate web, ali izgleda zastarjelo ili loše na mobitelu? Osvježimo ga od 200 €.",
-      redesignCta: "Pogledaj redizajn pakete",
+      secondaryNote: "Odr\u017eavanje nije obavezno i ugovara se zasebno.",
     },
     featured: {
       eyebrow: "IZDVOJENI PROJEKTI",
       link: "Pogledaj sve projekte",
+      summary: "11 proizvoda \u00b7 stvarni radovi",
     },
     about: {
       eyebrow: "O NAMA",
@@ -250,6 +243,11 @@ const content = {
       title: "Tehni\u010dka izvedba, jasna komunikacija i fokus na proizvod koji radi.",
       description:
         "Nepar Solutions spaja razvoj web aplikacija, AI rje\u0161enja, portala, integracija i rada s podacima u jedan prakti\u010dan proces.",
+      process: [
+        ["01", "Razumijemo problem", "Cilj, korisnici i realan opseg prije prve linije koda."],
+        ["02", "Gradimo i provjeravamo", "Jasne faze, vidljiv napredak i provjera na stvarnim ure\u0111ajima."],
+        ["03", "Isporu\u010dujemo proizvod", "Stabilna objava, vlasni\u0161tvo i konkretan sljede\u0107i korak."],
+      ],
     },
     cta: {
       title: "Imate ideju? Pretvorimo je u proizvod.",
@@ -429,27 +427,20 @@ const content = {
       description: "From idea to stable product, fast and focused on the user.",
     },
     webStartPromo: {
-      eyebrow: "NEW SERVICE",
-      title: "One professional link for your business",
+      eyebrow: "CLEAR OFFER",
+      title: "A website that belongs to your business",
       description:
-        "Instagram, Facebook, and Google Maps already bring visibility. We add a sales page that connects them and turns visits into real inquiries \u2014 with no upfront build cost.",
-      highlight:
-        "One professional link that turns Instagram, Facebook, and Google Maps visits into real inquiries.",
-      trustStat:
-        "of consumers believe a business with a website is more credible than one with social media profiles only.",
-      trustSource: "Source: Verisign Online Survey",
+        "Development is paid once, while maintenance remains your choice. Scope, price, and revision rounds are agreed before work begins.",
+      highlight: "Website development packages start at \u20ac300, paid once.",
       cta: "View plans",
       ctaLabel: "Website packages",
       ctaNote: "Compare the scope, pricing, and what is included in each package.",
-      secondaryNote:
-        "Pilot offer from \u20ac30/mo for the first 10 clients. Business plan from \u20ac59/mo and Pro plan from \u20ac89/mo for businesses that want more inquiries, bookings, and analytics.",
-      redesignTitle: "Redesign of your existing website",
-      redesignText: "Already have a website that looks outdated or poor on mobile? Refresh it from €200.",
-      redesignCta: "View redesign plans",
+      secondaryNote: "Maintenance is optional and contracted separately.",
     },
     featured: {
       eyebrow: "FEATURED PROJECTS",
       link: "View all projects",
+      summary: "11 products \u00b7 real work",
     },
     about: {
       eyebrow: "ABOUT US",
@@ -458,6 +449,11 @@ const content = {
       title: "Technical delivery, clear communication, and focus on a product that works.",
       description:
         "Nepar Solutions brings together web app development, AI solutions, portals, integrations, and data work into one practical process.",
+      process: [
+        ["01", "Understand the problem", "Goals, users, and realistic scope before the first line of code."],
+        ["02", "Build and verify", "Clear stages, visible progress, and checks on real devices."],
+        ["03", "Ship the product", "A stable launch, clear ownership, and a concrete next step."],
+      ],
     },
     cta: {
       title: "Have an idea? Let\u2019s turn it into a product.",
@@ -1022,21 +1018,21 @@ function Hero({ copy, lang }) {
 
 function StatsBar({ copy }) {
   return (
-    <section className="px-4 py-3 sm:py-5">
+    <section className="proof-strip-section px-4 py-3 sm:py-5" aria-label="Product proof">
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={quickRevealTransition}
-        className="premium-card mx-auto max-w-[1180px] px-5 py-4 lg:max-w-[1380px]"
+        className="proof-strip mx-auto max-w-[1180px] lg:max-w-[1380px]"
       >
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-slate-200/80">
+        <div className="proof-strip-grid">
           {copy.stats.map(([value, label, Icon]) => (
-            <div key={label} className="group flex items-center justify-center gap-4 rounded-xl px-2 py-2 transition-colors duration-200 hover:bg-slate-50/80 lg:px-6">
-              <Icon size={32} className="text-blue-600 transition-transform duration-200 group-hover:scale-105" />
-              <div>
-                <p className="text-3xl font-semibold leading-none text-slate-900">{value}</p>
-                <p className="mt-1 text-sm text-slate-600">{label}</p>
+            <div key={label} className="proof-strip-item">
+              <Icon size={20} aria-hidden="true" />
+              <div className="min-w-0">
+                <p className="proof-strip-value">{value}</p>
+                <p className="proof-strip-label">{label}</p>
               </div>
             </div>
           ))}
@@ -1064,7 +1060,7 @@ function Services({ copy }) {
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="services-bento">
           {copy.services.map(({ title, description, Icon, iconCls, backgroundSrc, artCls = "" }, index) => (
             <motion.article
               key={title}
@@ -1074,7 +1070,7 @@ function Services({ copy }) {
               transition={{ duration: isMobile ? 0.28 : 0.42, delay: index * (isMobile ? 0.025 : 0.055), ease: easeOut }}
               whileHover={isMobile ? undefined : cardHoverProps.whileHover}
               whileTap={{ scale: 0.99 }}
-              className="premium-card service-card group relative min-h-[320px] overflow-hidden p-5"
+              className={`premium-card service-card service-card-${index + 1} group relative overflow-hidden p-5`}
             >
               <img src={backgroundSrc} alt="" loading="eager" className={`service-card-art ${artCls}`} />
               <div className="service-card-shade" aria-hidden="true" />
@@ -1099,75 +1095,32 @@ function Services({ copy }) {
 function WebStartPromo({ copy }) {
   const promo = copy.webStartPromo;
   return (
-    <section className="px-4 py-2 sm:py-4">
+    <section className="offer-bridge px-4 py-6 sm:py-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={revealTransition}
-        className="relative mx-auto max-w-[1180px] overflow-hidden rounded-2xl bg-white p-5 shadow-raised sm:p-7 lg:max-w-[1380px]"
+        className="offer-bridge-shell mx-auto max-w-[1180px] lg:max-w-[1380px]"
       >
-        <picture className="pointer-events-none absolute inset-0 block" aria-hidden="true">
-          <source media="(max-width: 1023px)" srcSet="/nepar-background-mobile-900x1600.webp" />
-          <img
-            src="/nepar-background-desktop-2400x900.webp"
-            alt=""
-            loading="lazy"
-            decoding="async"
-            className="size-full object-cover object-center"
-          />
-        </picture>
-        <div className="pointer-events-none absolute inset-0 bg-white/10" aria-hidden="true" />
-        <div className="relative grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-stretch lg:gap-7 xl:grid-cols-[minmax(0,1fr)_290px] xl:gap-9">
-          <div className="min-w-0">
-            <p className={`mb-2 ${eyebrowClass}`}>{promo.eyebrow}</p>
-            <h2 className="text-xl font-semibold leading-tight tracking-[-0.02em] text-slate-900 sm:text-2xl lg:text-3xl">{promo.title}</h2>
-            <p className="mt-3 max-w-3xl text-sm font-medium leading-6 text-slate-700 sm:text-base sm:leading-7">{promo.description}</p>
-            <p className="mt-3 max-w-3xl rounded-xl border border-blue-200/70 bg-blue-50/70 px-3.5 py-3 text-sm font-semibold leading-6 text-slate-900 sm:px-4 sm:text-base">
-              {promo.highlight}
-            </p>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.45, ease: easeOut, delay: 0.08 }}
-              className="mt-3 max-w-3xl rounded-xl border border-slate-200/80 bg-white/90 px-3.5 py-3 sm:px-4"
-            >
-              <p className="text-sm font-medium leading-6 text-slate-800">
-                <span className="font-bold text-blue-700">84%</span> {promo.trustStat}
-              </p>
-              <p className="mt-1 text-xs font-medium text-slate-600">{promo.trustSource}</p>
-            </motion.div>
-            <p className="mt-3 max-w-3xl text-xs font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6">{promo.secondaryNote}</p>
-            <a
-              href="/usluge/web-stranica-bez-pocetnog-troska#redizajn-weba"
-              className="mt-4 flex max-w-3xl flex-col gap-2 rounded-xl border border-violet-200/70 bg-violet-50/50 px-4 py-3 transition hover:border-violet-300 hover:bg-violet-50/80 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
-            >
-              <div className="min-w-0 text-left">
-                <p className="text-sm font-semibold text-slate-900">{promo.redesignTitle}</p>
-                <p className="mt-0.5 text-xs font-medium leading-5 text-slate-700 sm:text-sm">{promo.redesignText}</p>
-              </div>
-              <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-violet-700">
-                {promo.redesignCta}
-                <ArrowRight size={16} />
-              </span>
-            </a>
+        <div className="offer-bridge-copy">
+          <p className={eyebrowClass}>{promo.eyebrow}</p>
+          <h2>{promo.title}</h2>
+          <p>{promo.description}</p>
+        </div>
+        <div className="offer-bridge-proof">
+          <strong>{promo.highlight}</strong>
+          <span>{promo.secondaryNote}</span>
+        </div>
+        <div className="offer-bridge-action">
+          <div>
+            <p className={eyebrowClass}>{promo.ctaLabel}</p>
+            <p>{promo.ctaNote}</p>
           </div>
-
-          <div className="flex flex-col justify-between gap-5 border-t border-slate-200 pt-5 lg:border-l lg:border-t-0 lg:py-1 lg:pl-7">
-            <div>
-              <p className={eyebrowClass}>{promo.ctaLabel}</p>
-              <p className="mt-2 text-sm font-bold leading-6 text-slate-800">{promo.ctaNote}</p>
-            </div>
-            <MotionButton
-              href="/usluge/izrada-web-stranica#paketi"
-              size="lg"
-              className="w-full"
-            >
-              {promo.cta}
-              <ArrowRight size={18} />
-            </MotionButton>
-          </div>
+          <MotionButton href="/usluge/izrada-web-stranica#paketi" size="lg" className="w-full sm:w-auto">
+            {promo.cta}
+            <ArrowRight size={18} />
+          </MotionButton>
         </div>
       </motion.div>
     </section>
@@ -1190,15 +1143,16 @@ function FeaturedProjectCard({ project, copy, duplicate = false }) {
   return (
     <ProjectShell
       {...linkProps}
-      whileHover={duplicate ? undefined : cardHoverProps.whileHover}
-      whileTap={duplicate ? undefined : { scale: 0.99 }}
-      transition={cardHoverProps.transition}
       className="featured-project-card group"
     >
       <FeaturedProjectImage type={project.preview} copy={copy} />
       <div className="featured-project-card-copy">
         <div className="featured-project-card-heading">
-          <h3 className={project.title.length > 18 ? "featured-project-title-long" : undefined}>{project.title}</h3>
+          <h3 className={project.title.length > 18 ? "featured-project-title-long" : undefined}>
+            {project.title.split(/(?=[A-Z])/).map((part, index) => (
+              <span key={`${part}-${index}`}>{index > 0 && <wbr />}{part}</span>
+            ))}
+          </h3>
         </div>
         <p>{project.description}</p>
       </div>
@@ -1210,17 +1164,21 @@ function FeaturedProjects({ copy }) {
   const projects = [...copy.projects, ...copy.featuredOnlyProjects];
 
   return (
-    <section id="projekti" className="px-4 py-5 scroll-mt-24 sm:py-8">
+    <section id="projekti" className="project-lab-section px-4 py-3 scroll-mt-24 sm:py-8">
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={revealTransition}
-        className="mx-auto max-w-[1180px] border-t border-slate-200/80 pt-4 lg:max-w-[1380px]"
+        className="project-lab mx-auto max-w-[1180px] lg:max-w-[1380px]"
       >
-        <h2 className={`mb-3 ${eyebrowClass} sm:mb-4`}>
-          {copy.featured.eyebrow}
-        </h2>
+        <div className="project-lab-header">
+          <div>
+            <p className="project-lab-kicker">PRODUCT LAB</p>
+            <h2>{copy.featured.eyebrow}</h2>
+          </div>
+          <p>{copy.featured.summary}</p>
+        </div>
         <div className="featured-projects-grid" role="list" aria-label={copy.featured.eyebrow}>
           {projects.map((project) => (
             <div key={project.title} role="listitem">
@@ -1285,6 +1243,17 @@ function About({ copy, lang }) {
           <p className="mt-4 max-w-4xl text-base leading-7 text-slate-600">
             {copy.about.description}
           </p>
+          <ol className="about-process" aria-label={copy.about.eyebrow}>
+            {copy.about.process.map(([step, title, description]) => (
+              <li key={step}>
+                <span>{step}</span>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </motion.div>
 
@@ -1328,12 +1297,10 @@ function About({ copy, lang }) {
 }
 
 function BottomCta({ copy }) {
-  const reduceMotion = useReducedMotion();
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  const animateDecoration = !reduceMotion && !isMobile;
+  const animateDecoration = false;
 
   return (
-    <section id="kontakt" className="fixed inset-x-0 bottom-0 z-40 px-2 pb-2 sm:px-5 sm:pb-5">
+    <section id="kontakt" className="product-lab-cta px-4 py-6 sm:py-10">
       <div className="cta-shell relative mx-auto max-w-[1180px] overflow-hidden rounded-2xl px-3 py-2.5 sm:px-6 sm:py-4 lg:max-w-[1380px]">
         <div className="footer-motion-field" aria-hidden="true">
           <div className="footer-stars-track" />
@@ -1521,11 +1488,11 @@ function HomePage() {
       <Hero copy={copy} lang={lang} />
       <StatsBar copy={copy} />
       <Services copy={copy} />
-      <WebStartPromo copy={copy} />
       <FeaturedProjects copy={copy} />
+      <WebStartPromo copy={copy} />
       <About copy={copy} lang={lang} />
       <BottomCta copy={copy} />
-      <footer className="px-4 pb-20 sm:pb-32">
+      <footer className="px-4 pb-8 sm:pb-12">
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">
           <motion.div
             initial={{ opacity: 0, y: 12 }}

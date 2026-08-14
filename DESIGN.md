@@ -5,6 +5,8 @@ colors:
   action-blue: "#2563eb"
   signal-cyan: "#0891b2"
   depth-violet: "#6d28d9"
+  dark-ink: "#07111f"
+  dark-tonal-surface: "#0f1e32"
   ink: "#0f172a"
   body: "#334155"
   muted: "#64748b"
@@ -68,7 +70,7 @@ components:
 
 **Creative North Star: "Tehnički dokaz"**
 
-Nepar izgleda kao precizan digitalni alat koji istodobno djeluje ljudski i pristupačno. Čiste svijetle površine, snažna plava akcijska boja i disciplinirana tipografija nose sadržaj; cijan i ljubičasta ostaju identitetski akcenti, ne dekoracija na svakoj površini.
+Nepar izgleda kao precizan digitalni alat koji istodobno djeluje ljudski i pristupačno. Dominantan je svijetli canvas: čiste svijetle površine, snažna plava akcijska boja i disciplinirana tipografija nose sadržaj; cijan i ljubičasta ostaju identitetski akcenti, ne dekoracija na svakoj površini. Tamni ink-reveal dopušten je samo za Product Lab i dokaz unutar cijena.
 
 Sustav odbacuje generičke agency predloške, anonimne stock vizuale, pretjerani glassmorphism, beskrajne jednake kartice i neprovjerljiva marketinška obećanja.
 
@@ -98,10 +100,13 @@ Paleta zadržava prepoznatljivu Nepar plavu, cijan i ljubičastu, ali koristi je
 - **Body** (`#334155`): osnovni tekst.
 - **Muted** (`#64748b`): sekundarni tekst samo kada prolazi AA kontrast.
 - **Canvas** (`#f8fafc`), **Surface** (`#ffffff`) i **Border** (`#e2e8f0`): osnovna dubina bez dekorativnog stakla.
+- **Tamni ink** (`#07111f`) i **tamna tonalna površina** (`#0f1e32`): isključivo podloga i dubina Product Laba te dokaza unutar cijena.
 
 ### Named Rules
 
 **Pravilo jedne akcijske boje.** Jedna komponenta ne kombinira plavu, cijan i ljubičastu bez stvarnog semantičkog razloga.
+
+**Pravilo tamnog dokaza.** Na tamnim površinama cijan je jedini signalni akcent; tamni vizualni jezik ne prelazi na ostatak svijetle stranice.
 
 ## 3. Typography
 
@@ -122,7 +127,26 @@ Paleta zadržava prepoznatljivu Nepar plavu, cijan i ljubičastu, ali koristi je
 
 **Pravilo čitljivog naslova.** Letter-spacing display teksta nikad nije manji od `-0.04em`.
 
-## 4. Elevation
+## 4. Layout
+
+Stranica ostaje svijetla i ritmična, s kratkim dokaznim blokovima i CTA-ovima u toku sadržaja. Fiksni donji CTA je zabranjen; glavni CTA pojavljuje se inline odmah nakon dokaza i ponovno na kraju stranice.
+
+### Product Lab
+
+- Prikazuje svih 11 pločica sa stvarnim slikama u statičnoj mreži koja stane u jedan viewport: 2 stupca na mobitelu i 6 stupaca na desktopu.
+- Ne koristi dekorativne React ikone, marquee, 3D, automatsko pomicanje ni autoscroll.
+
+### Services
+
+- Desktop koristi asimetrični bento s jednom vodećom uslugom i tri prateće.
+- Mobilni prikaz postaje čitljiva mreža 2 × 2.
+
+### Project Brief
+
+- Na mobitelu obrazac dolazi prvi.
+- Na desktopu dokaz ostaje lijevo, a obrazac desno.
+
+## 5. Elevation
 
 Sustav je ravan prema zadanim postavkama. Dubina se dobiva tonalnim razlikama, punim obrubom ili malom sjenom, nikad istodobno širokim sjenama i dekorativnim obrubom.
 
@@ -134,7 +158,7 @@ Sustav je ravan prema zadanim postavkama. Dubina se dobiva tonalnim razlikama, p
 
 **Ravno prema zadanim postavkama.** Kartice u mirovanju koriste obrub ili tonalnu podlogu; velika difuzna sjena nije dekoracija.
 
-## 5. Components
+## 6. Components
 
 ### Buttons
 
@@ -168,12 +192,26 @@ Svijetla fiksna navigacija koristi jasne tekstualne linkove i jednu plavu aktivn
 
 Cijena i način plaćanja čine prvu vizualnu skupinu. Business je istaknut punom oznakom i jačim obrubom, bez skaliranja kartice.
 
-## 6. Do's and Don'ts
+### Package Selector
+
+- Selektor ima dvije jasne opcije: **Build** i **Maintenance**.
+- Cijena, način plaćanja i tri ključne stavke odabranog paketa uvijek su vidljivi; dodatni sadržaj koristi nativni, tipkovnicom dostupan `details` element.
+- Business paket dobiva jači obrub i značku, ali nikad skaliranje kartice ni agresivan gradijent.
+
+### Motion
+
+- Kontinuirano kretanje dopušteno je samo u hero sekciji.
+- Ispod prvog viewporta koriste se samo reveal prijelazi pomoću `transform` i `opacity`.
+- Pointer spotlight postoji samo na uređajima koji podržavaju hover i imaju precizan pokazivač (`hover: hover` i `pointer: fine`).
+- Framer Motion koristi `MotionConfig reducedMotion="user"`; CSS `prefers-reduced-motion` prikazuje reveal sadržaj odmah, bez prijelaza.
+
+## 7. Do's and Don'ts
 
 ### Do:
 
 - **Do** zadržati logo i plavo–cijan–ljubičasti identitet uz discipliniranu raspodjelu uloga.
 - **Do** koristiti stvarne projekte, jasne cijene i precizne opise opsega kao glavni vizualni dokaz.
+- **Do** zadržati dominantan svijetli canvas i ograničiti tamni ink-reveal na Product Lab i dokaz unutar cijena.
 - **Do** provjeriti WCAG 2.2 AA, tipkovnicu, fokus, reduced motion i mobilni prikaz.
 
 ### Don't:
@@ -181,5 +219,6 @@ Cijena i način plaćanja čine prvu vizualnu skupinu. Business je istaknut puno
 - **Don't** stvarati generički agency predložak ili anonimni stock mockup.
 - **Don't** koristiti pretjerane gradijente, glassmorphism ili beskrajne mreže jednakih kartica.
 - **Don't** koristiti gradijentni tekst, obojene bočne trake ili kartice s obrubom i širokom sjenom.
+- **Don't** koristiti fiksni donji CTA, automatsko pomicanje Product Laba ili kontinuiranu animaciju ispod hero sekcije.
 - **Don't** koristiti formulacije koje web-stranicu predstavljaju kao najam ili obaveznu pretplatu.
 - **Don't** obećavati prvo mjesto na Googleu, garantirani rast, off-page SEO ili kontinuirane SEO kampanje.

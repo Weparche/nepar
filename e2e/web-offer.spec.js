@@ -283,6 +283,10 @@ test("restored landing keeps its original structure and adds Auto Gubić below",
 
   const projects = page.locator("#projekti");
   await projects.scrollIntoViewIfNeeded();
+  await expect(projects.locator(".featured-project-card")).toHaveCount(11);
+  const projectSectionHeight = await projects.evaluate((section) => section.getBoundingClientRect().height);
+  expect(projectSectionHeight).toBeLessThanOrEqual(page.viewportSize().height);
+  await expect(page.locator("#kontakt")).not.toHaveCSS("position", "fixed");
   const projectLink = projects.getByRole("link", { name: /Auto Gubić/ });
   await expect(projectLink).toBeVisible();
   await expect(projectLink).toHaveAttribute("href", "https://autogubic.hr/");
@@ -319,11 +323,35 @@ test("pricing shows one-time development and optional annual maintenance", async
   await expectTouchTargets(page);
 });
 
+test("pricing selector switches between development and maintenance without duplicating visible cards", async ({ page }) => {
+  await page.goto(servicePath);
+  const buildTab = page.locator("#build-offer-tab");
+  const maintenanceTab = page.locator("#maintenance-offer-tab");
+
+  await expect(buildTab).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".offer-card:visible")).toHaveCount(3);
+  await maintenanceTab.click();
+  await expect(maintenanceTab).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".offer-card:visible")).toHaveCount(3);
+  await expect(page.getByRole("heading", { name: "Godišnje održavanje web-stranice" })).toBeVisible();
+});
+
+test("mobile contact keeps the form before supporting proof", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/kontakt");
+  await expect(page.getByRole("heading", { level: 1, name: /Pišite nam/ })).toBeVisible();
+  const formBox = await page.locator(".contact-brief-form").boundingBox();
+  const proofBox = await page.locator(".contact-brief-proof").boundingBox();
+  expect(formBox.y).toBeLessThan(proofBox.y);
+  await expectNoHorizontalOverflow(page);
+});
+
 test("English content stays aligned with the new model", async ({ page }) => {
   await page.goto(servicePath);
   await page.getByRole("button", { name: "ENG" }).click();
   await expect(page.getByRole("heading", { name: "Website development packages" })).toBeVisible();
   await expect(page.getByText("The website belongs to the client after payment.", { exact: false }).first()).toBeVisible();
+  await page.locator("#maintenance-offer-tab").click();
   await expect(page.getByRole("heading", { name: "Annual website maintenance" })).toBeVisible();
 
   const bodyText = await page.locator("body").innerText();
@@ -353,9 +381,9 @@ test("legacy route redirects and keeps its anchor", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Paketi izrade web-stranice" })).toBeVisible();
 });
 
-test("landing and pricing have no serious accessibility violations", async ({ page }) => {
+test("landing, pricing, and contact have no serious accessibility violations", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  for (const path of ["/", servicePath]) {
+  for (const path of ["/", servicePath, "/kontakt"]) {
     await page.goto(path);
     await expect(page.locator("h1")).toBeVisible();
     await page.waitForTimeout(300);

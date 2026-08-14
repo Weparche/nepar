@@ -887,3 +887,446 @@
     animation: none;
   }
 }
+
+/* Product Lab funnel */
+.proof-strip {
+  overflow: hidden;
+  border-block: 1px solid #dbe4ef;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.proof-strip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.proof-strip-item {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.8rem;
+  color: #2563eb;
+}
+
+.proof-strip-item:nth-child(odd) {
+  border-right: 1px solid #dbe4ef;
+}
+
+.proof-strip-item:nth-child(n + 3) {
+  border-top: 1px solid #dbe4ef;
+}
+
+.proof-strip-value,
+.proof-strip-label {
+  margin: 0;
+}
+
+.proof-strip-value {
+  color: #0f172a;
+  font-size: 1.15rem;
+  font-weight: 750;
+  line-height: 1;
+}
+
+.proof-strip-label {
+  margin-top: 0.2rem;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 0.69rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.services-bento {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.services-bento .service-card {
+  min-height: 250px;
+  border-radius: 0.875rem;
+  box-shadow: none;
+}
+
+.services-bento .service-card-content {
+  min-height: 0;
+  height: 100%;
+  gap: 1rem;
+}
+
+.services-bento .service-card-content > div {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.services-bento .service-card-content > div > div {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.services-bento .service-card-content p {
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.project-lab-section {
+  position: relative;
+}
+
+.project-lab {
+  position: relative;
+  overflow: hidden;
+  padding: 0.65rem;
+  border: 1px solid #1e3a5f;
+  border-radius: 1rem;
+  color: #fff;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.18), transparent 34%),
+    #07111f;
+  contain: paint;
+}
+
+.project-lab::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  content: "";
+  pointer-events: none;
+}
+
+.project-lab-header,
+.project-lab .featured-projects-grid {
+  position: relative;
+  z-index: 1;
+}
+
+.project-lab-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  padding: 0.1rem 0.1rem 0.65rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.project-lab-header h2,
+.project-lab-header p {
+  margin: 0;
+}
+
+.project-lab-header h2 {
+  margin-top: 0.2rem;
+  color: #f8fafc;
+  font-size: clamp(1rem, 2vw, 1.45rem);
+  font-weight: 680;
+  letter-spacing: -0.02em;
+}
+
+.project-lab-header > p {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.project-lab-kicker {
+  color: #67e8f9;
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0.17em;
+}
+
+.project-lab .featured-project-card {
+  border-color: rgba(148, 163, 184, 0.28);
+  background: #0f1e32;
+  box-shadow: none;
+}
+
+.project-lab .featured-project-media {
+  border-bottom-color: rgba(148, 163, 184, 0.22);
+}
+
+.project-lab .featured-project-card-copy {
+  background: #0f1e32;
+}
+
+.project-lab .featured-project-card-heading h3 {
+  color: #f8fafc;
+  overflow-wrap: normal;
+}
+
+.offer-bridge-shell {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid #bfdbfe;
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.offer-bridge-copy,
+.offer-bridge-proof,
+.offer-bridge-action {
+  padding: 1.25rem;
+}
+
+.offer-bridge-copy h2,
+.offer-bridge-copy p,
+.offer-bridge-action p {
+  margin: 0;
+}
+
+.offer-bridge-copy h2 {
+  margin-top: 0.55rem;
+  color: #0f172a;
+  font-size: clamp(1.45rem, 3vw, 2.25rem);
+  font-weight: 680;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.offer-bridge-copy > p:last-child {
+  margin-top: 0.7rem;
+  max-width: 62ch;
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.offer-bridge-proof {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+  border-block: 1px solid #dbeafe;
+  color: #1e3a8a;
+  background: #eff6ff;
+}
+
+.offer-bridge-proof strong {
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+
+.offer-bridge-proof span,
+.offer-bridge-action > div > p:last-child {
+  color: #64748b;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.offer-bridge-action {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.offer-bridge-action > div > p:last-child {
+  margin-top: 0.35rem;
+}
+
+.about-process {
+  display: grid;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-process li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.8rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.about-process li > span {
+  color: #2563eb;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.about-process h3,
+.about-process p {
+  margin: 0;
+}
+
+.about-process h3 {
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 680;
+}
+
+.about-process p {
+  margin-top: 0.2rem;
+  color: #64748b;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.product-lab-cta .cta-shell {
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  box-shadow: none;
+}
+
+.product-lab-cta .footer-motion-field,
+.product-lab-cta .cta-shell > .absolute {
+  display: none;
+}
+
+.product-lab-cta .premium-button,
+.product-lab-cta .relative.shrink-0 > div:last-child {
+  background: #2563eb;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-lab .featured-project-card:hover,
+  .project-lab .featured-project-card:focus-visible {
+    border-color: rgba(103, 232, 249, 0.72);
+    background: #132740;
+    box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.12), 0 10px 28px rgba(2, 6, 23, 0.35);
+  }
+
+  .project-lab .featured-project-card:hover .featured-project-card-copy,
+  .project-lab .featured-project-card:focus-visible .featured-project-card-copy {
+    background: #132740;
+  }
+}
+
+@media (min-width: 640px) {
+  .proof-strip-value {
+    font-size: 1.35rem;
+  }
+
+  .proof-strip-label {
+    font-size: 0.76rem;
+  }
+
+  .project-lab,
+  .offer-bridge-copy,
+  .offer-bridge-proof,
+  .offer-bridge-action {
+    padding: 1.35rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .proof-strip-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .proof-strip-item,
+  .proof-strip-item:nth-child(odd),
+  .proof-strip-item:nth-child(n + 3) {
+    border-top: 0;
+    border-right: 1px solid #dbe4ef;
+    padding: 1rem 1.25rem;
+  }
+
+  .proof-strip-item:last-child {
+    border-right: 0;
+  }
+
+  .services-bento .service-card-content > div {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .about-process {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .about-process li {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    border-top: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+  }
+
+  .about-process li:last-child {
+    border-right: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .offer-bridge-shell {
+    grid-template-columns: minmax(0, 1.25fr) minmax(220px, 0.62fr) minmax(250px, 0.65fr);
+  }
+
+  .offer-bridge-proof {
+    border-block: 0;
+    border-inline: 1px solid #dbeafe;
+  }
+}
+
+@media (min-width: 1200px) {
+  .services-bento {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
+  .services-bento .service-card {
+    min-height: 142px;
+  }
+
+  .services-bento .service-card-1 {
+    grid-column: span 3;
+    grid-row: span 3;
+  }
+
+  .services-bento .service-card:not(.service-card-1) {
+    grid-column: span 3;
+  }
+
+  .services-bento .service-card-1 .service-card-content {
+    gap: 2rem;
+    min-height: 458px;
+  }
+
+  .services-bento .service-card-1 .service-card-content p {
+    max-width: 36ch;
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .services-bento .service-card:not(.service-card-1) .service-card-content {
+    min-height: 110px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .services-bento .service-card:not(.service-card-1) .service-card-content p {
+    max-width: 34ch;
+  }
+}
+
+@media (max-width: 420px) {
+  .services-bento .service-card {
+    min-height: 240px;
+    padding: 0.85rem;
+  }
+
+  .services-bento .service-card-content h3 {
+    font-size: 0.88rem;
+  }
+
+  .services-bento .service-card-content p {
+    font-size: 0.72rem;
+    line-height: 1.42;
+  }
+
+  .project-lab-header > p {
+    max-width: 10ch;
+    text-align: right;
+  }
+}

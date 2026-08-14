@@ -21,6 +21,12 @@ const pageCopy = {
       secondary: "Pošalji upit",
       facts: ["Napredni tehnički i on-page SEO", "Responzivan dizajn", "Search Console i analitika", "Dogovoreni opseg i broj dorada"],
     },
+    selector: {
+      label: "Vrsta ponude",
+      build: "Jednokratna izrada",
+      maintenance: "Godišnje održavanje",
+      expand: "Sve uključeno",
+    },
     build: {
       title: "Paketi izrade web-stranice",
       intro: "Odaberite opseg koji odgovara količini sadržaja i ulozi koju web ima u vašem poslovanju.",
@@ -72,6 +78,12 @@ const pageCopy = {
       secondary: "Send an inquiry",
       facts: ["Advanced technical and on-page SEO", "Responsive design", "Search Console and analytics", "Agreed scope and revision rounds"],
     },
+    selector: {
+      label: "Offer type",
+      build: "One-time development",
+      maintenance: "Annual maintenance",
+      expand: "Everything included",
+    },
     build: {
       title: "Website development packages",
       intro: "Choose the scope that fits your content and the role your website plays in the business.",
@@ -115,6 +127,9 @@ function SectionHeading({ title, intro }) {
 }
 
 function OfferCard({ item, lang, copy, offerKind, onSelect }) {
+  const highlights = item.included.slice(0, 3);
+  const remaining = item.included.slice(3);
+
   return (
     <article className={`offer-card ${item.featured ? "is-featured" : ""}`}>
       <div className="offer-card-summary">
@@ -124,23 +139,31 @@ function OfferCard({ item, lang, copy, offerKind, onSelect }) {
           <p className="offer-price"><strong>{formatOfferPrice(item.price, lang)}</strong><span>{item.payment}</span></p>
         </div>
         {item.description && <p className="offer-description">{item.description}</p>}
+        <ul className="offer-card-highlights">
+          {highlights.map((benefit) => <li key={benefit}><Check aria-hidden="true" size={16} />{benefit}</li>)}
+        </ul>
         <button type="button" className={item.featured ? "button button-primary" : "button button-secondary"} onClick={() => onSelect(item, offerKind)}>
           {copy.cta}<Send aria-hidden="true" size={17} />
         </button>
       </div>
-      <div className="offer-card-details">
-        <div className="offer-included">
-          <h4>{copy.included}</h4>
-          <ul>{item.included.map((benefit) => <li key={benefit}><Check aria-hidden="true" size={17} />{benefit}</li>)}</ul>
+      <details className="offer-card-disclosure">
+        <summary>{copy.expand}<span aria-hidden="true">+</span></summary>
+        <div className="offer-card-details">
+          {remaining.length > 0 && (
+            <div className="offer-included">
+              <h4>{copy.included}</h4>
+              <ul>{remaining.map((benefit) => <li key={benefit}><Check aria-hidden="true" size={17} />{benefit}</li>)}</ul>
+            </div>
+          )}
+          {item.note && <p className="offer-note"><Info aria-hidden="true" size={17} />{item.note}</p>}
+          {item.project && (
+            <a href={item.project.href} target="_blank" rel="noreferrer" className="project-proof-link">
+              <span><strong>{item.project.label}</strong><small>{item.project.cta}</small></span>
+              <ArrowUpRight aria-hidden="true" size={18} />
+            </a>
+          )}
         </div>
-        {item.note && <p className="offer-note"><Info aria-hidden="true" size={17} />{item.note}</p>}
-        {item.project && (
-          <a href={item.project.href} target="_blank" rel="noreferrer" className="project-proof-link">
-            <span><strong>{item.project.label}</strong><small>{item.project.cta}</small></span>
-            <ArrowUpRight aria-hidden="true" size={18} />
-          </a>
-        )}
-      </div>
+      </details>
     </article>
   );
 }
@@ -149,6 +172,9 @@ export default function WebStartPage() {
   const [lang, setLang] = useState("hr");
   const [modalOpen, setModalOpen] = useState(false);
   const [selection, setSelection] = useState(null);
+  const [activeOffer, setActiveOffer] = useState(() => (
+    typeof window !== "undefined" && window.location.hash === "#odrzavanje" ? "maintenance" : "build"
+  ));
   const text = pageCopy[lang];
   const offer = webOfferContent[lang];
   const chrome = siteContent[lang];
@@ -202,23 +228,58 @@ export default function WebStartPage() {
         </div>
       </section>
 
-      <section id="paketi" className="content-section offer-section">
+      <section id="paketi" className="content-section offer-section offer-selector-section">
         <div className="section-shell">
-          <SectionHeading title={text.build.title} intro={text.build.intro} />
-          <div className="offer-grid">
-            {offer.buildPackages.map((item) => <OfferCard key={item.id} item={item} lang={lang} copy={text.build} offerKind="build" onSelect={openInquiry} />)}
+          <div className="offer-selector" role="tablist" aria-label={text.selector.label}>
+            <button
+              id="build-offer-tab"
+              type="button"
+              role="tab"
+              aria-selected={activeOffer === "build"}
+              aria-controls="build-offer-panel"
+              onClick={() => setActiveOffer("build")}
+            >
+              <span>01</span>{text.selector.build}
+            </button>
+            <button
+              id="maintenance-offer-tab"
+              type="button"
+              role="tab"
+              aria-selected={activeOffer === "maintenance"}
+              aria-controls="odrzavanje"
+              onClick={() => setActiveOffer("maintenance")}
+            >
+              <span>02</span>{text.selector.maintenance}
+            </button>
           </div>
-          <div className="seo-note"><SearchCheck aria-hidden="true" size={24} /><p>{text.build.seoNote}</p></div>
-        </div>
-      </section>
 
-      <section id="odrzavanje" className="content-section maintenance-section">
-        <div className="section-shell">
-          <SectionHeading title={text.maintenance.title} intro={text.maintenance.intro} />
-          <div className="offer-grid maintenance-grid">
-            {offer.maintenancePackages.map((item) => <OfferCard key={item.id} item={item} lang={lang} copy={text.maintenance} offerKind="maintenance" onSelect={openInquiry} />)}
+          <div
+            id="build-offer-panel"
+            role="tabpanel"
+            aria-labelledby="build-offer-tab"
+            hidden={activeOffer !== "build"}
+            className="offer-selector-panel"
+          >
+            <SectionHeading title={text.build.title} intro={text.build.intro} />
+            <div className="offer-grid pricing-package-grid">
+              {offer.buildPackages.map((item) => <OfferCard key={item.id} item={item} lang={lang} copy={{ ...text.build, expand: text.selector.expand }} offerKind="build" onSelect={openInquiry} />)}
+            </div>
+            <div className="seo-note"><SearchCheck aria-hidden="true" size={24} /><p>{text.build.seoNote}</p></div>
           </div>
-          <div className="minor-change-note"><Info aria-hidden="true" size={22} /><p>{text.maintenance.minorChange}</p></div>
+
+          <div
+            id="odrzavanje"
+            role="tabpanel"
+            aria-labelledby="maintenance-offer-tab"
+            hidden={activeOffer !== "maintenance"}
+            className="offer-selector-panel maintenance-section"
+          >
+            <SectionHeading title={text.maintenance.title} intro={text.maintenance.intro} />
+            <div className="offer-grid maintenance-grid pricing-package-grid">
+              {offer.maintenancePackages.map((item) => <OfferCard key={item.id} item={item} lang={lang} copy={{ ...text.maintenance, expand: text.selector.expand }} offerKind="maintenance" onSelect={openInquiry} />)}
+            </div>
+            <div className="minor-change-note"><Info aria-hidden="true" size={22} /><p>{text.maintenance.minorChange}</p></div>
+          </div>
         </div>
       </section>
 
