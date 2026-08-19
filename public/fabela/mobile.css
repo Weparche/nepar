@@ -1,25 +1,26 @@
-/* Mobile-specific hero rendering.
-   Desktop keeps the ImageGen asset as a full-bleed background.
-   On tablets/phones we intentionally render the real <img> below the hero copy
-   so it is always visible and does not depend on pseudo-element backgrounds. */
+/* Dedicated mobile hero background generated for Fabela. Desktop keeps styles.css hero. */
 @media (max-width:980px){
-  .hero{min-height:auto;background:var(--paper);padding:0 0 28px}
-  .hero:before,.hero:after{display:none!important}
-  .heroGrid{min-height:auto!important;padding-top:0!important;display:flex!important;flex-direction:column!important;gap:24px!important;align-items:stretch!important}
-  .heroGrid>div:first-child{width:100%;max-width:720px;padding:42px 0 8px!important}
-  .visual{display:block!important;position:relative;width:100%;min-height:440px;margin:4px 0 18px;order:2;pointer-events:none}
-  .photo{display:block!important;position:absolute;inset:0;overflow:hidden;border:1px solid #d2d9d3;border-radius:28px;background:#dfe6df}
-  .photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:66% center}
-  .photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 64%,rgba(21,63,54,.14) 100%);pointer-events:none}
-  .tag{display:flex;right:16px;top:16px}
-  .float{display:flex;left:16px;right:16px;bottom:16px;max-width:none}
+  .hero{position:relative!important;isolation:isolate!important;overflow:hidden!important;min-height:820px!important;padding:0!important;background:#f5f1e9!important}
+  .hero:before{content:""!important;display:block!important;position:absolute!important;inset:0!important;z-index:-3!important;background-image:url('/fabela/hero-mobile.webp')!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;transform:none!important}
+  .hero:after{content:""!important;display:block!important;position:absolute!important;inset:0!important;z-index:-2!important;background:linear-gradient(180deg,rgba(245,241,233,.96) 0%,rgba(245,241,233,.88) 22%,rgba(245,241,233,.64) 42%,rgba(245,241,233,.18) 63%,rgba(21,63,54,.08) 100%)!important}
+  .heroGrid{min-height:820px!important;padding:0!important;display:block!important}
+  .heroGrid>div:first-child{position:relative!important;z-index:2!important;width:100%!important;max-width:720px!important;padding:48px 0 36px!important}
+  .visual{display:none!important}
+  .eyebrow{background:rgba(255,253,249,.72)!important;backdrop-filter:blur(10px)}
+  .proofs{background:rgba(255,253,249,.72)!important;backdrop-filter:blur(12px)}
 }
-
 @media (max-width:620px){
-  .heroGrid>div:first-child{padding:34px 0 4px!important}
-  .visual{min-height:330px;margin-top:8px}
-  .photo{border-radius:22px}
-  .photo img{object-position:64% center}
-  .tag{display:none!important}
-  .float{left:10px;right:10px;bottom:10px;padding:13px 14px}
+  .shell{width:min(100% - 22px,1220px)}
+  .hero{min-height:790px!important}
+  .hero:before{background-position:52% center!important}
+  .hero:after{background:linear-gradient(180deg,rgba(245,241,233,.97) 0%,rgba(245,241,233,.90) 21%,rgba(245,241,233,.66) 43%,rgba(245,241,233,.12) 66%,rgba(21,63,54,.10) 100%)!important}
+  .heroGrid{min-height:790px!important}
+  .heroGrid>div:first-child{padding:34px 0 28px!important}
+  h1{font-size:48px!important;line-height:.94!important;margin:18px 0!important}
+  .lead{font-size:15px!important;max-width:92%!important;color:#435b53!important}
+  .actions{gap:9px!important;margin-top:22px!important}
+  .actions .btn{min-height:46px!important;padding:0 14px!important}
+  .proofs{display:grid!important;grid-template-columns:1fr 1fr!important;margin-top:22px!important}
+  .proof{padding:12px 13px!important}
+  .proof:last-child{grid-column:1/-1!important;border-left:0!important;border-top:1px solid #d1d9d2!important}
 }
