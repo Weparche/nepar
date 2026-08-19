@@ -1,24 +1,32 @@
 /* Dedicated mobile/tablet art direction.
-   The 9:16 ImageGen asset is applied DIRECTLY to .hero so mobile browsers
-   do not depend on pseudo-element stacking for the background image. */
+   The mobile hero temporarily loads from GitHub raw CDN to bypass any
+   local /fabela image-delivery issue while keeping the image as the hero background. */
 @media (max-width:980px){
   .hero{
     position:relative!important;
     isolation:isolate!important;
     overflow:hidden!important;
     min-height:880px!important;
-    background-color:#f3efe7!important;
-    background-image:
-      linear-gradient(180deg,rgba(243,239,231,.98) 0%,rgba(243,239,231,.93) 25%,rgba(243,239,231,.72) 42%,rgba(243,239,231,.22) 60%,rgba(21,60,51,.08) 100%),
-      url('/fabela/hero-mobile.webp?v=4')!important;
-    background-size:cover,cover!important;
-    background-position:center center,55% center!important;
-    background-repeat:no-repeat,no-repeat!important;
+    background-color:#e9e4da!important;
+    background-image:url('https://raw.githubusercontent.com/Weparche/nepar/main/public/fabela/hero-mobile.webp')!important;
+    background-size:cover!important;
+    background-position:60% center!important;
+    background-repeat:no-repeat!important;
   }
   .hero:before,.hero:after{display:none!important;content:none!important}
-  .heroInner{position:relative!important;z-index:1!important;min-height:880px!important;display:block!important;padding:46px 0 250px!important}
-  .heroCopy{max-width:690px!important;position:relative!important;z-index:2!important}
-  .heroSignal{z-index:2!important;bottom:0!important;background:rgba(255,253,248,.84)!important;backdrop-filter:blur(16px)!important}
+  .heroInner{position:relative!important;z-index:1!important;min-height:880px!important;display:block!important;padding:42px 0 250px!important}
+  .heroCopy{
+    max-width:690px!important;
+    position:relative!important;
+    z-index:2!important;
+    padding:22px 20px 24px!important;
+    border:1px solid rgba(255,255,255,.52)!important;
+    border-radius:26px!important;
+    background:rgba(247,244,237,.42)!important;
+    -webkit-backdrop-filter:blur(3px)!important;
+    backdrop-filter:blur(3px)!important;
+  }
+  .heroSignal{z-index:2!important;bottom:0!important;background:rgba(255,253,248,.78)!important;-webkit-backdrop-filter:blur(14px)!important;backdrop-filter:blur(14px)!important}
   .signalGrid{grid-template-columns:repeat(2,1fr)!important}
   .signalGrid>div{padding:15px 16px!important;border-top:1px solid #d7ddd680}
   .signalGrid>div+div{border-left:0!important}
@@ -28,11 +36,9 @@
 @media (max-width:620px){
   .hero{
     min-height:900px!important;
-    background-color:#e9e4da!important;
-    background-image:url('/fabela/hero-mobile.webp?v=4')!important;
-    background-size:auto 138%!important;
-    background-position:66% bottom!important;
-    background-repeat:no-repeat!important;
+    background-image:url('https://raw.githubusercontent.com/Weparche/nepar/main/public/fabela/hero-mobile.webp')!important;
+    background-size:cover!important;
+    background-position:60% center!important;
   }
   .heroInner{min-height:900px!important;padding:24px 0 220px!important}
   .heroCopy{
@@ -40,18 +46,15 @@
     max-width:100%!important;
     margin-left:-4px!important;
     padding:18px 16px 20px!important;
-    border:1px solid rgba(255,255,255,.62)!important;
     border-radius:24px!important;
-    background:rgba(247,244,237,.70)!important;
-    -webkit-backdrop-filter:blur(10px)!important;
-    backdrop-filter:blur(10px)!important;
+    background:rgba(247,244,237,.38)!important;
   }
-  .eyebrow{max-width:96%;font-size:9px!important;background:rgba(255,253,248,.72)!important;backdrop-filter:blur(8px)}
+  .eyebrow{max-width:96%;font-size:9px!important;background:rgba(255,253,248,.66)!important;backdrop-filter:blur(6px)}
   h1{font-size:45px!important;line-height:.94!important;margin:17px 0 18px!important;max-width:100%!important}
-  .heroLead{font-size:15px!important;line-height:1.58!important;max-width:100%!important;color:#3f574f!important}
+  .heroLead{font-size:15px!important;line-height:1.58!important;max-width:100%!important;color:#324c44!important}
   .heroActions{gap:8px!important;margin-top:20px!important;max-width:100%!important}
   .heroActions .btn{min-height:45px!important;padding:0 14px!important;font-size:12px!important}
   .microcopy{max-width:100%!important;font-size:10px!important}
-  .heroSignal{background:rgba(255,253,248,.78)!important;-webkit-backdrop-filter:blur(14px)!important;backdrop-filter:blur(14px)!important}
+  .heroSignal{background:rgba(255,253,248,.76)!important}
   .signalGrid strong{font-size:12px!important}.signalGrid span{font-size:9px!important}
 }
