@@ -10,7 +10,7 @@
     background-color:#f3efe7!important;
     background-image:
       linear-gradient(180deg,rgba(243,239,231,.98) 0%,rgba(243,239,231,.93) 25%,rgba(243,239,231,.72) 42%,rgba(243,239,231,.22) 60%,rgba(21,60,51,.08) 100%),
-      url('/fabela/hero-mobile.webp?v=3')!important;
+      url('/fabela/hero-mobile.webp?v=4')!important;
     background-size:cover,cover!important;
     background-position:center center,55% center!important;
     background-repeat:no-repeat,no-repeat!important;
@@ -27,19 +27,31 @@
 
 @media (max-width:620px){
   .hero{
-    min-height:920px!important;
-    background-image:
-      linear-gradient(180deg,rgba(243,239,231,.90) 0%,rgba(243,239,231,.77) 22%,rgba(243,239,231,.50) 40%,rgba(243,239,231,.10) 61%,rgba(21,60,51,.08) 100%),
-      url('/fabela/hero-mobile.webp?v=3')!important;
-    background-size:cover,cover!important;
-    background-position:center center,53% center!important;
+    min-height:900px!important;
+    background-color:#e9e4da!important;
+    background-image:url('/fabela/hero-mobile.webp?v=4')!important;
+    background-size:auto 138%!important;
+    background-position:66% bottom!important;
+    background-repeat:no-repeat!important;
   }
-  .heroInner{min-height:920px!important;padding:34px 0 230px!important}
-  .eyebrow{max-width:96%;font-size:9px!important;background:rgba(255,253,248,.70)!important;backdrop-filter:blur(8px)}
-  h1{font-size:47px!important;line-height:.94!important;margin:18px 0 19px!important;max-width:96%!important}
-  .heroLead{font-size:15px!important;line-height:1.6!important;max-width:92%!important;color:#435b53!important}
-  .heroActions{gap:8px!important;margin-top:22px!important;max-width:92%!important}
+  .heroInner{min-height:900px!important;padding:24px 0 220px!important}
+  .heroCopy{
+    width:min(100%,520px)!important;
+    max-width:100%!important;
+    margin-left:-4px!important;
+    padding:18px 16px 20px!important;
+    border:1px solid rgba(255,255,255,.62)!important;
+    border-radius:24px!important;
+    background:rgba(247,244,237,.70)!important;
+    -webkit-backdrop-filter:blur(10px)!important;
+    backdrop-filter:blur(10px)!important;
+  }
+  .eyebrow{max-width:96%;font-size:9px!important;background:rgba(255,253,248,.72)!important;backdrop-filter:blur(8px)}
+  h1{font-size:45px!important;line-height:.94!important;margin:17px 0 18px!important;max-width:100%!important}
+  .heroLead{font-size:15px!important;line-height:1.58!important;max-width:100%!important;color:#3f574f!important}
+  .heroActions{gap:8px!important;margin-top:20px!important;max-width:100%!important}
   .heroActions .btn{min-height:45px!important;padding:0 14px!important;font-size:12px!important}
-  .microcopy{max-width:88%!important;font-size:10px!important}
+  .microcopy{max-width:100%!important;font-size:10px!important}
+  .heroSignal{background:rgba(255,253,248,.78)!important;-webkit-backdrop-filter:blur(14px)!important;backdrop-filter:blur(14px)!important}
   .signalGrid strong{font-size:12px!important}.signalGrid span{font-size:9px!important}
 }
