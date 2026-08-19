@@ -1,0 +1,25 @@
+/* Mobile-specific hero rendering.
+   Desktop keeps the ImageGen asset as a full-bleed background.
+   On tablets/phones we intentionally render the real <img> below the hero copy
+   so it is always visible and does not depend on pseudo-element backgrounds. */
+@media (max-width:980px){
+  .hero{min-height:auto;background:var(--paper);padding:0 0 28px}
+  .hero:before,.hero:after{display:none!important}
+  .heroGrid{min-height:auto!important;padding-top:0!important;display:flex!important;flex-direction:column!important;gap:24px!important;align-items:stretch!important}
+  .heroGrid>div:first-child{width:100%;max-width:720px;padding:42px 0 8px!important}
+  .visual{display:block!important;position:relative;width:100%;min-height:440px;margin:4px 0 18px;order:2;pointer-events:none}
+  .photo{display:block!important;position:absolute;inset:0;overflow:hidden;border:1px solid #d2d9d3;border-radius:28px;background:#dfe6df}
+  .photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:66% center}
+  .photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 64%,rgba(21,63,54,.14) 100%);pointer-events:none}
+  .tag{display:flex;right:16px;top:16px}
+  .float{display:flex;left:16px;right:16px;bottom:16px;max-width:none}
+}
+
+@media (max-width:620px){
+  .heroGrid>div:first-child{padding:34px 0 4px!important}
+  .visual{min-height:330px;margin-top:8px}
+  .photo{border-radius:22px}
+  .photo img{object-position:64% center}
+  .tag{display:none!important}
+  .float{left:10px;right:10px;bottom:10px;padding:13px 14px}
+}
