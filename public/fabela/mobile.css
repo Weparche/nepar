@@ -1,26 +1,27 @@
-/* Dedicated mobile hero background generated for Fabela. Desktop keeps styles.css hero. */
+/* Dedicated mobile/tablet art direction: the generated 9:16 image is always the hero background. */
 @media (max-width:980px){
-  .hero{position:relative!important;isolation:isolate!important;overflow:hidden!important;min-height:820px!important;padding:0!important;background:#f5f1e9!important}
-  .hero:before{content:""!important;display:block!important;position:absolute!important;inset:0!important;z-index:-3!important;background-image:url('/fabela/hero-mobile.webp')!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;transform:none!important}
-  .hero:after{content:""!important;display:block!important;position:absolute!important;inset:0!important;z-index:-2!important;background:linear-gradient(180deg,rgba(245,241,233,.96) 0%,rgba(245,241,233,.88) 22%,rgba(245,241,233,.64) 42%,rgba(245,241,233,.18) 63%,rgba(21,63,54,.08) 100%)!important}
-  .heroGrid{min-height:820px!important;padding:0!important;display:block!important}
-  .heroGrid>div:first-child{position:relative!important;z-index:2!important;width:100%!important;max-width:720px!important;padding:48px 0 36px!important}
-  .visual{display:none!important}
-  .eyebrow{background:rgba(255,253,249,.72)!important;backdrop-filter:blur(10px)}
-  .proofs{background:rgba(255,253,249,.72)!important;backdrop-filter:blur(12px)}
+  .hero{position:relative!important;isolation:isolate!important;overflow:hidden!important;min-height:880px!important;background:#f3efe7!important}
+  .hero:before{content:""!important;display:block!important;position:absolute!important;inset:0!important;z-index:-3!important;background-image:url('/fabela/hero-mobile.webp')!important;background-size:cover!important;background-position:55% center!important;background-repeat:no-repeat!important;transform:none!important}
+  .hero:after{content:""!important;display:block!important;position:absolute!important;inset:0!important;z-index:-2!important;background:linear-gradient(180deg,rgba(243,239,231,.98) 0%,rgba(243,239,231,.93) 25%,rgba(243,239,231,.72) 42%,rgba(243,239,231,.22) 60%,rgba(21,60,51,.08) 100%)!important}
+  .heroInner{min-height:880px!important;display:block!important;padding:46px 0 250px!important}
+  .heroCopy{max-width:690px!important;position:relative!important;z-index:2!important}
+  .heroSignal{bottom:0!important;background:rgba(255,253,248,.84)!important;backdrop-filter:blur(16px)!important}
+  .signalGrid{grid-template-columns:repeat(2,1fr)!important}
+  .signalGrid>div{padding:15px 16px!important;border-top:1px solid #d7ddd680}
+  .signalGrid>div+div{border-left:0!important}
+  .signalGrid>div:nth-child(even){border-left:1px solid #d7ddd6!important}
 }
+
 @media (max-width:620px){
-  .shell{width:min(100% - 22px,1220px)}
-  .hero{min-height:790px!important}
-  .hero:before{background-position:52% center!important}
-  .hero:after{background:linear-gradient(180deg,rgba(245,241,233,.97) 0%,rgba(245,241,233,.90) 21%,rgba(245,241,233,.66) 43%,rgba(245,241,233,.12) 66%,rgba(21,63,54,.10) 100%)!important}
-  .heroGrid{min-height:790px!important}
-  .heroGrid>div:first-child{padding:34px 0 28px!important}
-  h1{font-size:48px!important;line-height:.94!important;margin:18px 0!important}
-  .lead{font-size:15px!important;max-width:92%!important;color:#435b53!important}
-  .actions{gap:9px!important;margin-top:22px!important}
-  .actions .btn{min-height:46px!important;padding:0 14px!important}
-  .proofs{display:grid!important;grid-template-columns:1fr 1fr!important;margin-top:22px!important}
-  .proof{padding:12px 13px!important}
-  .proof:last-child{grid-column:1/-1!important;border-left:0!important;border-top:1px solid #d1d9d2!important}
+  .hero{min-height:920px!important}
+  .hero:before{background-position:53% center!important}
+  .hero:after{background:linear-gradient(180deg,rgba(243,239,231,.99) 0%,rgba(243,239,231,.94) 23%,rgba(243,239,231,.70) 41%,rgba(243,239,231,.16) 61%,rgba(21,60,51,.10) 100%)!important}
+  .heroInner{min-height:920px!important;padding:34px 0 230px!important}
+  .eyebrow{max-width:96%;font-size:9px!important;background:rgba(255,253,248,.72)!important}
+  h1{font-size:47px!important;line-height:.94!important;margin:18px 0 19px!important;max-width:96%!important}
+  .heroLead{font-size:15px!important;line-height:1.6!important;max-width:92%!important;color:#435b53!important}
+  .heroActions{gap:8px!important;margin-top:22px!important;max-width:92%!important}
+  .heroActions .btn{min-height:45px!important;padding:0 14px!important;font-size:12px!important}
+  .microcopy{max-width:88%!important;font-size:10px!important}
+  .signalGrid strong{font-size:12px!important}.signalGrid span{font-size:9px!important}
 }
