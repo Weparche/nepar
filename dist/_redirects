@@ -1,2 +1,4 @@
 /usluge/web-stranica-bez-pocetnog-troska /usluge/izrada-web-stranica 301
+/fabela /fabela/ 301
+/fabela/* /fabela/:splat 200
 /* /index.html 200

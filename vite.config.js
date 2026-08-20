@@ -28,8 +28,8 @@ const MOZGALICA_SOCIAL = {
   imageHeight: 630,
 };
 
-/** Static HTML sites in public/ (served at /vortex/, /zoyya/, /fabela/, etc.) */
-const PUBLIC_STATIC_SITES = ["vortex", "zoyya", "lime", "zgalarm", "fabela"];
+/** Static HTML sites in public/ (currently served at /fabela/). */
+const PUBLIC_STATIC_SITES = ["fabela"];
 
 function escapeAttr(value) {
   return String(value)

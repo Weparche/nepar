@@ -39,8 +39,21 @@ async function expectTouchTargets(page) {
 }
 
 async function skipEvolutionIntro(page) {
-  const skipButton = page.getByRole("button", { name: "Preskoči uvod i idi na web" });
+  const skipButton = page.getByRole("button", { name: "Zatvori animaciju", exact: true });
   if (await skipButton.isVisible().catch(() => false)) await skipButton.click();
+}
+
+async function openEvolutionIntro(page) {
+  const about = page.locator("#onama");
+  await about.scrollIntoViewIfNeeded();
+  await about.getByRole("button", { name: "Pokreni priču o evoluciji tehnologije" }).click();
+  await expect(page.getByTestId("evolution-intro")).toBeVisible();
+}
+
+async function scrollEvolutionIntro(page, sceneIndex) {
+  await page.getByTestId("evolution-intro").evaluate((intro, index) => {
+    intro.scrollTo({ top: intro.clientHeight * index, left: 0, behavior: "auto" });
+  }, sceneIndex);
 }
 
 async function evolutionFrameTime(page) {
@@ -49,16 +62,17 @@ async function evolutionFrameTime(page) {
 
 test("cinematic intro follows scene markers and completes after the final viewport", async ({ page }) => {
   await page.goto("/");
+  await openEvolutionIntro(page);
 
   const intro = page.getByTestId("evolution-intro");
   const frame = page.getByTestId("evolution-frame");
   await expect(intro).toBeVisible();
   await expect(intro).toHaveAttribute("data-active-scene", "0");
   await expect(page.getByTestId("evolution-copy")).toContainText("Računalo je počelo");
-  await expect(page.getByRole("button", { name: "Preskoči uvod i idi na web" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Zatvori animaciju", exact: true })).toBeVisible();
   await expect(page.getByTestId("landing-page")).toHaveAttribute("inert", "");
 
-  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 2));
+  await scrollEvolutionIntro(page, 2);
   await expect(intro).toHaveAttribute("data-active-scene", "2");
   await expect(page.getByText("Internet je povezao cijeli svijet.", { exact: true })).toBeVisible();
   await expect.poll(async () => {
@@ -66,7 +80,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
     return Math.abs(currentTime - 8.1);
   }).toBeLessThanOrEqual(0.5);
 
-  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 3));
+  await scrollEvolutionIntro(page, 3);
   await expect(intro).toHaveAttribute("data-active-scene", "3");
   await expect(page.getByText("Cloud je rad preselio na svaki uređaj.", { exact: true })).toBeVisible();
   await expect.poll(async () => {
@@ -74,7 +88,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
     return Math.abs(currentTime - 10.3);
   }).toBeLessThanOrEqual(0.5);
 
-  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 4));
+  await scrollEvolutionIntro(page, 4);
   await expect(intro).toHaveAttribute("data-active-scene", "4");
   await expect(page.getByText("Digitalni alati postali su radno okruženje.", { exact: true })).toBeVisible();
   await expect.poll(async () => {
@@ -82,7 +96,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
     return Math.abs(currentTime - 13);
   }).toBeLessThanOrEqual(0.5);
 
-  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 5));
+  await scrollEvolutionIntro(page, 5);
   await expect(intro).toHaveAttribute("data-active-scene", "5");
   await expect(page.getByText("AI danas razumije, automatizira i stvara.", { exact: true })).toBeVisible();
   await expect.poll(async () => {
@@ -90,7 +104,7 @@ test("cinematic intro follows scene markers and completes after the final viewpo
     return Math.abs(currentTime - 16);
   }).toBeLessThanOrEqual(0.5);
 
-  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
+  await scrollEvolutionIntro(page, 6);
   await expect(intro).toHaveAttribute("data-active-scene", "6");
   await expect(page.getByTestId("evolution-copy")).toHaveCount(0);
   await expect.poll(() => evolutionFrameTime(page)).toBeGreaterThanOrEqual(17.95);
@@ -98,14 +112,14 @@ test("cinematic intro follows scene markers and completes after the final viewpo
   await expect(frame).toHaveAttribute("data-frame-time", "18.80");
   await expect(intro).toBeVisible();
 
-  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 7 + 4));
+  await scrollEvolutionIntro(page, 7.1);
   await expect(intro).toHaveCount(0);
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
 });
 
 test("every discrete mouse-wheel gesture advances exactly one visual scene", async ({ page }) => {
   await page.goto("/");
+  await openEvolutionIntro(page);
   const intro = page.getByTestId("evolution-intro");
   await expect(intro).toHaveAttribute("data-active-scene", "0");
 
@@ -129,6 +143,7 @@ test("every discrete mouse-wheel gesture advances exactly one visual scene", asy
 
 test("a short touch swipe advances exactly one visual scene", async ({ page }) => {
   await page.goto("/");
+  await openEvolutionIntro(page);
   const hasTouch = await page.evaluate(() => "ontouchstart" in window);
   test.skip(!hasTouch, "touch emulation not enabled for this project");
 
@@ -137,7 +152,7 @@ test("a short touch swipe advances exactly one visual scene", async ({ page }) =
 
   const swipeUp = async (distance) => {
     await page.evaluate((swipeDistance) => {
-      const target = document.body;
+      const target = document.querySelector('[data-testid="evolution-intro"]');
       const makeTouch = (clientY) => new Touch({ identifier: 1, target, clientX: 200, clientY });
       const dispatch = (type, clientY, touches) => target.dispatchEvent(new TouchEvent(type, {
         bubbles: true,
@@ -159,11 +174,14 @@ test("a short touch swipe advances exactly one visual scene", async ({ page }) =
   await swipeUp(40);
   await expect(intro).toHaveAttribute("data-active-scene", "1");
   await expect(page.getByText("Grafička sučelja približila su tehnologiju svima.", { exact: true })).toBeVisible();
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(await page.evaluate(() => window.innerHeight));
+  await expect.poll(() => page.getByTestId("evolution-intro").evaluate((intro) => intro.scrollTop)).toBe(
+    await page.evaluate(() => window.innerHeight),
+  );
 });
 
 test("wheel alignment never briefly reverses the active scene", async ({ page }) => {
   await page.goto("/");
+  await openEvolutionIntro(page);
   await page.evaluate(() => {
     window.__evolutionSceneChanges = [];
     const intro = document.querySelector('[data-testid="evolution-intro"]');
@@ -178,11 +196,14 @@ test("wheel alignment never briefly reverses the active scene", async ({ page })
 
   const changes = await page.evaluate(() => window.__evolutionSceneChanges);
   expect(changes).toEqual(["1"]);
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(await page.evaluate(() => window.innerHeight));
+  await expect.poll(() => page.getByTestId("evolution-intro").evaluate((intro) => intro.scrollTop)).toBe(
+    await page.evaluate(() => window.innerHeight),
+  );
 });
 
 test("scene 2 to 3 is slightly quicker and the extended final brand segment loops", async ({ page }) => {
   await page.goto("/");
+  await openEvolutionIntro(page);
   const intro = page.getByTestId("evolution-intro");
 
   await page.mouse.wheel(0, 120);
@@ -207,7 +228,7 @@ test("scene 2 to 3 is slightly quicker and the extended final brand segment loop
   await page.waitForTimeout(1200);
   await expect.poll(async () => Math.abs(await evolutionFrameTime(page) - 8.1)).toBeLessThanOrEqual(0.18);
 
-  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
+  await scrollEvolutionIntro(page, 6);
   await expect(intro).toHaveAttribute("data-active-scene", "6");
   await expect.poll(() => evolutionFrameTime(page)).toBeGreaterThanOrEqual(17.95);
   const loopFrame = page.getByTestId("evolution-frame");
@@ -217,13 +238,14 @@ test("scene 2 to 3 is slightly quicker and the extended final brand segment loop
 
 test("mobile shows an animated brand title on every scene except the final loop", async ({ page }) => {
   await page.goto("/");
+  await openEvolutionIntro(page);
   const intro = page.getByTestId("evolution-intro");
-  const brandTitle = page.getByRole("button", { name: "Nepar Solutions — idi na web" });
+  const brandTitle = page.getByRole("button", { name: "Nepar Solutions — zatvori animaciju" });
 
   const isMobileViewport = (page.viewportSize()?.width ?? 0) <= 700;
   if (!isMobileViewport) {
     await expect(brandTitle).toBeHidden();
-    await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
+    await scrollEvolutionIntro(page, 6);
     await expect(brandTitle).toBeHidden();
     return;
   }
@@ -232,11 +254,11 @@ test("mobile shows an animated brand title on every scene except the final loop"
   await expect(brandTitle).toBeVisible();
   await expect(brandTitle).toHaveText("Nepar Solutions");
 
-  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 6));
+  await scrollEvolutionIntro(page, 6);
   await expect(intro).toHaveAttribute("data-active-scene", "6");
   await expect(brandTitle).toBeHidden();
 
-  await page.evaluate(() => window.scrollTo(0, window.innerHeight * 5));
+  await scrollEvolutionIntro(page, 5);
   await expect(intro).toHaveAttribute("data-active-scene", "5");
   await expect(brandTitle).toBeVisible();
 
@@ -247,26 +269,33 @@ test("mobile shows an animated brand title on every scene except the final loop"
   // out of the DOM. No real tap ever triggers that extra scroll.
   await brandTitle.click({ force: true });
   await expect(intro).toHaveCount(0);
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
 });
 
-test("cinematic intro can be skipped and stays dismissed for the tab session", async ({ page }) => {
+test("cinematic intro opens on demand and can be skipped", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Preskoči uvod i idi na web" }).click();
+  await expect(page.getByTestId("evolution-intro")).toHaveCount(0);
+  await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
+  await openEvolutionIntro(page);
+  await page.getByRole("button", { name: "Zatvori animaciju", exact: true }).click();
 
   await expect(page.getByTestId("evolution-intro")).toHaveCount(0);
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   await page.reload();
   await expect(page.getByTestId("evolution-intro")).toHaveCount(0);
   await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
 });
 
-test("reduced motion bypasses the cinematic intro before first paint", async ({ page }) => {
+test("reduced motion keeps the home visible and opens a static final frame", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(page.getByTestId("evolution-intro")).toHaveCount(0);
   await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
+  await openEvolutionIntro(page);
+  await expect(page.getByTestId("evolution-intro")).toHaveAttribute("data-active-scene", "6");
+  await expect(page.getByTestId("evolution-frame")).toHaveAttribute(
+    "src",
+    "/evolution-frames/evolution-frame-114.webp",
+  );
 });
 
 test("restored landing keeps its original structure and adds Auto Gubić below", async ({ page }) => {
@@ -294,6 +323,20 @@ test("restored landing keeps its original structure and adds Auto Gubić below",
   await expect(projectLink).toHaveAttribute("rel", /noreferrer/);
   await expect(projectLink.getByRole("heading", { name: "Auto Gubić" })).toBeVisible();
   await expect(projectLink.locator('img[src="/brand/autogubic.webp"]')).toHaveAttribute("alt", "Auto Gubić web-stranica");
+
+  if ((page.viewportSize()?.width ?? 0) < 1024) {
+    const heroOrder = await page.evaluate(() => {
+      const projectButton = [...document.querySelectorAll('a[href="#projekti"]')]
+        .find((element) => element.getClientRects().length > 0);
+      const visibleOrbit = [...document.querySelectorAll(".orbital-card")]
+        .find((element) => element.getClientRects().length > 0);
+      return {
+        orbitBottom: visibleOrbit?.getBoundingClientRect().bottom ?? 0,
+        buttonTop: projectButton?.getBoundingClientRect().top ?? 0,
+      };
+    });
+    expect(heroOrder.orbitBottom).toBeLessThan(heroOrder.buttonTop);
+  }
 
   await expectNoHorizontalOverflow(page);
   await expectTouchTargets(page);

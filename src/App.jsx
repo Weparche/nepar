@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
@@ -17,6 +17,7 @@ import {
   MapPin,
   Menu,
   Monitor,
+  Play,
   Puzzle,
   Rocket,
   Send,
@@ -29,7 +30,7 @@ import {
   BadgeEuro,
 } from "lucide-react";
 import OrbitalProjectCarousel from "./OrbitalProjectCarousel.jsx";
-import ComputerEvolutionIntro, { EVOLUTION_INTRO_SESSION_KEY } from "./ComputerEvolutionIntro.jsx";
+import ComputerEvolutionIntro from "./ComputerEvolutionIntro.jsx";
 import { trackPageView } from "./analytics.js";
 import "./legacyLanding.css";
 
@@ -238,8 +239,8 @@ const content = {
     },
     about: {
       eyebrow: "O NAMA",
-      imageLabel: "Otvori Nepar Solutions sliku",
-      closeLabel: "Zatvori Nepar Solutions sliku",
+      imageLabel: "Pokreni priču o evoluciji tehnologije",
+      playLabel: "Pokreni animaciju",
       title: "Tehni\u010dka izvedba, jasna komunikacija i fokus na proizvod koji radi.",
       description:
         "Nepar Solutions spaja razvoj web aplikacija, AI rje\u0161enja, portala, integracija i rada s podacima u jedan prakti\u010dan proces.",
@@ -444,8 +445,8 @@ const content = {
     },
     about: {
       eyebrow: "ABOUT US",
-      imageLabel: "Open Nepar Solutions image",
-      closeLabel: "Close Nepar Solutions image",
+      imageLabel: "Play the story of technology's evolution",
+      playLabel: "Play animation",
       title: "Technical delivery, clear communication, and focus on a product that works.",
       description:
         "Nepar Solutions brings together web app development, AI solutions, portals, integrations, and data work into one practical process.",
@@ -954,6 +955,30 @@ function Hero({ copy, lang }) {
           </motion.p>
 
           <motion.div
+            initial={{ opacity: 0, y: 14, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ ...quickRevealTransition, delay: 0.2 }}
+            className="mt-5 lg:hidden"
+          >
+            <div className="mobile-projects-pill inline-flex items-center gap-3 rounded-full border border-cyan-400/50 bg-white/85 px-4 py-2 text-sm font-semibold text-slate-800 shadow-lg shadow-cyan-500/10 backdrop-blur">
+              <motion.span
+                aria-hidden="true"
+                animate={animateMobileDetails ? { scale: [1, 1.25, 1], opacity: [0.65, 1, 0.65] } : false}
+                transition={animateMobileDetails ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" } : undefined}
+                className="size-2.5 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.8)]"
+              />
+              {copy.hero.mobileProjects}
+              <motion.span
+                aria-hidden="true"
+                animate={animateMobileDetails ? { x: [0, 5, 0] } : false}
+                transition={animateMobileDetails ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" } : undefined}
+                className="h-px w-8 bg-gradient-to-r from-cyan-300 to-transparent"
+              />
+            </div>
+            <OrbitalProjectCarousel lang={lang} />
+          </motion.div>
+
+          <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...quickRevealTransition, delay: 0.22 }}
@@ -985,32 +1010,11 @@ function Hero({ copy, lang }) {
               </span>
             ))}
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 14, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ ...quickRevealTransition, delay: 0.34 }}
-            className="mt-3 -mb-3 lg:hidden"
-          >
-            <div className="mobile-projects-pill inline-flex items-center gap-3 rounded-full border border-cyan-400/50 bg-white/85 px-4 py-2 text-sm font-semibold text-slate-800 shadow-lg shadow-cyan-500/10 backdrop-blur">
-              <motion.span
-                aria-hidden="true"
-                animate={animateMobileDetails ? { scale: [1, 1.25, 1], opacity: [0.65, 1, 0.65] } : false}
-                transition={animateMobileDetails ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" } : undefined}
-                className="size-2.5 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.8)]"
-              />
-              {copy.hero.mobileProjects}
-              <motion.span
-                aria-hidden="true"
-                animate={animateMobileDetails ? { x: [0, 5, 0] } : false}
-                transition={animateMobileDetails ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" } : undefined}
-                className="h-px w-8 bg-gradient-to-r from-cyan-300 to-transparent"
-              />
-            </div>
-          </motion.div>
         </motion.div>
 
-        <OrbitalProjectCarousel lang={lang} />
+        <div className="hidden min-w-0 lg:block">
+          <OrbitalProjectCarousel lang={lang} />
+        </div>
       </div>
     </section>
   );
@@ -1191,23 +1195,14 @@ function FeaturedProjects({ copy }) {
   );
 }
 
-function About({ copy, lang }) {
-  const [open, setOpen] = useState(false);
+function About({ copy, isEvolutionOpen, onPlayEvolution }) {
   const triggerRef = useRef(null);
-  const brandImg = lang === "en" ? "/brand/nepar-eng.webp" : "/brand/nepar.webp";
+  const wasEvolutionOpenRef = useRef(false);
 
   useEffect(() => {
-    if (!open) return;
-    function onKey(e) {
-      if (e.key === "Escape") setOpen(false);
-    }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) triggerRef.current?.focus();
-  }, [open]);
+    if (wasEvolutionOpenRef.current && !isEvolutionOpen) triggerRef.current?.focus();
+    wasEvolutionOpenRef.current = isEvolutionOpen;
+  }, [isEvolutionOpen]);
 
   return (
     <section id="onama" className="px-4 py-8 scroll-mt-24 sm:py-12">
@@ -1221,17 +1216,21 @@ function About({ copy, lang }) {
         <button
           ref={triggerRef}
           type="button"
-          onClick={() => setOpen(true)}
-          className="pressable group relative min-h-56 overflow-hidden rounded-2xl border border-blue-300/30 bg-slate-100 text-left shadow-inner shadow-slate-900/5"
+          onClick={onPlayEvolution}
+          className="about-animation-trigger pressable group relative min-h-56 overflow-hidden rounded-2xl bg-slate-950 text-left"
           aria-label={copy.about.imageLabel}
         >
           <img
-            src={brandImg}
-            alt="Nepar Solutions brand"
+            src="/evolution-frames/evolution-frame-120.webp"
+            alt=""
             loading="lazy"
-            className="absolute inset-0 size-full object-cover opacity-95 transition-transform duration-300 group-hover:scale-[1.025]"
+            className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/18 via-transparent to-violet-500/18" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/72 via-transparent to-slate-950/12" />
+          <span className="about-animation-play">
+            <span aria-hidden="true"><Play size={19} fill="currentColor" /></span>
+            {copy.about.playLabel}
+          </span>
         </button>
         <div className="flex flex-col justify-center p-2 lg:p-5">
           <p className={`mb-3 ${eyebrowClass}`}>
@@ -1256,42 +1255,6 @@ function About({ copy, lang }) {
           </ol>
         </div>
       </motion.div>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label={copy.about.imageLabel}
-            className="fixed inset-0 z-[80] grid place-items-center bg-slate-900/45 px-4 backdrop-blur-md"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setOpen(false)}
-          >
-            <motion.button
-              type="button"
-              autoFocus
-              className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-blue-500/25"
-              initial={{ opacity: 0, scale: 0.96, y: 16 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.97, y: 10 }}
-              transition={{ type: "spring", duration: 0.34, bounce: 0.12 }}
-              onClick={() => setOpen(false)}
-              aria-label={copy.about.closeLabel}
-            >
-              <img
-                src={brandImg}
-                alt="Nepar Solutions brand"
-                className="block max-h-[82vh] w-full object-contain"
-              />
-              <span className="absolute right-3 top-3 grid size-9 place-items-center rounded-full border border-slate-200 bg-white/85 text-slate-700 backdrop-blur">
-                <X size={18} />
-              </span>
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }
@@ -1419,53 +1382,14 @@ export function Background() {
   );
 }
 
-function shouldShowEvolutionIntro() {
-  if (typeof window === "undefined") return false;
-  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return false;
-
-  try {
-    return window.sessionStorage.getItem(EVOLUTION_INTRO_SESSION_KEY) !== "1";
-  } catch {
-    return true;
-  }
-}
-
 function HomePage() {
   const [lang, setLang] = useState("hr");
-  const [showEvolutionIntro, setShowEvolutionIntro] = useState(() => shouldShowEvolutionIntro());
-  const resetScrollAfterIntroRef = useRef(false);
+  const [showEvolutionIntro, setShowEvolutionIntro] = useState(false);
   const copy = content[lang];
 
   const completeEvolutionIntro = useCallback(() => {
-    try {
-      window.sessionStorage.setItem(EVOLUTION_INTRO_SESSION_KEY, "1");
-    } catch {
-      // The intro remains dismissible even when storage is unavailable.
-    }
-    resetScrollAfterIntroRef.current = true;
     setShowEvolutionIntro(false);
   }, []);
-
-  useLayoutEffect(() => {
-    if (showEvolutionIntro || !resetScrollAfterIntroRef.current) return;
-    resetScrollAfterIntroRef.current = false;
-
-    const root = document.documentElement;
-    const previousScrollBehavior = root.style.scrollBehavior;
-    root.style.scrollBehavior = "auto";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    root.style.scrollBehavior = previousScrollBehavior;
-  }, [showEvolutionIntro]);
-
-  useEffect(() => {
-    if (!showEvolutionIntro || !window.matchMedia) return undefined;
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const onPreferenceChange = (event) => {
-      if (event.matches) completeEvolutionIntro();
-    };
-    media.addEventListener("change", onPreferenceChange);
-    return () => media.removeEventListener("change", onPreferenceChange);
-  }, [completeEvolutionIntro, showEvolutionIntro]);
 
   useEffect(() => {
     document.documentElement.lang = lang === "en" ? "en" : "hr";
@@ -1490,7 +1414,11 @@ function HomePage() {
       <Services copy={copy} />
       <FeaturedProjects copy={copy} />
       <WebStartPromo copy={copy} />
-      <About copy={copy} lang={lang} />
+      <About
+        copy={copy}
+        isEvolutionOpen={showEvolutionIntro}
+        onPlayEvolution={() => setShowEvolutionIntro(true)}
+      />
       <BottomCta copy={copy} />
       <footer className="px-4 pb-8 sm:pb-12">
         <div className="mx-auto max-w-[1180px] lg:max-w-[1380px]">

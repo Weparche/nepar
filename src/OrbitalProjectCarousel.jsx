@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
 import {
   ArrowRight,
@@ -552,6 +552,12 @@ function OrbitButton({ direction, onClick, children, copy }) {
 
 export default function OrbitalProjectCarousel({ lang = "hr" }) {
   const { cards, preview } = carouselContent[lang] || carouselContent.hr;
+  const instanceId = useId().replaceAll(":", "");
+  const orbitBaseId = `orbit-base-${instanceId}`;
+  const orbitSheenId = `orbit-sheen-${instanceId}`;
+  const orbitBlurId = `orbit-blur-${instanceId}`;
+  const orbitFrontId = `orbit-front-${instanceId}`;
+  const orbitFrontGlowId = `orbit-front-glow-${instanceId}`;
   const angle = useMotionValue(90);
   const { radiusX, radiusY, orbitCenterY, sceneHeight, isMobile } = useCarouselSize();
   const prefersReducedMotion = useReducedMotion();
@@ -632,7 +638,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
           >
             <defs>
               <linearGradient
-                id="orbitBase"
+                id={orbitBaseId}
                 x1="0%"
                 x2="100%"
                 y1="48%"
@@ -646,7 +652,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
                 <stop offset="100%" stopColor="rgba(37,99,235,0.08)" />
               </linearGradient>
               <linearGradient
-                id="orbitSheen"
+                id={orbitSheenId}
                 x1="100%"
                 x2="0%"
                 y1="10%"
@@ -658,7 +664,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
                 <stop offset="72%" stopColor="rgba(124,58,237,0.44)" />
                 <stop offset="100%" stopColor="rgba(255,255,255,0)" />
               </linearGradient>
-              <filter id="orbitBlur" x="-20%" y="-120%" width="140%" height="340%">
+              <filter id={orbitBlurId} x="-20%" y="-120%" width="140%" height="340%">
                 <feGaussianBlur stdDeviation="10" />
               </filter>
             </defs>
@@ -671,7 +677,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               fill="none"
               stroke="rgba(59,130,246,0.22)"
               strokeWidth={isMobile ? 12 : 26}
-              filter={isMobile ? undefined : "url(#orbitBlur)"}
+              filter={isMobile ? undefined : `url(#${orbitBlurId})`}
             />
             <ellipse
               cx="500"
@@ -679,7 +685,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               rx="470"
               ry="50"
               fill="none"
-              stroke="url(#orbitBase)"
+              stroke={`url(#${orbitBaseId})`}
               strokeWidth={isMobile ? 6 : 12}
               strokeLinecap="round"
             />
@@ -690,7 +696,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
                 rx="470"
                 ry="50"
                 fill="none"
-                stroke="url(#orbitSheen)"
+                stroke={`url(#${orbitSheenId})`}
                 strokeWidth="7"
                 strokeLinecap="round"
                 opacity="0.5"
@@ -743,7 +749,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
           >
           <defs>
             <linearGradient
-              id="orbitFront"
+              id={orbitFrontId}
               x1="0%"
               x2="100%"
               y1="40%"
@@ -756,7 +762,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
               <stop offset="74%" stopColor="rgba(124,58,237,0.48)" />
               <stop offset="100%" stopColor="rgba(37,99,235,0)" />
             </linearGradient>
-            <filter id="orbitFrontGlow" x="-20%" y="-140%" width="140%" height="360%">
+            <filter id={orbitFrontGlowId} x="-20%" y="-140%" width="140%" height="360%">
               <feGaussianBlur stdDeviation="7" />
             </filter>
           </defs>
@@ -766,12 +772,12 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
             stroke="rgba(59,130,246,0.25)"
             strokeWidth="26"
             strokeLinecap="round"
-            filter="url(#orbitFrontGlow)"
+            filter={`url(#${orbitFrontGlowId})`}
           />
           <path
             d="M 42 90 C 218 148 782 148 958 90"
             fill="none"
-            stroke="url(#orbitFront)"
+            stroke={`url(#${orbitFrontId})`}
             strokeWidth="13"
             strokeLinecap="round"
           />

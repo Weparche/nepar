@@ -1,8 +1,6 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-
-export const EVOLUTION_INTRO_SESSION_KEY = "nepar:evolution-intro-seen";
 
 const SCENE_TRANSITION_MS = 1350;
 const SECOND_TO_THIRD_TRANSITION_MS = 1150;
@@ -39,21 +37,25 @@ const sceneEase = (value) => (
  * @param {{ onComplete: (reason: "skip" | "sentinel" | "error" | "ended") => void }} props
  */
 export default function ComputerEvolutionIntro({ onComplete }) {
-  const [activeScene, setActiveScene] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+  const initialScene = prefersReducedMotion ? evolutionScenes.length - 1 : 0;
+  const initialTime = evolutionScenes[initialScene].time;
+  const [activeScene, setActiveScene] = useState(initialScene);
   const [frameIndex, setFrameIndex] = useState(() => (
-    frameIndexForTime(evolutionScenes[0].time)
+    frameIndexForTime(initialTime)
   ));
+  const sectionRef = useRef(null);
   const panelRefs = useRef([]);
   const sentinelRef = useRef(null);
   const sceneObserverRef = useRef(null);
   const sentinelObserverRef = useRef(null);
   const animationFrameRef = useRef(null);
-  const activeSceneRef = useRef(0);
-  const previousSceneRef = useRef(0);
+  const activeSceneRef = useRef(initialScene);
+  const previousSceneRef = useRef(initialScene);
   const wheelGestureRef = useRef(false);
   const wheelGestureTimerRef = useRef(null);
   const sceneAlignmentRef = useRef(false);
-  const timelineTimeRef = useRef(evolutionScenes[0].time);
+  const timelineTimeRef = useRef(initialTime);
   const frameIndexRef = useRef(frameIndex);
   const completedRef = useRef(false);
 
@@ -123,6 +125,7 @@ export default function ComputerEvolutionIntro({ onComplete }) {
   }, [cancelTween]);
 
   useEffect(() => {
+    if (prefersReducedMotion) return undefined;
     let cancelled = false;
     const sources = Array.from({ length: FRAME_COUNT }, (_, index) => frameSource(index));
     const loadSequence = async (offset) => {
@@ -138,7 +141,7 @@ export default function ComputerEvolutionIntro({ onComplete }) {
 
     Promise.all([0, 1, 2, 3, 4, 5].map(loadSequence));
     return () => { cancelled = true; };
-  }, []);
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     const previousScene = previousSceneRef.current;
@@ -153,7 +156,10 @@ export default function ComputerEvolutionIntro({ onComplete }) {
   }, [activeScene, tweenTo]);
 
   useEffect(() => {
+    if (prefersReducedMotion) return undefined;
     const TOUCH_STEP_PX = 24;
+    const scrollHost = sectionRef.current;
+    if (!scrollHost) return undefined;
 
     const endWheelGesture = () => {
       wheelGestureRef.current = false;
@@ -194,14 +200,14 @@ export default function ComputerEvolutionIntro({ onComplete }) {
 
       const targetPanel = panelRefs.current[next];
       if (targetPanel) {
-        const targetTop = targetPanel.getBoundingClientRect().top + window.scrollY;
-        const root = document.documentElement;
-        const previousScrollBehavior = root.style.scrollBehavior;
-        root.style.scrollBehavior = "auto";
-        window.scrollTo(0, targetTop);
+        const hostRect = scrollHost.getBoundingClientRect();
+        const targetTop = targetPanel.getBoundingClientRect().top - hostRect.top + scrollHost.scrollTop;
+        const previousScrollBehavior = scrollHost.style.scrollBehavior;
+        scrollHost.style.scrollBehavior = "auto";
+        scrollHost.scrollTo({ top: targetTop, left: 0, behavior: "auto" });
         window.requestAnimationFrame(() => {
           sceneAlignmentRef.current = false;
-          root.style.scrollBehavior = previousScrollBehavior;
+          scrollHost.style.scrollBehavior = previousScrollBehavior;
         });
       } else {
         sceneAlignmentRef.current = false;
@@ -251,38 +257,44 @@ export default function ComputerEvolutionIntro({ onComplete }) {
       touchStartY = null;
     };
 
-    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
-    window.addEventListener("touchstart", onTouchStart, { passive: true, capture: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
-    window.addEventListener("touchend", onTouchEnd, { passive: true, capture: true });
-    window.addEventListener("touchcancel", onTouchEnd, { passive: true, capture: true });
+    scrollHost.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    scrollHost.addEventListener("touchstart", onTouchStart, { passive: true, capture: true });
+    scrollHost.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
+    scrollHost.addEventListener("touchend", onTouchEnd, { passive: true, capture: true });
+    scrollHost.addEventListener("touchcancel", onTouchEnd, { passive: true, capture: true });
     return () => {
-      window.removeEventListener("wheel", onWheel, { capture: true });
-      window.removeEventListener("touchstart", onTouchStart, { capture: true });
-      window.removeEventListener("touchmove", onTouchMove, { capture: true });
-      window.removeEventListener("touchend", onTouchEnd, { capture: true });
-      window.removeEventListener("touchcancel", onTouchEnd, { capture: true });
+      scrollHost.removeEventListener("wheel", onWheel, { capture: true });
+      scrollHost.removeEventListener("touchstart", onTouchStart, { capture: true });
+      scrollHost.removeEventListener("touchmove", onTouchMove, { capture: true });
+      scrollHost.removeEventListener("touchend", onTouchEnd, { capture: true });
+      scrollHost.removeEventListener("touchcancel", onTouchEnd, { capture: true });
       if (wheelGestureTimerRef.current !== null) {
         window.clearTimeout(wheelGestureTimerRef.current);
       }
     };
-  }, [completeIntro]);
+  }, [completeIntro, prefersReducedMotion]);
 
   useEffect(() => {
+    if (prefersReducedMotion) return undefined;
+    const scrollHost = sectionRef.current;
     const panels = panelRefs.current.filter(Boolean);
-    if (!panels.length) return undefined;
+    if (!scrollHost || !panels.length) return undefined;
 
     const chooseActivePanel = () => {
-      const viewportHeight = window.innerHeight;
+      const hostRect = scrollHost.getBoundingClientRect();
+      const viewportHeight = scrollHost.clientHeight;
       const candidates = panels.flatMap((panel) => {
         const rect = panel.getBoundingClientRect();
-        const visibleHeight = Math.max(0, Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0));
+        const visibleHeight = Math.max(
+          0,
+          Math.min(rect.bottom, hostRect.bottom) - Math.max(rect.top, hostRect.top),
+        );
         if (!visibleHeight) return [];
 
         return [{
           index: Number(panel.dataset.sceneIndex),
           ratio: visibleHeight / rect.height,
-          centerDistance: Math.abs(rect.top + rect.height / 2 - viewportHeight / 2),
+          centerDistance: Math.abs(rect.top + rect.height / 2 - (hostRect.top + viewportHeight / 2)),
         }];
       });
       if (!candidates.length) return;
@@ -303,7 +315,7 @@ export default function ComputerEvolutionIntro({ onComplete }) {
     const observer = new IntersectionObserver(() => {
       if (sceneAlignmentRef.current) return;
       chooseActivePanel();
-    }, { threshold: observerThresholds });
+    }, { root: scrollHost, threshold: observerThresholds });
 
     panels.forEach((panel) => observer.observe(panel));
     sceneObserverRef.current = observer;
@@ -312,15 +324,17 @@ export default function ComputerEvolutionIntro({ onComplete }) {
       observer.disconnect();
       if (sceneObserverRef.current === observer) sceneObserverRef.current = null;
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
+    if (prefersReducedMotion) return undefined;
+    const scrollHost = sectionRef.current;
     const sentinel = sentinelRef.current;
-    if (!sentinel) return undefined;
+    if (!scrollHost || !sentinel) return undefined;
 
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((entry) => entry.isIntersecting)) completeIntro("sentinel");
-    });
+    }, { root: scrollHost });
 
     observer.observe(sentinel);
     sentinelObserverRef.current = observer;
@@ -329,16 +343,29 @@ export default function ComputerEvolutionIntro({ onComplete }) {
       observer.disconnect();
       if (sentinelObserverRef.current === observer) sentinelObserverRef.current = null;
     };
+  }, [completeIntro, prefersReducedMotion]);
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") completeIntro("skip");
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [completeIntro]);
 
   useEffect(() => () => cancelTween(), [cancelTween]);
 
   const isFinalScene = activeScene === evolutionScenes.length - 1;
-  const showFinalLoop = isFinalScene && frameIndex >= frameIndexForTime(FINAL_LOOP_START);
+  const showFinalLoop = !prefersReducedMotion
+    && isFinalScene
+    && frameIndex >= frameIndexForTime(FINAL_LOOP_START);
 
   return (
     <section
-      className={`evolution-intro${isFinalScene ? " evolution-intro--final" : ""}`}
+      ref={sectionRef}
+      className={`evolution-intro evolution-intro--modal${isFinalScene ? " evolution-intro--final" : ""}${prefersReducedMotion ? " evolution-intro--reduced" : ""}`}
+      role="dialog"
+      aria-modal="true"
       aria-label="Evolucija računala"
       data-active-scene={activeScene}
       data-testid="evolution-intro"
@@ -374,7 +401,7 @@ export default function ComputerEvolutionIntro({ onComplete }) {
           <button
             type="button"
             className="evolution-intro__brand-title"
-            aria-label="Nepar Solutions — idi na web"
+            aria-label="Nepar Solutions — zatvori animaciju"
             onClick={() => completeIntro("skip")}
           >
             Nepar Solutions
@@ -400,7 +427,7 @@ export default function ComputerEvolutionIntro({ onComplete }) {
         </div>
 
         <div className="evolution-intro__controls">
-          <div className="evolution-intro__progress-wrap">
+          {!prefersReducedMotion && <div className="evolution-intro__progress-wrap">
             <span className="evolution-intro__scroll-cue">
               <ArrowDown aria-hidden="true" size={18} />
               Scrollaj za nastavak
@@ -417,15 +444,16 @@ export default function ComputerEvolutionIntro({ onComplete }) {
                 <span key={scene.time} className={index <= activeScene ? "is-active" : ""} />
               ))}
             </div>
-          </div>
+          </div>}
 
           <button
             type="button"
+            autoFocus
             className="evolution-intro__skip"
-            aria-label="Preskoči uvod i idi na web"
+            aria-label="Zatvori animaciju"
             onClick={() => completeIntro("skip")}
           >
-            Idi na web
+            Zatvori
             <ArrowRight aria-hidden="true" size={19} />
           </button>
         </div>
