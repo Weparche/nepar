@@ -353,7 +353,7 @@ test("hero motion runs only on desktop while every viewport keeps a poster", asy
   await page.goto("/");
   const hero = page.locator("#top");
   await expect(hero.locator('picture img[src="/nepar-background-desktop-2400x900.webp"]')).toBeVisible();
-  const expectsVideo = (page.viewportSize()?.width ?? 0) >= 1024;
+  const expectsVideo = (page.viewportSize()?.width ?? 0) >= 768;
   await expect(hero.locator("video")).toHaveCount(expectsVideo ? 1 : 0);
   if (expectsVideo) {
     await expect(hero.locator('video source[type="video/webm"]')).toHaveAttribute("src", "/hero.webm");

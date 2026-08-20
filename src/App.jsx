@@ -849,11 +849,11 @@ function FeaturedProjectImage({ type, copy }) {
 function Hero({ copy, lang }) {
   const reduceMotion = useReducedMotion();
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const supportsHeroMotion = useMediaQuery("(min-width: 768px)");
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const animateMobileDetails = !reduceMotion && !isMobile;
-  const showHeroVideo = isDesktop && !reduceMotion;
+  const showHeroVideo = supportsHeroMotion && !reduceMotion;
 
   useEffect(() => {
     if (!showHeroVideo || !sectionRef.current || !videoRef.current) return undefined;
@@ -880,8 +880,8 @@ function Hero({ copy, lang }) {
       syncPlayback(isVisible);
     };
     const idleHandle = window.requestIdleCallback
-      ? window.requestIdleCallback(activatePlayback, { timeout: 900 })
-      : window.setTimeout(activatePlayback, 450);
+      ? window.requestIdleCallback(activatePlayback, { timeout: 450 })
+      : window.setTimeout(activatePlayback, 250);
     observer.observe(sectionRef.current);
     document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
