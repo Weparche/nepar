@@ -895,11 +895,24 @@ function Hero({ copy, lang }) {
 
   return (
     <section ref={sectionRef} id="top" className="relative overflow-hidden px-4 pt-24 sm:pt-32 lg:pt-[7.25rem]">
-      {showHeroVideo && (
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <picture>
+          <source media="(max-width: 767px)" srcSet="/nepar-background-mobile-900x1600.webp" />
+          <img
+            src="/nepar-background-desktop-2400x900.webp"
+            alt=""
+            width="2400"
+            height="900"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+            className="absolute inset-0 size-full object-cover"
+          />
+        </picture>
+        {showHeroVideo && (
           <video
             ref={videoRef}
-            className="hero-background-video size-full object-cover"
+            className="hero-background-video absolute inset-0 size-full object-cover"
             muted
             loop
             playsInline
@@ -911,9 +924,10 @@ function Hero({ copy, lang }) {
             <source src="/hero.webm" type="video/webm" />
             <source src="/hero.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.62)_0%,rgba(255,255,255,0.08)_20%,rgba(255,255,255,0.08)_55%,rgba(255,255,255,0.65)_82%,#fff_100%)]" />
-        </div>
-      )}
+        )}
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.48)_0%,rgba(255,255,255,0.02)_24%,rgba(255,255,255,0.04)_60%,rgba(255,255,255,0.72)_86%,#fff_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.32)_0%,rgba(255,255,255,0.08)_44%,transparent_72%)]" />
+      </div>
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[540px] bg-[radial-gradient(ellipse_at_52%_8%,rgba(37,99,235,0.12),transparent_56%)]" />
       <div className="mx-auto grid max-w-[1180px] items-center gap-2 sm:gap-8 lg:max-w-[1380px] lg:grid-cols-[minmax(360px,0.72fr)_minmax(0,1.28fr)]">
         <motion.div

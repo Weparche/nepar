@@ -9,6 +9,7 @@
     "typecheck": "tsc -p tsconfig.marketing.json --noEmit",
     "build": "vite build && node scripts/verify-dist.js",
     "preview": "vite preview",
+    "render:hero": "node scripts/render-signal-horizon.mjs",
     "fetch:njamko-sounds": "node scripts/fetch-njamko-sounds.js",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots"

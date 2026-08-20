@@ -288,6 +288,13 @@ test("cinematic intro opens on demand and can be skipped", async ({ page }) => {
 test("reduced motion keeps the home visible and opens a static final frame", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
+  const hero = page.locator("#top");
+  await expect(hero.locator('picture source[media="(max-width: 767px)"]')).toHaveAttribute(
+    "srcset",
+    "/nepar-background-mobile-900x1600.webp",
+  );
+  await expect(hero.locator('picture img[src="/nepar-background-desktop-2400x900.webp"]')).toBeVisible();
+  await expect(hero.locator("video")).toHaveCount(0);
   await expect(page.getByTestId("evolution-intro")).toHaveCount(0);
   await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
   await openEvolutionIntro(page);
@@ -340,6 +347,18 @@ test("restored landing keeps its original structure and adds Auto Gubić below",
 
   await expectNoHorizontalOverflow(page);
   await expectTouchTargets(page);
+});
+
+test("hero motion runs only on desktop while every viewport keeps a poster", async ({ page }) => {
+  await page.goto("/");
+  const hero = page.locator("#top");
+  await expect(hero.locator('picture img[src="/nepar-background-desktop-2400x900.webp"]')).toBeVisible();
+  const expectsVideo = (page.viewportSize()?.width ?? 0) >= 1024;
+  await expect(hero.locator("video")).toHaveCount(expectsVideo ? 1 : 0);
+  if (expectsVideo) {
+    await expect(hero.locator('video source[type="video/webm"]')).toHaveAttribute("src", "/hero.webm");
+    await expect(hero.locator('video source[type="video/mp4"]')).toHaveAttribute("src", "/hero.mp4");
+  }
 });
 
 test("pricing shows one-time development and optional annual maintenance", async ({ page }) => {
