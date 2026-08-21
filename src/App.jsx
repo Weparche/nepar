@@ -846,57 +846,122 @@ function FeaturedProjectImage({ type, copy }) {
   );
 }
 
+const HERO_MEDIA = {
+  desktop: {
+    webm: "/brand/hero-desktop.webm",
+    mp4: "/brand/hero-desktop.mp4",
+  },
+  mobile: {
+    webm: "/brand/hero-mobile.webm",
+    mp4: "/brand/hero-mobile.mp4",
+  },
+};
+
 function Hero({ copy, lang }) {
   const reduceMotion = useReducedMotion();
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const supportsHeroMotion = useMediaQuery("(min-width: 768px)");
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
+  const sourceGenerationRef = useRef(0);
+  const isHeroInViewportRef = useRef(true);
+  const [enabledSourceKey, setEnabledSourceKey] = useState(null);
+  const [playingSourceKey, setPlayingSourceKey] = useState(null);
   const animateMobileDetails = !reduceMotion && !isMobile;
-  const showHeroVideo = supportsHeroMotion && !reduceMotion;
+  const sourceKey = isMobile ? "mobile" : "desktop";
+  const videoSources = HERO_MEDIA[sourceKey];
+  const showHeroVideo = reduceMotion !== true;
+  const videoEnabled = showHeroVideo && enabledSourceKey === sourceKey;
+  const videoPlaying = videoEnabled && playingSourceKey === sourceKey;
+
+  useEffect(() => {
+    if (!showHeroVideo) return undefined;
+
+    let cancelled = false;
+    const activateVideo = () => {
+      if (!cancelled) {
+        setEnabledSourceKey(sourceKey);
+      }
+    };
+    const supportsIdleCallback = typeof window.requestIdleCallback === "function";
+    const idleHandle = supportsIdleCallback
+      ? window.requestIdleCallback(activateVideo, { timeout: 450 })
+      : window.setTimeout(activateVideo, 250);
+
+    return () => {
+      cancelled = true;
+      if (supportsIdleCallback) window.cancelIdleCallback?.(idleHandle);
+      else window.clearTimeout(idleHandle);
+    };
+  }, [showHeroVideo, sourceKey]);
 
   useEffect(() => {
     if (!showHeroVideo || !sectionRef.current || !videoRef.current) return undefined;
     const video = videoRef.current;
-    let isVisible = true;
-    let playbackReady = false;
-    const syncPlayback = (isVisible) => {
-      if (playbackReady && isVisible && document.visibilityState === "visible") {
-        video.play().catch(() => {});
+    const generation = sourceGenerationRef.current + 1;
+    sourceGenerationRef.current = generation;
+    let active = true;
+
+    const isCurrentGeneration = () => active && generation === sourceGenerationRef.current;
+    const showPoster = () => {
+      if (isCurrentGeneration()) setPlayingSourceKey(null);
+    };
+    const handlePlaying = () => {
+      if (!isCurrentGeneration()) return;
+      let currentPath;
+      try {
+        currentPath = new URL(video.currentSrc, window.location.href).pathname;
+      } catch {
+        showPoster();
+        return;
+      }
+      if (currentPath === videoSources.webm || currentPath === videoSources.mp4) {
+        setPlayingSourceKey(sourceKey);
+      } else {
+        showPoster();
+      }
+    };
+    const syncPlayback = () => {
+      if (videoEnabled && isHeroInViewportRef.current && document.visibilityState === "visible") {
+        video.play().catch(showPoster);
       } else {
         video.pause();
       }
     };
     const observer = new IntersectionObserver(
       ([entry]) => {
-        isVisible = entry.isIntersecting;
-        syncPlayback(isVisible);
+        isHeroInViewportRef.current = entry.isIntersecting;
+        syncPlayback();
       },
       { threshold: 0.05 },
     );
-    const onVisibilityChange = () => syncPlayback(isVisible);
-    const activatePlayback = () => {
-      playbackReady = true;
-      syncPlayback(isVisible);
-    };
-    const idleHandle = window.requestIdleCallback
-      ? window.requestIdleCallback(activatePlayback, { timeout: 450 })
-      : window.setTimeout(activatePlayback, 250);
+
+    video.pause();
+    setPlayingSourceKey(null);
+    video.addEventListener("playing", handlePlaying);
+    video.addEventListener("error", showPoster);
+    video.addEventListener("abort", showPoster);
+    video.addEventListener("emptied", showPoster);
     observer.observe(sectionRef.current);
-    document.addEventListener("visibilitychange", onVisibilityChange);
+    document.addEventListener("visibilitychange", syncPlayback);
+    video.load();
+    syncPlayback();
+
     return () => {
-      if (window.cancelIdleCallback && window.requestIdleCallback) window.cancelIdleCallback(idleHandle);
-      else window.clearTimeout(idleHandle);
+      active = false;
       observer.disconnect();
-      document.removeEventListener("visibilitychange", onVisibilityChange);
+      document.removeEventListener("visibilitychange", syncPlayback);
+      video.removeEventListener("playing", handlePlaying);
+      video.removeEventListener("error", showPoster);
+      video.removeEventListener("abort", showPoster);
+      video.removeEventListener("emptied", showPoster);
       video.pause();
     };
-  }, [showHeroVideo]);
+  }, [showHeroVideo, sourceKey, videoEnabled, videoSources.mp4, videoSources.webm]);
 
   return (
     <section ref={sectionRef} id="top" className="relative overflow-hidden px-4 pt-24 sm:pt-32 lg:pt-[7.25rem]">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <picture>
+        <picture className="hero-background-poster absolute inset-0 block size-full">
           <source media="(max-width: 767px)" srcSet="/nepar-background-mobile-900x1600.webp" />
           <img
             src="/nepar-background-desktop-2400x900.webp"
@@ -912,17 +977,21 @@ function Hero({ copy, lang }) {
         {showHeroVideo && (
           <video
             ref={videoRef}
-            className="hero-background-video absolute inset-0 size-full object-cover"
+            className={`hero-background-video absolute inset-0 size-full object-cover${videoPlaying ? " hero-background-video--visible" : ""}`}
+            data-source-key={sourceKey}
             muted
             loop
             playsInline
-            preload="metadata"
-            poster="/nepar-background-desktop-2400x900.webp"
+            preload="none"
             disablePictureInPicture
             disableRemotePlayback
           >
-            <source src="/hero.webm" type="video/webm" />
-            <source src="/hero.mp4" type="video/mp4" />
+            {videoEnabled && (
+              <>
+                <source src={videoSources.webm} type="video/webm; codecs=vp9" />
+                <source src={videoSources.mp4} type='video/mp4; codecs="hvc1"' />
+              </>
+            )}
           </video>
         )}
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.48)_0%,rgba(255,255,255,0.02)_24%,rgba(255,255,255,0.04)_60%,rgba(255,255,255,0.72)_86%,#fff_100%)]" />
@@ -1486,6 +1555,8 @@ function forceScrollTop() {
   });
 }
 
+const NON_SCROLLING_HASHES = new Set(["#redizajn", "#odrzavanje"]);
+
 function ScrollToTop() {
   const { pathname, hash, key } = useLocation();
   const isInitialMount = useRef(true);
@@ -1493,7 +1564,7 @@ function ScrollToTop() {
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
-      if (hash && window.history.replaceState) {
+      if (hash && !NON_SCROLLING_HASHES.has(hash) && window.history.replaceState) {
         window.history.replaceState(null, "", pathname);
       }
       if (document.querySelector('[data-testid="evolution-intro"]')) {
@@ -1506,6 +1577,7 @@ function ScrollToTop() {
       const t3 = setTimeout(forceScrollTop, 900);
       return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     }
+    if (NON_SCROLLING_HASHES.has(hash)) return undefined;
     if (hash) {
       const id = hash.slice(1);
       const timer = setTimeout(() => {

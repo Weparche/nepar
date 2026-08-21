@@ -8,7 +8,7 @@ const copy = {
     close: "Zatvori upit",
     offer: "Odabrana usluga",
     price: "Cijena",
-    kinds: { build: "Jednokratna izrada", maintenance: "Godišnje održavanje", additional: "Dodatna usluga" },
+    kinds: { website: "Nova web-stranica", redesign: "Redizajn i migracija", maintenance: "Godišnje održavanje", additional: "Dodatna usluga" },
     name: "Ime i prezime",
     namePlaceholder: "Vaše ime i prezime",
     email: "E-mail adresa",
@@ -27,7 +27,7 @@ const copy = {
     close: "Close inquiry",
     offer: "Selected service",
     price: "Price",
-    kinds: { build: "One-time development", maintenance: "Annual maintenance", additional: "Additional service" },
+    kinds: { website: "New website", redesign: "Redesign and migration", maintenance: "Annual maintenance", additional: "Additional service" },
     name: "Full name",
     namePlaceholder: "Your full name",
     email: "Email address",
@@ -42,7 +42,7 @@ const copy = {
   },
 };
 
-export default function PackageInquiryModal({ open, onClose, lang = "hr", offerKind = "build", offerName, priceLabel }) {
+export default function PackageInquiryModal({ open, onClose, lang = "hr", offerKind = "website", offerName, priceLabel }) {
   const dialogRef = useRef(null);
   const firstFieldRef = useRef(null);
   const returnFocusRef = useRef(null);

@@ -728,6 +728,20 @@ img {
   font-weight: 600;
 }
 
+.offer-price small {
+  flex-basis: 100%;
+  color: #334155;
+  font-size: 0.8rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.offer-price .offer-billing-note {
+  margin-top: -0.4rem;
+  color: #64748b;
+  font-weight: 550;
+}
+
 .package-preview > p:not(.price) {
   color: #475569;
   line-height: 1.65;
@@ -2026,9 +2040,9 @@ img {
 
 .offer-selector {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.45rem;
-  max-width: 700px;
+  max-width: 940px;
   margin: 0 auto clamp(2rem, 5vw, 3.5rem);
   padding: 0.4rem;
   border: 1px solid #cbd5e1;
@@ -2075,6 +2089,47 @@ img {
   border: 1px solid #bae6fd;
   border-radius: 16px;
   background: #f0f9ff;
+}
+
+.offer-selector-panel.redesign-section {
+  padding: 1.25rem;
+  border: 1px solid #ddd6fe;
+  border-radius: 16px;
+  background: #f7f5ff;
+}
+
+.redesign-grid .offer-card {
+  background: #fff;
+}
+
+.redesign-grid .offer-card.is-featured {
+  border-color: #7c3aed;
+}
+
+.redesign-grid .status-badge {
+  background: #6d28d9;
+}
+
+.migration-scope-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  max-width: 980px;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  color: #4c1d95;
+  background: #ede9fe;
+}
+
+.migration-scope-note svg {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+}
+
+.migration-scope-note p {
+  margin: 0;
+  line-height: 1.65;
 }
 
 .pricing-package-grid {
@@ -2228,6 +2283,7 @@ img {
 
 @media (max-width: 600px) {
   .offer-selector {
+    grid-template-columns: 1fr;
     margin-bottom: 2rem;
   }
 
@@ -2238,7 +2294,8 @@ img {
     text-align: left;
   }
 
-  .offer-selector-panel.maintenance-section {
+  .offer-selector-panel.maintenance-section,
+  .offer-selector-panel.redesign-section {
     padding: 0.75rem;
   }
 

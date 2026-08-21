@@ -1,7 +1,27 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { webOfferContent } from "../src/webOfferContent.js";
 
 const servicePath = "/usluge/izrada-web-stranica";
+const heroVideoPattern = /\/brand\/hero-(desktop|mobile)\.(webm|mp4)$/;
+
+async function installControlledHeroIdle(page) {
+  await page.addInitScript(() => {
+    const callbacks = new Map();
+    let nextId = 0;
+    window.requestIdleCallback = (callback) => {
+      nextId += 1;
+      callbacks.set(nextId, callback);
+      return nextId;
+    };
+    window.cancelIdleCallback = (id) => callbacks.delete(id);
+    window.__runHeroIdleCallbacks = () => {
+      const pending = [...callbacks.values()];
+      callbacks.clear();
+      pending.forEach((callback) => callback({ didTimeout: false, timeRemaining: () => 50 }));
+    };
+  });
+}
 
 async function expectNoHorizontalOverflow(page) {
   const dimensions = await page.evaluate(() => ({
@@ -24,7 +44,7 @@ async function expectHeadingOrder(page) {
 async function expectTouchTargets(page) {
   const undersized = await page
     .locator(
-      ".button, .nav-cta, .nav-link, .mobile-nav-link, .menu-button, .language-toggle button, .project-tile, .footer-contact, .faq-list summary",
+      ".button, .nav-cta, .nav-link, .mobile-nav-link, .menu-button, .language-toggle button, .project-tile, .footer-contact, .faq-list summary, .offer-selector button, .offer-card-disclosure summary",
     )
     .evaluateAll((elements) =>
       elements.flatMap((element) => {
@@ -286,6 +306,11 @@ test("cinematic intro opens on demand and can be skipped", async ({ page }) => {
 });
 
 test("reduced motion keeps the home visible and opens a static final frame", async ({ page }) => {
+  const videoRequests = [];
+  page.on("request", (request) => {
+    const pathname = new URL(request.url()).pathname;
+    if (heroVideoPattern.test(pathname)) videoRequests.push(pathname);
+  });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   const hero = page.locator("#top");
@@ -293,8 +318,11 @@ test("reduced motion keeps the home visible and opens a static final frame", asy
     "srcset",
     "/nepar-background-mobile-900x1600.webp",
   );
+  await expect(hero.locator(".hero-background-poster")).toBeVisible();
   await expect(hero.locator('picture img[src="/nepar-background-desktop-2400x900.webp"]')).toBeVisible();
   await expect(hero.locator("video")).toHaveCount(0);
+  await page.waitForTimeout(600);
+  expect(videoRequests).toEqual([]);
   await expect(page.getByTestId("evolution-intro")).toHaveCount(0);
   await expect(page.getByRole("heading", { level: 1, name: /Gradimo korisne digitalne proizvode/ })).toBeVisible();
   await openEvolutionIntro(page);
@@ -349,19 +377,151 @@ test("restored landing keeps its original structure and adds Auto Gubić below",
   await expectTouchTargets(page);
 });
 
-test("hero motion runs only on desktop while every viewport keeps a poster", async ({ page }) => {
+test("hero video is poster-first and loads only the active breakpoint source", async ({ page }) => {
+  await installControlledHeroIdle(page);
+  const videoRequests = [];
+  page.on("request", (request) => {
+    const pathname = new URL(request.url()).pathname;
+    if (heroVideoPattern.test(pathname)) videoRequests.push(pathname);
+  });
   await page.goto("/");
   const hero = page.locator("#top");
+  const isMobileViewport = (page.viewportSize()?.width ?? 0) < 768;
+  const sourceKey = isMobileViewport ? "mobile" : "desktop";
+  const webmPath = `/brand/hero-${sourceKey}.webm`;
+  const mp4Path = `/brand/hero-${sourceKey}.mp4`;
+
+  await expect(hero.locator(".hero-background-poster")).toBeVisible();
   await expect(hero.locator('picture img[src="/nepar-background-desktop-2400x900.webp"]')).toBeVisible();
-  const expectsVideo = (page.viewportSize()?.width ?? 0) >= 768;
-  await expect(hero.locator("video")).toHaveCount(expectsVideo ? 1 : 0);
-  if (expectsVideo) {
-    await expect(hero.locator('video source[type="video/webm"]')).toHaveAttribute("src", "/hero.webm");
-    await expect(hero.locator('video source[type="video/mp4"]')).toHaveAttribute("src", "/hero.mp4");
+  await expect(hero.locator("video")).toHaveCount(1);
+  await expect(hero.locator("video source")).toHaveCount(0);
+  expect(videoRequests).toEqual([]);
+
+  await page.evaluate(() => window.__runHeroIdleCallbacks());
+  const sources = hero.locator("video source");
+  await expect(sources).toHaveCount(2);
+  await expect(sources.nth(0)).toHaveAttribute("src", webmPath);
+  await expect(sources.nth(0)).toHaveAttribute("type", "video/webm; codecs=vp9");
+  await expect(sources.nth(1)).toHaveAttribute("src", mp4Path);
+  await expect(sources.nth(1)).toHaveAttribute("type", 'video/mp4; codecs="hvc1"');
+  await expect.poll(() => videoRequests.includes(webmPath)).toBe(true);
+  expect(videoRequests.some((path) => path.includes(sourceKey === "mobile" ? "desktop" : "mobile"))).toBe(false);
+  await expect.poll(() => hero.locator("video").evaluate((video) => new URL(video.currentSrc).pathname)).toBe(webmPath);
+  await expect(hero.locator("video")).toHaveClass(/hero-background-video--visible/);
+  await expect(hero.locator(".hero-background-poster")).toBeVisible();
+
+  for (const eventName of ["error", "abort", "emptied"]) {
+    await hero.locator("video").dispatchEvent(eventName);
+    await expect(hero.locator("video")).not.toHaveClass(/hero-background-video--visible/);
+    await expect(hero.locator(".hero-background-poster")).toBeVisible();
+    await hero.locator("video").dispatchEvent("playing");
+    await expect(hero.locator("video")).toHaveClass(/hero-background-video--visible/);
   }
 });
 
-test("pricing shows one-time development and optional annual maintenance", async ({ page }) => {
+test("hero keeps the poster when autoplay is rejected", async ({ page }) => {
+  await page.addInitScript(() => {
+    HTMLMediaElement.prototype.play = () => Promise.reject(new DOMException("Autoplay blocked", "NotAllowedError"));
+  });
+  await page.goto("/");
+  const hero = page.locator("#top");
+  await expect(hero.locator("video")).toHaveCount(1);
+  await page.waitForTimeout(600);
+  await expect(hero.locator("video")).not.toHaveClass(/hero-background-video--visible/);
+  await expect(hero.locator(".hero-background-poster")).toBeVisible();
+});
+
+test("hero reloads only the new source after a breakpoint change", async ({ page }) => {
+  await installControlledHeroIdle(page);
+  await page.addInitScript(() => {
+    const nativeLoad = HTMLMediaElement.prototype.load;
+    window.__heroLoadCalls = 0;
+    HTMLMediaElement.prototype.load = function load() {
+      if (this.classList.contains("hero-background-video")) window.__heroLoadCalls += 1;
+      return nativeLoad.call(this);
+    };
+  });
+  const videoRequests = [];
+  page.on("request", (request) => {
+    const pathname = new URL(request.url()).pathname;
+    if (heroVideoPattern.test(pathname)) videoRequests.push(pathname);
+  });
+
+  await page.goto("/");
+  const hero = page.locator("#top");
+  const initialMobile = (page.viewportSize()?.width ?? 0) < 768;
+  const initialKey = initialMobile ? "mobile" : "desktop";
+  const nextKey = initialMobile ? "desktop" : "mobile";
+  await page.evaluate(() => window.__runHeroIdleCallbacks());
+  await expect.poll(() => hero.locator("video").getAttribute("data-source-key")).toBe(initialKey);
+  await expect.poll(() => hero.locator("video").evaluate((video) => new URL(video.currentSrc).pathname))
+    .toBe(`/brand/hero-${initialKey}.webm`);
+
+  const requestsBeforeSwitch = videoRequests.length;
+  const loadCallsBeforeSwitch = await page.evaluate(() => window.__heroLoadCalls);
+  await page.setViewportSize(initialMobile ? { width: 1440, height: 900 } : { width: 390, height: 844 });
+  await expect(hero.locator("video")).toHaveAttribute("data-source-key", nextKey);
+  await expect(hero.locator("video")).not.toHaveClass(/hero-background-video--visible/);
+  await expect(hero.locator("video source")).toHaveCount(0);
+  await page.evaluate(() => window.__runHeroIdleCallbacks());
+  await expect(hero.locator("video source").nth(0)).toHaveAttribute("src", `/brand/hero-${nextKey}.webm`);
+  await expect.poll(() => hero.locator("video").evaluate((video) => new URL(video.currentSrc).pathname))
+    .toBe(`/brand/hero-${nextKey}.webm`);
+  await expect.poll(() => page.evaluate(() => window.__heroLoadCalls)).toBeGreaterThan(loadCallsBeforeSwitch);
+  expect(videoRequests.slice(requestsBeforeSwitch).some((path) => path.includes(initialKey))).toBe(false);
+
+  await page.locator("#projekti").scrollIntoViewIfNeeded();
+  await expect.poll(() => hero.locator("video").evaluate((video) => video.paused)).toBe(true);
+  await hero.scrollIntoViewIfNeeded();
+  await expect.poll(() => hero.locator("video").evaluate((video) => video.paused)).toBe(false);
+
+  await page.evaluate(() => {
+    let mockedVisibilityState = "visible";
+    Object.defineProperty(document, "visibilityState", {
+      configurable: true,
+      get: () => mockedVisibilityState,
+    });
+    window.__setHeroVisibility = (state) => {
+      mockedVisibilityState = state;
+      document.dispatchEvent(new Event("visibilitychange"));
+    };
+  });
+  await page.evaluate(() => window.__setHeroVisibility("hidden"));
+  await expect.poll(() => hero.locator("video").evaluate((video) => video.paused)).toBe(true);
+  await page.evaluate(() => window.__setHeroVisibility("visible"));
+  await expect.poll(() => hero.locator("video").evaluate((video) => video.paused)).toBe(false);
+});
+
+test("hero media assets are served with explicit MIME types", async ({ request }) => {
+  for (const [asset, contentType] of [
+    ["/brand/hero-desktop.webm", "video/webm"],
+    ["/brand/hero-mobile.webm", "video/webm"],
+    ["/brand/hero-desktop.mp4", "video/mp4"],
+    ["/brand/hero-mobile.mp4", "video/mp4"],
+    ["/nepar-background-desktop-2400x900.webp", "image/webp"],
+    ["/nepar-background-mobile-900x1600.webp", "image/webp"],
+  ]) {
+    const response = await request.get(asset);
+    expect(response.ok(), asset).toBe(true);
+    expect(response.headers()["content-type"], asset).toContain(contentType);
+  }
+});
+
+test("offer data keeps one recommendation per kind and redesign priced above new development", () => {
+  for (const locale of Object.values(webOfferContent)) {
+    const groups = [locale.buildPackages, locale.redesignPackages, locale.maintenancePackages];
+    for (const packages of groups) {
+      expect(packages.filter((item) => item.recommended)).toHaveLength(1);
+    }
+
+    locale.redesignPackages.forEach((item, index) => {
+      expect(item.price).toBeGreaterThan(locale.buildPackages[index].price);
+      expect(item.priceFrom).toBe(true);
+    });
+  }
+});
+
+test("pricing shows new development, redesign migration, and optional annual maintenance", async ({ page }) => {
   await page.goto(servicePath);
   await expect(page.getByRole("heading", { level: 1, name: "Web-stranica koja pripada vašem poslovanju." })).toBeVisible();
   await expect(page.getByText("Održavanje nije obavezno", { exact: false }).first()).toBeVisible();
@@ -372,30 +532,92 @@ test("pricing shows one-time development and optional annual maintenance", async
     await expect(card).toContainText("jednokratno");
   }
 
+  await page.locator("#redesign-offer-tab").click();
+  await expect(page.getByText("Migracija sadržaja postojećeg weba uključena je prema opsegu paketa.")).toBeVisible();
+  for (const [name, price] of [["Redizajn Basic", "od 800 €"], ["Redizajn Business", "od 1.100 €"], ["Redizajn Pro", "od 1.500 €"]]) {
+    const card = page.locator("article.offer-card").filter({ hasText: name }).first();
+    await expect(card).toContainText(price);
+    await expect(card).toContainText("jednokratno");
+  }
+  await expect(page.locator("article.offer-card").filter({ hasText: "Redizajn Business" })).toContainText("Preporučeno");
+  await expect(page.getByText("Redizajn postojeće web-stranice", { exact: true })).toHaveCount(0);
+
+  await page.locator("#maintenance-offer-tab").click();
   for (const [name, price] of [["Održavanje Basic", "200 €"], ["Održavanje Business", "400 €"], ["Održavanje Pro", "600 €"]]) {
     const card = page.locator("article.offer-card").filter({ hasText: name }).first();
     await expect(card).toContainText(price);
     await expect(card).toContainText("godišnje");
   }
 
+  const proCard = page.locator("article.offer-card").filter({ hasText: "Održavanje Pro" });
+  await expect(proCard).toContainText("Proaktivni partner");
+  await expect(proCard).toContainText("4 proaktivna tehnička ili UX poboljšanja godišnje");
+  await expect(proCard).toContainText("Kvartalni pregled weba i performansi");
+  await expect(proCard).toContainText("Prvi odgovor unutar 1 radnog dana");
+  await expect(proCard).toContainText("50 € mjesečni ekvivalent");
+  await expect(proCard).toContainText("Naplata jednom godišnje");
+  await expect(proCard.getByText(/do 30 minuta implementacije/)).toBeHidden();
+  await proCard.getByText("Sve uključeno").click();
+  await expect(proCard.getByText(/do 30 minuta implementacije/)).toBeVisible();
+
+  for (const id of ["maintenance-basic", "maintenance-business"]) {
+    await expect(page.locator(`[data-package-id="${id}"]`)).not.toContainText("mjesečni ekvivalent");
+  }
+
   const bodyText = await page.locator("body").innerText();
-  expect(bodyText).not.toMatch(/\d+\s*€\s*\/\s*mj|pilot ponuda|mjesečna pretplata/i);
+  expect(bodyText).not.toMatch(/\d+\s*€\s*\/\s*mj|mjesečno plaćanje|pilot ponuda|mjesečna pretplata/i);
   await expectNoHorizontalOverflow(page);
   await expectHeadingOrder(page);
   await expectTouchTargets(page);
 });
 
-test("pricing selector switches between development and maintenance without duplicating visible cards", async ({ page }) => {
+test("pricing selector switches between all three offer kinds without duplicating visible cards", async ({ page }) => {
   await page.goto(servicePath);
-  const buildTab = page.locator("#build-offer-tab");
+  const websiteTab = page.locator("#website-offer-tab");
+  const redesignTab = page.locator("#redesign-offer-tab");
   const maintenanceTab = page.locator("#maintenance-offer-tab");
 
-  await expect(buildTab).toHaveAttribute("aria-selected", "true");
+  await expect(websiteTab).toHaveAttribute("aria-selected", "true");
   await expect(page.locator(".offer-card:visible")).toHaveCount(3);
+  await redesignTab.click();
+  await expect(redesignTab).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".offer-card:visible")).toHaveCount(3);
+  await expect(page.getByRole("heading", { name: "Redizajn i migracija postojeće web-stranice" })).toBeVisible();
   await maintenanceTab.click();
   await expect(maintenanceTab).toHaveAttribute("aria-selected", "true");
   await expect(page.locator(".offer-card:visible")).toHaveCount(3);
   await expect(page.getByRole("heading", { name: "Godišnje održavanje web-stranice" })).toBeVisible();
+
+  await maintenanceTab.press("ArrowLeft");
+  await expect(redesignTab).toBeFocused();
+  await expect(redesignTab).toHaveAttribute("aria-selected", "true");
+});
+
+test("offer hashes resolve correctly and selector updates the URL without a scroll jump", async ({ page }) => {
+  for (const [hash, selectedId] of [
+    ["#redizajn", "#redesign-offer-tab"],
+    ["#odrzavanje", "#maintenance-offer-tab"],
+    ["", "#website-offer-tab"],
+    ["#nepoznato", "#website-offer-tab"],
+  ]) {
+    await page.goto(`${servicePath}${hash}`);
+    await expect(page.locator(selectedId)).toHaveAttribute("aria-selected", "true");
+  }
+
+  await page.goto(servicePath);
+  await expect(page.locator(".offer-selector")).toBeVisible();
+  await page.waitForTimeout(1000);
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = "auto";
+    const selectorTop = document.querySelector(".offer-selector").getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, Math.max(0, selectorTop - 120));
+  });
+  const before = await page.evaluate(() => window.scrollY);
+  await page.evaluate(() => document.querySelector("#redesign-offer-tab").click());
+  await expect(page).toHaveURL(/#redizajn$/);
+  expect(Math.abs((await page.evaluate(() => window.scrollY)) - before)).toBeLessThanOrEqual(1);
+  await page.locator("#website-offer-tab").click();
+  await expect(page).toHaveURL(new RegExp(`${servicePath}$`));
 });
 
 test("mobile contact keeps the form before supporting proof", async ({ page }) => {
@@ -413,11 +635,16 @@ test("English content stays aligned with the new model", async ({ page }) => {
   await page.getByRole("button", { name: "ENG" }).click();
   await expect(page.getByRole("heading", { name: "Website development packages" })).toBeVisible();
   await expect(page.getByText("The website belongs to the client after payment.", { exact: false }).first()).toBeVisible();
+  await page.locator("#redesign-offer-tab").click();
+  await expect(page.getByRole("heading", { name: "Existing website redesign and migration" })).toBeVisible();
+  await expect(page.locator("article.offer-card").filter({ hasText: "Redesign Business" })).toContainText("from €1,100");
   await page.locator("#maintenance-offer-tab").click();
   await expect(page.getByRole("heading", { name: "Annual website maintenance" })).toBeVisible();
+  await expect(page.locator("article.offer-card").filter({ hasText: "Maintenance Pro" })).toContainText("€50 monthly equivalent");
+  await expect(page.locator("article.offer-card").filter({ hasText: "Maintenance Pro" })).toContainText("Billed once per year");
 
   const bodyText = await page.locator("body").innerText();
-  expect(bodyText).not.toMatch(/€\d+\s*\/\s*mo|pilot offer|monthly subscription/i);
+  expect(bodyText).not.toMatch(/€\d+\s*\/\s*mo|monthly payment|pilot offer|monthly subscription/i);
 });
 
 test("package inquiry dialog carries the selected commercial model", async ({ page }) => {
@@ -428,13 +655,32 @@ test("package inquiry dialog carries the selected commercial model", async ({ pa
   const dialog = page.getByRole("dialog", { name: "Pošaljite upit" });
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText("Web Business");
-  await expect(dialog).toContainText("Jednokratna izrada");
+  await expect(dialog).toContainText("Nova web-stranica");
   await expect(dialog).toContainText("500 € · jednokratno");
   await expect(page.locator("#inquiry-name")).toBeFocused();
 
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
   await expect(businessCard.getByRole("button", { name: "Pošalji upit za paket" })).toBeFocused();
+
+  await page.locator("#redesign-offer-tab").click();
+  const redesignCard = page.locator("article.offer-card").filter({ hasText: "Redizajn Business" });
+  await redesignCard.getByRole("button", { name: "Pošalji upit za redizajn" }).click();
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText("Redizajn i migracija");
+  await expect(dialog).toContainText("od 1.100 € · jednokratno");
+});
+
+test("390px layout stacks all three selector controls and stays within the viewport", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(servicePath);
+  const tabs = page.locator(".offer-selector [role=tab]");
+  await expect(tabs).toHaveCount(3);
+  const boxes = await tabs.evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().toJSON()));
+  expect(boxes[0].bottom).toBeLessThanOrEqual(boxes[1].top);
+  expect(boxes[1].bottom).toBeLessThanOrEqual(boxes[2].top);
+  await expectNoHorizontalOverflow(page);
+  await expectTouchTargets(page);
 });
 
 test("legacy route redirects and keeps its anchor", async ({ page }) => {
@@ -448,7 +694,7 @@ test("landing, pricing, and contact have no serious accessibility violations", a
   for (const path of ["/", servicePath, "/kontakt"]) {
     await page.goto(path);
     await expect(page.locator("h1")).toBeVisible();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(1000);
     const results = await new AxeBuilder({ page }).analyze();
     const serious = results.violations.filter(({ impact }) => impact === "serious" || impact === "critical");
     expect(serious, `${path}: ${serious.map((item) => item.id).join(", ")}`).toEqual([]);

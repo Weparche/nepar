@@ -252,7 +252,7 @@ function PackagePreview({ lang, text, packages }) {
         <SectionHeading title={text.title} intro={text.intro} />
         <div className="package-preview-grid">
           {packages.map((item) => (
-            <article key={item.id} className={`package-preview ${item.featured ? "is-featured" : ""}`}>
+            <article key={item.id} className={`package-preview ${item.recommended ? "is-featured" : ""}`}>
               {item.badge && <span className="status-badge">{item.badge}</span>}
               <h3>{item.name}</h3>
               <p className="price"><strong>{formatOfferPrice(item.price, lang)}</strong><span>{text.from}</span></p>

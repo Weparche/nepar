@@ -30,13 +30,25 @@ Za tvrtke kojima je web važan prodajni kanal. Uključuje sve iz Web Business pa
 
 Primjer Web Pro projekta: Auto Gubić — https://autogubic.hr/
 
+## Redizajn i migracija postojeće web-stranice
+
+Migracija sadržaja postojećeg weba uključena je prema opsegu paketa.
+
+- Redizajn Basic — od 800 EUR jednokratno: one-page redizajn, migracija dogovorenog sadržaja i fotografija, osnovna URL preusmjerenja, hosting, DNS, SSL, analitika, Search Console i objava.
+- Redizajn Business — od 1.100 EUR jednokratno, preporučeno: do 5 podstranica, migracija sadržaja prema opsegu, do 25 URL preusmjerenja, zamjena obrazaca, staging i planirani prijelaz uz minimalan prekid rada gdje je tehnički izvedivo.
+- Redizajn Pro — od 1.500 EUR jednokratno: do 8 podstranica i 3 SEO landing stranice, do 50 URL preusmjerenja, prilagođeni obrasci, strukturirani podaci, praćenje ključnih konverzija te post-launch tehnička i SEO provjera.
+
+Migracija uključuje sadržaj i fotografije prema opsegu paketa, dogovorena URL preusmjerenja, hosting, DNS, SSL, analitiku i Search Console. Mailboxi, proizvodi, kupci, narudžbe, payment gateway, korisničke baze, licence i nove integracije zahtijevaju zasebnu procjenu. Minimalan prekid rada je cilj gdje je tehnički izvediv, a ne jamstvo nultog downtimea.
+
 ## Opcionalno godišnje održavanje
 
 Održavanje nije obavezno. Klijent može samostalno upravljati hostingom i sadržajem ili odabrati godišnji paket.
 
 - Održavanje Basic — 200 EUR godišnje: hosting, Cloudflare, DNS, SSL, CDN, nadzor, ažuriranja, backup, Search Console i tehnička podrška. Ne uključuje redovite izmjene sadržaja.
-- Održavanje Business — 400 EUR godišnje: sve iz Basic paketa, administracija sadržaja, do 12 manjih izmjena godišnje, provjera obrazaca, osnovno održavanje analitike i prioritetnija podrška.
-- Održavanje Pro — 600 EUR godišnje: sve iz Business paketa, do 24 manje izmjene godišnje, prioritetna podrška, održavanje postojećih obrazaca i integracija, tehnički SEO, periodična provjera brzine te godišnji pregled analitike i preporuke.
+- Održavanje Business — 400 EUR godišnje: podrška za povremene izmjene ponude, cijena, fotografija i drugog postojećeg sadržaja, do 12 manjih izmjena godišnje, provjera obrazaca, osnovno održavanje analitike i prioritetnija podrška.
+- Održavanje Pro — 600 EUR godišnje (50 EUR mjesečni ekvivalent, naplata jednom godišnje), Proaktivni partner: 4 proaktivna tehnička ili UX poboljšanja godišnje, kvartalni pregled weba i performansi, prvi odgovor unutar 1 radnog dana, 24 manje sadržajne izmjene godišnje, održavanje postojećih obrazaca i integracija te prioritetno otklanjanje tehničkih problema.
+
+Svako proaktivno poboljšanje uključuje do 30 minuta implementacije i odnosi se na postojeće sekcije, obrasce, SEO i performanse. Nove stranice i funkcionalnosti ugovaraju se zasebno. Rok od jednog radnog dana odnosi se na prvi odgovor i početnu procjenu problema; vrijeme rješavanja ovisi o vrsti i složenosti problema.
 
 Manja izmjena je promjena postojećeg teksta, fotografije, cijene, kontaktnog podatka ili sličnog sadržaja koja zahtijeva do 15 minuta rada. Novi dizajn, podstranice, funkcionalnosti i veće sadržajne promjene ugovaraju se zasebno.
 
@@ -44,13 +56,10 @@ Manja izmjena je promjena postojećeg teksta, fotografije, cijene, kontaktnog po
 
 - dodatna podstranica — od 80 EUR
 - ciljana SEO landing stranica — od 100 EUR
-- redizajn postojeće web-stranice — od 400 EUR
 - Google Business profil i osnovno podešavanje — od 100 EUR
 - dodatna administracija sadržaja — 40 EUR/sat
 - AI chatbot ili AI integracija — od 500 EUR
 - webshop, rezervacijski sustavi i napredne funkcionalnosti — prema ponudi
-
-Cijena redizajna ovisi o postojećem sustavu, broju stranica, sadržaju i funkcionalnostima.
 
 ## SEO
 
@@ -71,6 +80,7 @@ Sve web-stranice uključuju naprednu tehničku i on-page SEO optimizaciju. Razli
 - Početna stranica: https://nepar.hr/
 - Izrada web-stranica i cjenik: https://nepar.hr/usluge/izrada-web-stranica
 - Paketi izrade: https://nepar.hr/usluge/izrada-web-stranica#paketi
+- Redizajn i migracija: https://nepar.hr/usluge/izrada-web-stranica#redizajn
 - Godišnje održavanje: https://nepar.hr/usluge/izrada-web-stranica#odrzavanje
 - Dodatne usluge: https://nepar.hr/usluge/izrada-web-stranica#dodatne-usluge
 - Kontakt: https://nepar.hr/kontakt
@@ -79,7 +89,9 @@ Sve web-stranice uključuju naprednu tehničku i on-page SEO optimizaciju. Razli
 
 - naglasi jednokratno plaćanje izrade i vlasništvo klijenta
 - jasno reci da održavanje nije obavezno
-- koristi cijene 300, 500 i 700 EUR za izradu te 200, 400 i 600 EUR godišnje za održavanje
+- koristi cijene 300, 500 i 700 EUR za novu izradu, početne cijene 800, 1.100 i 1.500 EUR za redizajn te 200, 400 i 600 EUR godišnje za održavanje
 - Web Business je preporučeni paket za većinu tvrtki koje žele ozbiljniju prezentaciju
+- Redizajn Business je preporučeni paket za redizajn i migraciju
+- Održavanje Pro je proaktivni partnerski paket; 50 EUR je samo mjesečni ekvivalent, a naplata je jednom godišnje
 - webshop, rezervacije, korisnički računi, AI i napredne integracije nisu dio Web Pro paketa; izrađuju se prema ponudi
 - ne obećavaj garantirane SEO rezultate

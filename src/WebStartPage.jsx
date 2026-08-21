@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight, Check, Info, KeyRound, SearchCheck, Send, ShieldCheck } from "lucide-react";
 import PackageInquiryModal from "./PackageInquiryModal.jsx";
 import { Background, MotionButton, Navbar, SiteFooter, siteContent } from "./SiteChrome.jsx";
-import { formatOfferPrice, webOfferContent } from "./webOfferContent.js";
+import { formatMonthlyEquivalent, formatOfferPrice, webOfferContent } from "./webOfferContent.js";
 import { usePageMeta } from "./usePageMeta.js";
 
 const pageCopy = {
   hr: {
     meta: {
-      title: "Izrada web-stranica — paketi i cijene | Nepar",
-      description: "Paketi izrade web-stranica od 300 € jednokratno i opcionalno godišnje održavanje. Napredna tehnička i on-page SEO optimizacija uključena je u svaki paket.",
+      title: "Izrada i redizajn web-stranica — paketi i cijene | Nepar",
+      description: "Izrada web-stranica od 300 €, redizajn s migracijom od 800 € i opcionalno godišnje održavanje. Jasno definiran opseg, vlasništvo i cijene.",
     },
     hero: {
       label: "Jasne cijene · bez skrivenog najma",
@@ -23,8 +23,9 @@ const pageCopy = {
     },
     selector: {
       label: "Vrsta ponude",
-      build: "Jednokratna izrada",
-      maintenance: "Godišnje održavanje",
+      website: "Nova web-stranica",
+      redesign: "Redizajn i migracija",
+      maintenance: "Održavanje",
       expand: "Sve uključeno",
     },
     build: {
@@ -33,6 +34,13 @@ const pageCopy = {
       cta: "Pošalji upit za paket",
       included: "Uključeno u paket",
       seoNote: "Sve web-stranice uključuju naprednu tehničku i on-page SEO optimizaciju. Razlika između paketa je u količini sadržaja, broju podstranica, funkcionalnostima i opsegu rada.",
+    },
+    redesign: {
+      title: "Redizajn i migracija postojeće web-stranice",
+      intro: "Migracija sadržaja postojećeg weba uključena je prema opsegu paketa.",
+      cta: "Pošalji upit za redizajn",
+      included: "Kompletan opseg paketa",
+      migrationScope: "Uključeni su sadržaj i fotografije prema opsegu paketa, URL preusmjerenja, hosting, DNS, SSL, analitika i Search Console. Mailboxi, proizvodi, kupci, narudžbe, payment gateway, korisničke baze, licence i nove integracije zahtijevaju zasebnu procjenu.",
     },
     maintenance: {
       title: "Godišnje održavanje web-stranice",
@@ -44,7 +52,6 @@ const pageCopy = {
     additional: {
       title: "Dodatne usluge",
       intro: "Za sadržaj i funkcionalnosti izvan dogovorenog paketa dobit ćete jasnu zasebnu procjenu.",
-      redesign: "Cijena redizajna ovisi o postojećem sustavu, broju stranica, sadržaju i funkcionalnostima; zato je početna cijena navedena kao „od 400 €”.",
     },
     faq: {
       title: "Česta pitanja",
@@ -54,6 +61,8 @@ const pageCopy = {
         ["Jamčite li prvo mjesto na Googleu?", "Ne. Svaki paket uključuje naprednu tehničku i on-page SEO optimizaciju, ali pozicija ovisi o konkurenciji, sadržaju, autoritetu domene i drugim čimbenicima."],
         ["Što trebam dostaviti?", "Za Web Basic dostavljate tekstove, fotografije i logotip. U većim paketima pomažemo strukturirati, urediti i skratiti dostavljeni sadržaj u opsegu paketa."],
         ["Jesu li webshop i rezervacije dio Web Pro paketa?", "Ne. Webshop, rezervacije, korisnički računi, AI funkcionalnosti i napredne integracije ugovaraju se zasebno."],
+        ["Što uključuje migracija postojećeg weba?", "Migracija obuhvaća sadržaj i fotografije prema opsegu paketa, dogovorena URL preusmjerenja te prijelaz hostinga, DNS-a, SSL-a, analitike i Search Consolea. Mailboxi, webshop podaci, korisničke baze, licence i nove integracije procjenjuju se zasebno."],
+        ["Što znači prvi odgovor unutar jednog radnog dana?", "Rok se odnosi na prvi odgovor i početnu procjenu problema. Vrijeme rješavanja ovisi o vrsti i složenosti problema."],
       ],
     },
     final: {
@@ -65,8 +74,8 @@ const pageCopy = {
   },
   en: {
     meta: {
-      title: "Website development packages and pricing | Nepar",
-      description: "One-time website development packages from €300 and optional annual maintenance. Advanced technical and on-page SEO is included in every package.",
+      title: "Website development and redesign packages | Nepar",
+      description: "Website development from €300, redesign with migration from €800, and optional annual maintenance. Clear scope, ownership, and pricing.",
     },
     hero: {
       label: "Clear pricing · no hidden rental model",
@@ -80,8 +89,9 @@ const pageCopy = {
     },
     selector: {
       label: "Offer type",
-      build: "One-time development",
-      maintenance: "Annual maintenance",
+      website: "New website",
+      redesign: "Redesign and migration",
+      maintenance: "Maintenance",
       expand: "Everything included",
     },
     build: {
@@ -90,6 +100,13 @@ const pageCopy = {
       cta: "Ask about this package",
       included: "Included in the package",
       seoNote: "Every website includes advanced technical and on-page SEO optimization. Packages differ in content volume, page count, functionality, and overall scope.",
+    },
+    redesign: {
+      title: "Existing website redesign and migration",
+      intro: "Migration of existing website content is included within the package scope.",
+      cta: "Ask about redesign",
+      included: "Complete package scope",
+      migrationScope: "Included work covers copy and photographs within the package scope, URL redirects, hosting, DNS, SSL, analytics, and Search Console. Mailboxes, products, customers, orders, payment gateways, user databases, licenses, and new integrations require a separate estimate.",
     },
     maintenance: {
       title: "Annual website maintenance",
@@ -101,7 +118,6 @@ const pageCopy = {
     additional: {
       title: "Additional services",
       intro: "Content and functionality outside the agreed package receive a clear separate estimate.",
-      redesign: "Redesign pricing depends on the existing system, page count, content, and functionality, so the starting price is shown as “from €400”.",
     },
     faq: {
       title: "Frequently asked questions",
@@ -111,6 +127,8 @@ const pageCopy = {
         ["Do you guarantee the first position on Google?", "No. Every package includes advanced technical and on-page SEO, but ranking also depends on competition, content, domain authority, and other factors."],
         ["What do I need to provide?", "For Web Basic, you provide copy, photographs, and a logo. Larger packages include help structuring, editing, and shortening supplied content within the agreed scope."],
         ["Are e-commerce and booking included in Web Pro?", "No. E-commerce, booking, user accounts, AI functionality, and advanced integrations are quoted separately."],
+        ["What does an existing website migration include?", "Migration covers copy and photographs within the package scope, agreed URL redirects, and the transition of hosting, DNS, SSL, analytics, and Search Console. Mailboxes, e-commerce data, user databases, licenses, and new integrations are estimated separately."],
+        ["What does a first response within one business day mean?", "The response time covers the first reply and initial assessment. Resolution time depends on the type and complexity of the issue."],
       ],
     },
     final: {
@@ -127,22 +145,27 @@ function SectionHeading({ title, intro }) {
 }
 
 function OfferCard({ item, lang, copy, offerKind, onSelect }) {
-  const highlights = item.included.slice(0, 3);
-  const remaining = item.included.slice(3);
+  const highlights = item.highlights ?? item.included.slice(0, 3);
+  const remaining = item.highlights ? item.included : item.included.slice(3);
 
   return (
-    <article className={`offer-card ${item.featured ? "is-featured" : ""}`}>
+    <article className={`offer-card ${item.recommended ? "is-featured" : ""}`} data-offer-kind={offerKind} data-package-id={item.id}>
       <div className="offer-card-summary">
         {item.badge && <span className="status-badge">{item.badge}</span>}
         <div className="offer-card-header">
           <h3>{item.name}</h3>
-          <p className="offer-price"><strong>{formatOfferPrice(item.price, lang)}</strong><span>{item.payment}</span></p>
+          <p className="offer-price">
+            <strong>{formatOfferPrice(item.price, lang, item.priceFrom)}</strong>
+            <span>{item.payment}</span>
+            {item.monthlyEquivalent && <small>{formatMonthlyEquivalent(item.monthlyEquivalent, lang)}</small>}
+            {item.billingNote && <small className="offer-billing-note">{item.billingNote}</small>}
+          </p>
         </div>
         {item.description && <p className="offer-description">{item.description}</p>}
         <ul className="offer-card-highlights">
           {highlights.map((benefit) => <li key={benefit}><Check aria-hidden="true" size={16} />{benefit}</li>)}
         </ul>
-        <button type="button" className={item.featured ? "button button-primary" : "button button-secondary"} onClick={() => onSelect(item, offerKind)}>
+        <button type="button" className={item.recommended ? "button button-primary" : "button button-secondary"} onClick={() => onSelect(item, offerKind)}>
           {copy.cta}<Send aria-hidden="true" size={17} />
         </button>
       </div>
@@ -168,12 +191,28 @@ function OfferCard({ item, lang, copy, offerKind, onSelect }) {
   );
 }
 
+/** @param {string} hash @returns {"website" | "redesign" | "maintenance"} */
+export function resolveOfferKindFromHash(hash) {
+  if (hash === "#redizajn") return "redesign";
+  if (hash === "#odrzavanje") return "maintenance";
+  return "website";
+}
+
+const offerKinds = ["website", "redesign", "maintenance"];
+
+function offerHash(kind) {
+  if (kind === "redesign") return "#redizajn";
+  if (kind === "maintenance") return "#odrzavanje";
+  return "";
+}
+
 export default function WebStartPage() {
   const [lang, setLang] = useState("hr");
   const [modalOpen, setModalOpen] = useState(false);
   const [selection, setSelection] = useState(null);
+  const pendingScrollPosition = useRef(null);
   const [activeOffer, setActiveOffer] = useState(() => (
-    typeof window !== "undefined" && window.location.hash === "#odrzavanje" ? "maintenance" : "build"
+    typeof window === "undefined" ? "website" : resolveOfferKindFromHash(window.location.hash)
   ));
   const text = pageCopy[lang];
   const offer = webOfferContent[lang];
@@ -186,11 +225,45 @@ export default function WebStartPage() {
     canonicalPath: "/usluge/izrada-web-stranica",
   });
 
-  function openInquiry(item = offer.buildPackages[0], offerKind = "build") {
+  useEffect(() => {
+    const syncOfferWithHash = () => setActiveOffer(resolveOfferKindFromHash(window.location.hash));
+    window.addEventListener("hashchange", syncOfferWithHash);
+    return () => window.removeEventListener("hashchange", syncOfferWithHash);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!pendingScrollPosition.current) return;
+    const { x, y } = pendingScrollPosition.current;
+    pendingScrollPosition.current = null;
+    window.scrollTo({ left: x, top: y, behavior: "auto" });
+  }, [activeOffer]);
+
+  function selectOfferKind(kind) {
+    pendingScrollPosition.current = { x: window.scrollX, y: window.scrollY };
+    const nextUrl = `${window.location.pathname}${window.location.search}${offerHash(kind)}`;
+    window.history.replaceState(window.history.state, "", nextUrl);
+    setActiveOffer(kind);
+  }
+
+  function handleSelectorKeyDown(event) {
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const currentIndex = offerKinds.indexOf(activeOffer);
+    let nextIndex;
+    if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = offerKinds.length - 1;
+    else if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (currentIndex - 1 + offerKinds.length) % offerKinds.length;
+    else nextIndex = (currentIndex + 1) % offerKinds.length;
+    const nextKind = offerKinds[nextIndex];
+    selectOfferKind(nextKind);
+    window.requestAnimationFrame(() => document.getElementById(`${nextKind}-offer-tab`)?.focus());
+  }
+
+  function openInquiry(item = offer.buildPackages[0], offerKind = "website") {
     setSelection({
       offerKind,
       offerName: item.name,
-      priceLabel: `${formatOfferPrice(item.price, lang)} · ${item.payment}`,
+      priceLabel: `${formatOfferPrice(item.price, lang, item.priceFrom)} · ${item.payment}`,
     });
     setModalOpen(true);
   }
@@ -232,39 +305,69 @@ export default function WebStartPage() {
         <div className="section-shell">
           <div className="offer-selector" role="tablist" aria-label={text.selector.label}>
             <button
-              id="build-offer-tab"
+              id="website-offer-tab"
               type="button"
               role="tab"
-              aria-selected={activeOffer === "build"}
-              aria-controls="build-offer-panel"
-              onClick={() => setActiveOffer("build")}
+              tabIndex={activeOffer === "website" ? 0 : -1}
+              aria-selected={activeOffer === "website"}
+              aria-controls="website-offer-panel"
+              onClick={() => selectOfferKind("website")}
+              onKeyDown={handleSelectorKeyDown}
             >
-              <span>01</span>{text.selector.build}
+              <span>01</span>{text.selector.website}
+            </button>
+            <button
+              id="redesign-offer-tab"
+              type="button"
+              role="tab"
+              tabIndex={activeOffer === "redesign" ? 0 : -1}
+              aria-selected={activeOffer === "redesign"}
+              aria-controls="redizajn"
+              onClick={() => selectOfferKind("redesign")}
+              onKeyDown={handleSelectorKeyDown}
+            >
+              <span>02</span>{text.selector.redesign}
             </button>
             <button
               id="maintenance-offer-tab"
               type="button"
               role="tab"
+              tabIndex={activeOffer === "maintenance" ? 0 : -1}
               aria-selected={activeOffer === "maintenance"}
               aria-controls="odrzavanje"
-              onClick={() => setActiveOffer("maintenance")}
+              onClick={() => selectOfferKind("maintenance")}
+              onKeyDown={handleSelectorKeyDown}
             >
-              <span>02</span>{text.selector.maintenance}
+              <span>03</span>{text.selector.maintenance}
             </button>
           </div>
 
           <div
-            id="build-offer-panel"
+            id="website-offer-panel"
             role="tabpanel"
-            aria-labelledby="build-offer-tab"
-            hidden={activeOffer !== "build"}
+            aria-labelledby="website-offer-tab"
+            hidden={activeOffer !== "website"}
             className="offer-selector-panel"
           >
             <SectionHeading title={text.build.title} intro={text.build.intro} />
             <div className="offer-grid pricing-package-grid">
-              {offer.buildPackages.map((item) => <OfferCard key={item.id} item={item} lang={lang} copy={{ ...text.build, expand: text.selector.expand }} offerKind="build" onSelect={openInquiry} />)}
+              {offer.buildPackages.map((item) => <OfferCard key={item.id} item={item} lang={lang} copy={{ ...text.build, expand: text.selector.expand }} offerKind="website" onSelect={openInquiry} />)}
             </div>
             <div className="seo-note"><SearchCheck aria-hidden="true" size={24} /><p>{text.build.seoNote}</p></div>
+          </div>
+
+          <div
+            id="redizajn"
+            role="tabpanel"
+            aria-labelledby="redesign-offer-tab"
+            hidden={activeOffer !== "redesign"}
+            className="offer-selector-panel redesign-section"
+          >
+            <SectionHeading title={text.redesign.title} intro={text.redesign.intro} />
+            <div className="offer-grid redesign-grid pricing-package-grid">
+              {offer.redesignPackages.map((item) => <OfferCard key={item.id} item={item} lang={lang} copy={{ ...text.redesign, expand: text.selector.expand }} offerKind="redesign" onSelect={openInquiry} />)}
+            </div>
+            <div className="migration-scope-note"><Info aria-hidden="true" size={22} /><p>{text.redesign.migrationScope}</p></div>
           </div>
 
           <div
@@ -289,7 +392,6 @@ export default function WebStartPage() {
           <dl className="additional-list">
             {offer.additionalServices.map(([service, price]) => <div key={service}><dt>{service}</dt><dd>{price}</dd></div>)}
           </dl>
-          <p className="redesign-note">{text.additional.redesign}</p>
         </div>
       </section>
 
@@ -318,9 +420,9 @@ export default function WebStartPage() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         lang={lang}
-        offerKind={selection?.offerKind ?? "build"}
+        offerKind={selection?.offerKind ?? "website"}
         offerName={selection?.offerName ?? offer.buildPackages[0].name}
-        priceLabel={selection?.priceLabel ?? `${formatOfferPrice(offer.buildPackages[0].price, lang)} · ${offer.buildPackages[0].payment}`}
+        priceLabel={selection?.priceLabel ?? `${formatOfferPrice(offer.buildPackages[0].price, lang, offer.buildPackages[0].priceFrom)} · ${offer.buildPackages[0].payment}`}
       />
       <SiteFooter copy={chrome} homeLink={false} />
     </main>

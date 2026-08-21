@@ -166,9 +166,21 @@
   backdrop-filter: none;
 }
 
+.hero-background-poster img,
 .hero-background-video {
+  object-position: center;
+}
+
+.hero-background-video {
+  opacity: 0;
+  visibility: hidden;
   contain: paint;
   transform: translateZ(0);
+}
+
+.hero-background-video--visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 .featured-projects-grid {
