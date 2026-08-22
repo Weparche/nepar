@@ -182,7 +182,8 @@ const CARD_COUNT = carouselContent.hr.cards.length;
 const easeOut = [0.23, 1, 0.32, 1];
 
 function computeCarouselSize(width) {
-  if (width < 480) return { radiusX: 124, radiusY: 24, orbitCenterY: 252, sceneHeight: 318, isMobile: true };
+  if (width < 480) return { radiusX: 124, radiusY: 24, orbitCenterY: 200, sceneHeight: 266, isMobile: true };
+  if (width < 640) return { radiusX: 178, radiusY: 28, orbitCenterY: 218, sceneHeight: 292, isMobile: true };
   if (width < 768) return { radiusX: 178, radiusY: 28, orbitCenterY: 270, sceneHeight: 344, isMobile: true };
   if (width < 1180) return { radiusX: 318, radiusY: 42, orbitCenterY: 356, sceneHeight: 486, isMobile: false };
   return { radiusX: 408, radiusY: 48, orbitCenterY: 356, sceneHeight: 492, isMobile: false };
@@ -200,7 +201,7 @@ function useCarouselSize() {
       resizeFrame = requestAnimationFrame(() => {
         setSize((current) => {
           const next = computeCarouselSize(window.innerWidth);
-          return current.radiusX === next.radiusX ? current : next;
+          return current.sceneHeight === next.sceneHeight ? current : next;
         });
       });
     };
@@ -597,7 +598,7 @@ export default function OrbitalProjectCarousel({ lang = "hr" }) {
       }}
     >
       <div className="absolute inset-x-8 top-20 hidden h-72 rounded-full bg-blue-500/10 opacity-70 blur-3xl sm:block" />
-      <div className="relative" style={{ height: sceneHeight, perspective: isMobile ? 900 : 1450 }}>
+      <div data-carousel-scene className="relative" style={{ height: sceneHeight, perspective: isMobile ? 900 : 1450 }}>
         <div
           className="absolute left-1/2 rounded-[50%] bg-gradient-to-r from-transparent via-blue-400/12 to-transparent blur-lg sm:blur-2xl"
           style={{

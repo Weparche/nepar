@@ -371,6 +371,12 @@ test("restored landing keeps its original structure and adds Auto Gubić below",
       };
     });
     expect(heroOrder.orbitBottom).toBeLessThan(heroOrder.buttonTop);
+
+    const mobileCarouselScene = page.getByTestId("mobile-project-carousel").locator("[data-carousel-scene]");
+    await page.setViewportSize({ width: 600, height: 900 });
+    await expect(mobileCarouselScene).toHaveAttribute("style", /height:\s*292px/);
+    await page.setViewportSize({ width: 700, height: 900 });
+    await expect(mobileCarouselScene).toHaveAttribute("style", /height:\s*344px/);
   }
 
   await expectNoHorizontalOverflow(page);

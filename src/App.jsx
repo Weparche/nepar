@@ -1040,7 +1040,8 @@ function Hero({ copy, lang }) {
             initial={{ opacity: 0, y: 14, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ ...quickRevealTransition, delay: 0.2 }}
-            className="mt-2 lg:hidden"
+            className="sm:mt-2 lg:hidden"
+            data-testid="mobile-project-carousel"
           >
             {/* Mobile project label intentionally hidden; keep the carousel itself visible. */}
             <OrbitalProjectCarousel lang={lang} />
