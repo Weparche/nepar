@@ -1,0 +1,35 @@
+{
+  "slug": "fabela",
+  "businessName": "Fabela",
+  "templateKey": "premium-local-service",
+  "sourceUrl": "",
+  "leadEmail": "",
+  "attachDomain": true,
+  "content": {
+    "eyebrow": "Demo prezentacija",
+    "headline": "Fabela, predstavljena jasno i moderno.",
+    "description": "Primjer nove početne stranice s jasnom ponudom, snažnim mobilnim iskustvom i kontaktom bez traženja.",
+    "accent": "#6d5dfc",
+    "primaryCta": {
+      "label": "Kontaktirajte nas",
+      "href": "#kontakt"
+    },
+    "secondaryCta": {
+      "label": "Pogledajte usluge",
+      "href": "#usluge"
+    },
+    "stats": [
+      { "value": "24/7", "label": "Web radi za vas" },
+      { "value": "1 klik", "label": "Do kontakta" },
+      { "value": "100%", "label": "Mobile-first" },
+      { "value": "SEO", "label": "Spremno za Google" }
+    ],
+    "services": [
+      { "title": "Glavna usluga", "description": "Ovdje ubaciti stvarnu ključnu uslugu nakon provjere izvora." },
+      { "title": "Druga usluga", "description": "Ovdje ubaciti stvarnu drugu uslugu nakon provjere izvora." },
+      { "title": "Brz kontakt", "description": "Poziv, e-mail ili upit dostupan je bez lutanja po stranici." }
+    ],
+    "aboutTitle": "Zašto Fabela?",
+    "aboutText": "Prije slanja potencijalnom klijentu ovaj tekst zamijeniti isključivo provjerenim informacijama iz javnih izvora. Ne izmišljati godine iskustva, ocjene, certifikate ni usluge."
+  }
+}
