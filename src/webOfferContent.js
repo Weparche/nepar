@@ -1,5 +1,5 @@
 /**
- * @typedef {"website" | "redesign" | "maintenance"} OfferKind
+ * @typedef {"website" | "redesign" | "maintenance" | "social"} OfferKind
  */
 
 /**
@@ -16,6 +16,7 @@
  * @property {number} [monthlyEquivalent]
  * @property {string} [billingNote]
  * @property {string} payment
+ * @property {"monthly"} [billingCycle]
  * @property {string} [note]
  * @property {{label: string, cta: string, href: string}} [project]
  */
@@ -528,6 +529,166 @@ const maintenanceEn = [
   },
 ];
 
+/** @type {OfferPackage[]} */
+const socialPackagesHr = [
+  {
+    id: "social-basic",
+    name: "Social Basic",
+    price: 300,
+    payment: "/ mj.",
+    billingCycle: "monthly",
+    description: "Za tvrtke koje žele profesionalno i redovito biti prisutne na Facebooku i Instagramu.",
+    highlights: [
+      "8 profesionalnih objava mjesečno",
+      "Facebook + Instagram",
+      "Copy, vizuali i objava uključeni",
+    ],
+    included: [
+      "Facebook + Instagram",
+      "8 objava mjesečno",
+      "do 8 storyja mjesečno",
+      "izrada copyja",
+      "obrada dostavljenih fotografija i vizuala",
+      "prilagodba sadržaja za obje mreže",
+      "planiranje i objava sadržaja",
+      "osnovna optimizacija profila",
+    ],
+    note: "Klijent dostavlja osnovne fotografije i video materijal. Snimanje na lokaciji nije uključeno.",
+  },
+  {
+    id: "social-business",
+    name: "Social Business",
+    price: 450,
+    payment: "/ mj.",
+    billingCycle: "monthly",
+    recommended: true,
+    badge: "Preporučeno",
+    description: "Za tvrtke koje žele aktivniji profil i redovit video sadržaj.",
+    highlights: [
+      "12 objava + 2 Reelsa mjesečno",
+      "Mjesečni content plan",
+      "Osnovni community management",
+    ],
+    included: [
+      "Facebook + Instagram",
+      "12 objava mjesečno",
+      "do 12 storyja mjesečno",
+      "do 2 Reels videa mjesečno iz materijala koji dostavi klijent",
+      "copywriting",
+      "obrada vizuala",
+      "mjesečni content plan",
+      "raspored i objava",
+      "osnovni community management",
+      "mjesečni pregled rezultata",
+    ],
+    note: "Klijent dostavlja fotografije i video materijal. Snimanje na lokaciji nije uključeno.",
+  },
+  {
+    id: "social-pro",
+    name: "Social Pro",
+    price: 650,
+    payment: "/ mj.",
+    billingCycle: "monthly",
+    description: "Za tvrtke koje žele ozbiljniji kontinuirani kanal komunikacije i aktivno poboljšavanje rezultata.",
+    highlights: [
+      "Do 4 Reelsa mjesečno",
+      "Aktivni community management",
+      "Mjesečna analiza i optimizacija",
+    ],
+    included: [
+      "Facebook + Instagram",
+      "12–16 objava mjesečno",
+      "do 20 storyja mjesečno",
+      "do 4 Reels videa mjesečno iz dostavljenog materijala",
+      "proaktivni content plan",
+      "copywriting i obrada vizuala",
+      "community management",
+      "mjesečni izvještaj i preporuke",
+    ],
+    note: "Upravljanje Meta Ads kampanjama i oglasni budžet nisu uključeni u cijenu paketa — ugovaraju se zasebno kao dodatna usluga.",
+  },
+];
+
+/** @type {OfferPackage[]} */
+const socialPackagesEn = [
+  {
+    id: "social-basic",
+    name: "Social Basic",
+    price: 300,
+    payment: "/ month",
+    billingCycle: "monthly",
+    description: "For businesses that want a professional, consistent presence on Facebook and Instagram.",
+    highlights: [
+      "8 professional posts per month",
+      "Facebook + Instagram",
+      "Copy, visuals, and posting included",
+    ],
+    included: [
+      "Facebook + Instagram",
+      "8 posts per month",
+      "up to 8 stories per month",
+      "copywriting",
+      "editing of supplied photographs and visuals",
+      "content adapted for both platforms",
+      "content planning and posting",
+      "basic profile optimization",
+    ],
+    note: "The client provides basic photographs and video material. On-location filming is not included.",
+  },
+  {
+    id: "social-business",
+    name: "Social Business",
+    price: 450,
+    payment: "/ month",
+    billingCycle: "monthly",
+    recommended: true,
+    badge: "Recommended",
+    description: "For businesses that want a more active profile and regular video content.",
+    highlights: [
+      "12 posts + 2 Reels per month",
+      "Monthly content plan",
+      "Basic community management",
+    ],
+    included: [
+      "Facebook + Instagram",
+      "12 posts per month",
+      "up to 12 stories per month",
+      "up to 2 Reels per month from material supplied by the client",
+      "copywriting",
+      "visual editing",
+      "monthly content plan",
+      "scheduling and posting",
+      "basic community management",
+      "monthly results review",
+    ],
+    note: "The client provides photographs and video material. On-location filming is not included.",
+  },
+  {
+    id: "social-pro",
+    name: "Social Pro",
+    price: 650,
+    payment: "/ month",
+    billingCycle: "monthly",
+    description: "For businesses that want a serious, continuous communication channel with active performance improvement.",
+    highlights: [
+      "Up to 4 Reels per month",
+      "Active community management",
+      "Monthly analysis and optimization",
+    ],
+    included: [
+      "Facebook + Instagram",
+      "12–16 posts per month",
+      "up to 20 stories per month",
+      "up to 4 Reels per month from supplied material",
+      "proactive content plan",
+      "copywriting and visual editing",
+      "community management",
+      "monthly report and recommendations",
+    ],
+    note: "Meta Ads campaign management and ad budget are not included in the package price — available as a separate add-on.",
+  },
+];
+
 const additionalHr = [
   ["Dodatna podstranica", "od 80 €"],
   ["Ciljana SEO landing stranica", "od 100 €"],
@@ -535,6 +696,8 @@ const additionalHr = [
   ["Dodatna administracija sadržaja", "40 €/sat"],
   ["AI chatbot ili AI integracija", "od 500 €"],
   ["Webshop, rezervacijski sustavi i napredne funkcionalnosti", "prema ponudi"],
+  ["Content session na lokaciji (do 60 min snimanja fotografija i videa)", "od 150 €"],
+  ["Upravljanje Meta Ads kampanjama", "od 150 € / mj. + oglasni budžet"],
 ];
 
 const additionalEn = [
@@ -544,6 +707,8 @@ const additionalEn = [
   ["Additional content administration", "€40/hour"],
   ["AI chatbot or AI integration", "from €500"],
   ["E-commerce, booking systems, and advanced functionality", "custom quote"],
+  ["On-location content session (up to 60 min of photo and video filming)", "from €150"],
+  ["Meta Ads campaign management", "from €150 / month + ad budget"],
 ];
 
 const processHr = [
@@ -605,6 +770,7 @@ export const webOfferContent = {
     buildPackages: buildPackagesHr,
     redesignPackages: redesignPackagesHr,
     maintenancePackages: maintenanceHr,
+    socialPackages: socialPackagesHr,
     additionalServices: additionalHr,
     processSteps: processHr,
     featuredProjects: [featuredHr],
@@ -613,6 +779,7 @@ export const webOfferContent = {
     buildPackages: buildPackagesEn,
     redesignPackages: redesignPackagesEn,
     maintenancePackages: maintenanceEn,
+    socialPackages: socialPackagesEn,
     additionalServices: additionalEn,
     processSteps: processEn,
     featuredProjects: [featuredEn],
@@ -630,4 +797,18 @@ export function formatOfferPrice(price, lang = "hr", priceFrom = false) {
 export function formatMonthlyEquivalent(price, lang = "hr") {
   const formattedPrice = formatOfferPrice(price, lang);
   return lang === "hr" ? `${formattedPrice} mjesečni ekvivalent` : `${formattedPrice} monthly equivalent`;
+}
+
+/**
+ * Single shared "price + cadence" label used anywhere an OfferPackage's price is
+ * shown as one string (inquiry modal, email subject, etc). Cards keep rendering
+ * price and payment as two separate nodes; this reuses the same underlying data
+ * so the two representations never diverge.
+ * @param {OfferPackage} item
+ * @param {string} [lang]
+ */
+export function formatOfferPriceLabel(item, lang = "hr") {
+  const price = formatOfferPrice(item.price, lang, item.priceFrom);
+  if (item.billingCycle === "monthly") return `${price} ${item.payment}`;
+  return `${price} · ${item.payment}`;
 }

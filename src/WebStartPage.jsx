@@ -2,14 +2,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight, Check, Info, KeyRound, SearchCheck, Send, ShieldCheck } from "lucide-react";
 import PackageInquiryModal from "./PackageInquiryModal.jsx";
 import { Background, MotionButton, Navbar, SiteFooter, siteContent } from "./SiteChrome.jsx";
-import { formatMonthlyEquivalent, formatOfferPrice, webOfferContent } from "./webOfferContent.js";
+import { formatMonthlyEquivalent, formatOfferPrice, formatOfferPriceLabel, webOfferContent } from "./webOfferContent.js";
 import { usePageMeta } from "./usePageMeta.js";
 
 const pageCopy = {
   hr: {
     meta: {
-      title: "Izrada i redizajn web-stranica — paketi i cijene | Nepar",
-      description: "Izrada web-stranica od 300 €, redizajn s migracijom od 800 € i opcionalno godišnje održavanje. Jasno definiran opseg, vlasništvo i cijene.",
+      title: "Izrada web-stranica, redizajn i vođenje društvenih mreža | Nepar",
+      description: "Izrada web-stranica od 300 €, redizajn s migracijom od 800 €, opcionalno godišnje održavanje i vođenje Facebooka i Instagrama od 300 € mjesečno. Jasno definiran opseg i cijene.",
     },
     hero: {
       label: "Jasne cijene · bez skrivenog najma",
@@ -26,6 +26,7 @@ const pageCopy = {
       website: "Nova web-stranica",
       redesign: "Redizajn i migracija",
       maintenance: "Održavanje",
+      social: "Društvene mreže",
       expand: "Sve uključeno",
     },
     build: {
@@ -49,6 +50,15 @@ const pageCopy = {
       included: "Uključeno u održavanje",
       minorChange: "Manja izmjena je promjena postojećeg teksta, fotografije, cijene, kontaktnog podatka ili sličnog sadržaja koja zahtijeva do 15 minuta rada. Novi dizajn, nove podstranice, nove funkcionalnosti i veće sadržajne promjene ugovaraju se zasebno.",
     },
+    social: {
+      title: "Facebook i Instagram bez praznog hoda",
+      intro: "Redovite objave, profesionalni vizuali i sadržaj prilagođen vašem poslovanju. Vi nam dostavite fotografije i video materijal, a mi preuzimamo planiranje, obradu, tekstove i objavu.",
+      productionNote: "Produkcija fotografija i videa na lokaciji nije uključena u osnovne pakete i ugovara se zasebno.",
+      cta: "Zatraži ponudu",
+      secondaryCta: "Dogovori sadržajni plan",
+      included: "Uključeno u paket",
+      scopeNote: "Klijent dostavlja osnovne fotografije i video materijal, a Nepar radi selekciju, obradu, dizajn, copy i objavu. Dolazak na lokaciju i snimanje sadržaja nije uključeno — profesionalno fotografiranje i snimanje ugovara se zasebno (Content session). Budžet za Meta oglase nikad nije uključen u cijenu paketa. Kompleksne kampanje, nagradne igre, influencer suradnje i opsežna video produkcija dobivaju zasebnu ponudu, a odgovaranje na kompleksne korisničke upite, rezervacije ili stručne odgovore nije dio standardnog community managementa.",
+    },
     additional: {
       title: "Dodatne usluge",
       intro: "Za sadržaj i funkcionalnosti izvan dogovorenog paketa dobit ćete jasnu zasebnu procjenu.",
@@ -63,6 +73,11 @@ const pageCopy = {
         ["Jesu li webshop i rezervacije dio Web Pro paketa?", "Ne. Webshop, rezervacije, korisnički računi, AI funkcionalnosti i napredne integracije ugovaraju se zasebno."],
         ["Što uključuje migracija postojećeg weba?", "Migracija obuhvaća sadržaj i fotografije prema opsegu paketa, dogovorena URL preusmjerenja te prijelaz hostinga, DNS-a, SSL-a, analitike i Search Consolea. Mailboxi, webshop podaci, korisničke baze, licence i nove integracije procjenjuju se zasebno."],
         ["Što znači prvi odgovor unutar jednog radnog dana?", "Rok se odnosi na prvi odgovor i početnu procjenu problema. Vrijeme rješavanja ovisi o vrsti i složenosti problema."],
+        ["Moramo li sami pripremati objave?", "Ne. Klijent dostavlja fotografije, video ili informacije o aktualnostima, a NEPAR izrađuje sadržajni plan, tekstove, vizuale i objavljuje sadržaj."],
+        ["Dolazite li fotografirati i snimati kod nas?", "Snimanje na lokaciji nije uključeno u standardne pakete. Content session može se ugovoriti zasebno."],
+        ["Je li budžet za Facebook i Instagram oglase uključen?", "Ne. Budžet koji se plaća Meta platformi uvijek je zaseban od naknade za vođenje društvenih mreža."],
+        ["Objavljuje li se isti sadržaj na Facebooku i Instagramu?", "Teme mogu biti zajedničke, ali format, tekst i prezentacija prilagođavaju se svakoj mreži kada je to potrebno."],
+        ["Odgovarate li na poruke i komentare?", "Business i Pro uključuju osnovni community management. Kompleksni prodajni, stručni ili korisnički upiti prosljeđuju se klijentu."],
       ],
     },
     final: {
@@ -74,8 +89,8 @@ const pageCopy = {
   },
   en: {
     meta: {
-      title: "Website development and redesign packages | Nepar",
-      description: "Website development from €300, redesign with migration from €800, and optional annual maintenance. Clear scope, ownership, and pricing.",
+      title: "Website development, redesign, and social media management | Nepar",
+      description: "Website development from €300, redesign with migration from €800, optional annual maintenance, and Facebook and Instagram management from €300 per month. Clear scope and pricing.",
     },
     hero: {
       label: "Clear pricing · no hidden rental model",
@@ -92,6 +107,7 @@ const pageCopy = {
       website: "New website",
       redesign: "Redesign and migration",
       maintenance: "Maintenance",
+      social: "Social media",
       expand: "Everything included",
     },
     build: {
@@ -115,6 +131,15 @@ const pageCopy = {
       included: "Included in maintenance",
       minorChange: "A minor change is an update to existing copy, a photograph, price, contact detail, or similar content that requires up to 15 minutes of work. New designs, pages, functionality, and larger content changes are quoted separately.",
     },
+    social: {
+      title: "Facebook and Instagram, without the dead air",
+      intro: "Regular posts, professional visuals, and content tailored to your business. You supply the photos and video, and we handle planning, editing, copy, and publishing.",
+      productionNote: "On-location photo and video production is not included in the base packages and is quoted separately.",
+      cta: "Request a quote",
+      secondaryCta: "Plan a content calendar",
+      included: "Included in the package",
+      scopeNote: "The client provides basic photographs and video material, and Nepar handles selection, editing, design, copy, and publishing. On-location filming is not included — professional photo and video shoots are quoted separately (Content session). Meta ad budget is never included in the package price. Complex campaigns, giveaways, influencer collaborations, and large-scale video production get a separate quote, and responding to complex customer inquiries, bookings, or expert questions is not part of standard community management.",
+    },
     additional: {
       title: "Additional services",
       intro: "Content and functionality outside the agreed package receive a clear separate estimate.",
@@ -129,6 +154,11 @@ const pageCopy = {
         ["Are e-commerce and booking included in Web Pro?", "No. E-commerce, booking, user accounts, AI functionality, and advanced integrations are quoted separately."],
         ["What does an existing website migration include?", "Migration covers copy and photographs within the package scope, agreed URL redirects, and the transition of hosting, DNS, SSL, analytics, and Search Console. Mailboxes, e-commerce data, user databases, licenses, and new integrations are estimated separately."],
         ["What does a first response within one business day mean?", "The response time covers the first reply and initial assessment. Resolution time depends on the type and complexity of the issue."],
+        ["Do we need to prepare the posts ourselves?", "No. The client provides photos, video, or information about what's happening, and Nepar builds the content plan, copy, visuals, and publishes the content."],
+        ["Do you come to photograph and film on-site?", "On-location filming is not included in the standard packages. A content session can be arranged separately."],
+        ["Is the budget for Facebook and Instagram ads included?", "No. The budget paid to the Meta platform is always separate from the social media management fee."],
+        ["Is the same content posted on Facebook and Instagram?", "Topics can overlap, but the format, copy, and presentation are adapted for each platform when needed."],
+        ["Do you reply to messages and comments?", "Business and Pro include basic community management. Complex sales, expert, or customer-specific questions are forwarded to the client."],
       ],
     },
     final: {
@@ -191,18 +221,20 @@ function OfferCard({ item, lang, copy, offerKind, onSelect }) {
   );
 }
 
-/** @param {string} hash @returns {"website" | "redesign" | "maintenance"} */
+/** @param {string} hash @returns {"website" | "redesign" | "maintenance" | "social"} */
 export function resolveOfferKindFromHash(hash) {
   if (hash === "#redizajn") return "redesign";
   if (hash === "#odrzavanje") return "maintenance";
+  if (hash === "#drustvene-mreze") return "social";
   return "website";
 }
 
-const offerKinds = ["website", "redesign", "maintenance"];
+const offerKinds = ["website", "redesign", "maintenance", "social"];
 
 function offerHash(kind) {
   if (kind === "redesign") return "#redizajn";
   if (kind === "maintenance") return "#odrzavanje";
+  if (kind === "social") return "#drustvene-mreze";
   return "";
 }
 
@@ -263,7 +295,7 @@ export default function WebStartPage() {
     setSelection({
       offerKind,
       offerName: item.name,
-      priceLabel: `${formatOfferPrice(item.price, lang, item.priceFrom)} · ${item.payment}`,
+      priceLabel: formatOfferPriceLabel(item, lang),
     });
     setModalOpen(true);
   }
@@ -340,6 +372,18 @@ export default function WebStartPage() {
             >
               <span>03</span>{text.selector.maintenance}
             </button>
+            <button
+              id="social-offer-tab"
+              type="button"
+              role="tab"
+              tabIndex={activeOffer === "social" ? 0 : -1}
+              aria-selected={activeOffer === "social"}
+              aria-controls="drustvene-mreze"
+              onClick={() => selectOfferKind("social")}
+              onKeyDown={handleSelectorKeyDown}
+            >
+              <span>04</span>{text.selector.social}
+            </button>
           </div>
 
           <div
@@ -383,6 +427,25 @@ export default function WebStartPage() {
             </div>
             <div className="minor-change-note"><Info aria-hidden="true" size={22} /><p>{text.maintenance.minorChange}</p></div>
           </div>
+
+          <div
+            id="drustvene-mreze"
+            role="tabpanel"
+            aria-labelledby="social-offer-tab"
+            hidden={activeOffer !== "social"}
+            className="offer-selector-panel social-section"
+          >
+            <SectionHeading title={text.social.title} intro={text.social.intro} />
+            <p className="social-production-note">{text.social.productionNote}</p>
+            <div className="hero-actions">
+              <MotionButton onClick={() => openInquiry(offer.socialPackages[0], "social")}>{text.social.cta}<Send aria-hidden="true" size={17} /></MotionButton>
+              <MotionButton onClick={() => openInquiry(offer.socialPackages[1], "social")} variant="secondary">{text.social.secondaryCta}</MotionButton>
+            </div>
+            <div className="offer-grid social-grid pricing-package-grid">
+              {offer.socialPackages.map((item) => <OfferCard key={item.id} item={item} lang={lang} copy={{ ...text.social, expand: text.selector.expand }} offerKind="social" onSelect={openInquiry} />)}
+            </div>
+            <div className="social-scope-note"><Info aria-hidden="true" size={22} /><p>{text.social.scopeNote}</p></div>
+          </div>
         </div>
       </section>
 
@@ -422,7 +485,7 @@ export default function WebStartPage() {
         lang={lang}
         offerKind={selection?.offerKind ?? "website"}
         offerName={selection?.offerName ?? offer.buildPackages[0].name}
-        priceLabel={selection?.priceLabel ?? `${formatOfferPrice(offer.buildPackages[0].price, lang, offer.buildPackages[0].priceFrom)} · ${offer.buildPackages[0].payment}`}
+        priceLabel={selection?.priceLabel ?? formatOfferPriceLabel(offer.buildPackages[0], lang)}
       />
       <SiteFooter copy={chrome} homeLink={false} />
     </main>

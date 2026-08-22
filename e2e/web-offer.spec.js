@@ -509,7 +509,7 @@ test("hero media assets are served with explicit MIME types", async ({ request }
 
 test("offer data keeps one recommendation per kind and redesign priced above new development", () => {
   for (const locale of Object.values(webOfferContent)) {
-    const groups = [locale.buildPackages, locale.redesignPackages, locale.maintenancePackages];
+    const groups = [locale.buildPackages, locale.redesignPackages, locale.maintenancePackages, locale.socialPackages];
     for (const packages of groups) {
       expect(packages.filter((item) => item.recommended)).toHaveLength(1);
     }
@@ -518,6 +518,14 @@ test("offer data keeps one recommendation per kind and redesign priced above new
       expect(item.price).toBeGreaterThan(locale.buildPackages[index].price);
       expect(item.priceFrom).toBe(true);
     });
+
+    expect(locale.socialPackages.map((item) => item.price)).toEqual([300, 450, 650]);
+    expect(locale.socialPackages.find((item) => item.recommended).id).toBe("social-business");
+    for (const item of locale.socialPackages) {
+      expect(item.billingCycle).toBe("monthly");
+      const includedText = item.included.join(" ").toLowerCase();
+      expect(includedText).not.toMatch(/meta ads|meta oglas/);
+    }
   }
 });
 
@@ -565,17 +573,57 @@ test("pricing shows new development, redesign migration, and optional annual mai
   }
 
   const bodyText = await page.locator("body").innerText();
-  expect(bodyText).not.toMatch(/\d+\s*€\s*\/\s*mj|mjesečno plaćanje|pilot ponuda|mjesečna pretplata/i);
+  expect(bodyText).not.toMatch(/mjesečno plaćanje|pilot ponuda|mjesečna pretplata/i);
   await expectNoHorizontalOverflow(page);
   await expectHeadingOrder(page);
   await expectTouchTargets(page);
 });
 
-test("pricing selector switches between all three offer kinds without duplicating visible cards", async ({ page }) => {
+test("social packages show monthly pricing, keep ad budget and management separate, and cover scope boundaries", async ({ page }) => {
+  await page.goto(servicePath);
+  await page.locator("#social-offer-tab").click();
+  await expect(page.getByRole("heading", { name: "Facebook i Instagram bez praznog hoda" })).toBeVisible();
+
+  for (const [name, price] of [["Social Basic", "300 €"], ["Social Business", "450 €"], ["Social Pro", "650 €"]]) {
+    const card = page.locator("article.offer-card").filter({ hasText: name }).first();
+    await expect(card).toContainText(price);
+    await expect(card).toContainText("/ mj.");
+  }
+  await expect(page.locator("article.offer-card").filter({ hasText: "Social Business" })).toContainText("Preporučeno");
+  await expect(page.locator("article.offer-card").filter({ hasText: "Social Basic" })).not.toContainText("Preporučeno");
+  await expect(page.locator("article.offer-card").filter({ hasText: "Social Pro" })).not.toContainText("Preporučeno");
+
+  const basicCard = page.locator("article.offer-card").filter({ hasText: "Social Basic" }).first();
+  await expect(basicCard).not.toContainText(/dolaz(imo|ak) na lokaciju/i);
+
+  const socialPanel = page.locator("#drustvene-mreze");
+  await expect(socialPanel).toContainText("Budžet za Meta oglase nikad nije uključen");
+  await expect(socialPanel).not.toContainText("TikTok");
+
+  await page.locator("#dodatne-usluge").scrollIntoViewIfNeeded();
+  await expect(page.locator("#dodatne-usluge")).toContainText("Content session na lokaciji");
+  await expect(page.locator("#dodatne-usluge")).toContainText("Upravljanje Meta Ads kampanjama");
+
+  for (const question of [
+    "Moramo li sami pripremati objave?",
+    "Dolazite li fotografirati i snimati kod nas?",
+    "Je li budžet za Facebook i Instagram oglase uključen?",
+    "Objavljuje li se isti sadržaj na Facebooku i Instagramu?",
+    "Odgovarate li na poruke i komentare?",
+  ]) {
+    await expect(page.locator(".faq-list summary").filter({ hasText: question })).toBeVisible();
+  }
+
+  await expectNoHorizontalOverflow(page);
+  await expectHeadingOrder(page);
+});
+
+test("pricing selector switches between all four offer kinds without duplicating visible cards", async ({ page }) => {
   await page.goto(servicePath);
   const websiteTab = page.locator("#website-offer-tab");
   const redesignTab = page.locator("#redesign-offer-tab");
   const maintenanceTab = page.locator("#maintenance-offer-tab");
+  const socialTab = page.locator("#social-offer-tab");
 
   await expect(websiteTab).toHaveAttribute("aria-selected", "true");
   await expect(page.locator(".offer-card:visible")).toHaveCount(3);
@@ -587,16 +635,21 @@ test("pricing selector switches between all three offer kinds without duplicatin
   await expect(maintenanceTab).toHaveAttribute("aria-selected", "true");
   await expect(page.locator(".offer-card:visible")).toHaveCount(3);
   await expect(page.getByRole("heading", { name: "Godišnje održavanje web-stranice" })).toBeVisible();
+  await socialTab.click();
+  await expect(socialTab).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".offer-card:visible")).toHaveCount(3);
+  await expect(page.getByRole("heading", { name: "Facebook i Instagram bez praznog hoda" })).toBeVisible();
 
-  await maintenanceTab.press("ArrowLeft");
-  await expect(redesignTab).toBeFocused();
-  await expect(redesignTab).toHaveAttribute("aria-selected", "true");
+  await socialTab.press("ArrowLeft");
+  await expect(maintenanceTab).toBeFocused();
+  await expect(maintenanceTab).toHaveAttribute("aria-selected", "true");
 });
 
 test("offer hashes resolve correctly and selector updates the URL without a scroll jump", async ({ page }) => {
   for (const [hash, selectedId] of [
     ["#redizajn", "#redesign-offer-tab"],
     ["#odrzavanje", "#maintenance-offer-tab"],
+    ["#drustvene-mreze", "#social-offer-tab"],
     ["", "#website-offer-tab"],
     ["#nepoznato", "#website-offer-tab"],
   ]) {
@@ -644,7 +697,16 @@ test("English content stays aligned with the new model", async ({ page }) => {
   await expect(page.locator("article.offer-card").filter({ hasText: "Maintenance Pro" })).toContainText("Billed once per year");
 
   const bodyText = await page.locator("body").innerText();
-  expect(bodyText).not.toMatch(/€\d+\s*\/\s*mo|monthly payment|pilot offer|monthly subscription/i);
+  expect(bodyText).not.toMatch(/monthly payment|pilot offer|monthly subscription/i);
+
+  await page.locator("#social-offer-tab").click();
+  await expect(page.getByRole("heading", { name: "Facebook and Instagram, without the dead air" })).toBeVisible();
+  for (const [name, price] of [["Social Basic", "€300"], ["Social Business", "€450"], ["Social Pro", "€650"]]) {
+    const card = page.locator("article.offer-card").filter({ hasText: name }).first();
+    await expect(card).toContainText(price);
+    await expect(card).toContainText("/ month");
+  }
+  await expect(page.locator("article.offer-card").filter({ hasText: "Social Business" })).toContainText("Recommended");
 });
 
 test("package inquiry dialog carries the selected commercial model", async ({ page }) => {
@@ -669,16 +731,40 @@ test("package inquiry dialog carries the selected commercial model", async ({ pa
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText("Redizajn i migracija");
   await expect(dialog).toContainText("od 1.100 € · jednokratno");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+
+  await page.locator("#social-offer-tab").click();
+  const socialCard = page.locator("article.offer-card").filter({ hasText: "Social Business" });
+  await socialCard.getByRole("button", { name: "Zatraži ponudu" }).click();
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText("Social Business");
+  await expect(dialog).toContainText("Vođenje Facebooka i Instagrama");
+  await expect(dialog).toContainText("450 € / mj.");
 });
 
-test("390px layout stacks all three selector controls and stays within the viewport", async ({ page }) => {
+test("390px layout stacks all four selector controls and stays within the viewport", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(servicePath);
   const tabs = page.locator(".offer-selector [role=tab]");
-  await expect(tabs).toHaveCount(3);
+  await expect(tabs).toHaveCount(4);
   const boxes = await tabs.evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().toJSON()));
   expect(boxes[0].bottom).toBeLessThanOrEqual(boxes[1].top);
   expect(boxes[1].bottom).toBeLessThanOrEqual(boxes[2].top);
+  expect(boxes[2].bottom).toBeLessThanOrEqual(boxes[3].top);
+  await expectNoHorizontalOverflow(page);
+  await expectTouchTargets(page);
+});
+
+test("768px layout arranges the four selector controls in a 2x2 grid without overflow", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto(servicePath);
+  const tabs = page.locator(".offer-selector [role=tab]");
+  await expect(tabs).toHaveCount(4);
+  const boxes = await tabs.evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().toJSON()));
+  expect(boxes[0].top).toBeCloseTo(boxes[1].top, 0);
+  expect(boxes[2].top).toBeCloseTo(boxes[3].top, 0);
+  expect(boxes[0].bottom).toBeLessThanOrEqual(boxes[2].top);
   await expectNoHorizontalOverflow(page);
   await expectTouchTargets(page);
 });

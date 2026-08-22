@@ -2040,7 +2040,7 @@ img {
 
 .offer-selector {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.45rem;
   max-width: 940px;
   margin: 0 auto clamp(2rem, 5vw, 3.5rem);
@@ -2096,6 +2096,55 @@ img {
   border: 1px solid #ddd6fe;
   border-radius: 16px;
   background: #f7f5ff;
+}
+
+.offer-selector-panel.social-section {
+  padding: 1.25rem;
+  border: 1px solid #fbcfe8;
+  border-radius: 16px;
+  background: #fdf2f8;
+}
+
+.social-production-note {
+  max-width: 68ch;
+  margin: -1rem 0 1.5rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.social-grid .offer-card {
+  background: #fff;
+}
+
+.social-grid .offer-card.is-featured {
+  border-color: #be185d;
+}
+
+.social-grid .status-badge {
+  background: #be185d;
+}
+
+.social-scope-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  max-width: 980px;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  color: #831843;
+  background: #fce7f3;
+}
+
+.social-scope-note svg {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+}
+
+.social-scope-note p {
+  margin: 0;
+  line-height: 1.65;
 }
 
 .redesign-grid .offer-card {
@@ -2279,6 +2328,10 @@ img {
   .pricing-package-grid .offer-card-summary {
     padding: 1.15rem;
   }
+
+  .offer-selector {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 600px) {
@@ -2295,7 +2348,8 @@ img {
   }
 
   .offer-selector-panel.maintenance-section,
-  .offer-selector-panel.redesign-section {
+  .offer-selector-panel.redesign-section,
+  .offer-selector-panel.social-section {
     padding: 0.75rem;
   }
 

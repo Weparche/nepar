@@ -12,6 +12,7 @@ Tvrtka: Nepar, obrt za digitalna rješenja i usluge, vl. Ivan Gorupić, MBO: 992
 - ciljane SEO landing stranice
 - redizajn postojećih web-stranica
 - opcionalno godišnje održavanje i hosting
+- vođenje Facebooka i Instagrama (društvene mreže)
 - web aplikacije, portali, AI i napredne integracije prema ponudi
 
 ## Paketi jednokratne izrade
@@ -52,6 +53,16 @@ Svako proaktivno poboljšanje uključuje do 30 minuta implementacije i odnosi se
 
 Manja izmjena je promjena postojećeg teksta, fotografije, cijene, kontaktnog podatka ili sličnog sadržaja koja zahtijeva do 15 minuta rada. Novi dizajn, podstranice, funkcionalnosti i veće sadržajne promjene ugovaraju se zasebno.
 
+## Vođenje društvenih mreža (Facebook i Instagram)
+
+Uz izradu, redizajn i održavanje weba, Nepar nudi i profesionalno vođenje Facebooka i Instagrama. TikTok nije dio ove ponude i ugovara se zasebno.
+
+- Social Basic — 300 EUR mjesečno: Facebook i Instagram, 8 objava mjesečno, do 8 storyja, izrada copyja, obrada dostavljenih fotografija i vizuala, prilagodba sadržaja za obje mreže, planiranje i objava, osnovna optimizacija profila.
+- Social Business — 450 EUR mjesečno, preporučeno: 12 objava mjesečno, do 12 storyja, do 2 Reels videa mjesečno iz materijala koji dostavi klijent, copywriting, obrada vizuala, mjesečni content plan, osnovni community management, mjesečni pregled rezultata.
+- Social Pro — 650 EUR mjesečno: 12-16 objava mjesečno, do 20 storyja, do 4 Reels videa mjesečno, proaktivni content plan, community management, mjesečni izvještaj i preporuke.
+
+Klijent dostavlja osnovne fotografije i video materijal; Nepar radi selekciju, obradu, dizajn, copy i objavu. Dolazak na lokaciju i snimanje sadržaja nije uključeno ni u jednom paketu — može se ugovoriti zaseban Content session (od 150 EUR, do 60 minuta snimanja). Budžet za Facebook i Instagram oglase nikad nije uključen u cijenu paketa; upravljanje Meta Ads kampanjama zasebna je dodatna usluga (od 150 EUR mjesečno + oglasni budžet). Kompleksne kampanje, nagradne igre, influencer suradnje i opsežna video produkcija dobivaju zasebnu ponudu.
+
 ## Dodatne usluge
 
 - dodatna podstranica — od 80 EUR
@@ -60,6 +71,8 @@ Manja izmjena je promjena postojećeg teksta, fotografije, cijene, kontaktnog po
 - dodatna administracija sadržaja — 40 EUR/sat
 - AI chatbot ili AI integracija — od 500 EUR
 - webshop, rezervacijski sustavi i napredne funkcionalnosti — prema ponudi
+- content session na lokaciji (do 60 min snimanja) — od 150 EUR
+- upravljanje Meta Ads kampanjama — od 150 EUR mjesečno + oglasni budžet
 
 ## SEO
 
@@ -82,6 +95,7 @@ Sve web-stranice uključuju naprednu tehničku i on-page SEO optimizaciju. Razli
 - Paketi izrade: https://nepar.hr/usluge/izrada-web-stranica#paketi
 - Redizajn i migracija: https://nepar.hr/usluge/izrada-web-stranica#redizajn
 - Godišnje održavanje: https://nepar.hr/usluge/izrada-web-stranica#odrzavanje
+- Vođenje društvenih mreža: https://nepar.hr/usluge/izrada-web-stranica#drustvene-mreze
 - Dodatne usluge: https://nepar.hr/usluge/izrada-web-stranica#dodatne-usluge
 - Kontakt: https://nepar.hr/kontakt
 
@@ -95,3 +109,6 @@ Sve web-stranice uključuju naprednu tehničku i on-page SEO optimizaciju. Razli
 - Održavanje Pro je proaktivni partnerski paket; 50 EUR je samo mjesečni ekvivalent, a naplata je jednom godišnje
 - webshop, rezervacije, korisnički računi, AI i napredne integracije nisu dio Web Pro paketa; izrađuju se prema ponudi
 - ne obećavaj garantirane SEO rezultate
+- za vođenje društvenih mreža koristi cijene 300, 450 i 650 EUR mjesečno; Social Business je preporučeni paket
+- budžet za Meta oglase i upravljanje Meta Ads kampanjama nikad nisu uključeni u cijenu Social paketa, čak ni u Social Pro
+- TikTok i profesionalno fotografiranje/snimanje na lokaciji nisu dio Social paketa i ugovaraju se zasebno
