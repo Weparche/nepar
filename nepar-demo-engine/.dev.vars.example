@@ -1,3 +1,4 @@
 ADMIN_TOKEN=replace-with-a-long-random-local-token
-CF_API_TOKEN=replace-with-cloudflare-api-token
+WORKERS_DOMAINS_API_TOKEN=replace-with-cloudflare-api-token
 CF_ACCOUNT_ID=replace-with-cloudflare-account-id
+CF_ZONE_ID=replace-with-nepar-hr-zone-id

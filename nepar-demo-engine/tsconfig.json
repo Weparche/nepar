@@ -5,8 +5,10 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "noEmit": true,
-    "types": ["@cloudflare/workers-types"],
-    "lib": ["ES2022", "WebWorker"]
+    "types": ["node", "@cloudflare/vitest-plugin/types"],
+    "lib": ["ES2022", "DOM"],
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "scripts/**/*.ts", "test/**/*.ts", "vitest.config.ts"]
 }

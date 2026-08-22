@@ -1,0 +1,61 @@
+{
+  "businessName": "Fabela Demo",
+  "slug": "fabela",
+  "websiteUrl": "https://example.com/fabela",
+  "publicEmail": "kontakt@example.com",
+  "publicPhone": "+385 1 555 0100",
+  "city": "Zagreb",
+  "industry": "lokalni uslužni obrt",
+  "source": "synthetic-qa-fixture",
+  "score": 72,
+  "scoreReasons": [
+    "Testni lead ima kompletne kontaktne podatke.",
+    "Sadržaj je namjerno označen kao sintetički i nije spreman za outreach."
+  ],
+  "services": [
+    {
+      "title": "Dogovor termina",
+      "description": "Izravan kontakt za provjeru dostupnosti i opsega usluge.",
+      "sourceField": "fixture.services"
+    },
+    {
+      "title": "Informacije o usluzi",
+      "description": "Jasno mjesto za potvrđene detalje prije odluke klijenta.",
+      "sourceField": "fixture.services"
+    },
+    {
+      "title": "Lokalni kontakt",
+      "description": "Telefon i e-mail dostupni su u jednom dodiru.",
+      "sourceField": "fixture.contact"
+    }
+  ],
+  "facts": {
+    "fixture.location": "Zagreb",
+    "fixture.contact": "Telefon i e-mail"
+  },
+  "sources": [
+    {
+      "field": "fixture.services",
+      "url": "https://example.com/fabela/services",
+      "note": "Sintetički izvor za automatizirani test; ne koristiti za outreach.",
+      "verifiedAt": "2026-08-22T08:00:00.000Z"
+    },
+    {
+      "field": "fixture.contact",
+      "url": "https://example.com/fabela/contact",
+      "note": "Sintetički izvor za automatizirani test; ne koristiti za outreach.",
+      "verifiedAt": "2026-08-22T08:00:00.000Z"
+    },
+    {
+      "field": "fixture.location",
+      "url": "https://example.com/fabela/location",
+      "note": "Sintetički izvor za automatizirani test; ne koristiti za outreach.",
+      "verifiedAt": "2026-08-22T08:00:00.000Z"
+    }
+  ],
+  "visualAssets": [],
+  "verifiedObservations": [
+    "Ovo je sintetički QA fixture i nije odobren za kontaktiranje stvarne tvrtke."
+  ],
+  "proposedServiceAngle": "Demonstrirati mobilno jasan prikaz usluga i izravan kontakt bez automatskog slanja e-maila."
+}
