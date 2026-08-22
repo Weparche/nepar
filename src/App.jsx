@@ -866,7 +866,6 @@ function Hero({ copy, lang }) {
   const isHeroInViewportRef = useRef(true);
   const [enabledSourceKey, setEnabledSourceKey] = useState(null);
   const [playingSourceKey, setPlayingSourceKey] = useState(null);
-  const animateMobileDetails = !reduceMotion && !isMobile;
   const sourceKey = isMobile ? "mobile" : "desktop";
   const videoSources = HERO_MEDIA[sourceKey];
   const showHeroVideo = reduceMotion !== true;
@@ -1043,21 +1042,7 @@ function Hero({ copy, lang }) {
             transition={{ ...quickRevealTransition, delay: 0.2 }}
             className="mt-5 lg:hidden"
           >
-            <div className="mobile-projects-pill inline-flex items-center gap-3 rounded-full border border-cyan-400/50 bg-white/85 px-4 py-2 text-sm font-semibold text-slate-800 shadow-lg shadow-cyan-500/10 backdrop-blur">
-              <motion.span
-                aria-hidden="true"
-                animate={animateMobileDetails ? { scale: [1, 1.25, 1], opacity: [0.65, 1, 0.65] } : false}
-                transition={animateMobileDetails ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" } : undefined}
-                className="size-2.5 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.8)]"
-              />
-              {copy.hero.mobileProjects}
-              <motion.span
-                aria-hidden="true"
-                animate={animateMobileDetails ? { x: [0, 5, 0] } : false}
-                transition={animateMobileDetails ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" } : undefined}
-                className="h-px w-8 bg-gradient-to-r from-cyan-300 to-transparent"
-              />
-            </div>
+            {/* Mobile project label intentionally hidden; keep the carousel itself visible. */}
             <OrbitalProjectCarousel lang={lang} />
           </motion.div>
 
