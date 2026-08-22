@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nepar-demo-engine",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-22",
+  "workers_dev": true,
+  "vars": {
+    "ROOT_DOMAIN": "nepar.hr",
+    "ZONE_NAME": "nepar.hr",
+    "WORKER_SERVICE": "nepar-demo-engine"
+  },
+  "triggers": {
+    "crons": ["17 3 * * *"]
+  }
+  // D1 binding se dodaje naredbom:
+  // npx wrangler d1 create nepar-demo-engine --binding DB --update-config
+}
