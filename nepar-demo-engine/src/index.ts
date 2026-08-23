@@ -5,6 +5,8 @@ import type { RuntimeEnv } from './models';
 
 export { RESERVED_SUBDOMAINS, isExpired, normalizeSlug, resolveSlug };
 
+const LEAD_INGEST_CRONS = new Set(['30 7 * * *', '30 9 * * *']);
+
 const handler = {
   async fetch(request: Request, env: RuntimeEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
@@ -25,7 +27,7 @@ const handler = {
 
   async scheduled(controller: ScheduledController, env: RuntimeEnv, ctx: ExecutionContext): Promise<void> {
     await base.scheduled(controller, env, ctx);
-    if (controller.cron === '30 7 * * *') {
+    if (LEAD_INGEST_CRONS.has(controller.cron)) {
       ctx.waitUntil(
         ingestGitHubLeadQueue(env)
           .then((result) => console.log(JSON.stringify({ event: 'github_lead_ingest_complete', ...result })))
