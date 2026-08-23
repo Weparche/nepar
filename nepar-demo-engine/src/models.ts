@@ -9,6 +9,19 @@ export const DESIGN_SYSTEM_KEYS = [
 
 export type DesignSystemKey = (typeof DESIGN_SYSTEM_KEYS)[number];
 
+export const HEALTH_TRUST_ART_DIRECTIONS = ['pet-first', 'doctor-first', 'clinic-first'] as const;
+export type HealthTrustArtDirection = (typeof HEALTH_TRUST_ART_DIRECTIONS)[number];
+
+export const ASSET_PROVENANCE = [
+  'business-website',
+  'business-social',
+  'client-provided',
+  'nepar-owned',
+  'ai-generated-decorative',
+  'legacy-unverified',
+] as const;
+export type AssetProvenance = (typeof ASSET_PROVENANCE)[number];
+
 export const LEAD_STATUSES = [
   'new',
   'researched',
@@ -24,6 +37,7 @@ export const LEAD_STATUSES = [
 export type LeadStatus = (typeof LEAD_STATUSES)[number];
 export type DemoStatus = 'active' | 'expired' | 'archived';
 export type QaStatus = 'pending' | 'running' | 'passed' | 'failed';
+export type VisualQaStatus = 'pending' | 'passed' | 'needs_visual_review';
 export type DemoEventType =
   | 'page_view'
   | 'primary_cta_click'
@@ -68,6 +82,11 @@ export interface DemoRow {
   idempotency_key: string | null;
   idempotency_hash: string | null;
   outreach_json: string | null;
+  art_direction?: HealthTrustArtDirection | null;
+  art_direction_reason?: string | null;
+  technical_score?: number | null;
+  visual_score?: number | null;
+  visual_qa_status?: VisualQaStatus | null;
 }
 
 export interface LeadRow {
