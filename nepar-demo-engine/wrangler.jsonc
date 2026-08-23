@@ -17,14 +17,15 @@
     {
       "binding": "DB",
       "database_name": "nepar-demo-engine",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "6dec7207-efd9-4cf7-bca5-9d80b01c6cba",
       "migrations_dir": "migrations"
     }
   ],
   "r2_buckets": [
     {
       "binding": "ASSETS",
-      "bucket_name": "nepar-demo-assets"
+      "bucket_name": "nepar-demo-assets",
+      "jurisdiction": "eu"
     }
   ],
   "triggers": {
