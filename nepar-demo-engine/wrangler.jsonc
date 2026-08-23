@@ -11,11 +11,7 @@
     "WORKER_SERVICE": "nepar-demo-engine",
     "ACTIVE_DOMAIN_LIMIT": "80",
     "DEFAULT_EXPIRY_DAYS": "7",
-    "ADMIN_RATE_LIMIT_PER_MINUTE": "120",
-    "GITHUB_LEAD_QUEUE_REPO": "Weparche/nepar",
-    "GITHUB_LEAD_QUEUE_ISSUE": "14",
-    "GITHUB_LEAD_QUEUE_OWNER": "Weparche",
-    "GITHUB_LEAD_QUEUE_OWNER_ID": "154843953"
+    "ADMIN_RATE_LIMIT_PER_MINUTE": "120"
   },
   "d1_databases": [
     {
