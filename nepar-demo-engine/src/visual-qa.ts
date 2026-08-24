@@ -15,7 +15,7 @@ interface ReferenceProfile {
 
 const REFERENCE_PROFILES: Record<HealthTrustArtDirection, Record<'desktop' | 'mobile', ReferenceProfile>> = {
   'pet-first': {
-    desktop: { heroMinPx: 500, heroMaxPx: 780, imageWidthMinRatio: .40, headlineWidthMaxRatio: .54, ctaTopMaxRatio: .82, trustTopMaxRatio: 1.15, servicesTopMaxRatio: 1.75, stickyCallRequired: false },
+    desktop: { heroMinPx: 500, heroMaxPx: 950, imageWidthMinRatio: .37, headlineWidthMaxRatio: .54, ctaTopMaxRatio: .9, trustTopMaxRatio: 1.15, servicesTopMaxRatio: 1.75, stickyCallRequired: false },
     mobile: { heroMinPx: 620, heroMaxPx: 1250, imageWidthMinRatio: .82, headlineWidthMaxRatio: .96, ctaTopMaxRatio: 1.12, trustTopMaxRatio: 1.55, servicesTopMaxRatio: 2.45, stickyCallRequired: true },
   },
   'doctor-first': {

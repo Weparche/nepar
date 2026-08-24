@@ -28,6 +28,12 @@
       "jurisdiction": "eu"
     }
   ],
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "allowed_sender_addresses": ["nepar@nepar.hr"]
+    }
+  ],
   "triggers": {
     "crons": ["17 3 * * *", "30 7 * * *", "30 9 * * *"]
   },

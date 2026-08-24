@@ -42,6 +42,17 @@
       "verifiedAt": "2026-08-23T11:45:00.000Z",
       "depictsNamedPerson": false,
       "heroEligible": true
+    },
+    {
+      "kind": "gallery",
+      "role": "clinic",
+      "url": "https://nepar.hr/fabela/about.webp",
+      "alt": "Mirna unutrašnjost veterinarske ordinacije bez identifikacije stvarne lokacije ili osobe.",
+      "sourceUrl": "https://nepar.hr/fabela/about.webp",
+      "provenance": "nepar-owned",
+      "verifiedAt": "2026-08-23T15:38:00.000Z",
+      "depictsNamedPerson": false,
+      "heroEligible": false
     }
   ],
   "verifiedObservations": [

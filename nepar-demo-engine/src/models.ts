@@ -38,6 +38,8 @@ export type LeadStatus = (typeof LEAD_STATUSES)[number];
 export type DemoStatus = 'active' | 'expired' | 'archived';
 export type QaStatus = 'pending' | 'running' | 'passed' | 'failed';
 export type VisualQaStatus = 'pending' | 'passed' | 'needs_visual_review';
+export const OUTREACH_STATUSES = ['not_sent', 'sent', 'awaiting_customer', 'awaiting_admin', 'closed_won', 'closed_lost'] as const;
+export type OutreachStatus = (typeof OUTREACH_STATUSES)[number];
 export type DemoEventType =
   | 'page_view'
   | 'primary_cta_click'
@@ -87,6 +89,11 @@ export interface DemoRow {
   technical_score?: number | null;
   visual_score?: number | null;
   visual_qa_status?: VisualQaStatus | null;
+  outreach_status?: OutreachStatus | null;
+  outreach_message_id?: string | null;
+  outreach_sent_subject?: string | null;
+  outreach_sent_body?: string | null;
+  outreach_status_updated_at?: string | null;
 }
 
 export interface LeadRow {
