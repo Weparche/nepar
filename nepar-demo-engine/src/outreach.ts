@@ -95,7 +95,7 @@ export function composeOutreachEmail(demo: DemoRow, env: RuntimeEnv): ComposedEm
     observation ? escapeHtml(observation) : null,
     `Kad netko danas upita Google ili ChatGPT "${escapeHtml(query)}", cilj je da se pojavite vi, a ne netko drugi. Jasno posložena stranica povećava šansu da vas ti sustavi prepoznaju i preporuče — to, naravno, nitko ne može garantirati.`,
     `Pogledajte prijedlog ovdje (30 sekundi): <a href="${escapeHtml(url)}">${escapeHtml(url)}</a>`,
-    `Ako vam ima smisla, javimo se pa popričamo.`,
+    `Ako vam ima smisla, javite se pa popričamo.`,
   ].filter((p): p is string => Boolean(p));
 
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;color:#17312d;line-height:1.6;max-width:560px">
@@ -110,7 +110,7 @@ ${paras.map((p) => `<p>${p}</p>`).join('\n')}
     observation || null,
     `Kad netko danas upita Google ili ChatGPT "${query}", cilj je da se pojavite vi, a ne netko drugi. Jasno posložena stranica povećava šansu da vas ti sustavi prepoznaju i preporuče — to, naravno, nitko ne može garantirati.`,
     `Pogledajte prijedlog ovdje (30 sekundi): ${url}`,
-    `Ako vam ima smisla, javimo se pa popričamo.`,
+    `Ako vam ima smisla, javite se pa popričamo.`,
   ].filter((p): p is string => Boolean(p));
 
   const text = `Poštovani,\n\n${plainParas.join('\n\n')}\n\nSrdačan pozdrav,\nNepar\nnepar@nepar.hr`;
