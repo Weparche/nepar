@@ -6,6 +6,7 @@ import { OUTREACH_STATUSES } from './models';
 import { createLeadSchema } from './schema';
 import { buildDemoPayload } from './generation';
 import { composeOutreachEmail, sendOutreachEmail } from './outreach';
+import { attachCustomDomain } from './cloudflare-domains';
 
 export { RESERVED_SUBDOMAINS, isExpired, normalizeSlug, resolveSlug };
 
@@ -38,6 +39,22 @@ async function handleGenerateFromLead(request: Request, env: RuntimeEnv, ctx: Ex
     body: JSON.stringify(payload),
   });
   return base.fetch(subRequest, env, ctx);
+}
+
+async function handleReattachDomain(env: RuntimeEnv, slug: string): Promise<Response> {
+  const demo = await env.DB.prepare(`SELECT * FROM demos WHERE slug = ? LIMIT 1`).bind(slug).first<DemoRow>();
+  if (!demo) return apiError(404, 'DEMO_NOT_FOUND', 'Demo nije pronađen.');
+  if (demo.status !== 'active') return apiError(409, 'DEMO_NOT_ACTIVE', 'Demo nije aktivan.');
+  const hostname = `${slug}.${env.ROOT_DOMAIN}`;
+  let domainId: string;
+  try {
+    domainId = await attachCustomDomain(env, hostname);
+  } catch (error) {
+    const code = error && typeof error === 'object' && 'code' in error ? String((error as { code: unknown }).code) : 'E_UNKNOWN';
+    return apiError(502, 'REATTACH_FAILED', `Reattach nije uspio (${code}): ${error instanceof Error ? error.message : String(error)}`);
+  }
+  await env.DB.prepare(`UPDATE demos SET custom_domain_id = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`).bind(domainId, demo.id).run();
+  return Response.json({ ok: true, slug, previousDomainId: demo.custom_domain_id, domainId, url: `https://${hostname}` });
 }
 
 async function handleOutreachEmailPreview(env: RuntimeEnv, slug: string): Promise<Response> {
@@ -102,6 +119,11 @@ const handler = {
     if (request.method === 'POST' && genMatch) {
       if (!await isAuthorized(request, env.ADMIN_TOKEN)) return unauthorized();
       return handleGenerateFromLead(request, env, ctx, Number(genMatch[1]), url.origin);
+    }
+    const reattachMatch = url.pathname.match(/^\/__admin\/demos\/([a-z0-9-]+)\/reattach-domain$/);
+    if (request.method === 'POST' && reattachMatch) {
+      if (!await isAuthorized(request, env.ADMIN_TOKEN)) return unauthorized();
+      return handleReattachDomain(env, reattachMatch[1]);
     }
     const emailPreviewMatch = url.pathname.match(/^\/__admin\/demos\/([a-z0-9-]+)\/outreach-email$/);
     if (request.method === 'GET' && emailPreviewMatch) {

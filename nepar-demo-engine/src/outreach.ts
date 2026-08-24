@@ -34,26 +34,87 @@ export function parseOutreachJson(demo: DemoRow): OutreachJson | null {
 }
 
 export function demoUrl(demo: DemoRow, rootDomain: string): string {
-  return demo.custom_domain_id ? `https://${demo.slug}.${rootDomain}` : `https://${demo.slug}.${rootDomain}`;
+  return `https://${demo.slug}.${rootDomain}`;
+}
+
+interface BrandHint { city?: string; industry?: string }
+
+function brandHint(demo: DemoRow): BrandHint {
+  try {
+    const content = JSON.parse(demo.content_json) as { brand?: { location?: string; industry?: string } };
+    return { city: content.brand?.location, industry: content.brand?.industry };
+  } catch {
+    return {};
+  }
+}
+
+const CITY_LOCATIVE: Record<string, string> = {
+  'Zagreb': 'Zagrebu',
+  'Pula': 'Puli',
+  'Poreč': 'Poreču',
+  'Pazin': 'Pazinu',
+  'Split': 'Splitu',
+  'Rijeka': 'Rijeci',
+  'Osijek': 'Osijeku',
+  'Zadar': 'Zadru',
+  'Varaždin': 'Varaždinu',
+  'Šibenik': 'Šibeniku',
+  'Dubrovnik': 'Dubrovniku',
+  'Karlovac': 'Karlovcu',
+};
+function cityLocative(city?: string): string | undefined {
+  if (!city) return undefined;
+  return CITY_LOCATIVE[city] || `mjestu ${city}`;
+}
+
+function audienceNoun(industry?: string): string {
+  return industry && /veter/i.test(industry) ? 'vlasnika pasa i mačaka' : 'potencijalnih klijenata';
+}
+
+function searchPhrase(industry?: string, city?: string): string {
+  const base = industry && /veter/i.test(industry) ? 'dobar veterinar' : (industry?.toLowerCase() || 'ova usluga');
+  const locative = cityLocative(city);
+  return locative ? `${base} u ${locative}` : base;
 }
 
 export function composeOutreachEmail(demo: DemoRow, env: RuntimeEnv): ComposedEmail | null {
   const outreach = parseOutreachJson(demo);
   if (!outreach || !outreach.recipientEmail) return null;
   const url = demoUrl(demo, env.ROOT_DOMAIN);
-  const observations = outreach.verifiedObservations.map((line) => `<li>${escapeHtml(line)}</li>`).join('');
-  const observationsText = outreach.verifiedObservations.map((line) => `- ${line}`).join('\n');
-  const subject = `Prijedlog novog weba za ${outreach.prospectName}`;
+  const { city, industry } = brandHint(demo);
+  const cityLabel = cityLocative(city) || 'vašem gradu';
+  const audience = audienceNoun(industry);
+  const query = searchPhrase(industry, city);
+  const observation = outreach.verifiedObservations[0];
+
+  const subject = `Zašto vas ne pronalaze svi koji traže "${query}"?`;
+
+  const paras = [
+    `Koliko ${audience} u ${cityLabel} ovaj tjedan ode konkurenciji, jednostavno zato što vas nisu dovoljno lako pronašli online?`,
+    `Pogledali smo javno dostupne podatke o <strong>${escapeHtml(outreach.prospectName)}</strong> i napravili konkretan, besplatan prijedlog novog weba — s vašim pravim uslugama i kontaktom, ne generičkim predloškom.`,
+    observation ? escapeHtml(observation) : null,
+    `Kad netko danas upita Google ili ChatGPT "${escapeHtml(query)}", cilj je da se pojavite vi, a ne netko drugi. Jasno posložena stranica povećava šansu da vas ti sustavi prepoznaju i preporuče — to, naravno, nitko ne može garantirati.`,
+    `Pogledajte prijedlog ovdje (30 sekundi): <a href="${escapeHtml(url)}">${escapeHtml(url)}</a>`,
+    `Ako vam ima smisla, javimo se pa popričamo.`,
+  ].filter((p): p is string => Boolean(p));
+
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;color:#17312d;line-height:1.6;max-width:560px">
 <p>Poštovani,</p>
-<p>Pripremili smo besplatan prijedlog novog weba za <strong>${escapeHtml(outreach.prospectName)}</strong>, na temelju javno dostupnih podataka:</p>
-<ul>${observations}</ul>
-<p>${escapeHtml(outreach.proposedServiceAngle)}</p>
-<p>Pogledajte prijedlog ovdje: <a href="${escapeHtml(url)}">${escapeHtml(url)}</a></p>
-<p>Javite nam se ako Vas zanima suradnja ili imate pitanja — bez obaveze.</p>
+${paras.map((p) => `<p>${p}</p>`).join('\n')}
 <p>Srdačan pozdrav,<br>Nepar<br><a href="mailto:nepar@nepar.hr">nepar@nepar.hr</a></p>
 </div>`;
-  const text = `Poštovani,\n\nPripremili smo besplatan prijedlog novog weba za ${outreach.prospectName}, na temelju javno dostupnih podataka:\n${observationsText}\n\n${outreach.proposedServiceAngle}\n\nPogledajte prijedlog ovdje: ${url}\n\nJavite nam se ako Vas zanima suradnja ili imate pitanja — bez obaveze.\n\nSrdačan pozdrav,\nNepar\nnepar@nepar.hr`;
+
+  const plainParas = [
+    `Koliko ${audience} u ${cityLabel} ovaj tjedan ode konkurenciji, jednostavno zato što vas nisu dovoljno lako pronašli online?`,
+    `Pogledali smo javno dostupne podatke o ${outreach.prospectName} i napravili konkretan, besplatan prijedlog novog weba — s vašim pravim uslugama i kontaktom, ne generičkim predloškom.`,
+    observation || null,
+    `Kad netko danas upita Google ili ChatGPT "${query}", cilj je da se pojavite vi, a ne netko drugi. Jasno posložena stranica povećava šansu da vas ti sustavi prepoznaju i preporuče — to, naravno, nitko ne može garantirati.`,
+    `Pogledajte prijedlog ovdje (30 sekundi): ${url}`,
+    `Ako vam ima smisla, javimo se pa popričamo.`,
+  ].filter((p): p is string => Boolean(p));
+
+  const text = `Poštovani,\n\n${plainParas.join('\n\n')}\n\nSrdačan pozdrav,\nNepar\nnepar@nepar.hr`;
+
   return { to: outreach.recipientEmail, subject, html, text };
 }
 
