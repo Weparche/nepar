@@ -106,10 +106,40 @@ export class DeterministicCopyProvider implements CopyProvider {
   }
 }
 
+const DEFAULT_HEALTH_TRUST_ASSETS: VisualAsset[] = [
+  {
+    kind: 'hero', role: 'pet',
+    url: 'https://nepar.hr/health-trust-default/hero.webp',
+    alt: 'Reprezentativna fotografija veterinarske ambulante (generički prikaz, nije stvarna lokacija)',
+    sourceUrl: 'https://nepar.hr/health-trust-default/',
+    provenance: 'nepar-owned',
+    verifiedAt: '2026-08-24T00:00:00.000Z',
+    depictsNamedPerson: false,
+    heroEligible: true,
+  },
+  {
+    kind: 'gallery', role: 'clinic',
+    url: 'https://nepar.hr/health-trust-default/about.webp',
+    alt: 'Reprezentativna fotografija ordinacije s dijagnostičkom opremom (generički prikaz, nije stvarna lokacija)',
+    sourceUrl: 'https://nepar.hr/health-trust-default/',
+    provenance: 'nepar-owned',
+    verifiedAt: '2026-08-24T00:00:00.000Z',
+    depictsNamedPerson: false,
+    heroEligible: false,
+  },
+];
+
 export async function buildDemoPayload(lead: ResearchedLead, provider: CopyProvider = new DeterministicCopyProvider()): Promise<CreateDemoInput> {
   const designSystemKey = chooseDesignSystem(lead.industry);
-  const selection = designSystemKey === 'health-trust' ? chooseHealthTrustArtDirection(lead) : undefined;
-  const content = await provider.build(lead, designSystemKey, selection?.artDirection);
+  // Leads ingested without their own photography (e.g. the GitHub research queue) get a
+  // neutral, clearly-labelled generic image rather than an empty placeholder. Never used
+  // for doctor-first/clinic-first selection: chooseHealthTrustArtDirection still requires
+  // real verified imagery for those, this only backstops the pet-first default.
+  const effectiveLead = designSystemKey === 'health-trust' && lead.visualAssets.length === 0
+    ? { ...lead, visualAssets: DEFAULT_HEALTH_TRUST_ASSETS }
+    : lead;
+  const selection = designSystemKey === 'health-trust' ? chooseHealthTrustArtDirection(effectiveLead) : undefined;
+  const content = await provider.build(effectiveLead, designSystemKey, selection?.artDirection);
   return createDemoSchema.parse({
     slug: lead.slug,
     businessName: lead.businessName,
