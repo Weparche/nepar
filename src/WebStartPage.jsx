@@ -4,6 +4,8 @@ import PackageInquiryModal from "./PackageInquiryModal.jsx";
 import { Background, MotionButton, Navbar, SiteFooter, siteContent } from "./SiteChrome.jsx";
 import { formatMonthlyEquivalent, formatOfferPrice, formatOfferPriceLabel, webOfferContent } from "./webOfferContent.js";
 import { usePageMeta } from "./usePageMeta.js";
+import { serviceFaq } from "./seoConfig.js";
+import { subscribeConsentChanges, trackEvent } from "./analytics.js";
 
 const pageCopy = {
   hr: {
@@ -13,7 +15,7 @@ const pageCopy = {
     },
     hero: {
       label: "Jasne cijene · bez skrivenog najma",
-      title: "Web-stranica koja pripada vašem poslovanju.",
+      title: "Izrada web-stranica za obrte i tvrtke.",
       description: "Od jednostavne profesionalne prezentacije do napredne SEO strukture i prilagođenih upita. Izradu plaćate jednokratno, a održavanje birate samo ako vam treba.",
       ownership: "Web-stranica je nakon plaćanja u vlasništvu klijenta. Održavanje nije obavezno i ugovara se zasebno.",
       startingPrice: "Izrada već od",
@@ -94,7 +96,7 @@ const pageCopy = {
     },
     hero: {
       label: "Clear pricing · no hidden rental model",
-      title: "A website that belongs to your business.",
+      title: "Website development for trades and companies.",
       description: "From a clear professional presence to advanced SEO architecture and custom inquiry flows. Development is paid once, while maintenance remains your choice.",
       ownership: "The website belongs to the client after payment. Maintenance is optional and contracted separately.",
       startingPrice: "Development from",
@@ -243,19 +245,54 @@ export default function WebStartPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selection, setSelection] = useState(null);
   const pendingScrollPosition = useRef(null);
+  const packageViewTracked = useRef(false);
+  const packageViewPending = useRef(false);
   const [activeOffer, setActiveOffer] = useState(() => (
     typeof window === "undefined" ? "website" : resolveOfferKindFromHash(window.location.hash)
   ));
   const text = pageCopy[lang];
   const offer = webOfferContent[lang];
   const chrome = siteContent[lang];
+  const faqItems = serviceFaq[lang];
 
-  usePageMeta({
-    title: text.meta.title,
-    description: text.meta.description,
-    path: "/usluge/izrada-web-stranica",
-    canonicalPath: "/usluge/izrada-web-stranica",
-  });
+  usePageMeta("/usluge/izrada-web-stranica", lang);
+
+  useEffect(() => {
+    const section = document.getElementById("paketi");
+    if (!section) return undefined;
+    let sectionInView = false;
+
+    const attemptTrack = async () => {
+      if (!sectionInView || packageViewTracked.current || packageViewPending.current) return;
+      packageViewPending.current = true;
+      const tracked = await trackEvent("view_packages", {
+        section_name: "paketi",
+        page_path: "/usluge/izrada-web-stranica",
+      });
+      packageViewPending.current = false;
+      if (tracked) packageViewTracked.current = true;
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      const viewportHeight = entry.rootBounds?.height || window.innerHeight;
+      const visibleHeight = Math.max(
+        0,
+        Math.min(entry.boundingClientRect.bottom, viewportHeight)
+          - Math.max(entry.boundingClientRect.top, 0),
+      );
+      const measurableHeight = Math.min(entry.boundingClientRect.height, viewportHeight);
+      sectionInView = entry.isIntersecting && measurableHeight > 0 && visibleHeight / measurableHeight >= 0.5;
+      void attemptTrack();
+    }, { threshold: [0, 0.5] });
+    const unsubscribe = subscribeConsentChanges((state) => {
+      if (state.analytics) void attemptTrack();
+    });
+    observer.observe(section);
+    return () => {
+      observer.disconnect();
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     const syncOfferWithHash = () => setActiveOffer(resolveOfferKindFromHash(window.location.hash));
@@ -462,7 +499,7 @@ export default function WebStartPage() {
         <div className="section-shell faq-layout">
           <h2>{text.faq.title}</h2>
           <div className="faq-list">
-            {text.faq.items.map(([question, answer]) => (
+            {faqItems.map(([question, answer]) => (
               <details key={question}>
                 <summary>{question}<span aria-hidden="true">+</span></summary>
                 <p>{answer}</p>
@@ -487,7 +524,7 @@ export default function WebStartPage() {
         offerName={selection?.offerName ?? offer.buildPackages[0].name}
         priceLabel={selection?.priceLabel ?? formatOfferPriceLabel(offer.buildPackages[0], lang)}
       />
-      <SiteFooter copy={chrome} homeLink={false} />
+      <SiteFooter copy={chrome} lang={lang} homeLink={false} />
     </main>
   );
 }

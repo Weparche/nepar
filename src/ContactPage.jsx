@@ -3,7 +3,11 @@ import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, ImagePlus, Mail, MapPin, Send, X } from "lucide-react";
 import { Background, Navbar, siteContent } from "./SiteChrome.jsx";
+import { ConsentSettingsLink } from "./ConsentManager.jsx";
+import { trackEvent } from "./analytics.js";
+import { usePageMeta } from "./usePageMeta.js";
 
+/** @type {[number, number, number, number]} */
 const easeOut = [0.23, 1, 0.32, 1];
 
 const contactContent = {
@@ -104,6 +108,9 @@ export default function ContactPage() {
   const [file, setFile] = useState(null);
   const [dragging, setDragging] = useState(false);
   const fileRef = useRef(null);
+  const leadStartedRef = useRef(false);
+
+  usePageMeta("/kontakt", lang);
 
   const WORKER_URL = import.meta.env.VITE_WORKER_URL || null;
 
@@ -119,6 +126,12 @@ export default function ContactPage() {
     handleFile(e.dataTransfer.files[0]);
   }
 
+  function trackLeadStart() {
+    if (leadStartedRef.current) return;
+    leadStartedRef.current = true;
+    trackEvent("start_lead", { form_name: "contact" });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setSending(true);
@@ -131,13 +144,14 @@ export default function ContactPage() {
       imageName = file.name;
       image = await new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.onload = () => resolve(typeof reader.result === "string" ? reader.result.split(",")[1] : null);
         reader.readAsDataURL(file);
       });
     }
 
     if (!WORKER_URL) {
       const body = `Ime: ${name}\nE-mail: ${email}\nTema: ${subject}\n\nPoruka:\n${message}`;
+      trackEvent("click_email", { form_name: "contact", link_location: "form_fallback" });
       window.location.href = `mailto:nepar@nepar.hr?subject=${encodeURIComponent(subject || "Upit s web stranice")}&body=${encodeURIComponent(body)}`;
       setSending(false);
       setSubmitted(true);
@@ -151,6 +165,7 @@ export default function ContactPage() {
         body: JSON.stringify({ name, email, subject, message, image, imageName }),
       });
       if (!res.ok) throw new Error("send_failed");
+      trackEvent("generate_lead", { form_name: "contact" });
       setSubmitted(true);
     } catch {
       setSendError(lang === "hr" ? "Slanje nije uspjelo. Pokušajte ponovo ili pišite direktno na nepar@nepar.hr." : "Failed to send. Please try again or email nepar@nepar.hr directly.");
@@ -215,7 +230,7 @@ export default function ContactPage() {
                 </button>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="relative grid gap-5">
+              <form onSubmit={handleSubmit} onChangeCapture={trackLeadStart} className="relative grid gap-5">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="flex flex-col gap-2">
                     <label htmlFor="contact-name" className="text-sm font-medium text-slate-700">{copy.form.name}</label>
@@ -371,11 +386,12 @@ export default function ContactPage() {
               ))}
             </div>
             <p className="contact-process-eyebrow">{copy.processEyebrow}</p>
+            <h2 className="sr-only">{copy.processEyebrow}</h2>
             <ol className="contact-process">
               {copy.process.map(([step, title, description]) => (
                 <li key={step}>
                   <span>{step}</span>
-                  <div><h2>{title}</h2><p>{description}</p></div>
+                  <div><h3>{title}</h3><p>{description}</p></div>
                 </li>
               ))}
             </ol>
@@ -410,9 +426,11 @@ export default function ContactPage() {
             </div>
             <div className="flex flex-col items-center justify-between gap-2 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
               <p>{navCopy.footer.copyright}</p>
-              <a href="/" className="transition hover:text-slate-900">
-                {copy.form.backHome}
-              </a>
+              <div className="footer-utility-links">
+                <a href="/privatnost">{lang === "hr" ? "Privatnost" : "Privacy"}</a>
+                <ConsentSettingsLink lang={lang} />
+                <a href="/" className="transition hover:text-slate-900">{copy.form.backHome}</a>
+              </div>
             </div>
           </div>
         </div>

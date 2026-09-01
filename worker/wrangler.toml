@@ -2,6 +2,9 @@ name = "nepar-contact"
 main = "index.js"
 compatibility_date = "2026-06-08"
 
+[vars]
+KIDS_EMAIL_FROM = "NEPAR Kids <orders@kids.nepar.hr>"
+
 # Secrets:
 # wrangler secret put RESEND_API_KEY
 # wrangler secret put ADMIN_USER

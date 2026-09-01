@@ -1,5 +1,6 @@
 import { NJAMKO_MODES_LIST } from "./data/njamkoLevels.js";
 import { assetPath } from "./assetPath.js";
+import { ConsentSettingsLink } from "../ConsentManager.jsx";
 
 const MODE_CARD_BACKGROUNDS = {
   food: "/assets/modes/food.webp",
@@ -84,6 +85,10 @@ export default function ModeSelect({ onSelectMode, onStartCampaign, onBack }) {
       >
         Natrag na home
       </button>
+      <footer className="nj-privacy-links">
+        <a href="/privatnost">Privatnost</a>
+        <ConsentSettingsLink lang="hr" />
+      </footer>
     </div>
   );
 }

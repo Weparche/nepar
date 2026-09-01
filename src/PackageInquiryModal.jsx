@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Send, X } from "lucide-react";
+import { trackEvent } from "./analytics.js";
 
 const copy = {
   hr: {
@@ -46,6 +47,7 @@ export default function PackageInquiryModal({ open, onClose, lang = "hr", offerK
   const dialogRef = useRef(null);
   const firstFieldRef = useRef(null);
   const returnFocusRef = useRef(null);
+  const leadStartedRef = useRef(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -79,6 +81,16 @@ export default function PackageInquiryModal({ open, onClose, lang = "hr", offerK
     if (returnFocusRef.current instanceof HTMLElement) returnFocusRef.current.focus();
   }
 
+  function trackLeadStart() {
+    if (leadStartedRef.current) return;
+    leadStartedRef.current = true;
+    trackEvent("start_lead", {
+      form_name: "package_inquiry",
+      offer_kind: offerKind,
+      offer_name: offerName,
+    });
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
     setSending(true);
@@ -98,6 +110,12 @@ export default function PackageInquiryModal({ open, onClose, lang = "hr", offerK
     ].join("\n");
 
     if (!WORKER_URL) {
+      trackEvent("click_email", {
+        form_name: "package_inquiry",
+        offer_kind: offerKind,
+        offer_name: offerName,
+        link_location: "form_fallback",
+      });
       window.location.href = `mailto:nepar@nepar.hr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
       setSending(false);
       setSubmitted(true);
@@ -111,6 +129,11 @@ export default function PackageInquiryModal({ open, onClose, lang = "hr", offerK
         body: JSON.stringify({ name, email, subject, message: bodyText }),
       });
       if (!response.ok) throw new Error("send_failed");
+      trackEvent("generate_lead", {
+        form_name: "package_inquiry",
+        offer_kind: offerKind,
+        offer_name: offerName,
+      });
       setSubmitted(true);
     } catch {
       setSendError(text.error);
@@ -149,7 +172,7 @@ export default function PackageInquiryModal({ open, onClose, lang = "hr", offerK
               <button type="button" className="button button-secondary" onClick={closeDialog}>{text.close}</button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="inquiry-form">
+            <form onSubmit={handleSubmit} onChangeCapture={trackLeadStart} className="inquiry-form">
               <label htmlFor="inquiry-name">{text.name}</label>
               <input ref={firstFieldRef} id="inquiry-name" type="text" required value={name} onChange={(event) => setName(event.target.value)} placeholder={text.namePlaceholder} />
               <label htmlFor="inquiry-email">{text.email}</label>

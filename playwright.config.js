@@ -16,6 +16,11 @@ export default defineConfig({
   webServer: {
     command: `npm run build && npm run preview -- --host 127.0.0.1 --port ${previewPort}`,
     url: `http://127.0.0.1:${previewPort}`,
+    env: {
+      ...process.env,
+      VITE_GA_MEASUREMENT_ID: "G-NEPARTEST1",
+      VITE_WORKER_URL: "https://analytics.nepar.test",
+    },
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

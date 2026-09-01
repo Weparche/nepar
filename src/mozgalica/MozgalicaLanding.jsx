@@ -3,6 +3,7 @@ import { MozgalicaLogo } from "./MozgalicaLogo.jsx";
 import HowToPlay from "./HowToPlay.jsx";
 import { DEMO_CHALLENGE, getMockupItems } from "./puzzle.js";
 import PuzzlePicker from "./PuzzlePicker.jsx";
+import { ConsentSettingsLink } from "../ConsentManager.jsx";
 
 const NAV_LINKS = [
   ["Kako se igra", "kako-se-igra"],
@@ -220,9 +221,9 @@ function LandingContent({
             <a href="#kako-se-igra">O igri</a>
             <a href="#kako-se-igra">Pravila</a>
             <a href="mailto:nepar@nepar.hr">Kontakt</a>
-            <a href="/">Privatnost</a>
+            <a href="/privatnost">Privatnost</a>
             <a href="/">Uvjeti korištenja</a>
-            <a href="/">Kolačići</a>
+            <ConsentSettingsLink lang="hr" />
           </nav>
           <p className="mz-footer__copy">© 2026 Dnevne Asocijacije · nepar.hr</p>
         </div>

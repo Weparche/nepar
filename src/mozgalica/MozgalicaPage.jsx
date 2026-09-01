@@ -23,8 +23,6 @@ import {
 import "./mozgalica.css";
 
 const PLAYER_NAME_KEY = "mozgalica-player-name";
-const MOZGALICA_WOMEN_META_DESCRIPTION =
-  "Mozgalica za žene 40+. Poveži pojmove iz šminke, njege, doma, čišćenja i wellnessa u 4 skrivene grupe.";
 const MOZGALICA_META_DESCRIPTION =
   "Poveži 16 pojmova u 4 skrivene grupe. Odaberi temu, riješi asocijacije i izazovi prijatelja.";
 
@@ -45,15 +43,7 @@ function writePlayerName(name) {
 }
 
 export default function MozgalicaPage() {
-  usePageMeta({
-    title: "Mozgalica za žene 40+ | Dnevne Asocijacije",
-    description: MOZGALICA_WOMEN_META_DESCRIPTION,
-    path: "/mozgalica",
-    image: "/brand/og-mozgalica.png",
-    imageAlt: "Dnevne Asocijacije - Mozgalica na nepar.hr",
-    imageWidth: 1200,
-    imageHeight: 630,
-  });
+  usePageMeta("/mozgalica", "hr");
 
   const [screen, setScreen] = useState("landing");
   const [menuOpen, setMenuOpen] = useState(false);

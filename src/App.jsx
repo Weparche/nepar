@@ -31,12 +31,15 @@ import {
 } from "lucide-react";
 import OrbitalProjectCarousel from "./OrbitalProjectCarousel.jsx";
 import ComputerEvolutionIntro from "./ComputerEvolutionIntro.jsx";
-import { trackPageView } from "./analytics.js";
+import ConsentManager, { ConsentSettingsLink } from "./ConsentManager.jsx";
+import { subscribeConsentChanges, trackPageView } from "./analytics.js";
+import { usePageMeta } from "./usePageMeta.js";
 import "./legacyLanding.css";
 
 const ContactPage = lazy(() => import("./ContactPage.jsx"));
 const AdminPage = lazy(() => import("./AdminPage.jsx"));
 const WebStartPage = lazy(() => import("./WebStartPage.jsx"));
+const PrivacyPage = lazy(() => import("./PrivacyPage.jsx"));
 const MozgalicaPage = lazy(() => import("./mozgalica/MozgalicaPage.jsx"));
 const NjamkoPage = lazy(() => import("./njamko/NjamkoPage.jsx"));
 
@@ -70,7 +73,7 @@ const content = {
     navLinks: [
       ["Projekti", "#projekti"],
       ["Usluge", "#usluge"],
-      ["Cjenik", "/usluge/web-stranica-bez-pocetnog-troska#paketi", BadgeEuro],
+      ["Cjenik", "/usluge/izrada-web-stranica#paketi", BadgeEuro],
       ["O nama", "#onama"],
       ["Kontakt", "/kontakt", Mail],
     ],
@@ -276,7 +279,7 @@ const content = {
     navLinks: [
       ["Projects", "#projekti"],
       ["Services", "#usluge"],
-      ["Pricing", "/usluge/web-stranica-bez-pocetnog-troska#paketi", BadgeEuro],
+      ["Pricing", "/usluge/izrada-web-stranica#paketi", BadgeEuro],
       ["About us", "#onama"],
       ["Contact", "/kontakt", Mail],
     ],
@@ -858,6 +861,7 @@ const HERO_MEDIA = {
 };
 
 function Hero({ copy, lang }) {
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
   const reduceMotion = useReducedMotion();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const sectionRef = useRef(null);
@@ -1036,16 +1040,18 @@ function Hero({ copy, lang }) {
             {copy.hero.description}
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 14, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ ...quickRevealTransition, delay: 0.2 }}
-            className="sm:mt-2 lg:hidden"
-            data-testid="mobile-project-carousel"
-          >
-            {/* Mobile project label intentionally hidden; keep the carousel itself visible. */}
-            <OrbitalProjectCarousel lang={lang} />
-          </motion.div>
+          {!isDesktop && (
+            <motion.div
+              initial={{ opacity: 0, y: 14, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ ...quickRevealTransition, delay: 0.2 }}
+              className="sm:mt-2"
+              data-testid="mobile-project-carousel"
+            >
+              <h2 className="sr-only">{copy.hero.mobileProjects}</h2>
+              <OrbitalProjectCarousel lang={lang} />
+            </motion.div>
+          )}
 
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -1081,9 +1087,12 @@ function Hero({ copy, lang }) {
           </motion.div>
         </motion.div>
 
-        <div className="hidden min-w-0 lg:block">
-          <OrbitalProjectCarousel lang={lang} />
-        </div>
+        {isDesktop && (
+          <div className="min-w-0">
+            <h2 className="sr-only">{copy.hero.mobileProjects}</h2>
+            <OrbitalProjectCarousel lang={lang} />
+          </div>
+        )}
       </div>
     </section>
   );
@@ -1455,17 +1464,11 @@ function HomePage() {
   const [lang, setLang] = useState("hr");
   const [showEvolutionIntro, setShowEvolutionIntro] = useState(false);
   const copy = content[lang];
+  usePageMeta("/", lang);
 
   const completeEvolutionIntro = useCallback(() => {
     setShowEvolutionIntro(false);
   }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = lang === "en" ? "en" : "hr";
-    return () => {
-      document.documentElement.lang = "hr";
-    };
-  }, [lang]);
 
   return (
     <>
@@ -1515,9 +1518,11 @@ function HomePage() {
             </div>
             <div className="flex flex-col items-center justify-between gap-2 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
               <p>{copy.footer.copyright}</p>
-              <a href="#top" className="transition hover:text-slate-900">
-                {copy.footer.top}
-              </a>
+              <div className="footer-utility-links">
+                <Link to="/privatnost">{lang === "hr" ? "Privatnost" : "Privacy"}</Link>
+                <ConsentSettingsLink lang={lang} />
+                <a href="#top" className="transition hover:text-slate-900">{copy.footer.top}</a>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -1579,18 +1584,26 @@ function ScrollToTop() {
 }
 
 function PageViewTracker() {
-  const { pathname, search } = useLocation();
+  const { pathname, key } = useLocation();
 
   useEffect(() => {
+    const sendCurrentPageView = () => trackPageView({
+      path: pathname,
+      title: document.title,
+      navigationKey: key,
+    });
     const timer = window.setTimeout(() => {
-      trackPageView({
-        path: `${pathname}${search}`,
-        title: document.title,
-      });
+      void sendCurrentPageView();
     }, 250);
+    const unsubscribe = subscribeConsentChanges((state) => {
+      if (state.analytics) void sendCurrentPageView();
+    });
 
-    return () => window.clearTimeout(timer);
-  }, [pathname, search]);
+    return () => {
+      window.clearTimeout(timer);
+      unsubscribe();
+    };
+  }, [key, pathname]);
 
   return null;
 }
@@ -1604,6 +1617,20 @@ function RouteFallback() {
   return <div className="route-fallback" role="status" aria-live="polite">Učitavanje…</div>;
 }
 
+function NotFoundPage() {
+  usePageMeta("/404", "hr");
+  return (
+    <main className="not-found-page">
+      <div>
+        <p>404</p>
+        <h1>Stranica nije pronađena.</h1>
+        <span>Provjerite adresu ili se vratite na naslovnicu.</span>
+        <Link to="/" className="button button-primary">Natrag na naslovnicu</Link>
+      </div>
+    </main>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -1613,13 +1640,16 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/kontakt" element={<ContactPage />} />
+          <Route path="/privatnost" element={<PrivacyPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/usluge/izrada-web-stranica" element={<WebStartPage />} />
           <Route path="/usluge/web-stranica-bez-pocetnog-troska" element={<LegacyWebRedirect />} />
           <Route path="/mozgalica" element={<MozgalicaPage />} />
           <Route path="/njamko" element={<NjamkoPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
+      <ConsentManager />
     </BrowserRouter>
   );
 }

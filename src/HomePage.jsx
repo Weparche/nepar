@@ -313,7 +313,7 @@ export default function HomePage() {
   const chrome = siteContent[lang];
   const offer = webOfferContent[lang];
 
-  usePageMeta({ title: text.meta.title, description: text.meta.description, path: "/", canonicalPath: "/" });
+  usePageMeta("/", lang);
 
   return (
     <main className="site-main" data-testid="landing-page">
@@ -337,7 +337,7 @@ export default function HomePage() {
           <MotionButton href="/kontakt">{text.final.cta}<ArrowRight aria-hidden="true" size={18} /></MotionButton>
         </div>
       </section>
-      <SiteFooter copy={chrome} />
+      <SiteFooter copy={chrome} lang={lang} />
     </main>
   );
 }

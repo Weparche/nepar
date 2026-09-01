@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowUpRight, Mail, Menu, Send, X } from "lucide-react";
+import { ConsentSettingsLink } from "./ConsentManager.jsx";
 
 export const siteContent = {
   hr: {
@@ -198,7 +199,7 @@ export function Background() {
   );
 }
 
-export function SiteFooter({ copy, homeLink = true }) {
+export function SiteFooter({ copy, homeLink = true, lang = "hr" }) {
   return (
     <footer className="site-footer">
       <div className="section-shell">
@@ -219,7 +220,11 @@ export function SiteFooter({ copy, homeLink = true }) {
         </div>
         <div className="footer-bottom">
           <p>{copy.footer.copyright}</p>
-          <a href={homeLink ? "#top" : "/"}>{copy.footer.top}</a>
+          <div className="footer-utility-links">
+            <Link to="/privatnost">{lang === "hr" ? "Privatnost" : "Privacy"}</Link>
+            <ConsentSettingsLink lang={lang} />
+            <a href={homeLink ? "#top" : "/"}>{copy.footer.top}</a>
+          </div>
         </div>
       </div>
     </footer>

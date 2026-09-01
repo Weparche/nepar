@@ -22,6 +22,11 @@
     "src/SiteChrome.jsx",
     "src/WebStartPage.jsx",
     "src/PackageInquiryModal.jsx",
+    "src/ContactPage.jsx",
+    "src/ConsentManager.jsx",
+    "src/PrivacyPage.jsx",
+    "src/analytics.js",
+    "src/seoConfig.js",
     "src/usePageMeta.js",
     "src/webOfferContent.js"
   ]

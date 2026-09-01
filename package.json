@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "lint": "eslint src/App.jsx src/ComputerEvolutionIntro.jsx src/HomePage.jsx src/SiteChrome.jsx src/WebStartPage.jsx src/PackageInquiryModal.jsx src/usePageMeta.js src/webOfferContent.js e2e/web-offer.spec.js",
+    "lint": "eslint src/App.jsx src/ComputerEvolutionIntro.jsx src/HomePage.jsx src/SiteChrome.jsx src/WebStartPage.jsx src/PackageInquiryModal.jsx src/ContactPage.jsx src/ConsentManager.jsx src/PrivacyPage.jsx src/analytics.js src/seoConfig.js src/usePageMeta.js src/webOfferContent.js e2e/web-offer.spec.js e2e/analytics-consent.spec.js",
     "typecheck": "tsc -p tsconfig.marketing.json --noEmit",
     "build": "vite build && node scripts/verify-dist.js",
     "preview": "vite preview",
     "render:hero": "node scripts/render-signal-horizon.mjs",
     "fetch:njamko-sounds": "node scripts/fetch-njamko-sounds.js",
     "test:e2e": "playwright test",
-    "test:e2e:update": "playwright test --update-snapshots"
+    "test:e2e:update": "playwright test --update-snapshots",
+    "test:worker": "node --test worker/analytics.test.js"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

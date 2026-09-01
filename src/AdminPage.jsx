@@ -157,11 +157,7 @@ export default function AdminPage() {
   const [resetting, setResetting] = useState(false);
   const [ownerDeviceEnabled, setOwnerDeviceEnabled] = useState(isOwnerDevice);
 
-  usePageMeta({
-    title: "Admin | Nepar",
-    description: "Privatna Nepar administracija.",
-    path: "/admin",
-  });
+  usePageMeta("/admin", "hr");
 
   const topPages = summary?.pages || [];
   const sources = summary?.sources || [];

@@ -1183,6 +1183,16 @@
   font-size: 1.75rem;
 }
 
+.mz-footer__links .consent-settings-link {
+  color: #aaa;
+  font-family: inherit;
+  font-size: 0.8125rem;
+}
+
+.mz-footer__links .consent-settings-link:hover {
+  color: #fff;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mz-game-complete {
     scroll-margin-top: 5.5rem;

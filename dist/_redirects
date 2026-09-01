@@ -1,4 +1,9 @@
 /usluge/web-stranica-bez-pocetnog-troska /usluge/izrada-web-stranica 301
+/kontakt/ /kontakt 301
+/privatnost/ /privatnost 301
+/usluge/izrada-web-stranica/ /usluge/izrada-web-stranica 301
+/mozgalica/ /mozgalica 301
+/njamko/ /njamko 301
+/admin/ /admin 301
 /fabela /fabela/ 301
 /fabela/* /fabela/:splat 200
-/* /index.html 200

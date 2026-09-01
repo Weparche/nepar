@@ -2696,6 +2696,20 @@
   }
 }
 
+.nj-privacy-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.nj-privacy-links a,
+.nj-privacy-links .consent-settings-link {
+  color: #475569;
+  font-family: inherit;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nj-counting-shell__sparkle {
     animation: none;

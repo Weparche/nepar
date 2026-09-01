@@ -1,34 +1,17 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import {
+  getSeoPage,
+  getStructuredData,
+  SITE_URL,
+  SITEMAP_PATHS,
+  STATIC_HTML_PATHS,
+} from "./src/seoConfig.js";
 
-const DEFAULT_SOCIAL = {
-  title: "Izrada modernih i SEO optimiziranih web-stranica | Nepar",
-  description:
-    "Nepar izrađuje moderne, brze i SEO optimizirane web-stranice za obrte i tvrtke, uz jasne jednokratne cijene i opcionalno održavanje.",
-  path: "/",
-  imagePath: "/brand/web-app-manifest-512x512.png",
-  imageAlt: "Nepar Solutions",
-  imageWidth: 512,
-  imageHeight: 512,
-};
-
-const DEFAULT_SITE_URL = "https://nepar.hr";
-
-const MOZGALICA_SOCIAL = {
-  title: "Dnevne Asocijacije | Mozgalica",
-  description:
-    "Poveži 16 pojmova u 4 skrivene grupe. Odaberi temu, riješi asocijacije i izazovi prijatelja.",
-  path: "/mozgalica",
-  imagePath: "/brand/og-mozgalica.png",
-  imageAlt: "Dnevne Asocijacije - Mozgalica na nepar.hr",
-  imageWidth: 1200,
-  imageHeight: 630,
-};
-
-/** Static HTML sites in public/ (currently served at /fabela/). */
+/** Static HTML sites copied from public/ and served from a subdirectory. */
 const PUBLIC_STATIC_SITES = ["fabela"];
 
 function escapeAttr(value) {
@@ -41,17 +24,25 @@ function escapeAttr(value) {
 
 function absoluteUrl(siteUrl, path) {
   if (/^https?:\/\//i.test(path)) return path;
-  return siteUrl ? `${siteUrl}${path}` : path;
+  if (path === "/") return `${siteUrl}/`;
+  return `${siteUrl}${path}`;
 }
 
-function renderSocialMeta(page, siteUrl) {
-  const url = absoluteUrl(siteUrl, page.path);
-  const image = absoluteUrl(siteUrl, page.imagePath);
+function safeJson(value) {
+  return JSON.stringify(value).replaceAll("<", "\\u003c");
+}
 
-  return `<!-- social-meta:start -->
+function renderSeoHead(page, siteUrl) {
+  const canonical = page.canonicalPath ? absoluteUrl(siteUrl, page.canonicalPath) : "";
+  const image = absoluteUrl(siteUrl, page.image);
+  const schema = getStructuredData(page.path);
+
+  return `<!-- seo-meta:start -->
+    <meta name="robots" content="${escapeAttr(page.robots)}" />
+    ${canonical ? `<link rel="canonical" href="${escapeAttr(canonical)}" />` : ""}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Nepar Solutions" />
-    <meta property="og:url" content="${escapeAttr(url)}" />
+    <meta property="og:url" content="${escapeAttr(canonical || absoluteUrl(siteUrl, page.path))}" />
     <meta property="og:title" content="${escapeAttr(page.title)}" />
     <meta property="og:description" content="${escapeAttr(page.description)}" />
     <meta property="og:image" content="${escapeAttr(image)}" />
@@ -66,27 +57,40 @@ function renderSocialMeta(page, siteUrl) {
     <meta name="twitter:description" content="${escapeAttr(page.description)}" />
     <meta name="twitter:image" content="${escapeAttr(image)}" />
     <meta name="twitter:image:alt" content="${escapeAttr(page.imageAlt)}" />
-    <!-- social-meta:end -->`;
+    ${schema ? `<script type="application/ld+json" data-nepar-schema>${safeJson(schema)}</script>` : ""}
+    <!-- seo-meta:end -->`.replace(/[ \t]+$/gm, "");
 }
 
 function applyTemplateMeta(html, page, siteUrl) {
   return html
     .replaceAll("%PAGE_TITLE%", escapeAttr(page.title))
     .replaceAll("%PAGE_DESCRIPTION%", escapeAttr(page.description))
-    .replace("%SOCIAL_META%", renderSocialMeta(page, siteUrl));
+    .replace("%SOCIAL_META%", renderSeoHead(page, siteUrl));
 }
 
 function replaceBuiltMeta(html, page, siteUrl) {
   return html
+    .replace(/<html\s+lang="[^"]*"/, `<html lang="${page.lang}"`)
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeAttr(page.title)}</title>`)
     .replace(
       /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
       `<meta name="description" content="${escapeAttr(page.description)}" />`,
     )
     .replace(
-      /<!-- social-meta:start -->[\s\S]*?<!-- social-meta:end -->/,
-      renderSocialMeta(page, siteUrl),
+      /<!-- seo-meta:start -->[\s\S]*?<!-- seo-meta:end -->/,
+      renderSeoHead(page, siteUrl),
     );
+}
+
+function routeOutputPath(outDir, routePath) {
+  if (routePath === "/") return resolve(outDir, "index.html");
+  if (routePath === "/404") return resolve(outDir, "404.html");
+  return resolve(outDir, `${routePath.slice(1)}.html`);
+}
+
+function renderSitemap(siteUrl) {
+  const urls = SITEMAP_PATHS.map((path) => `  <url><loc>${escapeAttr(absoluteUrl(siteUrl, path))}</loc></url>`).join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
 function publicStaticSitesPlugin() {
@@ -96,7 +100,7 @@ function publicStaticSitesPlugin() {
       server.middlewares.use((req, res, next) => {
         const rawUrl = req.url ?? "";
         const pathname = rawUrl.split("?")[0]?.split("#")[0] ?? "";
-        const search = rawUrl.includes("?") ? "?" + rawUrl.split("?")[1].split("#")[0] : "";
+        const search = rawUrl.includes("?") ? `?${rawUrl.split("?")[1].split("#")[0]}` : "";
 
         for (const site of PUBLIC_STATIC_SITES) {
           if (pathname === `/${site}`) {
@@ -115,37 +119,44 @@ function publicStaticSitesPlugin() {
   };
 }
 
+function routeSeoPlugin(siteUrl) {
+  return {
+    name: "route-seo",
+    transformIndexHtml(html) {
+      return applyTemplateMeta(html, getSeoPage("/", "hr"), siteUrl);
+    },
+    writeBundle(outputOptions) {
+      const outDir = outputOptions.dir ?? "dist";
+      const indexPath = resolve(outDir, "index.html");
+      const indexHtml = readFileSync(indexPath, "utf8");
+
+      for (const routePath of STATIC_HTML_PATHS) {
+        const page = getSeoPage(routePath, "hr");
+        const outputPath = routeOutputPath(outDir, routePath);
+        mkdirSync(dirname(outputPath), { recursive: true });
+        writeFileSync(outputPath, replaceBuiltMeta(indexHtml, page, siteUrl), "utf8");
+      }
+
+      writeFileSync(resolve(outDir, "sitemap.xml"), renderSitemap(siteUrl), "utf8");
+      writeFileSync(
+        resolve(outDir, "robots.txt"),
+        `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`,
+        "utf8",
+      );
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const siteUrl = (env.VITE_SITE_URL || DEFAULT_SITE_URL).replace(/\/$/, "");
+  const siteUrl = (env.VITE_SITE_URL || SITE_URL).replace(/\/$/, "");
 
   return {
     plugins: [
       react(),
       tailwindcss(),
       publicStaticSitesPlugin(),
-      {
-        name: "html-social-meta",
-        transformIndexHtml(html) {
-          return applyTemplateMeta(html, DEFAULT_SOCIAL, siteUrl);
-        },
-        writeBundle(outputOptions) {
-          const outDir = outputOptions.dir ?? "dist";
-          const indexPath = resolve(outDir, "index.html");
-          const mozgalicaPath = resolve(outDir, "mozgalica.html");
-          const indexHtml = readFileSync(indexPath, "utf8");
-          writeFileSync(
-            mozgalicaPath,
-            replaceBuiltMeta(indexHtml, MOZGALICA_SOCIAL, siteUrl),
-            "utf8",
-          );
-          // Windows + some hosts treat dist/mozgalica/ as a static route and loop redirects.
-          const mozgalicaDir = resolve(outDir, "mozgalica");
-          if (existsSync(mozgalicaDir)) {
-            rmSync(mozgalicaDir, { recursive: true, force: true });
-          }
-        },
-      },
+      routeSeoPlugin(siteUrl),
     ],
   };
 });

@@ -4,6 +4,7 @@ const ALLOWED_ORIGINS = [
   "http://localhost:5173",
   "http://localhost:4173",
 ];
+const ANALYTICS_RETENTION_MONTHS = 14;
 
 function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
@@ -22,7 +23,82 @@ function json(data, status, origin) {
   });
 }
 
-function normalizePath(value) {
+function internalTokenMatches(request, env) {
+  const expected = typeof env.KIDS_SERVICE_TOKEN === "string" ? env.KIDS_SERVICE_TOKEN : "";
+  const supplied = request.headers.get("X-Nepar-Internal-Token") || "";
+  if (!expected || !supplied || expected.length !== supplied.length) return false;
+  let mismatch = 0;
+  for (let index = 0; index < expected.length; index += 1) {
+    mismatch |= expected.charCodeAt(index) ^ supplied.charCodeAt(index);
+  }
+  return mismatch === 0;
+}
+
+async function parseInternalJson(request, maxBytes = 120000) {
+  const contentLength = Number(request.headers.get("Content-Length") || "0");
+  if (contentLength > maxBytes) return null;
+  try {
+    const body = await request.text();
+    if (new TextEncoder().encode(body).byteLength > maxBytes) return null;
+    return JSON.parse(body);
+  } catch {
+    return null;
+  }
+}
+
+async function handleKidsOpenAI(request, env, origin) {
+  if (!internalTokenMatches(request, env)) return json({ error: "Unauthorized" }, 401, origin);
+  const body = await parseInternalJson(request);
+  if (!body || typeof body !== "object" || Array.isArray(body)) return json({ error: "Invalid JSON" }, 400, origin);
+  if (!env.OPENAI_API_KEY) return json({ error: "OpenAI is not configured" }, 503, origin);
+
+  const response = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.OPENAI_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  const responseBody = await response.text();
+  return new Response(responseBody, {
+    status: response.status,
+    headers: { "Content-Type": response.headers.get("Content-Type") || "application/json" },
+  });
+}
+
+async function handleKidsEmail(request, env, origin) {
+  if (!internalTokenMatches(request, env)) return json({ error: "Unauthorized" }, 401, origin);
+  if (!env.RESEND_API_KEY) return json({ error: "Resend is not configured" }, 503, origin);
+  const body = await parseInternalJson(request, 180000);
+  if (!body || typeof body !== "object" || Array.isArray(body)) return json({ error: "Invalid JSON" }, 400, origin);
+  const to = Array.isArray(body.to) ? body.to.filter((value) => typeof value === "string" && value.length <= 240) : [];
+  const subject = typeof body.subject === "string" ? body.subject.slice(0, 240) : "";
+  const html = typeof body.html === "string" ? body.html.slice(0, 160000) : "";
+  if (!to.length || !subject || !html) return json({ error: "Invalid email payload" }, 400, origin);
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY || ""}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: env.KIDS_EMAIL_FROM || "NEPAR Kids <orders@kids.nepar.hr>",
+      to,
+      ...(typeof body.reply_to === "string" && body.reply_to ? { reply_to: body.reply_to.slice(0, 240) } : {}),
+      subject,
+      html,
+    }),
+  });
+  const responseBody = await response.text();
+  return new Response(responseBody || JSON.stringify({ ok: response.ok }), {
+    status: response.status,
+    headers: { "Content-Type": response.headers.get("Content-Type") || "application/json" },
+  });
+}
+
+export function normalizeAnalyticsPath(value) {
   if (typeof value !== "string") return "/";
   try {
     const url = value.startsWith("http")
@@ -32,6 +108,38 @@ function normalizePath(value) {
   } catch {
     return value.startsWith("/") ? value.split("?")[0].split("#")[0] : "/";
   }
+}
+
+export function normalizeAnalyticsReferrer(value) {
+  if (typeof value !== "string" || !value) return "";
+  try {
+    const url = new URL(value, "https://nepar.hr");
+    if (!/^https?:$/.test(url.protocol)) return "";
+    return `${url.origin}${url.pathname}`.slice(0, 240);
+  } catch {
+    return "";
+  }
+}
+
+export function addCalendarMonthsExpiration(value = new Date(), months = ANALYTICS_RETENTION_MONTHS) {
+  const source = value instanceof Date ? new Date(value.getTime()) : new Date(value);
+  if (Number.isNaN(source.getTime())) throw new TypeError("A valid date is required");
+
+  const totalMonths = source.getUTCFullYear() * 12 + source.getUTCMonth() + months;
+  const targetYear = Math.floor(totalMonths / 12);
+  const targetMonth = ((totalMonths % 12) + 12) % 12;
+  const lastDay = new Date(Date.UTC(targetYear, targetMonth + 1, 0)).getUTCDate();
+  const targetDay = Math.min(source.getUTCDate(), lastDay);
+  const target = new Date(Date.UTC(
+    targetYear,
+    targetMonth,
+    targetDay,
+    source.getUTCHours(),
+    source.getUTCMinutes(),
+    source.getUTCSeconds(),
+    source.getUTCMilliseconds(),
+  ));
+  return Math.floor(target.getTime() / 1000);
 }
 
 function analyticsKey(path) {
@@ -103,14 +211,10 @@ async function requireAdmin(request, env) {
   return userOk && passOk;
 }
 
-function todayIso() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-async function incrementStoredJson(kv, key, update) {
+async function incrementStoredJson(kv, key, update, options) {
   const current = await kv.get(key, "json");
   const next = update(current);
-  await kv.put(key, JSON.stringify(next));
+  await kv.put(key, JSON.stringify(next), options);
   return next;
 }
 
@@ -133,12 +237,23 @@ function sourceFromReferrer(referrer) {
   }
 }
 
-async function appendRecentEvent(kv, event) {
+async function appendRecentEvent(kv, event, expiration) {
   const key = "analytics:recent";
   const current = await kv.get(key, "json");
   const next = Array.isArray(current) ? current : [];
   next.unshift(event);
-  await kv.put(key, JSON.stringify(next.slice(0, 50)));
+  const nowSeconds = Math.floor(Date.now() / 1000);
+  const retained = next
+    .filter((item) => {
+      if (typeof item?.at !== "string") return false;
+      try {
+        return addCalendarMonthsExpiration(item?.at) > nowSeconds;
+      } catch {
+        return false;
+      }
+    })
+    .slice(0, 50);
+  await kv.put(key, JSON.stringify(retained), { expiration });
 }
 
 async function handlePageview(request, env, origin) {
@@ -152,22 +267,28 @@ async function handlePageview(request, env, origin) {
   } catch {
     return json({ error: "Invalid JSON" }, 400, origin);
   }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return json({ error: "Invalid JSON" }, 400, origin);
+  }
 
-  const path = normalizePath(body.path || body.url);
+  const path = normalizeAnalyticsPath(body.path || body.url);
   if (path === "/admin") {
     return json({ ok: true, skipped: true }, 200, origin);
   }
 
-  const now = new Date().toISOString();
-  const date = todayIso();
+  const nowDate = new Date();
+  const now = nowDate.toISOString();
+  const expiration = addCalendarMonthsExpiration(nowDate);
+  const date = now.slice(0, 10);
   const pageKey = analyticsKey(path);
   const dayKey = analyticsDayKey(date, path);
-  const referrer = typeof body.referrer === "string" ? body.referrer.slice(0, 240) : "";
+  const referrer = normalizeAnalyticsReferrer(body.referrer);
   const title = typeof body.title === "string" ? body.title.slice(0, 160) : "";
   const isOwner = body.ownerDevice === true;
   const ownerIncrement = isOwner ? 1 : 0;
   const visitorIncrement = isOwner ? 0 : 1;
-  const visitorId = typeof body.visitorId === "string" ? body.visitorId.slice(0, 80) : "";
+  const rawVisitorId = typeof body.visitorId === "string" ? body.visitorId.slice(0, 80) : "";
+  const visitorId = /^[a-f0-9-]{16,80}$/i.test(rawVisitorId) ? rawVisitorId : "";
   const device = normalizeDevice(body.device);
   const source = sourceFromReferrer(referrer);
 
@@ -191,7 +312,7 @@ async function handlePageview(request, env, origin) {
     total: (current?.total || 0) + 1,
     ownerTotal: (current?.ownerTotal || 0) + ownerIncrement,
     visitorTotal: (current?.visitorTotal || current?.otherTotal || 0) + visitorIncrement,
-  }));
+  }), { expiration });
   await incrementStoredJson(env.ANALYTICS, "analytics:meta", (current) => ({
     total: (current?.total || 0) + 1,
     sources: {
@@ -204,15 +325,15 @@ async function handlePageview(request, env, origin) {
     },
   }));
   if (visitorId) {
-    await env.ANALYTICS.put(analyticsVisitorKey(visitorId), JSON.stringify({
+    await incrementStoredJson(env.ANALYTICS, analyticsVisitorKey(visitorId), (current) => ({
       visitorId,
-      firstSeen: now,
+      firstSeen: current?.firstSeen || now,
       lastSeen: now,
-    }));
+    }), { expiration });
     await env.ANALYTICS.put(analyticsDayVisitorKey(date, visitorId), JSON.stringify({
       visitorId,
       date,
-    }));
+    }), { expiration });
   }
   await appendRecentEvent(env.ANALYTICS, {
     at: now,
@@ -222,7 +343,7 @@ async function handlePageview(request, env, origin) {
     source,
     device,
     owner: isOwner,
-  });
+  }, expiration);
   await addToIndex(env.ANALYTICS, "analytics:index:pages", path);
   await addToIndex(env.ANALYTICS, "analytics:index:days", `${date}|${path}`);
 
@@ -458,6 +579,14 @@ export default {
 
     if (url.pathname === "/analytics/reset" && request.method === "POST") {
       return handleAnalyticsReset(request, env, origin);
+    }
+
+    if (url.pathname === "/internal/kids/openai" && request.method === "POST") {
+      return handleKidsOpenAI(request, env, origin);
+    }
+
+    if (url.pathname === "/internal/kids/email" && request.method === "POST") {
+      return handleKidsEmail(request, env, origin);
     }
 
     return handleContact(request, env, origin);

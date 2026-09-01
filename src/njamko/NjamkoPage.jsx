@@ -42,12 +42,7 @@ function getInitialScreen() {
 }
 
 export default function NjamkoPage() {
-  usePageMeta({
-    title: "Njamko | Igraj, uči i otkrivaj životinje",
-    description:
-      "Jednostavna dječja edukativna mini-platforma za djecu 3+. Igraj igre sa životinjama, zvukovima, domovima, bebama i brojanjem.",
-    path: "/njamko",
-  });
+  usePageMeta("/njamko", "hr");
 
   const [screen, setScreen] = useState(getInitialScreen);
   const [activeModeId, setActiveModeId] = useState(null);

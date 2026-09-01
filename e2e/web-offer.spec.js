@@ -537,7 +537,7 @@ test("offer data keeps one recommendation per kind and redesign priced above new
 
 test("pricing shows new development, redesign migration, and optional annual maintenance", async ({ page }) => {
   await page.goto(servicePath);
-  await expect(page.getByRole("heading", { level: 1, name: "Web-stranica koja pripada vašem poslovanju." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Izrada web-stranica za obrte i tvrtke." })).toBeVisible();
   await expect(page.getByText("Održavanje nije obavezno", { exact: false }).first()).toBeVisible();
 
   for (const [name, price] of [["Web Basic", "300 €"], ["Web Business", "500 €"], ["Web Pro", "700 €"]]) {
