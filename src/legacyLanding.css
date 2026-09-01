@@ -210,7 +210,8 @@
 
 .featured-project-media {
   position: relative;
-  height: 54px;
+  height: auto;
+  aspect-ratio: 1 / 1;
   flex: 0 0 auto;
   overflow: hidden;
   border-bottom: 1px solid rgba(226, 232, 240, 0.95);
@@ -240,9 +241,6 @@
     gap: 0.65rem;
   }
 
-  .featured-project-media {
-    height: 82px;
-  }
 }
 
 @media (min-width: 900px) {
@@ -251,9 +249,6 @@
     gap: 0.75rem;
   }
 
-  .featured-project-media {
-    height: 96px;
-  }
 }
 
 @media (min-width: 1200px) {
@@ -261,9 +256,6 @@
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
-  .featured-project-media {
-    height: 108px;
-  }
 }
 
 .featured-project-media-image-center {
