@@ -1,0 +1,82 @@
+{
+  "slug": "fabela",
+  "businessName": "Fabela Demo",
+  "designSystemKey": "trade-local",
+  "generationVersion": "deterministic-v1",
+  "sourceUrl": "https://example.com/fabela",
+  "leadEmail": "kontakt@example.com",
+  "attachDomain": false,
+  "content": {
+    "brand": {
+      "name": "Fabela Demo",
+      "industry": "lokalni uslužni obrt",
+      "location": "Zagreb"
+    },
+    "contact": {
+      "phone": "+385 1 555 0100",
+      "email": "kontakt@example.com",
+      "website": "https://example.com/fabela"
+    },
+    "hero": {
+      "headline": "Fabela Demo. Jasno što radite i kako vas dobiti.",
+      "description": "Izravna prezentacija usluga i kontakt podataka za ljude koji trebaju brzo rješenje."
+    },
+    "primaryCta": {
+      "label": "Nazovite",
+      "href": "tel:+38515550100"
+    },
+    "secondaryCta": {
+      "label": "Pogledajte usluge",
+      "href": "#usluge"
+    },
+    "services": [
+      {
+        "title": "Dogovor termina",
+        "description": "Izravan kontakt za provjeru dostupnosti i opsega usluge.",
+        "sourceField": "fixture.services"
+      }
+    ],
+    "proofPoints": [
+      {
+        "value": "Zagreb",
+        "label": "Lokacija",
+        "sourceField": "fixture.location"
+      }
+    ],
+    "about": {
+      "title": "O poslovanju Fabela Demo",
+      "body": "Ovo je sintetički QA primjer i nije odobren za kontaktiranje stvarne tvrtke."
+    },
+    "sources": [
+      {
+        "field": "fixture.services",
+        "url": "https://example.com/fabela/services",
+        "note": "Sintetički izvor za automatizirani test.",
+        "verifiedAt": "2026-08-22T08:00:00.000Z"
+      },
+      {
+        "field": "fixture.location",
+        "url": "https://example.com/fabela/location",
+        "note": "Sintetički izvor za automatizirani test.",
+        "verifiedAt": "2026-08-22T08:00:00.000Z"
+      }
+    ],
+    "visual": {
+      "accent": "#2563eb",
+      "tone": "light",
+      "imagePosition": "center"
+    },
+    "assets": [],
+    "verifiedObservations": [
+      "Ovo je sintetički QA primjer."
+    ]
+  },
+  "outreach": {
+    "prospectName": "Fabela Demo",
+    "recipientEmail": "kontakt@example.com",
+    "verifiedObservations": [
+      "Ovo je sintetički QA primjer."
+    ],
+    "proposedServiceAngle": "Mobilno jasan kontakt bez automatskog slanja e-maila."
+  }
+}
