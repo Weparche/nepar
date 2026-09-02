@@ -1,0 +1,16 @@
+{
+  "baseUrl": "http://127.0.0.1:4173",
+  "referenceRoute": "/web",
+  "routes": [
+    {
+      "name": "web-acquisition",
+      "path": "/web",
+      "primaryAction": {
+        "label": "Zatraži ponudu",
+        "required": true,
+        "firstViewport": true
+      }
+    }
+  ],
+  "ignoreConsolePatterns": []
+}

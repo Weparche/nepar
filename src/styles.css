@@ -2374,6 +2374,31 @@ img {
   text-align: left;
 }
 
+.consent-panel--web:not(:has(.consent-categories)) {
+  width: min(560px, calc(100vw - 2rem));
+  padding: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 16%);
+}
+
+.consent-panel--web:not(:has(.consent-categories)) .consent-panel-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.consent-panel--web:not(:has(.consent-categories)) h2 {
+  font-size: 0.96rem;
+}
+
+.consent-panel--web:not(:has(.consent-categories)) .consent-panel-heading p {
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.consent-panel--web:not(:has(.consent-categories)) .consent-actions {
+  margin-top: 0.75rem;
+}
+
 .consent-panel-heading {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;

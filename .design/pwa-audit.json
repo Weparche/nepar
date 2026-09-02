@@ -1,0 +1,76 @@
+{
+  "createdAt": "2026-09-02T15:14:42.070Z",
+  "projectRoot": "C:\\Nepar",
+  "url": "http://127.0.0.1:4173/web",
+  "status": "FAIL",
+  "checks": [
+    {
+      "code": "page-load",
+      "status": "PASS",
+      "message": "Application loads"
+    },
+    {
+      "code": "manifest",
+      "status": "PASS",
+      "message": "Manifest loaded from http://127.0.0.1:4173/brand/site.webmanifest"
+    },
+    {
+      "code": "manifest-name",
+      "status": "PASS",
+      "message": "Manifest defines name/short_name"
+    },
+    {
+      "code": "prefer-related-applications",
+      "status": "PASS",
+      "message": "Related native applications are not preferred"
+    },
+    {
+      "code": "background-color",
+      "status": "PASS",
+      "message": "background_color: #ffffff"
+    },
+    {
+      "code": "manifest-theme-color",
+      "status": "PASS",
+      "message": "theme_color: #ffffff"
+    },
+    {
+      "code": "icon-192",
+      "status": "PASS",
+      "message": "192×192 application icon exists"
+    },
+    {
+      "code": "icon-512",
+      "status": "PASS",
+      "message": "512×512 application icon exists"
+    },
+    {
+      "code": "secure-context",
+      "status": "PASS",
+      "message": "Localhost development context is acceptable"
+    }
+  ],
+  "errors": [
+    {
+      "code": "start-url",
+      "status": "FAIL",
+      "message": "Manifest has no start_url"
+    },
+    {
+      "code": "display-mode",
+      "status": "FAIL",
+      "message": "Manifest must provide an app-like display mode"
+    },
+    {
+      "code": "html-theme-color",
+      "status": "FAIL",
+      "message": "No <meta name=\"theme-color\"> found"
+    },
+    {
+      "code": "service-worker",
+      "status": "FAIL",
+      "message": "No service worker registration found"
+    }
+  ],
+  "warnings": []
+}

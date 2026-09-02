@@ -4,6 +4,8 @@ import {
   addCalendarMonthsExpiration,
   normalizeAnalyticsPath,
   normalizeAnalyticsReferrer,
+  sanitizeAttribution,
+  sanitizeAttributionValue,
 } from "./index.js";
 import worker from "./index.js";
 
@@ -36,6 +38,71 @@ test("analytics paths and referrers discard query strings and hashes", () => {
     "https://google.com/search",
   );
   assert.equal(normalizeAnalyticsReferrer("mailto:someone@example.com"), "");
+});
+
+test("attribution trims controls, truncates known fields, ignores unknown fields, and pins web landing path", () => {
+  const longValue = `  chat\u0000gpt-${"x".repeat(200)}  `;
+  const sanitized = sanitizeAttributionValue(longValue);
+  assert.equal(sanitized.length, 160);
+  assert.ok(sanitized.startsWith("chatgpt-"));
+  assert.deepEqual(sanitizeAttribution({
+    utm_source: longValue,
+    utm_medium: " paid ",
+    utm_campaign: "web_hr",
+    utm_content: "hero-a",
+    utm_term: "izrada weba",
+    gclid: "must-not-leak",
+    landing_path: "/attacker-controlled",
+  }, "web_landing"), {
+    utm_source: sanitized,
+    utm_medium: "paid",
+    utm_campaign: "web_hr",
+    utm_content: "hero-a",
+    utm_term: "izrada weba",
+    landing_path: "/web",
+  });
+});
+
+test("web landing contact email includes escaped phone and authoritative attribution", async () => {
+  const originalFetch = globalThis.fetch;
+  let resendPayload;
+  globalThis.fetch = async (_url, options) => {
+    resendPayload = JSON.parse(options.body);
+    return new Response('{"id":"email-1"}', { status: 200, headers: { "Content-Type": "application/json" } });
+  };
+
+  try {
+    const response = await worker.fetch(new Request("https://worker.nepar.test/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Origin: "https://nepar.hr" },
+      body: JSON.stringify({
+        formName: "web_landing",
+        name: "Ana <script>",
+        email: "ana@example.com",
+        phone: "+385 91 123 4567",
+        subject: "Upit za novu web-stranicu",
+        message: "Trebam <strong>novi web</strong>.",
+        attribution: {
+          utm_source: " chatgpt ",
+          utm_medium: "paid",
+          utm_campaign: "web_hr",
+          unknown: "ignore-me",
+          landing_path: "/not-web",
+        },
+      }),
+    }), { RESEND_API_KEY: "test-key" });
+
+    assert.equal(response.status, 200);
+    assert.equal(resendPayload.reply_to, "ana@example.com");
+    assert.match(resendPayload.text, /Telefon: \+385 91 123 4567/);
+    assert.match(resendPayload.text, /landing_path: \/web/);
+    assert.doesNotMatch(resendPayload.text, /unknown:/);
+    assert.match(resendPayload.html, /Ana &lt;script&gt;/);
+    assert.match(resendPayload.html, /Trebam &lt;strong&gt;novi web&lt;\/strong&gt;\./);
+    assert.doesNotMatch(resendPayload.html, /<script>/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("pageview writes pseudonymous and daily KV records with absolute expiration", async () => {

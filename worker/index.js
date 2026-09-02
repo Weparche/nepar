@@ -5,6 +5,8 @@ const ALLOWED_ORIGINS = [
   "http://localhost:4173",
 ];
 const ANALYTICS_RETENTION_MONTHS = 14;
+const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f-\u009f]/g;
 
 function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
@@ -119,6 +121,41 @@ export function normalizeAnalyticsReferrer(value) {
   } catch {
     return "";
   }
+}
+
+export function sanitizeAttributionValue(value) {
+  if (typeof value !== "string") return "";
+  const withoutControls = [...value.trim()].filter((character) => {
+    const code = character.charCodeAt(0);
+    return code > 31 && (code < 127 || code > 159);
+  }).join("");
+  return withoutControls.slice(0, 160);
+}
+
+export function sanitizeAttribution(value, formName = "") {
+  const source = value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  const attribution = {};
+  for (const key of ATTRIBUTION_KEYS) {
+    const sanitized = sanitizeAttributionValue(source[key]);
+    if (sanitized) attribution[key] = sanitized;
+  }
+  if (formName === "web_landing") attribution.landing_path = "/web";
+  return attribution;
+}
+
+function sanitizeContactText(value, maxLength) {
+  return typeof value === "string"
+    ? value.trim().replace(CONTROL_CHARACTERS, "").slice(0, maxLength)
+    : "";
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 export function addCalendarMonthsExpiration(value = new Date(), months = ANALYTICS_RETENTION_MONTHS) {
@@ -290,7 +327,8 @@ async function handlePageview(request, env, origin) {
   const rawVisitorId = typeof body.visitorId === "string" ? body.visitorId.slice(0, 80) : "";
   const visitorId = /^[a-f0-9-]{16,80}$/i.test(rawVisitorId) ? rawVisitorId : "";
   const device = normalizeDevice(body.device);
-  const source = sourceFromReferrer(referrer);
+  const attribution = sanitizeAttribution(body.attribution);
+  const source = attribution.utm_source || sourceFromReferrer(referrer);
 
   const page = await incrementStoredJson(env.ANALYTICS, pageKey, (current) => ({
     path,
@@ -343,6 +381,7 @@ async function handlePageview(request, env, origin) {
     source,
     device,
     owner: isOwner,
+    attribution,
   }, expiration);
   await addToIndex(env.ANALYTICS, "analytics:index:pages", path);
   await addToIndex(env.ANALYTICS, "analytics:index:days", `${date}|${path}`);
@@ -515,24 +554,53 @@ async function handleContact(request, env, origin) {
     return json({ error: "Invalid JSON" }, 400, origin);
   }
 
-  const { name, email, subject, message, image, imageName } = body;
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return json({ error: "Invalid JSON" }, 400, origin);
+  }
 
-  if (!name || !email || !message) {
+  const formName = sanitizeContactText(body.formName, 80);
+  const name = sanitizeContactText(body.name, 120);
+  const email = sanitizeContactText(body.email, 254);
+  const phone = sanitizeContactText(body.phone, 40);
+  const subject = sanitizeContactText(body.subject, 240);
+  const message = sanitizeContactText(body.message, 4000);
+  const image = body.image;
+  const imageName = sanitizeContactText(body.imageName, 180);
+  const attribution = sanitizeAttribution(body.attribution, formName);
+
+  if (!name || !email || !message || !/^\S+@\S+\.\S+$/.test(email)) {
     return json({ error: "Missing required fields" }, 400, origin);
   }
+
+  if (!env.RESEND_API_KEY) return json({ error: "Email delivery is not configured" }, 503, origin);
 
   const attachments = image
     ? [{ filename: imageName || "prilog.jpg", content: image }]
     : [];
 
   const subjectLine = subject || "Upit s web stranice";
-  const textBody = `Ime: ${name}\nE-mail: ${email}\nTema: ${subjectLine}\n\nPoruka:\n${message}`;
+  const attributionLines = Object.entries(attribution).map(([key, value]) => `${key}: ${value}`);
+  const textBody = [
+    `Ime: ${name}`,
+    `E-mail: ${email}`,
+    ...(phone ? [`Telefon: ${phone}`] : []),
+    `Tema: ${subjectLine}`,
+    "",
+    "Poruka:",
+    message,
+    ...(attributionLines.length ? ["", "Atribucija:", ...attributionLines] : []),
+  ].join("\n");
+  const attributionHtml = Object.entries(attribution)
+    .map(([key, value]) => `<li><strong>${escapeHtml(key)}:</strong> ${escapeHtml(value)}</li>`)
+    .join("");
   const htmlBody = `
-    <p><strong>Ime:</strong> ${name}</p>
-    <p><strong>E-mail:</strong> <a href="mailto:${email}">${email}</a></p>
-    <p><strong>Tema:</strong> ${subjectLine}</p>
+    <p><strong>Ime:</strong> ${escapeHtml(name)}</p>
+    <p><strong>E-mail:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
+    ${phone ? `<p><strong>Telefon:</strong> ${escapeHtml(phone)}</p>` : ""}
+    <p><strong>Tema:</strong> ${escapeHtml(subjectLine)}</p>
     <hr/>
-    <p style="white-space:pre-wrap">${message}</p>
+    <p style="white-space:pre-wrap">${escapeHtml(message)}</p>
+    ${attributionHtml ? `<hr/><p><strong>Atribucija:</strong></p><ul>${attributionHtml}</ul>` : ""}
   `.trim();
 
   const res = await fetch("https://api.resend.com/emails", {

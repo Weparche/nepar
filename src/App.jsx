@@ -34,6 +34,7 @@ import ComputerEvolutionIntro from "./ComputerEvolutionIntro.jsx";
 import ConsentManager, { ConsentSettingsLink } from "./ConsentManager.jsx";
 import { subscribeConsentChanges, trackPageView } from "./analytics.js";
 import { usePageMeta } from "./usePageMeta.js";
+import WebLandingPage from "./WebLandingPage.jsx";
 import "./legacyLanding.css";
 
 const ContactPage = lazy(() => import("./ContactPage.jsx"));
@@ -1642,6 +1643,7 @@ export default function App() {
           <Route path="/kontakt" element={<ContactPage />} />
           <Route path="/privatnost" element={<PrivacyPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/web" element={<WebLandingPage />} />
           <Route path="/usluge/izrada-web-stranica" element={<WebStartPage />} />
           <Route path="/usluge/web-stranica-bez-pocetnog-troska" element={<LegacyWebRedirect />} />
           <Route path="/mozgalica" element={<MozgalicaPage />} />

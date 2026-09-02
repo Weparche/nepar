@@ -27,6 +27,7 @@ if (existsSync(mozgalicaDir) && lstatSync(mozgalicaDir).isDirectory()) {
 
 for (const file of [
   "index.html",
+  "web.html",
   "kontakt.html",
   "privatnost.html",
   "usluge/izrada-web-stranica.html",
@@ -35,6 +36,12 @@ for (const file of [
   "admin.html",
   "404.html",
 ]) read(file);
+
+expect("web.html", "<title>Profesionalna web stranica od 300 € | Nepar</title>", "paid landing title is missing");
+expect("web.html", '<meta name="robots" content="noindex,follow" />', "paid landing must be noindex,follow");
+expect("web.html", '<meta property="og:image" content="https://nepar.hr/brand/og-web.png" />', "paid landing Open Graph image is missing");
+expect("web.html", '<meta name="twitter:card" content="summary_large_image" />', "paid landing Twitter card is missing");
+if (read("web.html").includes('<link rel="canonical"')) failures.push("web.html: canonical must be absent from final generated HTML");
 
 expect(
   "usluge/izrada-web-stranica.html",
@@ -76,6 +83,7 @@ const expectedSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 </urlset>
 `;
 if (read("sitemap.xml") !== expectedSitemap) failures.push("sitemap.xml must contain exactly the six canonical URLs.");
+if (read("sitemap.xml").includes("https://nepar.hr/web")) failures.push("sitemap.xml must not contain the paid /web landing.");
 
 const expectedRobots = `User-agent: *
 Allow: /

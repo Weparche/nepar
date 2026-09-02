@@ -53,6 +53,19 @@ const localizedPages = {
     },
     schema: "service",
   },
+  "/web": {
+    indexable: false,
+    robots: "noindex,follow",
+    staticHtml: true,
+    image: "/brand/og-web.png",
+    imageAlt: "Nepar profesionalna web-stranica od 300 eura",
+    imageWidth: 1200,
+    imageHeight: 630,
+    hr: {
+      title: "Profesionalna web stranica od 300 € | Nepar",
+      description: "Brza, moderna i za Google optimizirana web stranica za tvrtke i obrte u Hrvatskoj. Jednokratna izrada od 300 €, bez obavezne mjesečne pretplate.",
+    },
+  },
   "/kontakt": {
     indexable: true,
     hr: {
@@ -137,11 +150,12 @@ export const SITEMAP_PATHS = Object.entries(localizedPages)
   .filter(([, page]) => page.indexable)
   .map(([path]) => path);
 
-export const STATIC_HTML_PATHS = [
+export const STATIC_HTML_PATHS = [...new Set([
   ...SITEMAP_PATHS,
+  ...Object.entries(localizedPages).filter(([, page]) => page.staticHtml).map(([path]) => path),
   "/admin",
   "/404",
-];
+])];
 
 export function getSeoPage(path = "/", lang = "hr") {
   const normalizedPath = path !== "/" ? path.replace(/\/+$/, "") : "/";
@@ -149,9 +163,9 @@ export function getSeoPage(path = "/", lang = "hr") {
   const locale = entry[lang] ? lang : "hr";
   return {
     path: normalizedPath,
-    canonicalPath: entry.indexable ? normalizedPath : undefined,
+    canonicalPath: entry.canonicalPath ?? (entry.indexable ? normalizedPath : undefined),
     indexable: entry.indexable,
-    robots: entry.indexable ? "index,follow" : "noindex,nofollow",
+    robots: entry.robots || (entry.indexable ? "index,follow" : "noindex,nofollow"),
     image: entry.image || DEFAULT_SOCIAL_IMAGE,
     imageAlt: entry.imageAlt || "Nepar Solutions",
     imageWidth: entry.imageWidth || 512,

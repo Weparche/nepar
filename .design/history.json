@@ -1,0 +1,16 @@
+{
+  "iterations": [
+    {
+      "iteration": 0,
+      "designScore": 82,
+      "majorIssueCount": 1,
+      "summary": "Mobile headline density pushed project proof and portfolio continuation too far below the first viewport."
+    },
+    {
+      "iteration": 1,
+      "designScore": 90,
+      "majorIssueCount": 0,
+      "summary": "Approved hierarchy restored; real project proof is sharp and desktop/mobile composition passes."
+    }
+  ]
+}

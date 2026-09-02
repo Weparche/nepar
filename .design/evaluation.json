@@ -1,0 +1,29 @@
+{
+  "createdAt": "2026-09-02T15:20:00.000Z",
+  "designScore": 90,
+  "threshold": 85,
+  "categories": {
+    "productIntent": { "score": 9.5, "max": 10, "severity": "PASS" },
+    "composition": { "score": 12.5, "max": 14, "severity": "PASS" },
+    "hierarchy": { "score": 11, "max": 12, "severity": "PASS" },
+    "primaryAction": { "score": 9.5, "max": 10, "severity": "PASS" },
+    "mobileAdaptation": { "score": 12.5, "max": 14, "severity": "PASS" },
+    "typography": { "score": 7, "max": 8, "severity": "PASS" },
+    "spacing": { "score": 7, "max": 8, "severity": "PASS" },
+    "surfacesAndColor": { "score": 5.3, "max": 6, "severity": "PASS" },
+    "imagery": { "score": 3.5, "max": 4, "severity": "PASS" },
+    "interactionPresentation": { "score": 4.5, "max": 5, "severity": "PASS" },
+    "distinctiveness": { "score": 6.2, "max": 7, "severity": "PASS" },
+    "polish": { "score": 1.7, "max": 2, "severity": "PASS" }
+  },
+  "gates": {
+    "visual": "PASS",
+    "browserQa": "PASS",
+    "primaryFlow": "PASS",
+    "pwa": "N/A — existing marketing site; documented in .design/PWA-NOTE.md",
+    "accessibility": "PASS",
+    "responsive": "PASS"
+  },
+  "visualIterations": 1,
+  "decision": "SHIP"
+}

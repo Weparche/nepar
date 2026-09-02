@@ -1,0 +1,34 @@
+{
+  "createdAt": "2026-09-02T15:20:09.647Z",
+  "projectRoot": "C:\\Nepar",
+  "baseUrl": "http://127.0.0.1:4173",
+  "status": "PASS",
+  "results": [
+    {
+      "viewport": "desktop",
+      "size": {
+        "width": 1440,
+        "height": 1000
+      },
+      "route": "web-acquisition",
+      "path": "/web",
+      "url": "http://127.0.0.1:4173/web",
+      "status": "PASS",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "viewport": "mobile",
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "web-acquisition",
+      "path": "/web",
+      "url": "http://127.0.0.1:4173/web",
+      "status": "PASS",
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}

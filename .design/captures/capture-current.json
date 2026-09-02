@@ -1,0 +1,35 @@
+{
+  "createdAt": "2026-09-02T15:09:38.960Z",
+  "projectRoot": "C:\\Nepar",
+  "route": "/web",
+  "results": [
+    {
+      "target": "desktop",
+      "file": ".design\\captures\\desktop-current.png",
+      "url": "http://127.0.0.1:4173/web",
+      "title": "Profesionalna web stranica od 300 € | Nepar",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scroll": {
+        "width": 1440,
+        "height": 5963
+      }
+    },
+    {
+      "target": "mobile",
+      "file": ".design\\captures\\mobile-current.png",
+      "url": "http://127.0.0.1:4173/web",
+      "title": "Profesionalna web stranica od 300 € | Nepar",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scroll": {
+        "width": 390,
+        "height": 7288
+      }
+    }
+  ]
+}

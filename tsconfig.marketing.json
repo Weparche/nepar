@@ -20,6 +20,7 @@
   "include": [
     "src/HomePage.jsx",
     "src/SiteChrome.jsx",
+    "src/WebLandingPage.jsx",
     "src/WebStartPage.jsx",
     "src/PackageInquiryModal.jsx",
     "src/ContactPage.jsx",

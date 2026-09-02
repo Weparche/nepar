@@ -126,7 +126,7 @@ export default function ConsentManager() {
   return (
     <aside
       ref={panelRef}
-      className="consent-panel"
+      className={`consent-panel ${location.pathname === "/web" ? "consent-panel--web" : ""}`.trim()}
       role="dialog"
       aria-modal="false"
       aria-labelledby="consent-title"

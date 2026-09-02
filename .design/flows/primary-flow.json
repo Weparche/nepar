@@ -1,0 +1,50 @@
+{
+  "name": "Paid web lead enquiry",
+  "goal": "Reach and validate the inline enquiry form without sending a real lead",
+  "startPath": "/web?utm_source=chatgpt&utm_medium=paid&utm_campaign=web_hr",
+  "safeMode": true,
+  "steps": [
+    {
+      "action": "click",
+      "role": "button",
+      "name": "Odbij analitiku"
+    },
+    {
+      "action": "assert-visible",
+      "role": "heading",
+      "name": "Profesionalna web stranica za vaš posao. Od 300 €."
+    },
+    {
+      "action": "click",
+      "role": "link",
+      "name": "Zatraži ponudu"
+    },
+    {
+      "action": "assert-visible",
+      "role": "heading",
+      "name": "Opišite web koji trebate"
+    },
+    {
+      "action": "fill",
+      "label": "Ime",
+      "value": "Test User"
+    },
+    {
+      "action": "fill",
+      "label": "E-mail",
+      "value": "test@example.com"
+    },
+    {
+      "action": "fill",
+      "label": "Što trebate?",
+      "value": "Testni upit za novu poslovnu web-stranicu."
+    },
+    {
+      "action": "click",
+      "role": "button",
+      "name": "Zatraži ponudu",
+      "stopBefore": true
+    }
+  ],
+  "success": "Lead form is complete and ready to submit at the safe boundary"
+}

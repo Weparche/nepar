@@ -13,7 +13,14 @@ const EVENT_PARAM_ALLOWLIST = new Set([
   "link_location",
   "section_name",
   "page_path",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "landing_path",
 ]);
+export const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 const pendingPageViews = new Set();
 const trackedPageViews = new Set();
 let googleLoadPromise = null;
@@ -159,6 +166,36 @@ export function sanitizeAnalyticsPath(value) {
   }
 }
 
+export function sanitizeAttributionValue(value) {
+  if (typeof value !== "string") return "";
+  const withoutControls = [...value.trim()].filter((character) => {
+    const code = character.charCodeAt(0);
+    return code > 31 && (code < 127 || code > 159);
+  }).join("");
+  return withoutControls.slice(0, 160);
+}
+
+export function getCampaignAttribution(locationValue = { search: window.location.search, pathname: window.location.pathname }) {
+  const searchParams = new URLSearchParams(locationValue?.search || "");
+  const attribution = {};
+  for (const key of ATTRIBUTION_KEYS) {
+    const value = sanitizeAttributionValue(searchParams.get(key));
+    if (value) attribution[key] = value;
+  }
+  attribution.landing_path = sanitizeAnalyticsPath(locationValue?.pathname || "/");
+  return attribution;
+}
+
+export function sanitizeAnalyticsLocation(value = window.location.href) {
+  const url = new URL(value || "/", window.location.origin);
+  const attribution = getCampaignAttribution(url);
+  const cleanUrl = new URL(sanitizeAnalyticsPath(url.pathname), window.location.origin);
+  for (const key of ATTRIBUTION_KEYS) {
+    if (attribution[key]) cleanUrl.searchParams.set(key, attribution[key]);
+  }
+  return cleanUrl.toString();
+}
+
 export function sanitizeReferrer(value) {
   if (!value) return "";
   try {
@@ -237,7 +274,7 @@ export async function trackEvent(name, params = {}) {
   return true;
 }
 
-function sendInternalPageView({ path, title }) {
+function sendInternalPageView({ path, title, attribution }) {
   const url = analyticsUrl("/analytics/pageview");
   if (!url) return;
   const payload = JSON.stringify({
@@ -249,6 +286,7 @@ function sendInternalPageView({ path, title }) {
     ownerDevice: isOwnerDevice(),
     visitorId: getVisitorId(),
     device: getDeviceType(),
+    attribution,
   });
 
   if (navigator.sendBeacon) {
@@ -268,6 +306,7 @@ export async function trackPageView({ path, title, navigationKey = path }) {
   const cleanPath = sanitizeAnalyticsPath(path);
   if (cleanPath === "/admin") return false;
   const key = String(navigationKey || cleanPath);
+  const attribution = getCampaignAttribution();
   if (trackedPageViews.has(key) || pendingPageViews.has(key)) return false;
   pendingPageViews.add(key);
 
@@ -280,11 +319,12 @@ export async function trackPageView({ path, title, navigationKey = path }) {
   if (loaded) {
     gtag("event", "page_view", {
       page_title: String(title || document.title).slice(0, 160),
-      page_location: `${window.location.origin}${cleanPath}`,
+      page_location: sanitizeAnalyticsLocation(),
       page_path: cleanPath,
+      ...attribution,
     });
   }
-  sendInternalPageView({ path: cleanPath, title });
+  sendInternalPageView({ path: cleanPath, title, attribution });
   pendingPageViews.delete(key);
   trackedPageViews.add(key);
   return true;

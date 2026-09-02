@@ -1,0 +1,22 @@
+{
+  "version": "0.1.0",
+  "currentState": "DONE",
+  "lastCompletedState": "VERIFY",
+  "referenceApproved": true,
+  "autopilot": false,
+  "visualIteration": 1,
+  "maxVisualIterations": 1,
+  "blockers": [],
+  "artifacts": {
+    "brief": ".design/DESIGN-BRIEF.md",
+    "contract": ".design/DESIGN-CONTRACT.md",
+    "desktopReference": ".design/references/desktop.png",
+    "mobileReference": ".design/references/mobile.png",
+    "audit": ".design/AUDIT.md",
+    "browserAudit": ".design/browser-audit.json",
+    "flowAudit": ".design/FLOW-AUDIT.md",
+    "pwaAudit": ".design/pwa-audit.json",
+    "evaluation": ".design/evaluation.json",
+    "history": ".design/history.json"
+  }
+}

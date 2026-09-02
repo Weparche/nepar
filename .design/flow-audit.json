@@ -1,0 +1,65 @@
+{
+  "createdAt": "2026-09-02T15:20:12.099Z",
+  "projectRoot": "C:\\Nepar",
+  "status": "PASS",
+  "results": [
+    {
+      "name": "Paid web lead enquiry",
+      "goal": "Reach and validate the inline enquiry form without sending a real lead",
+      "status": "PASS",
+      "safeMode": true,
+      "safeBoundary": "Zatraži ponudu",
+      "steps": [
+        {
+          "index": 1,
+          "action": "click",
+          "status": "PASS",
+          "detail": "clicked Odbij analitiku"
+        },
+        {
+          "index": 2,
+          "action": "assert-visible",
+          "status": "PASS",
+          "detail": "visibility assertion passed"
+        },
+        {
+          "index": 3,
+          "action": "click",
+          "status": "PASS",
+          "detail": "clicked Zatraži ponudu"
+        },
+        {
+          "index": 4,
+          "action": "assert-visible",
+          "status": "PASS",
+          "detail": "visibility assertion passed"
+        },
+        {
+          "index": 5,
+          "action": "fill",
+          "status": "PASS",
+          "detail": "filled Ime"
+        },
+        {
+          "index": 6,
+          "action": "fill",
+          "status": "PASS",
+          "detail": "filled E-mail"
+        },
+        {
+          "index": 7,
+          "action": "fill",
+          "status": "PASS",
+          "detail": "filled Što trebate?"
+        },
+        {
+          "index": 8,
+          "action": "click",
+          "status": "PASS",
+          "detail": "safe boundary reached; click intentionally not executed"
+        }
+      ],
+      "finalUrl": "http://127.0.0.1:4173/web?utm_source=chatgpt&utm_medium=paid&utm_campaign=web_hr#upit"
+    }
+  ]
+}
