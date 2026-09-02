@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Check,
   CircleDollarSign,
+  ExternalLink,
   Globe2,
   Mail,
   MapPinned,
@@ -24,6 +25,7 @@ const projects = [
     description: "Profesionalna stranica za specijalizirani Volvo servis, s lokalnim SEO-om i jasnim servisnim upitom.",
     image: "/brand/autogubic-landing.webp",
     alt: "Auto Gubić web-stranica za specijalizirani Volvo servis",
+    href: "https://autogubic.hr/",
     className: "web-project--featured",
   },
   {
@@ -32,6 +34,7 @@ const projects = [
     description: "Portal za planirane radove, kvarove i lokacije prekida električne energije.",
     image: "/brand/bezstruje.webp",
     alt: "BezStruje.hr portal za planirane radove i kvarove",
+    href: "https://bezstruje.hr",
   },
   {
     title: "VremenskaPrognoza.hr",
@@ -39,6 +42,7 @@ const projects = [
     description: "Responzivna vremenska platforma s prognozama, upozorenjima i podacima za cijelu Hrvatsku.",
     image: "/brand/vremenskaprognoza.webp",
     alt: "VremenskaPrognoza.hr prikaz prognoze za Hrvatsku",
+    href: "https://vremenskaprognoza.hr",
   },
 ];
 
@@ -103,16 +107,25 @@ function CtaLink({ className = "", children, ariaLabel }) {
 
 function ProjectCard({ project }) {
   return (
-    <article className={`web-project ${project.className || ""}`.trim()}>
+    <a
+      className={`web-project ${project.className || ""}`.trim()}
+      href={project.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Pogledaj projekt ${project.title} — otvara se u novom tabu`}
+    >
       <div className="web-project__image-wrap">
         <img src={project.image} alt={project.alt} loading={project.className ? "eager" : "lazy"} />
       </div>
       <div className="web-project__copy">
         <p>{project.type}</p>
-        <h3>{project.title}</h3>
+        <div className="web-project__title-row">
+          <h3>{project.title}</h3>
+          <ExternalLink aria-hidden="true" />
+        </div>
         <span>{project.description}</span>
       </div>
-    </article>
+    </a>
   );
 }
 

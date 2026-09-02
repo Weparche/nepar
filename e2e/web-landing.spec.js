@@ -65,6 +65,16 @@ test("/web renders the locked acquisition structure without overflow", async ({ 
 
   const projectTitles = await page.locator(".web-project h3").allTextContents();
   expect(projectTitles).toEqual(["Auto Gubić", "BezStruje.hr", "VremenskaPrognoza.hr"]);
+  const projectLinks = page.locator("a.web-project");
+  await expect(projectLinks).toHaveCount(3);
+  await expect(projectLinks.nth(0)).toHaveAttribute("href", "https://autogubic.hr/");
+  await expect(projectLinks.nth(1)).toHaveAttribute("href", "https://bezstruje.hr");
+  await expect(projectLinks.nth(2)).toHaveAttribute("href", "https://vremenskaprognoza.hr");
+  for (const projectLink of await projectLinks.all()) {
+    await expect(projectLink).toHaveAttribute("target", "_blank");
+    await expect(projectLink).toHaveAttribute("rel", /noopener/);
+    await expect(projectLink).toHaveAttribute("rel", /noreferrer/);
+  }
   await expect(page.locator(".web-package")).toHaveCount(3);
   await expect(page.locator(".web-package--featured")).toContainText("Business");
   await expect(page.locator(".web-package").nth(0)).toContainText("300 €");

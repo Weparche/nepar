@@ -294,11 +294,21 @@
 }
 
 .web-project {
+  display: block;
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--web-border);
   border-radius: 16px;
   background: #ffffff;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.web-project:hover {
+  border-color: #93b4f5;
+  box-shadow: 0 16px 34px rgb(37 99 235 / 10%);
+  transform: translateY(-3px);
 }
 
 .web-project__image-wrap {
@@ -345,6 +355,20 @@
   color: var(--web-ink);
   font-size: 1.55rem;
   letter-spacing: -0.025em;
+}
+
+.web-project__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.web-project__title-row svg {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  color: var(--web-blue);
 }
 
 .web-project__copy span {
