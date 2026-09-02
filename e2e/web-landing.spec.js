@@ -65,6 +65,12 @@ test("/web renders the locked acquisition structure without overflow", async ({ 
 
   const projectTitles = await page.locator(".web-project h3").allTextContents();
   expect(projectTitles).toEqual(["Auto Gubić", "BezStruje.hr", "VremenskaPrognoza.hr"]);
+  const reasonImages = page.locator(".web-reason__media img");
+  await expect(reasonImages).toHaveCount(3);
+  const expectedReasonVariant = page.viewportSize().width <= 720 ? "mobile" : "desktop";
+  for (const reasonImage of await reasonImages.all()) {
+    await expect.poll(() => reasonImage.evaluate((image) => image.currentSrc)).toContain(`-${expectedReasonVariant}.webp`);
+  }
   const projectLinks = page.locator("a.web-project");
   await expect(projectLinks).toHaveCount(3);
   await expect(projectLinks.nth(0)).toHaveAttribute("href", "https://autogubic.hr/");

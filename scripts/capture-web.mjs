@@ -42,6 +42,14 @@ try {
       fullPage: false,
       animations: "disabled",
     });
+    const reasons = page.locator(".web-reasons");
+    await reasons.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => [...document.querySelectorAll(".web-reason__media img")]
+      .every((image) => image.complete && image.naturalWidth > 0));
+    await reasons.screenshot({
+      path: path.join(outputDir, `${target.name}-reasons.png`),
+      animations: "disabled",
+    });
     await context.close();
   }
 } finally {

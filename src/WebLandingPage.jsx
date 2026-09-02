@@ -51,16 +51,22 @@ const reasons = [
     title: "Izgleda profesionalno",
     description: "Dizajn prilagođen vašem poslu, ne generički predložak koji izgleda kao svi ostali.",
     Icon: Smartphone,
+    imageDesktop: "/brand/reason-design-desktop.webp",
+    imageMobile: "/brand/reason-design-mobile.webp",
   },
   {
     title: "Ljudi vas mogu pronaći",
     description: "SEO osnova, brzina i tehnički ispravno indeksiranje ugrađeni su od početka.",
     Icon: Search,
+    imageDesktop: "/brand/reason-seo-desktop.webp",
+    imageMobile: "/brand/reason-seo-mobile.webp",
   },
   {
     title: "Stranica je vaša",
     description: "Bez zaključavanja na platformu i bez obavezne mjesečne pretplate.",
     Icon: ShieldCheck,
+    imageDesktop: "/brand/reason-ownership-desktop.webp",
+    imageMobile: "/brand/reason-ownership-mobile.webp",
   },
 ];
 
@@ -283,11 +289,19 @@ export default function WebLandingPage() {
             <h2 id="web-reasons-title">Web koji radi ozbiljan posao</h2>
           </div>
           <div className="web-reason-grid">
-            {reasons.map(({ title, description, Icon }, index) => (
+            {reasons.map(({ title, description, Icon, imageDesktop, imageMobile }, index) => (
               <article key={title} className="web-reason">
-                <div><span>0{index + 1}</span><Icon aria-hidden="true" /></div>
-                <h3>{title}</h3>
-                <p>{description}</p>
+                <picture className="web-reason__media" aria-hidden="true">
+                  <source media="(max-width: 720px)" srcSet={imageMobile} />
+                  <img src={imageDesktop} alt="" loading="lazy" />
+                </picture>
+                <div className="web-reason__content">
+                  <div className="web-reason__meta"><span>0{index + 1}</span><Icon aria-hidden="true" /></div>
+                  <div className="web-reason__copy">
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
+                </div>
               </article>
             ))}
           </div>
