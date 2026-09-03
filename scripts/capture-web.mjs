@@ -33,7 +33,8 @@ try {
     await page.locator("h1").waitFor({ state: "visible" });
     await page.evaluate(async () => {
       await document.fonts?.ready;
-      await Promise.all([...document.images].map((image) => image.complete
+      const initiallyRequestedImages = [...document.images].filter((image) => image.loading !== "lazy");
+      await Promise.all(initiallyRequestedImages.map((image) => image.complete
         ? Promise.resolve()
         : new Promise((resolve) => image.addEventListener("load", resolve, { once: true }))));
     });
@@ -48,6 +49,17 @@ try {
       .every((image) => image.complete && image.naturalWidth > 0));
     await reasons.screenshot({
       path: path.join(outputDir, `${target.name}-reasons.png`),
+      animations: "disabled",
+    });
+    const pricing = page.locator(".web-pricing");
+    await pricing.scrollIntoViewIfNeeded();
+    for (const packageCard of await page.locator(".web-package").all()) {
+      await packageCard.scrollIntoViewIfNeeded();
+    }
+    await page.waitForFunction(() => [...document.querySelectorAll(".web-package__media img")]
+      .every((image) => image.complete && image.naturalWidth > 0));
+    await pricing.screenshot({
+      path: path.join(outputDir, `${target.name}-pricing.png`),
       animations: "disabled",
     });
     await context.close();

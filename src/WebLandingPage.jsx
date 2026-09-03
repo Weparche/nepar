@@ -73,22 +73,31 @@ const reasons = [
 const packages = [
   {
     name: "Start",
-    price: "300 €",
+    regularPrice: "300 €",
+    salePrice: "240 €",
     description: "Jasan profesionalni početak za manji posao.",
     features: ["Profesionalna jednostranična stranica", "Responsive dizajn", "SEO osnova"],
+    imageDesktop: "/brand/package-start-desktop.webp",
+    imageMobile: "/brand/package-start-mobile.webp",
   },
   {
     name: "Business",
-    price: "500 €",
+    regularPrice: "500 €",
+    salePrice: "400 €",
     description: "Najbolji omjer sadržaja, strukture i upita.",
     features: ["Više sadržajnih stranica", "Naprednija struktura", "Kontakt i lead funkcionalnosti"],
+    imageDesktop: "/brand/package-business-desktop.webp",
+    imageMobile: "/brand/package-business-mobile.webp",
     featured: true,
   },
   {
     name: "Pro",
-    price: "700 €",
+    regularPrice: "700 €",
+    salePrice: "560 €",
     description: "Za web koji ima važniju prodajnu ulogu.",
     features: ["Opsežniji web", "Prilagođene funkcionalnosti", "Naprednija optimizacija"],
+    imageDesktop: "/brand/package-pro-desktop.webp",
+    imageMobile: "/brand/package-pro-mobile.webp",
   },
 ];
 
@@ -100,7 +109,7 @@ const processSteps = [
 ];
 
 const faqItems = [
-  ["Koliko košta izrada?", "Izrada kreće od 300 €. Konačna cijena ovisi o količini sadržaja, broju stranica i potrebnim funkcionalnostima."],
+  ["Koliko košta izrada?", "Tijekom akcije izrada kreće od 240 € umjesto 300 €. Konačna cijena ovisi o količini sadržaja, broju stranica i potrebnim funkcionalnostima."],
   ["Koliko traje?", "Rok ovisi o opsegu, dostupnosti sadržaja i brzini povratnih informacija. Realan rok dogovaramo prije početka rada."],
   ["Moram li plaćati mjesečno održavanje?", "Ne. Održavanje nije obavezno i, ako ga trebate, ugovara se zasebno."],
   ["Je li stranica moja nakon izrade?", "Da. Nakon završetka i plaćanja izrade web-stranica je u vašem vlasništvu."],
@@ -252,11 +261,11 @@ export default function WebLandingPage() {
         <div className="web-shell web-hero__grid">
           <div className="web-hero__copy">
             <p className="web-eyebrow">Web-stranice za tvrtke i obrte</p>
-            <h1 id="web-hero-title">Profesionalna web stranica za vaš posao. Od 300 €.</h1>
+            <h1 id="web-hero-title">Profesionalna web stranica za vaš posao. Sada od 240 €.</h1>
             <p className="web-hero__lead">Brza, moderna i optimizirana za Google. Bez mjesečne pretplate — stranica je vaša.</p>
             <CtaLink />
             <div className="web-trust-line" aria-label="Ključne informacije">
-              <span><CircleDollarSign aria-hidden="true" />Izrada od 300 €</span>
+              <span><CircleDollarSign aria-hidden="true" />20% popusta na sve pakete</span>
               <span><ShieldCheck aria-hidden="true" />Potpuno vlasništvo</span>
               <span><MapPinned aria-hidden="true" />Za tvrtke i obrte u Hrvatskoj</span>
             </div>
@@ -314,17 +323,34 @@ export default function WebLandingPage() {
       <section id="cijene" className="web-section web-pricing" aria-labelledby="web-pricing-title">
         <div className="web-shell">
           <div className="web-section-heading">
-            <p className="web-eyebrow">Jasna jednokratna cijena</p>
+            <p className="web-eyebrow">20% popusta na sve pakete</p>
             <h2 id="web-pricing-title">Od jednostavnog početka do ozbiljnog prodajnog weba</h2>
-            <p>Tri realna opsega, bez skrivenog najma i bez liste od petnaest stavki.</p>
+            <p>Tri realna opsega po akcijskim cijenama, bez skrivenog najma i bez liste od petnaest stavki.</p>
           </div>
           <div className="web-package-grid">
             {packages.map((item) => (
               <article key={item.name} className={`web-package ${item.featured ? "web-package--featured" : ""}`.trim()}>
-                {item.featured && <span className="web-package__badge">Najbolji omjer cijene i koristi</span>}
-                <div className="web-package__top"><h3>{item.name}</h3><strong>{item.price}</strong></div>
-                <p>{item.description}</p>
-                <ul>{item.features.map((feature) => <li key={feature}><Check aria-hidden="true" />{feature}</li>)}</ul>
+                <picture className="web-package__media" aria-hidden="true">
+                  <source media="(max-width: 720px)" srcSet={item.imageMobile} />
+                  <img src={item.imageDesktop} alt="" loading="lazy" />
+                </picture>
+                <div className="web-package__content">
+                  <div className="web-package__badges">
+                    <span className="web-package__discount">−20%</span>
+                    {item.featured && <span className="web-package__badge">Najbolji omjer cijene i koristi</span>}
+                  </div>
+                  <div className="web-package__body">
+                    <div className="web-package__top">
+                      <h3>{item.name}</h3>
+                      <div className="web-package__price" aria-label={`Akcijska cijena ${item.salePrice}, redovna cijena ${item.regularPrice}`}>
+                        <span>Akcijska cijena</span>
+                        <div><del>{item.regularPrice}</del><strong>{item.salePrice}</strong></div>
+                      </div>
+                    </div>
+                    <p>{item.description}</p>
+                    <ul>{item.features.map((feature) => <li key={feature}><Check aria-hidden="true" />{feature}</li>)}</ul>
+                  </div>
+                </div>
               </article>
             ))}
           </div>

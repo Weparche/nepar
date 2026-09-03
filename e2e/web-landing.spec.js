@@ -57,7 +57,7 @@ test("/web renders the locked acquisition structure without overflow", async ({ 
   await persistConsent(page, false);
   await page.goto("/web?utm_source=chatgpt&utm_medium=paid&utm_campaign=web_hr");
 
-  await expect(page.getByRole("heading", { level: 1, name: "Profesionalna web stranica za vaš posao. Od 300 €." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Profesionalna web stranica za vaš posao. Sada od 240 €." })).toBeVisible();
   await expect(page.getByText("Brza, moderna i optimizirana za Google. Bez mjesečne pretplate — stranica je vaša.")).toBeVisible();
   await expect(page.locator('.web-header a[href="#upit"]')).toHaveText("Zatraži ponudu");
   await expect(page.locator('.web-header a[href="#reference"]')).toHaveText("Reference");
@@ -83,9 +83,17 @@ test("/web renders the locked acquisition structure without overflow", async ({ 
   }
   await expect(page.locator(".web-package")).toHaveCount(3);
   await expect(page.locator(".web-package--featured")).toContainText("Business");
-  await expect(page.locator(".web-package").nth(0)).toContainText("300 €");
-  await expect(page.locator(".web-package").nth(1)).toContainText("500 €");
-  await expect(page.locator(".web-package").nth(2)).toContainText("700 €");
+  await expect(page.locator(".web-package").nth(0)).toContainText("300 €240 €");
+  await expect(page.locator(".web-package").nth(1)).toContainText("500 €400 €");
+  await expect(page.locator(".web-package").nth(2)).toContainText("700 €560 €");
+  await expect(page.locator(".web-package__discount")).toHaveCount(3);
+  await page.locator(".web-pricing").scrollIntoViewIfNeeded();
+  const packageImages = page.locator(".web-package__media img");
+  await expect(packageImages).toHaveCount(3);
+  const expectedPackageVariant = page.viewportSize().width <= 720 ? "mobile" : "desktop";
+  for (const packageImage of await packageImages.all()) {
+    await expect.poll(() => packageImage.evaluate((image) => image.currentSrc)).toContain(`-${expectedPackageVariant}.webp`);
+  }
   await expect(page.locator(".web-process__list li")).toHaveCount(4);
   await expect(page.locator(".web-faq details")).toHaveCount(4);
   await expect(page.locator('#upit button[type="submit"]')).toHaveText(/Zatraži ponudu/);

@@ -58,12 +58,12 @@ const localizedPages = {
     robots: "noindex,follow",
     staticHtml: true,
     image: "/brand/og-web.png",
-    imageAlt: "Nepar profesionalna web-stranica od 300 eura",
+    imageAlt: "Nepar profesionalna web-stranica po akcijskoj cijeni od 240 eura",
     imageWidth: 1200,
     imageHeight: 630,
     hr: {
-      title: "Profesionalna web stranica od 300 € | Nepar",
-      description: "Brza, moderna i za Google optimizirana web stranica za tvrtke i obrte u Hrvatskoj. Jednokratna izrada od 300 €, bez obavezne mjesečne pretplate.",
+      title: "Profesionalna web stranica od 240 € | Nepar",
+      description: "Brza, moderna i za Google optimizirana web stranica za tvrtke i obrte u Hrvatskoj. Akcijska jednokratna izrada od 240 €, bez obavezne mjesečne pretplate.",
     },
   },
   "/kontakt": {

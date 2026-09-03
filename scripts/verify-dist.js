@@ -37,7 +37,7 @@ for (const file of [
   "404.html",
 ]) read(file);
 
-expect("web.html", "<title>Profesionalna web stranica od 300 € | Nepar</title>", "paid landing title is missing");
+expect("web.html", "<title>Profesionalna web stranica od 240 € | Nepar</title>", "paid landing title is missing");
 expect("web.html", '<meta name="robots" content="noindex,follow" />', "paid landing must be noindex,follow");
 expect("web.html", '<meta property="og:image" content="https://nepar.hr/brand/og-web.png" />', "paid landing Open Graph image is missing");
 expect("web.html", '<meta name="twitter:card" content="summary_large_image" />', "paid landing Twitter card is missing");
