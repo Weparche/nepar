@@ -42,6 +42,12 @@ button, a, input { font: inherit; }
 
 .topbar { margin-bottom: 12px; }
 
+.top-actions {
+  display: flex;
+  align-items: end;
+  gap: 18px;
+}
+
 .eyebrow, .kicker {
   margin: 0 0 4px;
   font-size: 12px;
@@ -58,8 +64,8 @@ h1 {
 
 .score-panel {
   display: flex;
-  gap: 26px;
-  font-size: clamp(11px, 2vw, 14px);
+  gap: 20px;
+  font-size: clamp(10px, 1.8vw, 13px);
   white-space: nowrap;
 }
 
@@ -82,6 +88,7 @@ canvas {
   height: auto;
   aspect-ratio: 8 / 3;
   background: #fbfaf4;
+  image-rendering: pixelated;
 }
 
 .overlay {
@@ -90,7 +97,7 @@ canvas {
   display: grid;
   place-items: center;
   padding: 20px;
-  background: rgba(251, 250, 244, .76);
+  background: rgba(251, 250, 244, .72);
   backdrop-filter: blur(2px);
   overflow: auto;
 }
@@ -99,7 +106,7 @@ canvas {
 
 .overlay-box {
   text-align: center;
-  width: min(520px, 100%);
+  width: min(540px, 100%);
   padding: 24px 28px;
   border: 3px solid var(--line);
   background: var(--card);
@@ -114,6 +121,8 @@ canvas {
 }
 
 .overlay-box p { margin: 8px 0 14px; }
+.game-intro { max-width: 470px; color: var(--muted); font-size: 11px; line-height: 1.45; }
+.controls-line { font-weight: 800; letter-spacing: .04em; }
 
 .username-label {
   display: block;
@@ -136,7 +145,7 @@ canvas {
 }
 
 .username-input:focus { box-shadow: 5px 5px 0 #878b7e; }
-.input-help { color: var(--muted); font-size: 10px; }
+.input-help, .share-hint { color: var(--muted); font-size: 10px; }
 .form-error { color: var(--accent); font-size: 11px; font-weight: 800; }
 .submit-status { min-height: 16px; color: var(--muted); font-size: 11px; }
 
@@ -154,6 +163,7 @@ button:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 #878b7e; 
 button:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #878b7e; }
 button.secondary { background: var(--card); color: var(--ink); }
 button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
 .actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 .small-button { padding: 7px 11px; font-size: 10px; box-shadow: 3px 3px 0 #878b7e; }
 
@@ -166,19 +176,31 @@ button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
   letter-spacing: .09em;
 }
 
+.feature-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.feature-strip span {
+  border: 2px solid var(--line);
+  background: rgba(255,253,247,.65);
+  padding: 8px 10px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+}
+
 .leaderboard-card {
-  margin-top: 24px;
+  margin-top: 18px;
   border: 3px solid var(--line);
   background: var(--card);
   padding: 18px 20px 16px;
   box-shadow: 6px 6px 0 var(--line);
 }
 
-.leaderboard-head h2 {
-  margin: 0;
-  font-size: 26px;
-  letter-spacing: -.06em;
-}
+.leaderboard-head h2 { margin: 0; font-size: 26px; letter-spacing: -.06em; }
 
 .leaderboard-list {
   list-style: none;
@@ -199,12 +221,7 @@ button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
   font-size: 13px;
 }
 
-.leaderboard-list li::before {
-  content: counter(rank) ".";
-  color: var(--muted);
-  font-weight: 800;
-}
-
+.leaderboard-list li::before { content: counter(rank) "."; color: var(--muted); font-weight: 800; }
 .leaderboard-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; }
 .leaderboard-score { font-weight: 800; }
 .leaderboard-list .leaderboard-empty { grid-template-columns: 1fr; color: var(--muted); }
@@ -223,10 +240,11 @@ footer {
 footer p { margin: 0; max-width: 760px; }
 footer a { color: inherit; font-weight: 700; }
 
-@media (max-width: 700px) {
+@media (max-width: 780px) {
   .page-shell { width: min(100% - 18px, 1120px); padding-top: 14px; justify-content: flex-start; }
   .topbar { align-items: start; }
-  .score-panel { flex-direction: column; gap: 3px; text-align: right; }
+  .top-actions { align-items: end; gap: 8px; }
+  .score-panel { flex-direction: column; gap: 2px; text-align: right; }
   .game-card { box-shadow: 5px 5px 0 var(--line); }
   canvas { aspect-ratio: 4 / 3; object-fit: cover; }
   .overlay { padding: 9px; }
@@ -235,9 +253,16 @@ footer a { color: inherit; font-weight: 700; }
   .username-label { margin-top: 10px; }
   .username-input { padding: 9px 10px; }
   .mobile-hint { display: block; }
+  .feature-strip { grid-template-columns: repeat(2, 1fr); }
   .leaderboard-card { padding: 14px 12px; box-shadow: 4px 4px 0 var(--line); }
   .leaderboard-list li { grid-template-columns: 34px 1fr auto; font-size: 12px; }
   footer { flex-direction: column; }
+}
+
+@media (max-width: 520px) {
+  .top-actions { flex-direction: column; }
+  .small-button { padding: 6px 8px; }
+  .feature-strip span { font-size: 9px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
