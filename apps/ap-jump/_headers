@@ -1,4 +1,23 @@
-/*
-  Cache-Control: no-cache, no-store, must-revalidate
+/
+  Cache-Control: no-cache, must-revalidate
   Pragma: no-cache
-  Expires: 0
+
+/index.html
+  Cache-Control: no-cache, must-revalidate
+  Pragma: no-cache
+
+/game.js
+  Cache-Control: no-cache, must-revalidate
+
+/game-live.js
+  Cache-Control: no-cache, must-revalidate
+
+/style.css
+  Cache-Control: no-cache, must-revalidate
+
+/mobile-v2.css
+  Cache-Control: no-cache, must-revalidate
+
+/ap-jump-og.jpg
+  Cache-Control: public, max-age=604800
+  Content-Type: image/jpeg
