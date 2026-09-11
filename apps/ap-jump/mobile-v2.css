@@ -1,0 +1,95 @@
+/* Mobile treatment for the stable v2 engine: zoom the 960x360 canvas instead of changing its logical size. */
+@media (max-width: 780px) {
+  .page-shell {
+    width: 100%;
+    padding: max(8px, env(safe-area-inset-top)) 8px max(14px, env(safe-area-inset-bottom));
+  }
+
+  .topbar {
+    margin-bottom: 8px;
+    padding: 0 2px;
+  }
+
+  h1 { font-size: 34px; }
+
+  .score-panel {
+    flex-direction: column;
+    gap: 2px;
+    text-align: right;
+    font-size: 9px;
+  }
+
+  .game-card {
+    width: calc(100% + 16px);
+    margin-left: -8px;
+    margin-right: -8px;
+    border-left: 0;
+    border-right: 0;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  .game-card canvas {
+    width: 140%;
+    max-width: none;
+    height: auto;
+    transform-origin: left top;
+  }
+
+  .overlay {
+    padding: 7px;
+  }
+
+  .overlay-box {
+    width: min(92vw, 420px);
+    padding: 14px 12px;
+    box-shadow: 4px 4px 0 var(--line);
+  }
+
+  .overlay-box h2 { font-size: 28px; }
+  .overlay-box p { margin: 6px 0 9px; }
+  .username-label { margin-top: 10px; }
+  .username-input { padding: 9px 10px; }
+  .mobile-hint { display: block; }
+
+  .leaderboards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .leaderboard-card {
+    padding: 14px 12px;
+    box-shadow: 4px 4px 0 var(--line);
+  }
+
+  footer { flex-direction: column; }
+}
+
+@media (max-width: 780px) and (orientation: landscape) {
+  .topbar,
+  .mobile-hint,
+  .leaderboards,
+  #leaderboardStatus,
+  footer {
+    display: none !important;
+  }
+
+  .page-shell {
+    padding: 0;
+    min-height: 100dvh;
+    justify-content: center;
+  }
+
+  .game-card {
+    width: 100vw;
+    margin: 0;
+    border: 0;
+  }
+
+  .game-card canvas {
+    width: 100vw;
+    height: auto;
+    max-height: 100dvh;
+  }
+}
