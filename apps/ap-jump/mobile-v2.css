@@ -1,69 +1,244 @@
-/* Mobile treatment for the stable v2 engine: zoom the 960x360 canvas instead of changing its logical size. */
+/* Mobile layout for AP Jump: larger gameplay viewport, compact overlays and compact scoreboards. */
 @media (max-width: 780px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
   .page-shell {
     width: 100%;
-    padding: max(8px, env(safe-area-inset-top)) 8px max(14px, env(safe-area-inset-bottom));
+    padding: max(6px, env(safe-area-inset-top)) 6px max(12px, env(safe-area-inset-bottom));
+    min-height: auto;
+    justify-content: flex-start;
   }
 
   .topbar {
-    margin-bottom: 8px;
-    padding: 0 2px;
+    margin-bottom: 5px;
+    padding: 0 3px;
+    gap: 8px;
+    align-items: flex-start;
   }
 
-  h1 { font-size: 34px; }
+  .topbar h1,
+  h1 {
+    margin: 0;
+    font-size: 30px;
+    line-height: .92;
+  }
 
-  .score-panel {
-    flex-direction: column;
-    gap: 2px;
-    text-align: right;
+  .eyebrow {
+    margin-bottom: 2px;
+    font-size: 9px;
+    letter-spacing: .15em;
+  }
+
+  .live-pill {
+    margin-top: 5px;
+    padding: 3px 6px;
     font-size: 9px;
   }
 
+  .score-panel {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+    padding-top: 2px;
+    text-align: right;
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
   .game-card {
-    width: calc(100% + 16px);
-    margin-left: -8px;
-    margin-right: -8px;
+    position: relative;
+    width: calc(100% + 12px);
+    margin-left: -6px;
+    margin-right: -6px;
     border-left: 0;
     border-right: 0;
     box-shadow: none;
     overflow: hidden;
+    min-height: clamp(300px, 52svh, 455px);
+    background: var(--card);
   }
 
+  /* Keep the stable 960x360 game coordinates and zoom the canvas instead of resizing physics. */
   .game-card canvas {
-    width: 140%;
+    display: block;
+    width: 158%;
     max-width: none;
     height: auto;
+    min-height: clamp(300px, 52svh, 455px);
+    transform: translateX(-2%);
     transform-origin: left top;
+    image-rendering: pixelated;
   }
 
   .overlay {
-    padding: 7px;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 7px 8px;
+    background: rgba(251, 250, 244, .45);
+    backdrop-filter: blur(1px);
+    overflow: hidden;
   }
 
   .overlay-box {
-    width: min(92vw, 420px);
-    padding: 14px 12px;
+    width: min(91vw, 390px);
+    margin: 4px auto 0;
+    padding: 10px 11px;
+    border-width: 2px;
     box-shadow: 4px 4px 0 var(--line);
   }
 
-  .overlay-box h2 { font-size: 28px; }
-  .overlay-box p { margin: 6px 0 9px; }
-  .username-label { margin-top: 10px; }
-  .username-input { padding: 9px 10px; }
-  .mobile-hint { display: block; }
+  .overlay-box h2,
+  #gameOverTitle {
+    max-width: 310px;
+    margin: 2px auto 6px;
+    font-size: 22px;
+    line-height: 1.02;
+    letter-spacing: -.045em;
+  }
+
+  .overlay-box p {
+    margin: 4px 0 6px;
+  }
+
+  .kicker {
+    margin-bottom: 2px;
+    font-size: 9px;
+  }
+
+  #finalScore {
+    margin: 4px 0;
+    font-size: 12px;
+  }
+
+  .submit-status {
+    min-height: 12px;
+    margin: 3px 0 5px !important;
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
+  .username-label {
+    margin: 8px 0 3px;
+    font-size: 9px;
+  }
+
+  .username-input {
+    width: min(280px, 100%);
+    padding: 8px 9px;
+    font-size: 16px;
+  }
+
+  .input-help,
+  .controls-line {
+    font-size: 9px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 7px;
+    margin-top: 5px;
+  }
+
+  .actions button {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 8px 7px;
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  #gameOverOverlay .overlay-box {
+    margin-top: 5px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+
+  #gameOverOverlay {
+    /* Leave the lower part of the game visible behind the compact result card. */
+    background: linear-gradient(to bottom, rgba(251,250,244,.68) 0 62%, rgba(251,250,244,.12) 100%);
+  }
+
+  .mobile-hint {
+    display: block;
+    margin: 7px 0 1px;
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: .08em;
+  }
 
   .leaderboards {
     grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 14px;
+    gap: 9px;
+    margin-top: 10px;
   }
 
   .leaderboard-card {
-    padding: 14px 12px;
-    box-shadow: 4px 4px 0 var(--line);
+    margin-top: 0;
+    padding: 10px 10px 9px;
+    border-width: 2px;
+    box-shadow: 3px 3px 0 var(--line);
   }
 
-  footer { flex-direction: column; }
+  .leaderboard-head {
+    gap: 10px;
+  }
+
+  .leaderboard-head h2 {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .leaderboard-day,
+  .leaderboard-status {
+    font-size: 9px;
+  }
+
+  .leaderboard-list {
+    margin-top: 9px;
+  }
+
+  .leaderboard-list li {
+    min-height: 31px;
+    grid-template-columns: 32px 1fr auto;
+    gap: 7px;
+    font-size: 10px;
+  }
+
+  .small-button {
+    padding: 5px 7px;
+    font-size: 9px;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 11px;
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 430px) {
+  .game-card {
+    min-height: clamp(310px, 56svh, 470px);
+  }
+
+  .game-card canvas {
+    width: 166%;
+    min-height: clamp(310px, 56svh, 470px);
+  }
+
+  .overlay-box {
+    width: min(93vw, 370px);
+  }
+
+  .overlay-box h2,
+  #gameOverTitle {
+    font-size: 21px;
+  }
 }
 
 @media (max-width: 780px) and (orientation: landscape) {
@@ -83,13 +258,21 @@
 
   .game-card {
     width: 100vw;
+    min-height: 100dvh;
     margin: 0;
     border: 0;
   }
 
   .game-card canvas {
-    width: 100vw;
-    height: auto;
-    max-height: 100dvh;
+    width: auto;
+    min-width: 100vw;
+    height: 100dvh;
+    min-height: 100dvh;
+    transform: none;
+  }
+
+  .overlay-box {
+    width: min(62vw, 430px);
+    margin-top: 5px;
   }
 }
