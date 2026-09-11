@@ -8,7 +8,6 @@
 }
 
 * { box-sizing: border-box; }
-
 html, body { min-height: 100%; }
 
 body {
@@ -21,7 +20,7 @@ body {
   overscroll-behavior: none;
 }
 
-button, a { font: inherit; }
+button, a, input { font: inherit; }
 
 .page-shell {
   width: min(1120px, calc(100% - 28px));
@@ -33,13 +32,15 @@ button, a { font: inherit; }
   padding: 28px 0 18px;
 }
 
-.topbar {
+.topbar,
+.leaderboard-head {
   display: flex;
   justify-content: space-between;
   align-items: end;
   gap: 24px;
-  margin-bottom: 12px;
 }
+
+.topbar { margin-bottom: 12px; }
 
 .eyebrow, .kicker {
   margin: 0 0 4px;
@@ -89,16 +90,17 @@ canvas {
   display: grid;
   place-items: center;
   padding: 20px;
-  background: rgba(251, 250, 244, .72);
+  background: rgba(251, 250, 244, .76);
   backdrop-filter: blur(2px);
+  overflow: auto;
 }
 
-.hidden { display: none; }
+.hidden { display: none !important; }
 
 .overlay-box {
   text-align: center;
-  max-width: 480px;
-  padding: 26px 30px;
+  width: min(520px, 100%);
+  padding: 24px 28px;
   border: 3px solid var(--line);
   background: var(--card);
   box-shadow: 7px 7px 0 var(--line);
@@ -111,7 +113,32 @@ canvas {
   letter-spacing: -.06em;
 }
 
-.overlay-box p { margin: 8px 0 18px; }
+.overlay-box p { margin: 8px 0 14px; }
+
+.username-label {
+  display: block;
+  margin: 16px 0 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.username-input {
+  width: min(320px, 100%);
+  border: 3px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  padding: 11px 12px;
+  outline: none;
+  text-align: center;
+  font-weight: 800;
+  box-shadow: 3px 3px 0 #878b7e;
+}
+
+.username-input:focus { box-shadow: 5px 5px 0 #878b7e; }
+.input-help { color: var(--muted); font-size: 10px; }
+.form-error { color: var(--accent); font-size: 11px; font-weight: 800; }
+.submit-status { min-height: 16px; color: var(--muted); font-size: 11px; }
 
 button {
   border: 3px solid var(--line);
@@ -126,7 +153,9 @@ button {
 button:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 #878b7e; }
 button:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #878b7e; }
 button.secondary { background: var(--card); color: var(--ink); }
+button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 .actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.small-button { padding: 7px 11px; font-size: 10px; box-shadow: 3px 3px 0 #878b7e; }
 
 .mobile-hint {
   display: none;
@@ -136,6 +165,51 @@ button.secondary { background: var(--card); color: var(--ink); }
   font-weight: 700;
   letter-spacing: .09em;
 }
+
+.leaderboard-card {
+  margin-top: 24px;
+  border: 3px solid var(--line);
+  background: var(--card);
+  padding: 18px 20px 16px;
+  box-shadow: 6px 6px 0 var(--line);
+}
+
+.leaderboard-head h2 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: -.06em;
+}
+
+.leaderboard-list {
+  list-style: none;
+  counter-reset: rank;
+  margin: 16px 0 0;
+  padding: 0;
+  border-top: 2px solid var(--line);
+}
+
+.leaderboard-list li {
+  counter-increment: rank;
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 38px;
+  border-bottom: 1px dashed #9b9e94;
+  font-size: 13px;
+}
+
+.leaderboard-list li::before {
+  content: counter(rank) ".";
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.leaderboard-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; }
+.leaderboard-score { font-weight: 800; }
+.leaderboard-list .leaderboard-empty { grid-template-columns: 1fr; color: var(--muted); }
+.leaderboard-list .leaderboard-empty::before { display: none; }
+.leaderboard-status { margin: 10px 0 0; min-height: 14px; font-size: 10px; color: var(--muted); }
 
 footer {
   display: flex;
@@ -155,8 +229,14 @@ footer a { color: inherit; font-weight: 700; }
   .score-panel { flex-direction: column; gap: 3px; text-align: right; }
   .game-card { box-shadow: 5px 5px 0 var(--line); }
   canvas { aspect-ratio: 4 / 3; object-fit: cover; }
-  .overlay-box { padding: 20px 16px; }
+  .overlay { padding: 9px; }
+  .overlay-box { padding: 16px 12px; box-shadow: 4px 4px 0 var(--line); }
+  .overlay-box p { margin: 6px 0 9px; }
+  .username-label { margin-top: 10px; }
+  .username-input { padding: 9px 10px; }
   .mobile-hint { display: block; }
+  .leaderboard-card { padding: 14px 12px; box-shadow: 4px 4px 0 var(--line); }
+  .leaderboard-list li { grid-template-columns: 34px 1fr auto; font-size: 12px; }
   footer { flex-direction: column; }
 }
 
