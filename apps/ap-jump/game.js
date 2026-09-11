@@ -10,16 +10,25 @@ const scoreEl = document.querySelector('#score');
 const bestScoreEl = document.querySelector('#bestScore');
 const finalScoreEl = document.querySelector('#finalScore');
 const gameOverTitle = document.querySelector('#gameOverTitle');
+const usernameInput = document.querySelector('#username');
+const usernameError = document.querySelector('#usernameError');
+const submitStatus = document.querySelector('#submitStatus');
+const leaderboardList = document.querySelector('#leaderboardList');
+const leaderboardStatus = document.querySelector('#leaderboardStatus');
+const refreshLeaderboardButton = document.querySelector('#refreshLeaderboard');
 
 const W = canvas.width;
 const H = canvas.height;
 const GROUND_Y = 292;
 const BEST_KEY = 'ap-jump-best-v1';
+const USERNAME_KEY = 'ap-jump-username-v1';
+const SHARE_URL = 'https://lika.nepar.hr/';
 
 let running = false;
 let dead = false;
 let lastTime = 0;
 let score = 0;
+let lastFinalScore = 0;
 let distance = 0;
 let speed = 390;
 let spawnTimer = 0;
@@ -28,8 +37,10 @@ let bgOffset = 0;
 let dust = [];
 let obstacles = [];
 let best = Number(localStorage.getItem(BEST_KEY) || 0);
+let currentUsername = localStorage.getItem(USERNAME_KEY) || '';
 
 bestScoreEl.textContent = formatScore(best);
+usernameInput.value = currentUsername;
 
 const player = {
   x: 125,
@@ -44,20 +55,57 @@ const player = {
 };
 
 const obstacleTypes = [
-  { kind: 'bags', w: 58, h: 46, label: 'VREĆE' },
-  { kind: 'tire', w: 44, h: 44, label: 'GUMA' },
+  { kind: 'bags', w: 58, h: 46, label: 'VREĆE SMEĆA' },
+  { kind: 'tire', w: 44, h: 44, label: 'STARA GUMA' },
   { kind: 'fridge', w: 46, h: 78, label: 'FRIŽIDER' },
   { kind: 'sofa', w: 82, h: 48, label: 'KAUČ' },
+  { kind: 'radioactive', w: 62, h: 58, label: 'RADIOAKTIVNI OTPAD' },
+  { kind: 'medical', w: 54, h: 52, label: 'MEDICINSKI OTPAD' },
+  { kind: 'ewaste', w: 66, h: 49, label: 'ELEKTRONIČKI OTPAD' },
+  { kind: 'oil', w: 46, h: 60, label: 'BAČVA OTPADA' },
 ];
 
 function formatScore(value) {
   return Math.floor(value).toString().padStart(5, '0');
 }
 
+function normalizeUsername(value) {
+  return value.trim().replace(/\s+/g, ' ');
+}
+
+function validateUsername(value) {
+  const normalized = normalizeUsername(value);
+  if (normalized.length < 2 || normalized.length > 20) {
+    return { ok: false, message: 'Ime mora imati 2–20 znakova.' };
+  }
+  if (!/^[\p{L}\p{N} _.-]+$/u.test(normalized)) {
+    return { ok: false, message: 'Koristi slova, brojeve, razmak, _, - ili točku.' };
+  }
+  return { ok: true, value: normalized };
+}
+
+function attemptStart() {
+  const result = validateUsername(usernameInput.value);
+  if (!result.ok) {
+    usernameError.textContent = result.message;
+    usernameError.classList.remove('hidden');
+    usernameInput.focus();
+    return;
+  }
+
+  currentUsername = result.value;
+  usernameInput.value = currentUsername;
+  localStorage.setItem(USERNAME_KEY, currentUsername);
+  usernameError.textContent = '';
+  usernameError.classList.add('hidden');
+  resetGame();
+}
+
 function resetGame() {
   running = true;
   dead = false;
   score = 0;
+  lastFinalScore = 0;
   distance = 0;
   speed = 390;
   spawnTimer = 0;
@@ -69,6 +117,8 @@ function resetGame() {
   player.vy = 0;
   player.grounded = true;
   scoreEl.textContent = '00000';
+  submitStatus.textContent = '';
+  shareButton.textContent = 'PODIJELI';
   startOverlay.classList.add('hidden');
   gameOverOverlay.classList.add('hidden');
   lastTime = performance.now();
@@ -136,7 +186,7 @@ function update(dt) {
   };
 
   for (const o of obstacles) {
-    const padX = o.kind === 'sofa' ? 6 : 4;
+    const padX = ['sofa', 'ewaste', 'radioactive'].includes(o.kind) ? 6 : 4;
     const box = { x: o.x + padX, y: o.y + 4, w: o.w - padX * 2, h: o.h - 4 };
     if (rectsOverlap(hitbox, box)) {
       endGame(o.label);
@@ -153,6 +203,8 @@ function endGame(label) {
   running = false;
   dead = true;
   const final = Math.floor(score);
+  lastFinalScore = final;
+
   if (final > best) {
     best = final;
     localStorage.setItem(BEST_KEY, String(best));
@@ -161,9 +213,11 @@ function endGame(label) {
   } else {
     gameOverTitle.textContent = `Zaustavio te: ${label.toLowerCase()}.`;
   }
+
   finalScoreEl.textContent = `Rezultat: ${formatScore(final)}`;
   gameOverOverlay.classList.remove('hidden');
   draw();
+  submitScore(final);
 }
 
 function draw() {
@@ -257,6 +311,23 @@ function drawDust() {
   for (const p of dust) ctx.fillRect(p.x, p.y, 5, 3);
 }
 
+function drawRadiationSymbol(cx, cy) {
+  ctx.fillStyle = '#20231f';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+  ctx.fill();
+  for (let i = 0; i < 3; i++) {
+    const a = -Math.PI / 2 + i * (Math.PI * 2 / 3);
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(a - .34) * 7, cy + Math.sin(a - .34) * 7);
+    ctx.arc(cx, cy, 16, a - .34, a + .34);
+    ctx.lineTo(cx + Math.cos(a + .34) * 7, cy + Math.sin(a + .34) * 7);
+    ctx.arc(cx, cy, 7, a + .34, a - .34, true);
+    ctx.closePath();
+    ctx.fill();
+  }
+}
+
 function drawObstacles() {
   for (const o of obstacles) {
     ctx.save();
@@ -299,7 +370,7 @@ function drawObstacles() {
       ctx.fillStyle = '#20231f';
       ctx.fillRect(7, 13, 4, 11);
       ctx.fillRect(7, 39, 4, 15);
-    } else {
+    } else if (o.kind === 'sofa') {
       ctx.fillStyle = '#8a6958';
       ctx.fillRect(3, 15, o.w - 6, 30);
       ctx.strokeRect(3, 15, o.w - 6, 30);
@@ -310,7 +381,55 @@ function drawObstacles() {
       ctx.fillStyle = '#20231f';
       ctx.fillRect(10, 45, 6, 3);
       ctx.fillRect(o.w - 16, 45, 6, 3);
+    } else if (o.kind === 'radioactive') {
+      ctx.fillStyle = '#d9c835';
+      for (let i = 0; i < 2; i++) {
+        const bx = 2 + i * 29;
+        ctx.fillRect(bx, 7, 27, 49);
+        ctx.strokeRect(bx, 7, 27, 49);
+        ctx.fillStyle = '#20231f';
+        ctx.fillRect(bx, 14, 27, 5);
+        ctx.fillRect(bx, 45, 27, 5);
+        ctx.fillStyle = '#d9c835';
+      }
+      drawRadiationSymbol(16, 32);
+      drawRadiationSymbol(45, 32);
+    } else if (o.kind === 'medical') {
+      ctx.fillStyle = '#e7e5dc';
+      ctx.fillRect(3, 6, 48, 44);
+      ctx.strokeRect(3, 6, 48, 44);
+      ctx.fillStyle = '#c92c2c';
+      ctx.fillRect(22, 14, 10, 28);
+      ctx.fillRect(13, 23, 28, 10);
+      ctx.fillStyle = '#20231f';
+      ctx.font = '700 7px Courier New';
+      ctx.fillText('BIO', 4, 11);
+    } else if (o.kind === 'ewaste') {
+      ctx.fillStyle = '#80837a';
+      ctx.fillRect(4, 5, 34, 29);
+      ctx.strokeRect(4, 5, 34, 29);
+      ctx.fillStyle = '#c9d2cc';
+      ctx.fillRect(9, 10, 24, 16);
+      ctx.strokeRect(9, 10, 24, 16);
+      ctx.fillStyle = '#20231f';
+      ctx.fillRect(18, 34, 5, 8);
+      ctx.fillRect(11, 41, 20, 4);
+      ctx.fillStyle = '#5f625a';
+      ctx.fillRect(40, 19, 22, 27);
+      ctx.strokeRect(40, 19, 22, 27);
+      ctx.beginPath();
+      ctx.moveTo(48, 19); ctx.bezierCurveTo(49, 4, 62, 7, 60, 17); ctx.stroke();
+    } else if (o.kind === 'oil') {
+      ctx.fillStyle = '#705f4b';
+      ctx.fillRect(3, 4, 40, 54);
+      ctx.strokeRect(3, 4, 40, 54);
+      ctx.fillStyle = '#20231f';
+      ctx.fillRect(3, 12, 40, 5);
+      ctx.fillRect(3, 45, 40, 5);
+      ctx.font = '700 9px Courier New';
+      ctx.fillText('OTPAD', 7, 34);
     }
+
     ctx.restore();
   }
 }
@@ -396,38 +515,126 @@ function loop(now) {
 }
 
 function handleAction(event) {
+  if (event?.target === usernameInput) return;
+
   if (event?.type === 'keydown') {
     if (!['Space', 'ArrowUp', 'KeyW'].includes(event.code)) return;
     event.preventDefault();
   }
 
   if (!running && !dead) {
-    resetGame();
+    attemptStart();
     return;
   }
   if (dead) return;
   jump();
 }
 
-window.addEventListener('keydown', handleAction, { passive: false });
-canvas.addEventListener('pointerdown', handleAction);
-startButton.addEventListener('click', resetGame);
-restartButton.addEventListener('click', resetGame);
+async function loadLeaderboard() {
+  leaderboardStatus.textContent = '';
+  refreshLeaderboardButton.disabled = true;
 
-shareButton.addEventListener('click', async () => {
-  const text = `Napravio sam ${formatScore(score)} u AP Jumpu. Možeš bolje?`;
-  const url = 'https://lika.nepar.hr/';
+  try {
+    const response = await fetch('/api/leaderboard', { headers: { Accept: 'application/json' }, cache: 'no-store' });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data?.error || 'Leaderboard nije dostupan.');
+
+    renderLeaderboard(Array.isArray(data.scores) ? data.scores : []);
+  } catch (error) {
+    leaderboardList.innerHTML = '<li class="leaderboard-empty">Scoreboard još nije spojen.</li>';
+    leaderboardStatus.textContent = error?.message || 'Pokušaj ponovno kasnije.';
+  } finally {
+    refreshLeaderboardButton.disabled = false;
+  }
+}
+
+function renderLeaderboard(scores) {
+  leaderboardList.replaceChildren();
+
+  if (!scores.length) {
+    const empty = document.createElement('li');
+    empty.className = 'leaderboard-empty';
+    empty.textContent = 'Još nema rezultata. Budi prvi.';
+    leaderboardList.append(empty);
+    return;
+  }
+
+  for (const entry of scores) {
+    const item = document.createElement('li');
+    const name = document.createElement('span');
+    const points = document.createElement('span');
+    name.className = 'leaderboard-name';
+    points.className = 'leaderboard-score';
+    name.textContent = entry.username;
+    points.textContent = formatScore(entry.score);
+    item.append(name, points);
+    leaderboardList.append(item);
+  }
+}
+
+async function submitScore(final) {
+  if (!currentUsername) return;
+  submitStatus.textContent = 'Upisujem rezultat na scoreboard…';
+
+  try {
+    const response = await fetch('/api/leaderboard', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ username: currentUsername, score: final }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data?.error || 'Rezultat nije spremljen.');
+
+    submitStatus.textContent = data.updated ? 'Rezultat spremljen.' : 'Tvoj postojeći rekord je veći.';
+    if (Array.isArray(data.scores)) renderLeaderboard(data.scores);
+  } catch (error) {
+    submitStatus.textContent = error?.message || 'Scoreboard trenutačno nije dostupan.';
+  }
+}
+
+async function shareResult() {
+  const final = lastFinalScore || Math.floor(score);
+  const text = `${currentUsername || 'Ja'} je napravio ${formatScore(final)} u AP Jumpu. Možeš bolje?`;
+
   try {
     if (navigator.share) {
-      await navigator.share({ title: 'AP Jump', text, url });
-    } else {
-      await navigator.clipboard.writeText(`${text} ${url}`);
+      await navigator.share({ title: 'AP Jump', text, url: SHARE_URL });
+      return;
+    }
+
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(`${text} ${SHARE_URL}`);
       shareButton.textContent = 'KOPIRANO';
       setTimeout(() => { shareButton.textContent = 'PODIJELI'; }, 1400);
+      return;
     }
-  } catch {
-    // Sharing can be cancelled by the user; no further action needed.
+
+    window.prompt('Kopiraj rezultat i podijeli:', `${text} ${SHARE_URL}`);
+  } catch (error) {
+    if (error?.name !== 'AbortError') {
+      window.prompt('Kopiraj rezultat i podijeli:', `${text} ${SHARE_URL}`);
+    }
+  }
+}
+
+window.addEventListener('keydown', handleAction, { passive: false });
+canvas.addEventListener('pointerdown', handleAction);
+startButton.addEventListener('click', attemptStart);
+restartButton.addEventListener('click', resetGame);
+shareButton.addEventListener('click', shareResult);
+refreshLeaderboardButton.addEventListener('click', loadLeaderboard);
+
+usernameInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    attemptStart();
   }
 });
 
+usernameInput.addEventListener('input', () => {
+  usernameError.classList.add('hidden');
+  usernameError.textContent = '';
+});
+
 draw();
+loadLeaderboard();
