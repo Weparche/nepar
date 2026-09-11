@@ -25,3 +25,8 @@
 /ap-jump-og-v2.jpg
   Cache-Control: public, max-age=604800
   Content-Type: image/jpeg
+
+/ap-jump-share.jpg
+  Cache-Control: public, max-age=604800, immutable
+  Content-Type: image/jpeg
+  X-Content-Type-Options: nosniff
