@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#f2efe7" />
   <title>AP Jump — preskoči problem</title>
-  <meta name="description" content="AP Jump je kratka satirična browser igra. Preskači prepreke po Lici i probaj srušiti vlastiti rekord." />
+  <meta name="description" content="AP Jump je kratka satirična browser igra. Preskači prepreke po Lici i uđi na globalnu ljestvicu." />
   <meta property="og:title" content="AP Jump — preskoči problem" />
-  <meta property="og:description" content="Koliko dugo možeš preskakati probleme? Igraj AP Jump." />
+  <meta property="og:description" content="Koliko dugo možeš preskakati probleme? Igraj AP Jump i uđi na leaderboard." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://lika.nepar.hr/" />
   <link rel="canonical" href="https://lika.nepar.hr/" />
@@ -33,8 +33,12 @@
         <div class="overlay-box">
           <p class="kicker">LIKA. PROBLEMI. JEDAN SKOK.</p>
           <h2>Preskoči problem.</h2>
+          <label class="username-label" for="username">IME ZA SCOREBOARD</label>
+          <input id="username" class="username-input" type="text" maxlength="20" autocomplete="nickname" placeholder="npr. KraljLike" aria-describedby="usernameHelp" />
+          <p class="input-help" id="usernameHelp">2–20 znakova. Sprema se samo ime i rezultat.</p>
           <p>SPACE / ↑ / TAP za skok</p>
           <button id="startButton" type="button">KRENI</button>
+          <p class="form-error hidden" id="usernameError" role="alert"></p>
         </div>
       </div>
 
@@ -43,6 +47,7 @@
           <p class="kicker">GAME OVER</p>
           <h2 id="gameOverTitle">Problem nije preskočen.</h2>
           <p id="finalScore">Rezultat: 0</p>
+          <p class="submit-status" id="submitStatus" aria-live="polite"></p>
           <div class="actions">
             <button id="restartButton" type="button">OPET</button>
             <button id="shareButton" class="secondary" type="button">PODIJELI</button>
@@ -53,8 +58,22 @@
 
     <div class="mobile-hint" aria-hidden="true">TAP BILO GDJE ZA SKOK</div>
 
+    <section class="leaderboard-card" aria-labelledby="leaderboardTitle">
+      <div class="leaderboard-head">
+        <div>
+          <p class="eyebrow">GLOBALNO</p>
+          <h2 id="leaderboardTitle">TOP 10</h2>
+        </div>
+        <button id="refreshLeaderboard" class="small-button secondary" type="button">OSVJEŽI</button>
+      </div>
+      <ol id="leaderboardList" class="leaderboard-list">
+        <li class="leaderboard-empty">Učitavam ljestvicu…</li>
+      </ol>
+      <p id="leaderboardStatus" class="leaderboard-status" aria-live="polite"></p>
+    </section>
+
     <footer>
-      <p>Satirična igra. Nije povezana s Andrejem Plenkovićem, Vladom RH ni bilo kojom političkom strankom.</p>
+      <p>Satirična igra. Nije povezana ni s jednom političkom strankom niti sa stvarnom osobom.</p>
       <a href="https://nepar.hr" rel="noopener">nepar.hr</a>
     </footer>
   </main>
