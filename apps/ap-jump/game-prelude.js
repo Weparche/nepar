@@ -1,5 +1,6 @@
-// Bootstrap stub used before the UI module loads. The real implementation replaces it in game-ui.js.
+// Bootstrap stubs used before the later game scripts load.
 function updateSoundButton() {}
+function draw() {}
 
 window.addEventListener('load', () => {
   const script = document.createElement('script');
