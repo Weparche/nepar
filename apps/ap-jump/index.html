@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#f2efe7" />
   <title>AP Jump — preskoči problem</title>
-  <meta name="description" content="AP Jump je satirična endless-runner browser igra. Preskači otpad po Lici, preživi sve veći tempo i uđi u globalni Top 10." />
+  <meta name="description" content="AP Jump je satirična endless-runner browser igra. Preskači otpad po Lici, preživi sve veći tempo i uđi na dnevnu i all-time ljestvicu." />
   <meta property="og:title" content="AP Jump — preskoči problem" />
   <meta property="og:description" content="Koliko dugo možeš preskakati probleme? Igra postaje sve brža i teža." />
   <meta property="og:type" content="website" />
@@ -19,6 +19,7 @@
       <div>
         <p class="eyebrow">NEPAR LABS</p>
         <h1>AP JUMP</h1>
+        <div class="live-pill" aria-live="polite"><span class="live-dot"></span> ONLINE <strong id="onlineCount">—</strong></div>
       </div>
 
       <div class="top-actions">
@@ -65,7 +66,7 @@
       </div>
     </section>
 
-    <div class="mobile-hint" aria-hidden="true">TAP BILO GDJE ZA SKOK</div>
+    <div class="mobile-hint" aria-hidden="true">TAP PO IGRI ZA SKOK</div>
 
     <section class="feature-strip" aria-label="Kako igra postaje teža">
       <span>BRZINA ↑</span>
@@ -74,19 +75,35 @@
       <span>MAX 1120 PX/S</span>
     </section>
 
-    <section class="leaderboard-card" aria-labelledby="leaderboardTitle">
-      <div class="leaderboard-head">
-        <div>
-          <p class="eyebrow">GLOBALNO</p>
-          <h2 id="leaderboardTitle">TOP 10</h2>
+    <section class="leaderboards" aria-label="Ljestvice rezultata">
+      <section class="leaderboard-card" aria-labelledby="todayTitle">
+        <div class="leaderboard-head">
+          <div>
+            <p class="eyebrow">DANAS</p>
+            <h2 id="todayTitle">TOP 5</h2>
+          </div>
+          <span id="leaderboardDay" class="leaderboard-day">—</span>
         </div>
-        <button id="refreshLeaderboard" class="small-button secondary" type="button">OSVJEŽI</button>
-      </div>
-      <ol id="leaderboardList" class="leaderboard-list">
-        <li class="leaderboard-empty">Učitavam ljestvicu…</li>
-      </ol>
-      <p id="leaderboardStatus" class="leaderboard-status" aria-live="polite"></p>
+        <ol id="dailyLeaderboardList" class="leaderboard-list">
+          <li class="leaderboard-empty">Učitavam današnje rezultate…</li>
+        </ol>
+      </section>
+
+      <section class="leaderboard-card" aria-labelledby="allTimeTitle">
+        <div class="leaderboard-head">
+          <div>
+            <p class="eyebrow">SVIH VREMENA</p>
+            <h2 id="allTimeTitle">TOP 10</h2>
+          </div>
+          <button id="refreshLeaderboard" class="small-button secondary" type="button">OSVJEŽI</button>
+        </div>
+        <ol id="leaderboardList" class="leaderboard-list">
+          <li class="leaderboard-empty">Učitavam ljestvicu…</li>
+        </ol>
+      </section>
     </section>
+
+    <p id="leaderboardStatus" class="leaderboard-status" aria-live="polite"></p>
 
     <footer>
       <p>Satirična igra. Nije povezana ni s jednom političkom strankom niti sa stvarnom osobom.</p>

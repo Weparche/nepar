@@ -16,11 +16,14 @@ const usernameInput = document.querySelector('#username');
 const usernameError = document.querySelector('#usernameError');
 const submitStatus = document.querySelector('#submitStatus');
 const leaderboardList = document.querySelector('#leaderboardList');
+const dailyLeaderboardList = document.querySelector('#dailyLeaderboardList');
 const leaderboardStatus = document.querySelector('#leaderboardStatus');
+const leaderboardDay = document.querySelector('#leaderboardDay');
 const refreshLeaderboardButton = document.querySelector('#refreshLeaderboard');
+const onlineCountEl = document.querySelector('#onlineCount');
 
-const W = canvas.width;
-const H = canvas.height;
+let W = 960;
+const H = 360;
 const GROUND_Y = 294;
 const BEST_KEY = 'ap-jump-best-v1';
 const USERNAME_KEY = 'ap-jump-username-v1';
@@ -54,10 +57,6 @@ let currentUsername = localStorage.getItem(USERNAME_KEY) || '';
 let soundEnabled = localStorage.getItem(SOUND_KEY) !== 'off';
 let audioCtx = null;
 
-bestScoreEl.textContent = formatScore(best);
-usernameInput.value = currentUsername;
-updateSoundButton();
-
 const player = {
   x: 126,
   y: GROUND_Y - PLAYER_H,
@@ -69,6 +68,28 @@ const player = {
   grounded: true,
   frame: 0,
 };
+
+function configureCanvas() {
+  const mobile = window.matchMedia('(max-width: 780px)').matches;
+  const nextW = mobile ? 560 : 960;
+
+  if (W !== nextW || canvas.width !== nextW || canvas.height !== H) {
+    W = nextW;
+    canvas.width = W;
+    canvas.height = H;
+    player.x = mobile ? 86 : 126;
+
+    if (!running) {
+      player.y = GROUND_Y - player.h;
+      draw();
+    }
+  }
+}
+
+configureCanvas();
+bestScoreEl.textContent = formatScore(best);
+usernameInput.value = currentUsername;
+updateSoundButton();
 
 const obstacleTypes = [
   { kind: 'bags', w: 58, h: 46, label: 'VREĆE SMEĆA', minTier: 0 },
@@ -193,6 +214,7 @@ function attemptStart() {
 }
 
 function resetGame() {
+  configureCanvas();
   ensureAudio();
   running = true;
   dead = false;
@@ -384,3 +406,9 @@ function endGame(label) {
   };
   requestAnimationFrame(impactFrame);
 }
+
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => configureCanvas(), 120);
+});
