@@ -1,12 +1,13 @@
-// Restore the simple v1 share flow: native share first, clipboard fallback.
+// Simple v1 share flow: native share first, clipboard fallback.
 async function shareV1() {
   const final = lastFinalScore || Math.floor(score);
+  const url = 'https://apjump.nepar.hr/';
   const text = `${currentUsername || 'Ja'} je napravio ${formatScore(final)} u AP Jumpu. Možeš bolje?`;
-  const payload = `${text} ${SHARE_URL}`;
+  const payload = `${text} ${url}`;
 
   try {
     if (navigator.share) {
-      await navigator.share({ title: 'AP Jump', text, url: SHARE_URL });
+      await navigator.share({ title: 'AP Jump', text, url });
       return;
     }
 
