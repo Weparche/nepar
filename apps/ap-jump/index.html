@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#f2efe7" />
   <title>AP Jump — preskoči problem</title>
-  <meta name="description" content="AP Jump je kratka satirična browser igra. Preskači prepreke po Lici i uđi na globalnu ljestvicu." />
+  <meta name="description" content="AP Jump je satirična endless-runner browser igra. Preskači otpad po Lici, preživi sve veći tempo i uđi u globalni Top 10." />
   <meta property="og:title" content="AP Jump — preskoči problem" />
-  <meta property="og:description" content="Koliko dugo možeš preskakati probleme? Igraj AP Jump i uđi na leaderboard." />
+  <meta property="og:description" content="Koliko dugo možeš preskakati probleme? Igra postaje sve brža i teža." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://lika.nepar.hr/" />
-  <link rel="canonical" href="https://lika.nepar.hr/" />
+  <meta property="og:url" content="https://apjump.nepar.hr/" />
+  <link rel="canonical" href="https://apjump.nepar.hr/" />
   <link rel="stylesheet" href="./style.css" />
-  <!-- redeploy trigger after D1 binding -->
 </head>
 <body>
   <main class="page-shell">
@@ -21,9 +20,14 @@
         <p class="eyebrow">NEPAR LABS</p>
         <h1>AP JUMP</h1>
       </div>
-      <div class="score-panel" aria-live="polite">
-        <span>REKORD <strong id="bestScore">00000</strong></span>
-        <span>REZULTAT <strong id="score">00000</strong></span>
+
+      <div class="top-actions">
+        <button id="soundButton" class="small-button secondary" type="button" aria-pressed="true">ZVUK ON</button>
+        <div class="score-panel" aria-live="polite">
+          <span>REKORD <strong id="bestScore">00000</strong></span>
+          <span>REZULTAT <strong id="score">00000</strong></span>
+          <span>TEŽINA <strong id="difficulty">LAGANO</strong></span>
+        </div>
       </div>
     </header>
 
@@ -34,10 +38,13 @@
         <div class="overlay-box">
           <p class="kicker">LIKA. PROBLEMI. JEDAN SKOK.</p>
           <h2>Preskoči problem.</h2>
+          <p class="game-intro">Što si dalje, igra je brža, razmaci su kraći i dolaze kombinacije prepreka.</p>
+
           <label class="username-label" for="username">IME ZA SCOREBOARD</label>
           <input id="username" class="username-input" type="text" maxlength="20" autocomplete="nickname" placeholder="npr. KraljLike" aria-describedby="usernameHelp" />
           <p class="input-help" id="usernameHelp">2–20 znakova. Sprema se samo ime i rezultat.</p>
-          <p>SPACE / ↑ / TAP za skok</p>
+
+          <p class="controls-line">SPACE / ↑ / TAP za skok</p>
           <button id="startButton" type="button">KRENI</button>
           <p class="form-error hidden" id="usernameError" role="alert"></p>
         </div>
@@ -53,11 +60,19 @@
             <button id="restartButton" type="button">OPET</button>
             <button id="shareButton" class="secondary" type="button">PODIJELI</button>
           </div>
+          <p class="share-hint">Na mobitelu share pokušava poslati i generiranu score karticu.</p>
         </div>
       </div>
     </section>
 
     <div class="mobile-hint" aria-hidden="true">TAP BILO GDJE ZA SKOK</div>
+
+    <section class="feature-strip" aria-label="Kako igra postaje teža">
+      <span>BRZINA ↑</span>
+      <span>KRAĆI RAZMACI ↑</span>
+      <span>COMBO PREPREKE ↑</span>
+      <span>MAX 1120 PX/S</span>
+    </section>
 
     <section class="leaderboard-card" aria-labelledby="leaderboardTitle">
       <div class="leaderboard-head">
@@ -79,6 +94,9 @@
     </footer>
   </main>
 
-  <script type="module" src="./game.js"></script>
+  <script src="./game-prelude.js"></script>
+  <script src="./game-core.js"></script>
+  <script src="./game-render.js"></script>
+  <script src="./game-ui.js"></script>
 </body>
 </html>
