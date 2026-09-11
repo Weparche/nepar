@@ -1,1 +1,112 @@
-PLACEHOLDER
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f2efe7" />
+  <title>AP Jump — preskoči problem</title>
+  <meta name="description" content="AP Jump je satirična endless-runner browser igra. Preskači otpad po Lici i uđi na dnevnu i all-time ljestvicu." />
+
+  <meta property="og:locale" content="hr_HR" />
+  <meta property="og:site_name" content="AP Jump" />
+  <meta property="og:title" content="AP Jump — preskoči problem" />
+  <meta property="og:description" content="Koliko dugo možeš preskakati probleme? Preskoči otpad, ubrzaj tempo i uđi na ljestvicu." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://apjump.nepar.hr/" />
+  <meta property="og:image" content="https://apjump.nepar.hr/share-card.jpg" />
+  <meta property="og:image:url" content="https://apjump.nepar.hr/share-card.jpg" />
+  <meta property="og:image:secure_url" content="https://apjump.nepar.hr/share-card.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="600" />
+  <meta property="og:image:height" content="315" />
+  <meta property="og:image:alt" content="AP Jump — preskoči problem u Lici" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AP Jump — preskoči problem" />
+  <meta name="twitter:description" content="Preskači otpad po Lici, preživi sve brži tempo i uđi na ljestvicu." />
+  <meta name="twitter:image" content="https://apjump.nepar.hr/share-card.jpg" />
+
+  <link rel="canonical" href="https://apjump.nepar.hr/" />
+  <link rel="stylesheet" href="./style.css?v=19" />
+  <link rel="stylesheet" href="./mobile-v2.css?v=19" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="topbar" aria-label="Naslov igre">
+      <div>
+        <p class="eyebrow">NEPAR LABS</p>
+        <h1>AP JUMP</h1>
+        <div class="live-pill" aria-live="polite"><span class="live-dot"></span> ONLINE <strong id="onlineCount">—</strong></div>
+      </div>
+      <div class="score-panel" aria-live="polite">
+        <span>REKORD <strong id="bestScore">00000</strong></span>
+        <span>REZULTAT <strong id="score">00000</strong></span>
+      </div>
+    </header>
+
+    <section class="game-card" aria-label="AP Jump igra">
+      <canvas id="game" width="960" height="360" role="img" aria-label="Satirična endless runner igra smještena u Lici"></canvas>
+
+      <div class="overlay" id="startOverlay">
+        <div class="overlay-box">
+          <p class="kicker">LIKA. PROBLEMI. JEDAN SKOK.</p>
+          <h2>Preskoči problem.</h2>
+          <label class="username-label" for="username">IME ZA SCOREBOARD</label>
+          <input id="username" class="username-input" type="text" maxlength="20" autocomplete="nickname" placeholder="npr. KraljLike" aria-describedby="usernameHelp" />
+          <p class="input-help" id="usernameHelp">2–20 znakova. Sprema se samo ime i rezultat.</p>
+          <p class="controls-line">SPACE / ↑ / TAP za skok</p>
+          <button id="startButton" type="button">KRENI</button>
+          <p class="form-error hidden" id="usernameError" role="alert"></p>
+        </div>
+      </div>
+
+      <div class="overlay hidden" id="gameOverOverlay">
+        <div class="overlay-box">
+          <p class="kicker">GAME OVER</p>
+          <h2 id="gameOverTitle">Problem nije preskočen.</h2>
+          <p id="finalScore">Rezultat: 0</p>
+          <p class="submit-status" id="submitStatus" aria-live="polite"></p>
+          <div class="actions">
+            <button id="restartButton" type="button">OPET</button>
+            <button id="shareButton" class="secondary" type="button">PODIJELI</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="mobile-hint" aria-hidden="true">TAP PO IGRI ZA SKOK</div>
+
+    <section class="leaderboards" aria-label="Ljestvice rezultata">
+      <section class="leaderboard-card" aria-labelledby="todayTitle">
+        <div class="leaderboard-head">
+          <div><p class="eyebrow">DANAS</p><h2 id="todayTitle">TOP 5</h2></div>
+          <span id="leaderboardDay" class="leaderboard-day">—</span>
+        </div>
+        <ol id="dailyLeaderboardList" class="leaderboard-list">
+          <li class="leaderboard-empty">Učitavam današnje rezultate…</li>
+        </ol>
+      </section>
+
+      <section class="leaderboard-card" aria-labelledby="allTimeTitle">
+        <div class="leaderboard-head">
+          <div><p class="eyebrow">SVIH VREMENA</p><h2 id="allTimeTitle">TOP 10</h2></div>
+          <button id="refreshLeaderboard" class="small-button secondary" type="button">OSVJEŽI</button>
+        </div>
+        <ol id="leaderboardList" class="leaderboard-list">
+          <li class="leaderboard-empty">Učitavam ljestvicu…</li>
+        </ol>
+      </section>
+    </section>
+
+    <p id="leaderboardStatus" class="leaderboard-status" aria-live="polite"></p>
+
+    <footer>
+      <p>Satirična igra. Nije povezana ni s jednom političkom strankom niti sa stvarnom osobom.</p>
+      <a href="https://nepar.hr" rel="noopener">nepar.hr</a>
+    </footer>
+  </main>
+
+  <script src="./game.js?v=19"></script>
+  <script src="./game-live.js?v=19"></script>
+</body>
+</html>
