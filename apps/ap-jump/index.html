@@ -11,8 +11,8 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://apjump.nepar.hr/" />
   <link rel="canonical" href="https://apjump.nepar.hr/" />
-  <link rel="stylesheet" href="./style.css" />
-  <link rel="stylesheet" href="./game-clean.css" />
+  <link rel="stylesheet" href="./style.css?v=6" />
+  <link rel="stylesheet" href="./mobile-v2.css?v=6" />
 </head>
 <body>
   <main class="page-shell">
@@ -22,14 +22,9 @@
         <h1>AP JUMP</h1>
         <div class="live-pill" aria-live="polite"><span class="live-dot"></span> ONLINE <strong id="onlineCount">—</strong></div>
       </div>
-
-      <div class="top-actions">
-        <button id="soundButton" class="small-button secondary" type="button" aria-pressed="true">ZVUK ON</button>
-        <div class="score-panel" aria-live="polite">
-          <span>REKORD <strong id="bestScore">00000</strong></span>
-          <span>REZULTAT <strong id="score">00000</strong></span>
-          <span>TEŽINA <strong id="difficulty">LAGANO</strong></span>
-        </div>
+      <div class="score-panel" aria-live="polite">
+        <span>REKORD <strong id="bestScore">00000</strong></span>
+        <span>REZULTAT <strong id="score">00000</strong></span>
       </div>
     </header>
 
@@ -40,11 +35,9 @@
         <div class="overlay-box">
           <p class="kicker">LIKA. PROBLEMI. JEDAN SKOK.</p>
           <h2>Preskoči problem.</h2>
-
           <label class="username-label" for="username">IME ZA SCOREBOARD</label>
           <input id="username" class="username-input" type="text" maxlength="20" autocomplete="nickname" placeholder="npr. KraljLike" aria-describedby="usernameHelp" />
           <p class="input-help" id="usernameHelp">2–20 znakova. Sprema se samo ime i rezultat.</p>
-
           <p class="controls-line">SPACE / ↑ / TAP za skok</p>
           <button id="startButton" type="button">KRENI</button>
           <p class="form-error hidden" id="usernameError" role="alert"></p>
@@ -70,10 +63,7 @@
     <section class="leaderboards" aria-label="Ljestvice rezultata">
       <section class="leaderboard-card" aria-labelledby="todayTitle">
         <div class="leaderboard-head">
-          <div>
-            <p class="eyebrow">DANAS</p>
-            <h2 id="todayTitle">TOP 5</h2>
-          </div>
+          <div><p class="eyebrow">DANAS</p><h2 id="todayTitle">TOP 5</h2></div>
           <span id="leaderboardDay" class="leaderboard-day">—</span>
         </div>
         <ol id="dailyLeaderboardList" class="leaderboard-list">
@@ -83,10 +73,7 @@
 
       <section class="leaderboard-card" aria-labelledby="allTimeTitle">
         <div class="leaderboard-head">
-          <div>
-            <p class="eyebrow">SVIH VREMENA</p>
-            <h2 id="allTimeTitle">TOP 10</h2>
-          </div>
+          <div><p class="eyebrow">SVIH VREMENA</p><h2 id="allTimeTitle">TOP 10</h2></div>
           <button id="refreshLeaderboard" class="small-button secondary" type="button">OSVJEŽI</button>
         </div>
         <ol id="leaderboardList" class="leaderboard-list">
@@ -103,13 +90,8 @@
     </footer>
   </main>
 
-  <script src="./game-prelude.js"></script>
-  <script src="./game-core.js"></script>
-  <script src="./game-balance.js"></script>
-  <script src="./game-render.js"></script>
-  <script src="./game-clean-render.js"></script>
-  <script src="./game-ui.js"></script>
-  <script src="./game-v1-share.js"></script>
-  <script src="./game-live.js"></script>
+  <script src="./game.js?v=6"></script>
+  <script src="./game-v1-share.js?v=6"></script>
+  <script src="./game-live.js?v=6"></script>
 </body>
 </html>
