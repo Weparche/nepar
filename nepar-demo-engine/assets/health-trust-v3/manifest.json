@@ -1,0 +1,98 @@
+[
+  {
+    "id": "pet-desktop",
+    "url": "https://nepar.hr/health-trust-v3/pet-desktop-3f7675c95905a2ad.webp",
+    "sha256": "3f7675c95905a2ad8689a6a86fc889e017afef23ab65bce4a1bd1f66a80d207c",
+    "kind": "image",
+    "width": 1122,
+    "height": 1402
+  },
+  {
+    "id": "pet-mobile",
+    "url": "https://nepar.hr/health-trust-v3/pet-mobile-7cd052489cffc5c3.webp",
+    "sha256": "7cd052489cffc5c3607a1f65eecdd9a669d3ab87901ccff82cfb0a3c5a189499",
+    "kind": "image",
+    "width": 720,
+    "height": 540
+  },
+  {
+    "id": "pet-master",
+    "url": "https://nepar.hr/health-trust-v3/pet-master-6b3faa390fa19df5.webp",
+    "sha256": "6b3faa390fa19df5591ed83909d269fc77b3f58b9a3fb15d11f23b22fd8e2a06",
+    "kind": "image",
+    "width": 1200,
+    "height": 800
+  },
+  {
+    "id": "pet-support",
+    "url": "https://nepar.hr/health-trust-v3/pet-support-b0b076d96acaabae.webp",
+    "sha256": "b0b076d96acaabae0ea6328665d8ee70e040b606bbdb21ff1083d7ad87e4bbce",
+    "kind": "image",
+    "width": 1448,
+    "height": 1086
+  },
+  {
+    "id": "doctor",
+    "url": "https://nepar.hr/health-trust-v3/doctor-a4f7c5ae6f76b85c.webp",
+    "sha256": "a4f7c5ae6f76b85c976806619418f85b61ad7a83ed67385bfcce05afdd20e491",
+    "kind": "image",
+    "width": 1080,
+    "height": 1440
+  },
+  {
+    "id": "doctor-mobile",
+    "url": "https://nepar.hr/health-trust-v3/doctor-mobile-f6e2799fc3ba26d5.webp",
+    "sha256": "f6e2799fc3ba26d5c09f3203c186b1183ab708e437f1152a9dfc90f3cbb0e8b8",
+    "kind": "image",
+    "width": 720,
+    "height": 960
+  },
+  {
+    "id": "clinic",
+    "url": "https://nepar.hr/health-trust-v3/clinic-3eaa8a520aafe54c.webp",
+    "sha256": "3eaa8a520aafe54c39a71485682c6f921e81d6bae7b69af4a87abe30afc801e8",
+    "kind": "image",
+    "width": 1600,
+    "height": 1067
+  },
+  {
+    "id": "clinic-mobile",
+    "url": "https://nepar.hr/health-trust-v3/clinic-mobile-3cf3d4fa4e88a0ce.webp",
+    "sha256": "3cf3d4fa4e88a0ce6d8c8ef53d7d7fc1fdd70605af00ba9105b78748a1fa0373",
+    "kind": "image",
+    "width": 720,
+    "height": 480
+  },
+  {
+    "id": "clinic-support",
+    "url": "https://nepar.hr/health-trust-v3/clinic-support-4d8a776aa3fc9c6f.webp",
+    "sha256": "4d8a776aa3fc9c6f66008777b53b357c64f57626c057b47c7a1d5cbb12148510",
+    "kind": "image",
+    "width": 1600,
+    "height": 1066
+  },
+  {
+    "id": "cormorant-garamond-latin",
+    "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+    "sha256": "3fed8c21c117c2653a693f81f16978fd48a2ca736a3764433eda13bc65679dce",
+    "kind": "font"
+  },
+  {
+    "id": "cormorant-garamond-latin-ext",
+    "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+    "sha256": "9f0c3fe870f1f43d2e28e7fac6d25c2648bbe4801a3cc1bc429a24850cc8700f",
+    "kind": "font"
+  },
+  {
+    "id": "dm-sans-latin",
+    "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+    "sha256": "719f8798c22cc29215dff686b417bbc33023a98d3c0d3071c98e2d897ec12041",
+    "kind": "font"
+  },
+  {
+    "id": "dm-sans-latin-ext",
+    "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2",
+    "sha256": "6c4961b075d4e8e9a3328e000838fe17eaf5c3863d81109642d7af56dc8e5410",
+    "kind": "font"
+  }
+]

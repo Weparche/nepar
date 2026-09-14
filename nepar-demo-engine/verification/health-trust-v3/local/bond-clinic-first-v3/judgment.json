@@ -1,0 +1,25 @@
+{
+  "reviewFingerprint": "1fe3a9d181b8c7fa43e2a81a81f7d06602dda89be45892f723b8d185a3d4b317",
+  "captures": [
+    {
+      "viewport": "desktop",
+      "designJudgment": {
+        "score": 93,
+        "reviewer": "gpt-6-astra",
+        "checkedAt": "2026-09-14T19:45:01.816731Z",
+        "rationale": "The large architectural headline leads into a genuinely full-bleed clinic photograph. Horizontal space, a second real interior and ruled service rows produce an architectural rhythm without card UI. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance.",
+        "findings": []
+      }
+    },
+    {
+      "viewport": "mobile",
+      "designJudgment": {
+        "score": 92,
+        "reviewer": "gpt-6-astra",
+        "checkedAt": "2026-09-14T19:45:01.816731Z",
+        "rationale": "The location photograph spans the mobile viewport, with a compact introduction and clear contact anchor above it. Short text blocks and horizontal imagery preserve the architectural direction. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance.",
+        "findings": []
+      }
+    }
+  ]
+}

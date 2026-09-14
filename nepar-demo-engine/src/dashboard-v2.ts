@@ -25,6 +25,7 @@ const OUTREACH_LABELS=${JSON.stringify(OUTREACH_LABELS)};
 const state={view:'leads',leads:[],demos:[],selected:null,token:sessionStorage.getItem('nepar-admin-token')||''};const $=id=>document.getElementById(id);$('token').value=state.token;const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const ready=d=>Number(d.technical_score)>=90&&Number(d.visual_score)>=88&&d.visual_qa_status==='passed'&&d.qa_status==='passed';
 const qaLabel=d=>ready(d)?'Spreman':d.qa_status==='pending'&&d.technical_score==null?'QA nije pokrenut':'Needs visual review';
 function research(lead){try{return JSON.parse(lead.research_json)||{}}catch{return {}}}
+function v3Scores(i){if(!i.design_version)return '';let q;try{q=JSON.parse(i.qa_report_json||'{}')}catch{return ''}return '<div class="list-block"><h3>'+esc(i.design_version)+' · zasebne ocjene</h3>'+((q.v3?.captures)||[]).map(c=>'<p>'+esc(c.viewport)+': geometrija '+esc(c.geometryScore)+' / dizajn '+esc(c.designJudgment?.score??'čeka pregled')+'</p>').join('')+'</div>'}
 function leadIssue(lead){const r=research(lead);const obs=r.verifiedObservations;return Array.isArray(obs)&&obs.length?obs[0]:''}
 function leadDate(lead){return (lead.created_at||'').split(' ')[0]||'—'}
 function demoForLead(lead){return state.demos.find(d=>d.slug===lead.slug)}
@@ -55,7 +56,7 @@ function renderDemoDetail(i){const ok=ready(i);
 $('detail').innerHTML='<div class="detail-head"><div><h2>'+esc(i.business_name)+'</h2><p>'+esc(i.preview_url)+'</p></div><span class="badge '+(ok?'green':i.qa_status==='pending'&&i.technical_score==null?'grey':'amber')+'">'+esc(qaLabel(i))+'</span></div>'
 +'<div class="facts"><div class="fact"><span>Design system</span><strong>'+esc(i.design_system_key)+'</strong></div><div class="fact"><span>Art direction</span><strong>'+esc(i.art_direction||'pet-first')+'</strong></div></div>'
 +'<div class="reason"><strong>Selection reason</strong><br>'+esc(i.art_direction_reason||'Legacy fallback.')+'</div>'
-+'<div class="scores"><div class="scorecard '+(Number(i.technical_score)>=90?'pass':'fail')+'"><b>'+esc(i.technical_score??'—')+'</b><span>Technical QA / 100</span></div><div class="scorecard '+(Number(i.visual_score)>=88&&i.visual_qa_status==='passed'?'pass':'fail')+'"><b>'+esc(i.visual_score??'—')+'</b><span>Visual QA / 100</span></div></div>'
++v3Scores(i)+'<div class="scores"><div class="scorecard '+(Number(i.technical_score)>=90?'pass':'fail')+'"><b>'+esc(i.technical_score??'—')+'</b><span>Technical QA / 100</span></div><div class="scorecard '+(Number(i.visual_score)>=88&&i.visual_qa_status==='passed'?'pass':'fail')+'"><b>'+esc(i.visual_score??'—')+'</b><span>Visual QA / 100</span></div></div>'
 +'<div class="shots"><div id="ds" class="shot">Desktop</div><div id="ms" class="shot">Mobile</div></div>'
 +'<div class="actions"><a class="btn" href="'+esc(i.preview_url)+'" target="_blank" rel="noreferrer">Open demo</a><button class="btn primary" data-act="approve" '+(ok?'':'disabled')+'>Approve</button><button class="btn" data-act="regenerate">Regenerate</button><button class="btn danger" data-act="reject">Reject / archive</button></div>'
 +(!ok?'<p class="blocking">Odobrenje je blokirano dok Technical QA ≥ 90, Visual QA ≥ 88 i visual status = passed.</p>':'')

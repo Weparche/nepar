@@ -72,6 +72,7 @@ export interface DemoRow {
   lead_id: number | null;
   design_system_key: DesignSystemKey;
   generation_version: string;
+  design_version?: string | null;
   qa_status: QaStatus;
   qa_report_json: string | null;
   desktop_screenshot_key: string | null;

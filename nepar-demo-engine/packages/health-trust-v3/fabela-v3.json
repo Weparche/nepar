@@ -1,0 +1,729 @@
+{
+  "packageVersion": 1,
+  "lead": {
+    "businessName": "Fabela",
+    "slug": "fabela-v3",
+    "websiteUrl": "https://www.fabela.hr/",
+    "publicPhone": "+385 1 3095 340",
+    "city": "Zagreb",
+    "industry": "Veterinarska ambulanta",
+    "source": "official-website+public-register-cross-check",
+    "score": 94,
+    "scoreReasons": [
+      "Aktivna veterinarska ambulanta s jasno objavljenim kontaktom i adresom.",
+      "Službena stranica javno navodi stručnog voditelja i više od 15 godina iskustva.",
+      "Postoji dovoljno provjerljivih usluga za vjerodostojan personalizirani demo."
+    ],
+    "services": [
+      {
+        "title": "Preventivni pregledi i cijepljenje",
+        "description": "Preventivna skrb i cijepljenje prema javno navedenim uslugama ambulante.",
+        "sourceField": "fabela.services"
+      },
+      {
+        "title": "Ultrazvuk i RTG dijagnostika",
+        "description": "Dijagnostičke usluge uključuju ultrazvuk i rendgensku dijagnostiku.",
+        "sourceField": "fabela.services"
+      },
+      {
+        "title": "Kardiologija",
+        "description": "Kardiološka obrada nalazi se među javno navedenim uslugama ambulante.",
+        "sourceField": "fabela.services"
+      },
+      {
+        "title": "Kirurgija",
+        "description": "Kirurški zahvati navedeni su u javnoj ponudi veterinarskih usluga.",
+        "sourceField": "fabela.services"
+      },
+      {
+        "title": "Dermatologija i oftalmologija",
+        "description": "Ambulanta javno navodi dermatološku i oftalmološku skrb.",
+        "sourceField": "fabela.services"
+      },
+      {
+        "title": "Laboratorijska dijagnostika",
+        "description": "Laboratorijske, virusološke i parazitološke pretrage dio su javno navedenih usluga.",
+        "sourceField": "fabela.services"
+      }
+    ],
+    "facts": {
+      "fabela.location": "Tratinska 53/I, Zagreb",
+      "fabela.experience": "15+ godina",
+      "fabela.lead": "dr. Alan Jurca"
+    },
+    "sources": [
+      {
+        "field": "fabela.services",
+        "url": "https://www.fabela.hr/",
+        "note": "Službena stranica ambulante; izvor javno navedenih veterinarskih usluga.",
+        "verifiedAt": "2026-08-23T11:45:00.000Z"
+      },
+      {
+        "field": "fabela.location",
+        "url": "https://www.fabela.hr/",
+        "note": "Službena stranica; kontaktna adresa.",
+        "verifiedAt": "2026-08-23T11:45:00.000Z"
+      },
+      {
+        "field": "fabela.experience",
+        "url": "https://www.fabela.hr/",
+        "note": "Službena stranica javno navodi više od 15 godina iskustva.",
+        "verifiedAt": "2026-08-23T11:45:00.000Z"
+      },
+      {
+        "field": "fabela.lead",
+        "url": "https://www.fabela.hr/",
+        "note": "Službena stranica navodi dr. Alana Jurcu.",
+        "verifiedAt": "2026-08-23T11:45:00.000Z"
+      }
+    ],
+    "visualAssets": [
+      {
+        "kind": "hero",
+        "role": "pet",
+        "url": "https://nepar.hr/fabela/hero.webp",
+        "alt": "Topao veterinarski vizual za Fabela demo bez identifikacije stvarne osobe.",
+        "sourceUrl": "https://nepar.hr/fabela/hero.webp",
+        "provenance": "nepar-owned",
+        "verifiedAt": "2026-08-23T11:45:00.000Z",
+        "depictsNamedPerson": false,
+        "heroEligible": true
+      },
+      {
+        "kind": "gallery",
+        "role": "clinic",
+        "url": "https://nepar.hr/fabela/about.webp",
+        "alt": "Mirna unutrašnjost veterinarske ordinacije bez identifikacije stvarne lokacije ili osobe.",
+        "sourceUrl": "https://nepar.hr/fabela/about.webp",
+        "provenance": "nepar-owned",
+        "verifiedAt": "2026-08-23T15:38:00.000Z",
+        "depictsNamedPerson": false,
+        "heroEligible": false
+      }
+    ],
+    "verifiedObservations": [
+      "Fabela je veterinarska ambulanta na adresi Tratinska 53/I u Zagrebu.",
+      "Službena stranica navodi dr. Alana Jurcu i više od 15 godina iskustva."
+    ],
+    "proposedServiceAngle": "Modernizirati prezentaciju ambulante uz call-first mobilni CTA, provjerene usluge i jasno istaknuto povjerenje bez izmišljenih recenzija ili društvenih profila."
+  },
+  "brief": {
+    "directionReason": "Pet-first: no verified real portrait or facility photograph in the Fabela lead.",
+    "intent": "Premium presentation and immediate contact; distinct desktop and mobile composition.",
+    "audience": "Vlasnici ambulanti i vlasnici ljubimaca."
+  },
+  "payload": {
+    "slug": "fabela-v3",
+    "businessName": "Fabela",
+    "designSystemKey": "health-trust",
+    "designVersion": "health-trust-v3",
+    "visualDirection": "pet-first",
+    "artDirection": "pet-first",
+    "artDirectionReason": "Pet-first: no verified real portrait or facility photograph in the Fabela lead.",
+    "generationVersion": "astra-codex-prepared-v3",
+    "sourceUrl": "https://www.fabela.hr/",
+    "content": {
+      "v3": {
+        "hero": {
+          "desktop": {
+            "url": "https://nepar.hr/health-trust-v3/pet-desktop-3f7675c95905a2ad.webp",
+            "width": 1122,
+            "height": 1402,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "mobile": {
+            "url": "https://nepar.hr/health-trust-v3/pet-mobile-7cd052489cffc5c3.webp",
+            "width": 720,
+            "height": 540,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "alt": "Zlatni retriver i sivo-bijela mačka u toplom svjetlu.",
+          "origin": {
+            "provenance": "ai-generated-decorative",
+            "sourceUrl": "https://nepar.hr/health-trust-v3/pet-master-6b3faa390fa19df5.webp",
+            "masterAssetId": "fabela-pets-master-v3",
+            "depictsNamedPerson": false
+          }
+        },
+        "heroRole": "pet",
+        "support": {
+          "desktop": {
+            "url": "https://nepar.hr/health-trust-v3/pet-support-b0b076d96acaabae.webp",
+            "width": 1448,
+            "height": 1086,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "mobile": {
+            "url": "https://nepar.hr/health-trust-v3/pet-support-b0b076d96acaabae.webp",
+            "width": 1448,
+            "height": 1086,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "alt": "Zlatni retriver i sivo-bijela mačka odmaraju zajedno.",
+          "origin": {
+            "provenance": "ai-generated-decorative",
+            "sourceUrl": "https://nepar.hr/health-trust-v3/pet-master-6b3faa390fa19df5.webp",
+            "masterAssetId": "fabela-pets-master-v3",
+            "depictsNamedPerson": false
+          }
+        },
+        "fonts": {
+          "serif": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+          "sans": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+          "serifExtended": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+          "sansExtended": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2"
+        },
+        "assetManifest": [
+          {
+            "url": "https://nepar.hr/health-trust-v3/pet-desktop-3f7675c95905a2ad.webp",
+            "sha256": "3f7675c95905a2ad8689a6a86fc889e017afef23ab65bce4a1bd1f66a80d207c",
+            "kind": "image"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/pet-mobile-7cd052489cffc5c3.webp",
+            "sha256": "7cd052489cffc5c3607a1f65eecdd9a669d3ab87901ccff82cfb0a3c5a189499",
+            "kind": "image"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/pet-support-b0b076d96acaabae.webp",
+            "sha256": "b0b076d96acaabae0ea6328665d8ee70e040b606bbdb21ff1083d7ad87e4bbce",
+            "kind": "image"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+            "sha256": "3fed8c21c117c2653a693f81f16978fd48a2ca736a3764433eda13bc65679dce",
+            "kind": "font"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+            "sha256": "9f0c3fe870f1f43d2e28e7fac6d25c2648bbe4801a3cc1bc429a24850cc8700f",
+            "kind": "font"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+            "sha256": "719f8798c22cc29215dff686b417bbc33023a98d3c0d3071c98e2d897ec12041",
+            "kind": "font"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2",
+            "sha256": "6c4961b075d4e8e9a3328e000838fe17eaf5c3863d81109642d7af56dc8e5410",
+            "kind": "font"
+          }
+        ]
+      },
+      "brand": {
+        "name": "Fabela",
+        "industry": "Veterinarska ambulanta",
+        "location": "Zagreb"
+      },
+      "contact": {
+        "phone": "+385 1 3095 340",
+        "address": "Tratinska 53/I, Zagreb",
+        "website": "https://www.fabela.hr/"
+      },
+      "hero": {
+        "headline": "Njihov mali svijet. Naša velika briga.",
+        "description": "Veterinarska ambulanta Fabela u Zagrebu. Od preventivnog pregleda do dijagnostike i kirurgije — razgovarajmo o skrbi za vašeg ljubimca."
+      },
+      "primaryCta": {
+        "label": "Nazovite ambulantu",
+        "href": "tel:+385 1 3095 340"
+      },
+      "services": [
+        {
+          "title": "Preventivni pregledi i cijepljenje",
+          "description": "Preventivni pregledi i cijepljenje za vašeg ljubimca.",
+          "sourceField": "fabela.services"
+        },
+        {
+          "title": "Ultrazvuk i RTG dijagnostika",
+          "description": "Ultrazvučna i rendgenska dijagnostika u ambulanti.",
+          "sourceField": "fabela.services"
+        },
+        {
+          "title": "Kardiologija",
+          "description": "Kardiološka obrada vašeg ljubimca.",
+          "sourceField": "fabela.services"
+        },
+        {
+          "title": "Kirurgija",
+          "description": "Kirurški zahvati dio su usluga naše ambulante.",
+          "sourceField": "fabela.services"
+        },
+        {
+          "title": "Dermatologija i oftalmologija",
+          "description": "Dermatološka i oftalmološka skrb.",
+          "sourceField": "fabela.services"
+        },
+        {
+          "title": "Laboratorijska dijagnostika",
+          "description": "Laboratorijske, virusološke i parazitološke pretrage.",
+          "sourceField": "fabela.services"
+        }
+      ],
+      "proofPoints": [
+        {
+          "value": "15+ godina",
+          "label": "Iskustva u veterinarskoj skrbi",
+          "sourceField": "fabela.experience"
+        },
+        {
+          "value": "dr. Alan Jurca",
+          "label": "Stručni voditelj ambulante",
+          "sourceField": "fabela.lead"
+        },
+        {
+          "value": "Tratinska 53/I",
+          "label": "Zagreb",
+          "sourceField": "fabela.location"
+        }
+      ],
+      "about": {
+        "title": "Blizu vama. Posvećeni njima.",
+        "body": "Na Tratinskoj 53/I, Fabela okuplja veterinarsku skrb pod vodstvom dr. Alana Jurce. Ambulanta ima više od 15 godina iskustva u skrbi za kućne ljubimce.\n\nZa informacije o pregledu i uslugama nazovite nas. Prvi korak počinje razgovorom."
+      },
+      "sources": [
+        {
+          "field": "fabela.services",
+          "url": "https://www.fabela.hr/",
+          "note": "Službena stranica ambulante; izvor javno navedenih veterinarskih usluga.",
+          "verifiedAt": "2026-08-23T11:45:00.000Z"
+        },
+        {
+          "field": "fabela.location",
+          "url": "https://www.fabela.hr/",
+          "note": "Službena stranica; kontaktna adresa.",
+          "verifiedAt": "2026-08-23T11:45:00.000Z"
+        },
+        {
+          "field": "fabela.experience",
+          "url": "https://www.fabela.hr/",
+          "note": "Službena stranica javno navodi više od 15 godina iskustva.",
+          "verifiedAt": "2026-08-23T11:45:00.000Z"
+        },
+        {
+          "field": "fabela.lead",
+          "url": "https://www.fabela.hr/",
+          "note": "Službena stranica navodi dr. Alana Jurcu.",
+          "verifiedAt": "2026-08-23T11:45:00.000Z"
+        }
+      ],
+      "visual": {
+        "accent": "#174b36",
+        "tone": "light",
+        "imagePosition": "center"
+      },
+      "assets": [],
+      "verifiedObservations": [
+        "Fabela je veterinarska ambulanta na adresi Tratinska 53/I u Zagrebu.",
+        "Službena stranica navodi dr. Alana Jurcu i više od 15 godina iskustva."
+      ]
+    },
+    "attachDomain": false,
+    "outreach": {
+      "prospectName": "Fabela",
+      "verifiedObservations": [
+        "Fabela je veterinarska ambulanta na adresi Tratinska 53/I u Zagrebu.",
+        "Službena stranica navodi dr. Alana Jurcu i više od 15 godina iskustva."
+      ],
+      "proposedServiceAngle": "Modernizirati prezentaciju ambulante uz call-first mobilni CTA, provjerene usluge i jasno istaknuto povjerenje bez izmišljenih recenzija ili društvenih profila."
+    }
+  },
+  "assetManifest": [
+    {
+      "url": "https://nepar.hr/health-trust-v3/pet-desktop-3f7675c95905a2ad.webp",
+      "sha256": "3f7675c95905a2ad8689a6a86fc889e017afef23ab65bce4a1bd1f66a80d207c",
+      "kind": "image"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/pet-mobile-7cd052489cffc5c3.webp",
+      "sha256": "7cd052489cffc5c3607a1f65eecdd9a669d3ab87901ccff82cfb0a3c5a189499",
+      "kind": "image"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/pet-support-b0b076d96acaabae.webp",
+      "sha256": "b0b076d96acaabae0ea6328665d8ee70e040b606bbdb21ff1083d7ad87e4bbce",
+      "kind": "image"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+      "sha256": "3fed8c21c117c2653a693f81f16978fd48a2ca736a3764433eda13bc65679dce",
+      "kind": "font"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+      "sha256": "9f0c3fe870f1f43d2e28e7fac6d25c2648bbe4801a3cc1bc429a24850cc8700f",
+      "kind": "font"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+      "sha256": "719f8798c22cc29215dff686b417bbc33023a98d3c0d3071c98e2d897ec12041",
+      "kind": "font"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2",
+      "sha256": "6c4961b075d4e8e9a3328e000838fe17eaf5c3863d81109642d7af56dc8e5410",
+      "kind": "font"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "master",
+      "prompt": "Create one premium editorial pet photograph, master asset for a Croatian veterinary clinic website. Warm ivory studio daylight, a beautiful healthy adult golden retriever sitting with a small grey-and-white cat calmly nestled beside its front paws. Both entire animals visible, natural proportions, nuanced real fur, attentive gentle eyes, calm affectionate mood. A linen warm cream backdrop and ground seamlessly meet, soft believable shadows, subtle olive tones. Wide landscape composition with both pets grouped on the right half, lots of clean negative space to the left, leave generous margin around ears and paws for mobile recropping. Real photography with exquisite texture, medium-format portrait lens, no plastic AI look. No human, no medical equipment, no clinic interior, no lettering, no logo, no watermark. Generate a single photograph, not a website or collage.",
+      "masterAssetId": "fabela-pets-master-v3"
+    },
+    {
+      "id": "desktop",
+      "prompt": "Edit this master pet photograph into a portrait 4:5 desktop website photo panel: keep EXACTLY the same golden retriever and grey-and-white cat, face markings, coat, pose, light and warm linen background. Center both pets together, fully include all ears and paws, with generous 8 percent margin on all sides. Remove excess empty space on the left by reframing, not changing subjects. Photorealistic, no text or graphics.",
+      "masterAssetId": "fabela-pets-master-v3"
+    },
+    {
+      "id": "mobile",
+      "prompt": "Reframe the attached master photograph for a MOBILE veterinary website hero, landscape 4:3 photograph. Preserve exactly the golden retriever and grey-and-white cat, their faces, markings, pose, fur identity, warm linen daylight atmosphere. Both complete animals including ears and paws, centered together in the frame, with generous margin above and on sides. Same scene, rearrange framing and extend backdrop only. No text, graphics, logo, humans or new animals.",
+      "masterAssetId": "fabela-pets-master-v3"
+    },
+    {
+      "id": "support",
+      "prompt": "Use case: identity-preserve. Reference image is the locked master for these exact two pets. Create one landscape 4:3 editorial supporting photograph, same golden retriever and same grey-and-white cat, identical fur markings, eye colors, warm soft light and cream linen backdrop. Both are now comfortably lying down close together, cat in foreground and dog behind, heads awake looking toward camera, intimate calm natural posture. Tighter framing: animals together fill 85% of frame width, leave small comfortable headroom and keep all ears and forepaws within the frame. Photorealistic premium veterinary website decorative photo. No people, no clinic, no text, no logos. Preserve identities and warm light precisely.",
+      "masterAssetId": "fabela-pets-master-v3"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "brand.name",
+      "value": "Fabela",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "brand.name",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "brand.industry",
+      "value": "Veterinarska ambulanta",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "brand.industry",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "brand.location",
+      "value": "Zagreb",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "brand.location",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "contact.phone",
+      "value": "+385 1 3095 340",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "contact.phone",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "contact.address",
+      "value": "Tratinska 53/I, Zagreb",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "contact.address",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "contact.website",
+      "value": "https://www.fabela.hr/",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "contact.website",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "hero.headline",
+      "value": "Njihov mali svijet. Naša velika briga.",
+      "kind": "editorial",
+      "sources": []
+    },
+    {
+      "path": "hero.description",
+      "value": "Veterinarska ambulanta Fabela u Zagrebu. Od preventivnog pregleda do dijagnostike i kirurgije — razgovarajmo o skrbi za vašeg ljubimca.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "hero.description",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.0.title",
+      "value": "Preventivni pregledi i cijepljenje",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.0.title",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.0.description",
+      "value": "Preventivni pregledi i cijepljenje za vašeg ljubimca.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.0.description",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.1.title",
+      "value": "Ultrazvuk i RTG dijagnostika",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.1.title",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.1.description",
+      "value": "Ultrazvučna i rendgenska dijagnostika u ambulanti.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.1.description",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.2.title",
+      "value": "Kardiologija",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.2.title",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.2.description",
+      "value": "Kardiološka obrada vašeg ljubimca.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.2.description",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.3.title",
+      "value": "Kirurgija",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.3.title",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.3.description",
+      "value": "Kirurški zahvati dio su usluga naše ambulante.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.3.description",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.4.title",
+      "value": "Dermatologija i oftalmologija",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.4.title",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.4.description",
+      "value": "Dermatološka i oftalmološka skrb.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.4.description",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.5.title",
+      "value": "Laboratorijska dijagnostika",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.5.title",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.5.description",
+      "value": "Laboratorijske, virusološke i parazitološke pretrage.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.5.description",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.0.value",
+      "value": "15+ godina",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.0.value",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.0.label",
+      "value": "Iskustva u veterinarskoj skrbi",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.0.label",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.1.value",
+      "value": "dr. Alan Jurca",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.1.value",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.1.label",
+      "value": "Stručni voditelj ambulante",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.1.label",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.2.value",
+      "value": "Tratinska 53/I",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.2.value",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.2.label",
+      "value": "Zagreb",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.2.label",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "about.title",
+      "value": "Blizu vama. Posvećeni njima.",
+      "kind": "editorial",
+      "sources": []
+    },
+    {
+      "path": "about.body",
+      "value": "Na Tratinskoj 53/I, Fabela okuplja veterinarsku skrb pod vodstvom dr. Alana Jurce. Ambulanta ima više od 15 godina iskustva u skrbi za kućne ljubimce.\n\nZa informacije o pregledu i uslugama nazovite nas. Prvi korak počinje razgovorom.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "about.body",
+          "url": "https://www.fabela.hr/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    }
+  ]
+}

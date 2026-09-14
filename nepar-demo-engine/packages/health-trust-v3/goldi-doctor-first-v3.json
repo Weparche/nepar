@@ -1,0 +1,640 @@
+{
+  "packageVersion": 1,
+  "lead": {
+    "businessName": "Goldi",
+    "slug": "goldi-doctor-first-v3",
+    "websiteUrl": "https://goldi-vet.hr/nas-tim/",
+    "publicPhone": "+385 1 4854725",
+    "city": "Zagreb",
+    "industry": "Veterinarska ambulanta",
+    "source": "official-business-site / local QA specimen",
+    "score": 94,
+    "scoreReasons": [
+      "Aktivna veterinarska ambulanta s jasno objavljenim kontaktom i adresom.",
+      "Službena stranica javno navodi stručnog voditelja i više od 15 godina iskustva.",
+      "Postoji dovoljno provjerljivih usluga za vjerodostojan personalizirani demo."
+    ],
+    "services": [
+      {
+        "title": "Preventiva",
+        "description": "Preventivna veterinarska skrb.",
+        "sourceField": "goldi.services"
+      },
+      {
+        "title": "Interna medicina",
+        "description": "Internistička obrada ljubimaca.",
+        "sourceField": "goldi.services"
+      },
+      {
+        "title": "Kardiologija",
+        "description": "Kardiološka obrada.",
+        "sourceField": "goldi.services"
+      },
+      {
+        "title": "Kirurgija i ortopedija",
+        "description": "Opća kirurgija i ortopedija.",
+        "sourceField": "goldi.services"
+      }
+    ],
+    "facts": {
+      "location": "Medvedgradska ul. 1c, Zagreb",
+      "doctor": "Alan Fleck, dr. med. vet.",
+      "since": "1996."
+    },
+    "sources": [
+      {
+        "field": "goldi.services",
+        "url": "https://goldi-vet.hr/nas-tim/",
+        "verifiedAt": "2026-09-14T12:00:00.000Z"
+      },
+      {
+        "field": "goldi.location",
+        "url": "https://goldi-vet.hr/nas-tim/",
+        "verifiedAt": "2026-09-14T12:00:00.000Z"
+      },
+      {
+        "field": "goldi.doctor",
+        "url": "https://goldi-vet.hr/nas-tim/",
+        "verifiedAt": "2026-09-14T12:00:00.000Z"
+      },
+      {
+        "field": "goldi.since",
+        "url": "https://goldi-vet.hr/nas-tim/",
+        "verifiedAt": "2026-09-14T12:00:00.000Z"
+      }
+    ],
+    "visualAssets": [],
+    "verifiedObservations": [
+      "Lokalni QA primjer s provjerenim portretom Alana Flecka."
+    ],
+    "proposedServiceAngle": "Lokalna provjera renderera; bez slanja ponude."
+  },
+  "brief": {
+    "directionReason": "Doctor-first: verified high-resolution portrait of Alan Fleck from the official Goldi team page.",
+    "intent": "Premium presentation and immediate contact; distinct desktop and mobile composition.",
+    "audience": "Vlasnici ambulanti i vlasnici ljubimaca."
+  },
+  "payload": {
+    "slug": "goldi-doctor-first-v3",
+    "businessName": "Goldi",
+    "designSystemKey": "health-trust",
+    "designVersion": "health-trust-v3",
+    "visualDirection": "doctor-first",
+    "artDirection": "doctor-first",
+    "artDirectionReason": "Doctor-first: verified high-resolution portrait of Alan Fleck from the official Goldi team page.",
+    "generationVersion": "astra-codex-prepared-v3",
+    "sourceUrl": "https://goldi-vet.hr/nas-tim/",
+    "content": {
+      "v3": {
+        "hero": {
+          "desktop": {
+            "url": "https://nepar.hr/health-trust-v3/doctor-a4f7c5ae6f76b85c.webp",
+            "width": 1080,
+            "height": 1440,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "mobile": {
+            "url": "https://nepar.hr/health-trust-v3/doctor-mobile-f6e2799fc3ba26d5.webp",
+            "width": 720,
+            "height": 960,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "alt": "Alan Fleck, veterinar u ambulanti Goldi.",
+          "origin": {
+            "provenance": "business-website",
+            "sourceUrl": "https://goldi-vet.hr/nas-tim/",
+            "verifiedAt": "2026-09-14T12:00:00.000Z",
+            "depictsNamedPerson": true,
+            "namedPerson": "Alan Fleck, dr. med. vet."
+          }
+        },
+        "heroRole": "doctor",
+        "support": {
+          "desktop": {
+            "url": "https://nepar.hr/health-trust-v3/pet-support-b0b076d96acaabae.webp",
+            "width": 1448,
+            "height": 1086,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "mobile": {
+            "url": "https://nepar.hr/health-trust-v3/pet-support-b0b076d96acaabae.webp",
+            "width": 1448,
+            "height": 1086,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "alt": "Zlatni retriver i sivo-bijela mačka odmaraju zajedno.",
+          "origin": {
+            "provenance": "ai-generated-decorative",
+            "sourceUrl": "https://nepar.hr/health-trust-v3/pet-master-6b3faa390fa19df5.webp",
+            "masterAssetId": "fabela-pets-master-v3",
+            "depictsNamedPerson": false
+          }
+        },
+        "fonts": {
+          "serif": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+          "sans": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+          "serifExtended": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+          "sansExtended": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2"
+        },
+        "assetManifest": [
+          {
+            "url": "https://nepar.hr/health-trust-v3/pet-support-b0b076d96acaabae.webp",
+            "sha256": "b0b076d96acaabae0ea6328665d8ee70e040b606bbdb21ff1083d7ad87e4bbce",
+            "kind": "image"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/doctor-a4f7c5ae6f76b85c.webp",
+            "sha256": "a4f7c5ae6f76b85c976806619418f85b61ad7a83ed67385bfcce05afdd20e491",
+            "kind": "image"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/doctor-mobile-f6e2799fc3ba26d5.webp",
+            "sha256": "f6e2799fc3ba26d5c09f3203c186b1183ab708e437f1152a9dfc90f3cbb0e8b8",
+            "kind": "image"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+            "sha256": "3fed8c21c117c2653a693f81f16978fd48a2ca736a3764433eda13bc65679dce",
+            "kind": "font"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+            "sha256": "9f0c3fe870f1f43d2e28e7fac6d25c2648bbe4801a3cc1bc429a24850cc8700f",
+            "kind": "font"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+            "sha256": "719f8798c22cc29215dff686b417bbc33023a98d3c0d3071c98e2d897ec12041",
+            "kind": "font"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2",
+            "sha256": "6c4961b075d4e8e9a3328e000838fe17eaf5c3863d81109642d7af56dc8e5410",
+            "kind": "font"
+          }
+        ]
+      },
+      "brand": {
+        "name": "Goldi",
+        "industry": "Veterinarska ambulanta",
+        "location": "Zagreb"
+      },
+      "contact": {
+        "phone": "+385 1 4854725",
+        "address": "Medvedgradska ul. 1c, Zagreb",
+        "website": "https://goldi-vet.hr/nas-tim/"
+      },
+      "hero": {
+        "headline": "Stručnost s osobnim pristupom.",
+        "description": "Preventivni pregledi, cijepljenje i laboratorijska dijagnostika za vaše ljubimce."
+      },
+      "primaryCta": {
+        "label": "Nazovite ambulantu",
+        "href": "tel:+385 1 4854725"
+      },
+      "services": [
+        {
+          "title": "Preventiva",
+          "description": "Preventivna veterinarska skrb.",
+          "sourceField": "goldi.services"
+        },
+        {
+          "title": "Interna medicina",
+          "description": "Internistička obrada ljubimaca.",
+          "sourceField": "goldi.services"
+        },
+        {
+          "title": "Kardiologija",
+          "description": "Kardiološka obrada.",
+          "sourceField": "goldi.services"
+        },
+        {
+          "title": "Kirurgija i ortopedija",
+          "description": "Opća kirurgija i ortopedija.",
+          "sourceField": "goldi.services"
+        }
+      ],
+      "proofPoints": [
+        {
+          "value": "Od 1996.",
+          "label": "Veterinarska ambulanta Goldi",
+          "sourceField": "goldi.since"
+        },
+        {
+          "value": "Alan Fleck",
+          "label": "Doktor veterinarske medicine",
+          "sourceField": "goldi.doctor"
+        },
+        {
+          "value": "Medvedgradska 1c",
+          "label": "Zagreb",
+          "sourceField": "goldi.location"
+        }
+      ],
+      "about": {
+        "title": "Znanje koje susreće pažnju.",
+        "body": "Alan Fleck dio je Goldi tima od 2007. godine. Njegova područja rada obuhvaćaju kirurgiju, rentgenologiju i internu medicinu.\n\nAmbulanta Goldi nalazi se u Medvedgradskoj ulici u Zagrebu."
+      },
+      "sources": [
+        {
+          "field": "goldi.services",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        },
+        {
+          "field": "goldi.location",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        },
+        {
+          "field": "goldi.doctor",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        },
+        {
+          "field": "goldi.since",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ],
+      "visual": {
+        "accent": "#174b36",
+        "tone": "light",
+        "imagePosition": "center"
+      },
+      "assets": [],
+      "verifiedObservations": [
+        "Lokalni QA primjer s provjerenim portretom Alana Flecka."
+      ]
+    },
+    "attachDomain": false,
+    "outreach": {
+      "prospectName": "Goldi · local QA only",
+      "verifiedObservations": [
+        "Lokalni QA primjer s provjerenim portretom Alana Flecka."
+      ],
+      "proposedServiceAngle": "Lokalna provjera renderera; bez slanja ponude."
+    }
+  },
+  "assetManifest": [
+    {
+      "url": "https://nepar.hr/health-trust-v3/pet-support-b0b076d96acaabae.webp",
+      "sha256": "b0b076d96acaabae0ea6328665d8ee70e040b606bbdb21ff1083d7ad87e4bbce",
+      "kind": "image"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/doctor-a4f7c5ae6f76b85c.webp",
+      "sha256": "a4f7c5ae6f76b85c976806619418f85b61ad7a83ed67385bfcce05afdd20e491",
+      "kind": "image"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/doctor-mobile-f6e2799fc3ba26d5.webp",
+      "sha256": "f6e2799fc3ba26d5c09f3203c186b1183ab708e437f1152a9dfc90f3cbb0e8b8",
+      "kind": "image"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+      "sha256": "3fed8c21c117c2653a693f81f16978fd48a2ca736a3764433eda13bc65679dce",
+      "kind": "font"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+      "sha256": "9f0c3fe870f1f43d2e28e7fac6d25c2648bbe4801a3cc1bc429a24850cc8700f",
+      "kind": "font"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+      "sha256": "719f8798c22cc29215dff686b417bbc33023a98d3c0d3071c98e2d897ec12041",
+      "kind": "font"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2",
+      "sha256": "6c4961b075d4e8e9a3328e000838fe17eaf5c3863d81109642d7af56dc8e5410",
+      "kind": "font"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "master",
+      "prompt": "Create one premium editorial pet photograph, master asset for a Croatian veterinary clinic website. Warm ivory studio daylight, a beautiful healthy adult golden retriever sitting with a small grey-and-white cat calmly nestled beside its front paws. Both entire animals visible, natural proportions, nuanced real fur, attentive gentle eyes, calm affectionate mood. A linen warm cream backdrop and ground seamlessly meet, soft believable shadows, subtle olive tones. Wide landscape composition with both pets grouped on the right half, lots of clean negative space to the left, leave generous margin around ears and paws for mobile recropping. Real photography with exquisite texture, medium-format portrait lens, no plastic AI look. No human, no medical equipment, no clinic interior, no lettering, no logo, no watermark. Generate a single photograph, not a website or collage.",
+      "masterAssetId": "fabela-pets-master-v3"
+    },
+    {
+      "id": "desktop",
+      "prompt": "Edit this master pet photograph into a portrait 4:5 desktop website photo panel: keep EXACTLY the same golden retriever and grey-and-white cat, face markings, coat, pose, light and warm linen background. Center both pets together, fully include all ears and paws, with generous 8 percent margin on all sides. Remove excess empty space on the left by reframing, not changing subjects. Photorealistic, no text or graphics.",
+      "masterAssetId": "fabela-pets-master-v3"
+    },
+    {
+      "id": "mobile",
+      "prompt": "Reframe the attached master photograph for a MOBILE veterinary website hero, landscape 4:3 photograph. Preserve exactly the golden retriever and grey-and-white cat, their faces, markings, pose, fur identity, warm linen daylight atmosphere. Both complete animals including ears and paws, centered together in the frame, with generous margin above and on sides. Same scene, rearrange framing and extend backdrop only. No text, graphics, logo, humans or new animals.",
+      "masterAssetId": "fabela-pets-master-v3"
+    },
+    {
+      "id": "support",
+      "prompt": "Use case: identity-preserve. Reference image is the locked master for these exact two pets. Create one landscape 4:3 editorial supporting photograph, same golden retriever and same grey-and-white cat, identical fur markings, eye colors, warm soft light and cream linen backdrop. Both are now comfortably lying down close together, cat in foreground and dog behind, heads awake looking toward camera, intimate calm natural posture. Tighter framing: animals together fill 85% of frame width, leave small comfortable headroom and keep all ears and forepaws within the frame. Photorealistic premium veterinary website decorative photo. No people, no clinic, no text, no logos. Preserve identities and warm light precisely.",
+      "masterAssetId": "fabela-pets-master-v3"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "brand.name",
+      "value": "Goldi",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "brand.name",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "brand.industry",
+      "value": "Veterinarska ambulanta",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "brand.industry",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "brand.location",
+      "value": "Zagreb",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "brand.location",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "contact.phone",
+      "value": "+385 1 4854725",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "contact.phone",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "contact.address",
+      "value": "Medvedgradska ul. 1c, Zagreb",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "contact.address",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "contact.website",
+      "value": "https://goldi-vet.hr/nas-tim/",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "contact.website",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "hero.headline",
+      "value": "Stručnost s osobnim pristupom.",
+      "kind": "editorial",
+      "sources": []
+    },
+    {
+      "path": "hero.description",
+      "value": "Preventivni pregledi, cijepljenje i laboratorijska dijagnostika za vaše ljubimce.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "hero.description",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.0.title",
+      "value": "Preventiva",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.0.title",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.0.description",
+      "value": "Preventivna veterinarska skrb.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.0.description",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.1.title",
+      "value": "Interna medicina",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.1.title",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.1.description",
+      "value": "Internistička obrada ljubimaca.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.1.description",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.2.title",
+      "value": "Kardiologija",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.2.title",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.2.description",
+      "value": "Kardiološka obrada.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.2.description",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.3.title",
+      "value": "Kirurgija i ortopedija",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.3.title",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.3.description",
+      "value": "Opća kirurgija i ortopedija.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.3.description",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.0.value",
+      "value": "Od 1996.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.0.value",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.0.label",
+      "value": "Veterinarska ambulanta Goldi",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.0.label",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.1.value",
+      "value": "Alan Fleck",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.1.value",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.1.label",
+      "value": "Doktor veterinarske medicine",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.1.label",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.2.value",
+      "value": "Medvedgradska 1c",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.2.value",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.2.label",
+      "value": "Zagreb",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.2.label",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "about.title",
+      "value": "Znanje koje susreće pažnju.",
+      "kind": "editorial",
+      "sources": []
+    },
+    {
+      "path": "about.body",
+      "value": "Alan Fleck dio je Goldi tima od 2007. godine. Njegova područja rada obuhvaćaju kirurgiju, rentgenologiju i internu medicinu.\n\nAmbulanta Goldi nalazi se u Medvedgradskoj ulici u Zagrebu.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "about.body",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "v3.hero.origin.namedPerson",
+      "value": "Alan Fleck, dr. med. vet.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "v3.hero.origin.namedPerson",
+          "url": "https://goldi-vet.hr/nas-tim/",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DESIGN_VERSION, v3ContentSchema, v3QaSchema } from './health-trust-v3-contract';
 import {
   ASSET_PROVENANCE,
   DESIGN_SYSTEM_KEYS,
@@ -58,6 +59,7 @@ export const visualAssetSchema = z.object({
 export type VisualAsset = z.infer<typeof visualAssetSchema>;
 
 export const demoContentSchema = z.object({
+  v3: v3ContentSchema.optional(),
   brand: z.object({
     name: safeText.max(120),
     industry: safeText.max(120),
@@ -155,6 +157,8 @@ export const createDemoSchema = z.object({
   businessName: safeText.max(120),
   leadId: z.number().int().positive().optional(),
   designSystemKey: z.enum(DESIGN_SYSTEM_KEYS),
+  designVersion: z.literal(DESIGN_VERSION).optional(),
+  visualDirection: z.enum(HEALTH_TRUST_ART_DIRECTIONS).optional(),
   artDirection: z.enum(HEALTH_TRUST_ART_DIRECTIONS).optional(),
   artDirectionReason: z.string().trim().max(500).optional(),
   generationVersion: z.string().trim().min(1).max(80).default('fixture-v1'),
@@ -171,10 +175,25 @@ export const createDemoSchema = z.object({
     proposedServiceAngle: safeText.max(420),
   }).strict(),
 }).strict().superRefine((input, context) => {
+  const selected = input.visualDirection ?? input.artDirection;
+  const issue = (message: string) => context.addIssue({ code: 'custom', path: ['visualDirection'], message });
+  if (input.artDirection && input.visualDirection && input.artDirection !== input.visualDirection) issue('Conflicting visualDirection and artDirection.');
+  if (input.visualDirection && input.designSystemKey !== 'health-trust') issue('visualDirection requires health-trust.');
+  if (input.designVersion) {
+    if (input.designSystemKey !== 'health-trust' || !input.visualDirection || !input.content.v3) issue('V3 requires health-trust, visualDirection and content.v3.');
+    const v = input.content.v3;
+    if (v) {
+      const o = v.hero.origin;
+      const real = Boolean(o.verifiedAt && ['business-website', 'business-social', 'client-provided'].includes(o.provenance));
+      if (selected === 'doctor-first' && !(v.heroRole === 'doctor' && real && o.depictsNamedPerson && o.namedPerson)) issue('doctor-first requires a verified real named portrait.');
+      if (selected === 'clinic-first' && !(v.heroRole === 'clinic' && real && !o.depictsNamedPerson)) issue('clinic-first requires verified real clinic imagery.');
+      if (selected === 'pet-first' && v.heroRole !== 'pet') issue('pet-first requires pet imagery.');
+    }
+  } else if (input.content.v3) issue('V3 content requires an explicit designVersion.');
   if (input.designSystemKey !== 'health-trust' && input.artDirection) {
     context.addIssue({ code: 'custom', path: ['artDirection'], message: 'artDirection is only valid for health-trust demos.' });
   }
-  if (input.designSystemKey === 'health-trust' && input.artDirection === 'doctor-first') {
+  if (!input.designVersion && input.designSystemKey === 'health-trust' && selected === 'doctor-first') {
     const realDoctorPortrait = input.content.assets.some((asset) =>
       asset.role === 'doctor' && asset.heroEligible && asset.depictsNamedPerson && Boolean(asset.namedPerson)
       && Boolean(asset.verifiedAt) && ['business-website', 'business-social', 'client-provided'].includes(asset.provenance));
@@ -199,6 +218,7 @@ const visualCheckSchema = z.object({
   detail: z.string().trim().max(1_000).optional(),
 }).strict();
 const qaReportBaseSchema = z.object({
+  v3: v3QaSchema.optional(),
   status: z.enum(['passed', 'failed']),
   checkedAt: z.iso.datetime(),
   url: httpUrl,
