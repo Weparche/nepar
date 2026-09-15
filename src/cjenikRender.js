@@ -89,14 +89,23 @@ export function formatCjenikDisplayPrice(usluga, lang = "hr") {
   return `${prefix}${formatEur(usluga.cijena, lang)}${suffix}`;
 }
 
-const naplataLabelsHr = {
+/** Ljudski čitljiv datum/vrijeme za publishedAt/supersededAt (nikad sirovi ISO string). */
+export function formatCjenikDate(value, lang = "hr") {
+  return new Intl.DateTimeFormat(lang === "hr" ? "hr-HR" : "en-GB", {
+    dateStyle: "long",
+    timeStyle: "short",
+  }).format(new Date(value));
+}
+
+export const naplataLabelsHr = {
   jednokratno: "Jednokratno",
   godišnje: "Godišnje",
   mjesečno: "Mjesečno",
   "po satu": "Po satu",
 };
 
-function groupByCategory(usluge) {
+/** Dijeli usluge po `kategorija` polju, čuvajući redoslijed prvog pojavljivanja — koristi ga i React stranica i statični snapshot, da se logika grupiranja ne duplicira. */
+export function groupByCategory(usluge) {
   const groups = [];
   for (const usluga of usluge) {
     let group = groups.find((candidate) => candidate.kategorija === usluga.kategorija);
@@ -109,7 +118,7 @@ function groupByCategory(usluge) {
   return groups;
 }
 
-function renderCjenikSection(usluge) {
+function renderCjenikSection(usluge, kategorija) {
   const rows = usluge.map((usluga) => `      <tr>
         <td>${escapeXml(usluga.naziv)}${usluga.cijenaOd ? ' <sup aria-describedby="cjenik-od-note">*</sup>' : ""}</td>
         <td>${naplataLabelsHr[usluga.naplata] || escapeXml(usluga.naplata)}</td>
@@ -118,15 +127,32 @@ function renderCjenikSection(usluge) {
         <td>${usluga.sidrenaCijena == null ? "— (nova usluga)" : formatEur(usluga.sidrenaCijena, "hr")}</td>
       </tr>`).join("\n");
 
-  return `<table>
-        <caption class="sr-only">NEPAR — digitalni cjenik usluga</caption>
+  const dlItems = usluge.map((usluga) => `        <div class="grid grid-cols-2 gap-x-4 gap-y-2 p-5 text-sm">
+          <dt class="col-span-2 font-semibold text-slate-950">${escapeXml(usluga.naziv)}${usluga.cijenaOd ? ' <sup aria-describedby="cjenik-od-note">*</sup>' : ""}</dt>
+          <dt class="text-slate-500">Naplata</dt>
+          <dd class="text-right text-slate-700">${naplataLabelsHr[usluga.naplata] || escapeXml(usluga.naplata)}</dd>
+          <dt class="text-slate-500">Maloprodajna cijena</dt>
+          <dd class="text-right tabular-nums text-slate-950">${formatEur(usluga.cijena, "hr")}</dd>
+          <dt class="text-slate-500">Posebni oblik prodaje</dt>
+          <dd class="text-right text-slate-700">${usluga.posebnaProdajaNaziv ? escapeXml(usluga.posebnaProdajaNaziv) : "—"}</dd>
+          <dt class="text-slate-500">Sidrena cijena</dt>
+          <dd class="text-right tabular-nums text-slate-700">${usluga.sidrenaCijena == null ? "— (nova usluga)" : formatEur(usluga.sidrenaCijena, "hr")}</dd>
+        </div>`).join("\n");
+
+  return `<div class="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white sm:block" tabindex="0" role="region" aria-label="Tablica cjenika, pomičite vodoravno za više stupaca: ${escapeXml(kategorija)}">
+        <table class="min-w-[820px] w-full text-left text-sm">
+        <caption class="sr-only">NEPAR — digitalni cjenik usluga: ${escapeXml(kategorija)}</caption>
         <thead>
           <tr><th>Usluga</th><th>Naplata</th><th>Maloprodajna cijena</th><th>Posebni oblik prodaje</th><th>Sidrena cijena</th></tr>
         </thead>
         <tbody>
 ${rows}
         </tbody>
-      </table>`;
+      </table>
+      </div>
+      <dl class="divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white sm:hidden">
+${dlItems}
+      </dl>`;
 }
 
 export function renderCjenikHtmlBody(usluge, meta) {
@@ -135,16 +161,16 @@ export function renderCjenikHtmlBody(usluge, meta) {
   const cjenikGroup = groups.find((group) => group.kategorija === "Usluge digitalnog cjenika");
 
   const coreSections = coreGroups.map((group) => `      <h2>${escapeXml(group.kategorija)}</h2>
-      ${renderCjenikSection(group.usluge)}`).join("\n");
+      ${renderCjenikSection(group.usluge, group.kategorija)}`).join("\n");
 
   const cjenikSection = cjenikGroup ? `      <h2>${escapeXml(cjenikGroup.kategorija)}</h2>
       <p>Ovo su usluge koje NEPAR nudi drugim tvrtkama za implementaciju digitalnog cjenika na njihovoj web-stranici — nisu dio NEPAR-ove web ili social ponude iznad.</p>
-      ${renderCjenikSection(cjenikGroup.usluge)}` : "";
+      ${renderCjenikSection(cjenikGroup.usluge, cjenikGroup.kategorija)}` : "";
 
   return `<main class="site-main" data-nepar-static-content>
     <article class="section-shell" lang="hr">
       <h1>NEPAR — digitalni cjenik usluga</h1>
-      <p>Prema Odluci NN 101/2026-1213, ovo je strojno čitljiv cjenik svih NEPAR usluga. Objavljeno: ${meta.publishedAt.replace("T", " ")}. Prodajni objekt: ${escapeXml(meta.oblikProdajnogObjekta)}, ${escapeXml(meta.adresaProdajnogObjekta)} (oznaka ${escapeXml(meta.oznakaProdajnogObjekta)}).</p>
+      <p>Prema Odluci NN 101/2026-1213, ovo je strojno čitljiv cjenik svih NEPAR usluga. Objavljeno: ${formatCjenikDate(meta.publishedAt, "hr")}. Prodajni objekt: ${escapeXml(meta.oblikProdajnogObjekta)}, ${escapeXml(meta.adresaProdajnogObjekta)} (oznaka ${escapeXml(meta.oznakaProdajnogObjekta)}).</p>
 ${coreSections}
 ${cjenikSection}
       <p id="cjenik-od-note">* Cijena je početna ("od") — konačna cijena ovisi o opsegu ili platformi. Odluka ne definira posebnu semantiku za početnu cijenu; ovo je NEPAR-ovo tehničko pojašnjenje, vidljivo i u strojnom zapisu kao dodatno polje <code>nepar_cijena_od</code>.</p>
@@ -157,13 +183,13 @@ ${cjenikSection}
 /** `snapshots` = arhivirani `{ meta, usluge }` zapisi zadržani unutar 30 dana. */
 export function renderCjenikArhivaHtmlBody(currentMeta, snapshots) {
   const row = (meta, label) => `      <li>
-        <strong>${escapeXml(label)}</strong> — objavljeno ${meta.publishedAt.replace("T", " ")}${meta.supersededAt ? `, zamijenjeno ${meta.supersededAt.replace("T", " ")}` : ""}
+        <strong>${escapeXml(label)}</strong> — objavljeno ${formatCjenikDate(meta.publishedAt, "hr")}${meta.supersededAt ? `, zamijenjeno ${formatCjenikDate(meta.supersededAt, "hr")}` : ""}
         · <a href="/cjenici/${canonicalCjenikFilename(meta, "csv")}">CSV</a>
         · <a href="/cjenici/${canonicalCjenikFilename(meta, "xml")}">XML</a>
       </li>`;
 
   const archiveItems = snapshots.length
-    ? snapshots.map((snapshot) => row(snapshot.meta, snapshot.meta.publishedAt.replace("T", " "))).join("\n")
+    ? snapshots.map((snapshot) => row(snapshot.meta, formatCjenikDate(snapshot.meta.publishedAt, "hr"))).join("\n")
     : "      <li>Nema starijih verzija — ovo je prva objavljena verzija cjenika.</li>";
 
   return `<main class="site-main" data-nepar-static-content>

@@ -4,7 +4,7 @@ import { Background, Navbar, SiteFooter, siteContent } from "./SiteChrome.jsx";
 import { usePageMeta } from "./usePageMeta.js";
 import { nepaUsluge } from "./cjenikData.js";
 import { cjenikMeta, canonicalCjenikFilename } from "./cjenikMeta.js";
-import { formatCjenikDisplayPrice } from "./cjenikRender.js";
+import { formatCjenikDisplayPrice, formatCjenikDate, groupByCategory } from "./cjenikRender.js";
 
 const CJENIK_CATEGORY = "Usluge digitalnog cjenika";
 
@@ -31,19 +31,6 @@ const naplataLabelsEn = {
   "po satu": "Hourly",
 };
 
-function groupByCategory(usluge) {
-  const groups = [];
-  for (const usluga of usluge) {
-    let group = groups.find((candidate) => candidate.kategorija === usluga.kategorija);
-    if (!group) {
-      group = { kategorija: usluga.kategorija, usluge: [] };
-      groups.push(group);
-    }
-    group.usluge.push(usluga);
-  }
-  return groups;
-}
-
 const content = {
   hr: {
     title: "NEPAR — digitalni cjenik usluga",
@@ -61,7 +48,7 @@ const content = {
     canonicalLabel: "Kanonska datoteka (naziv sukladan Odluci)",
     archiveLink: "Arhiva prethodnih verzija",
     tableScrollLabel: "Tablica cjenika, pomičite vodoravno za više stupaca",
-    published: (meta) => `Objavljeno: ${meta.publishedAt.replace("T", " ")} · Broj pohrane: ${meta.brojPohrane}`,
+    published: (meta) => `Objavljeno: ${formatCjenikDate(meta.publishedAt, "hr")} · Broj pohrane: ${meta.brojPohrane}`,
     objekt: (meta) => `Prodajni objekt: ${meta.oblikProdajnogObjekta}, ${meta.adresaProdajnogObjekta} (oznaka ${meta.oznakaProdajnogObjekta})`,
     categoryLabel: (kategorija) => kategorija,
     naplataLabel: (naplata) => naplataLabelsHr[naplata] || naplata,
@@ -83,7 +70,7 @@ const content = {
     canonicalLabel: "Canonical file (name required by the Decision)",
     archiveLink: "Archive of previous versions",
     tableScrollLabel: "Price list table, scroll horizontally for more columns",
-    published: (meta) => `Published: ${meta.publishedAt.replace("T", " ")} · Storage number: ${meta.brojPohrane}`,
+    published: (meta) => `Published: ${formatCjenikDate(meta.publishedAt, "en")} · Storage number: ${meta.brojPohrane}`,
     objekt: (meta) => `Point of sale: ${meta.oblikProdajnogObjekta}, ${meta.adresaProdajnogObjekta} (code ${meta.oznakaProdajnogObjekta})`,
     categoryLabel: (kategorija) => categoryLabelsEn[kategorija] || kategorija,
     naplataLabel: (naplata) => naplataLabelsEn[naplata] || naplata,
@@ -91,12 +78,12 @@ const content = {
   },
 };
 
-function CjenikTable({ usluge, copy, lang }) {
+function CjenikTable({ usluge, copy, lang, categoryLabel }) {
   return (
     <>
-      <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white sm:block" tabIndex={0} role="region" aria-label={copy.tableScrollLabel}>
+      <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white sm:block" tabIndex={0} role="region" aria-label={`${copy.tableScrollLabel}: ${categoryLabel}`}>
         <table className="min-w-[820px] w-full text-left text-sm">
-          <caption className="sr-only">{copy.title}</caption>
+          <caption className="sr-only">{copy.title} — {categoryLabel}</caption>
           <thead className="bg-slate-50 text-slate-600">
             <tr>
               {copy.tableHeaders.map((header) => (
@@ -161,9 +148,9 @@ export default function CjenikPage() {
       <section className="content-section px-4 pt-28 sm:pt-36">
         <div className="section-shell max-w-5xl">
           <h1 className="text-4xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-5xl">{copy.title}</h1>
-          <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">{copy.lead}</p>
-          <p className="mt-4 text-sm text-slate-500">{copy.published(cjenikMeta)}</p>
-          <p className="mt-1 text-sm text-slate-500">{copy.objekt(cjenikMeta)}</p>
+          <p className="mt-5 max-w-prose text-lg leading-8 text-slate-600">{copy.lead}</p>
+          <p className="mt-4 max-w-prose text-sm text-slate-500">{copy.published(cjenikMeta)}</p>
+          <p className="mt-1 max-w-prose text-sm text-slate-500">{copy.objekt(cjenikMeta)}</p>
         </div>
       </section>
 
@@ -171,7 +158,7 @@ export default function CjenikPage() {
         <section key={group.kategorija} className="content-section px-4">
           <div className="section-shell max-w-5xl">
             <h2 className="mb-4 text-xl font-semibold text-slate-950">{copy.categoryLabel(group.kategorija)}</h2>
-            <CjenikTable usluge={group.usluge} copy={copy} lang={lang} />
+            <CjenikTable usluge={group.usluge} copy={copy} lang={lang} categoryLabel={copy.categoryLabel(group.kategorija)} />
           </div>
         </section>
       ))}
@@ -180,9 +167,9 @@ export default function CjenikPage() {
         <section className="content-section px-4">
           <div className="section-shell max-w-5xl border-t-2 border-slate-950 pt-8">
             <h2 className="text-xl font-semibold text-slate-950">{copy.categoryLabel(cjenikGroup.kategorija)}</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{copy.cjenikCategoryNote}</p>
+            <p className="mt-2 max-w-prose text-sm leading-6 text-slate-600">{copy.cjenikCategoryNote}</p>
             <div className="mt-4">
-              <CjenikTable usluge={cjenikGroup.usluge} copy={copy} lang={lang} />
+              <CjenikTable usluge={cjenikGroup.usluge} copy={copy} lang={lang} categoryLabel={copy.categoryLabel(cjenikGroup.kategorija)} />
             </div>
           </div>
         </section>
@@ -190,8 +177,8 @@ export default function CjenikPage() {
 
       <section className="content-section px-4">
         <div className="section-shell max-w-5xl">
-          <p id={copy.odNoteId} className="max-w-3xl text-xs leading-5 text-slate-500">{copy.odNote}</p>
-          <p className="mt-2 max-w-3xl text-xs leading-5 text-slate-500">{copy.newServiceNote}</p>
+          <p id={copy.odNoteId} className="max-w-prose text-xs leading-5 text-slate-500">{copy.odNote}</p>
+          <p className="mt-2 max-w-prose text-xs leading-5 text-slate-500">{copy.newServiceNote}</p>
         </div>
       </section>
 
@@ -202,7 +189,7 @@ export default function CjenikPage() {
             <a className="button button-secondary" href="/cjenik.csv" download><FileText size={18} aria-hidden="true" />{copy.csv}</a>
             <a className="button button-secondary" href="/cjenik.xml" download><FileCode2 size={18} aria-hidden="true" />{copy.xml}</a>
           </div>
-          <p className="mt-5 text-sm text-slate-600">
+          <p className="mt-5 max-w-prose text-sm text-slate-600">
             {copy.canonicalLabel}: {" "}
             <a className="font-mono text-xs font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900" href={`/cjenici/${canonicalCjenikFilename(cjenikMeta, "csv")}`}>
               {canonicalCjenikFilename(cjenikMeta, "csv")}

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Background, Navbar, SiteFooter, siteContent } from "./SiteChrome.jsx";
 import { usePageMeta } from "./usePageMeta.js";
 import { cjenikMeta, canonicalCjenikFilename } from "./cjenikMeta.js";
+import { formatCjenikDate } from "./cjenikRender.js";
 
 const RETENTION_DAYS = 30;
 
@@ -41,14 +42,14 @@ const content = {
   },
 };
 
-function VersionRow({ meta, label, copy }) {
+function VersionRow({ meta, label, copy, lang }) {
   return (
     <li className="flex flex-col gap-2 border-b border-slate-200 py-4 last:border-0 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p className="font-semibold text-slate-950">{label}</p>
         <p className="text-sm text-slate-500">
-          {copy.publishedLabel}: {meta.publishedAt.replace("T", " ")}
-          {meta.supersededAt && ` · ${copy.supersededLabel}: ${meta.supersededAt.replace("T", " ")}`}
+          {copy.publishedLabel}: {formatCjenikDate(meta.publishedAt, lang)}
+          {meta.supersededAt && ` · ${copy.supersededLabel}: ${formatCjenikDate(meta.supersededAt, lang)}`}
         </p>
       </div>
       <div className="flex gap-3">
@@ -72,7 +73,7 @@ export default function CjenikArhivaPage() {
       <section className="content-section px-4 pt-28 sm:pt-36">
         <div className="section-shell max-w-4xl">
           <h1 className="text-4xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-5xl">{copy.title}</h1>
-          <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">{copy.lead}</p>
+          <p className="mt-5 max-w-prose text-lg leading-8 text-slate-600">{copy.lead}</p>
           <Link to="/cjenik" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">
             <ArrowLeft size={16} aria-hidden="true" />{copy.back}
           </Link>
@@ -82,12 +83,12 @@ export default function CjenikArhivaPage() {
         <div className="section-shell max-w-4xl rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
           <h2 className="text-xl font-semibold text-slate-950">{copy.currentTitle}</h2>
           <ul className="mt-2">
-            <VersionRow meta={cjenikMeta} label={copy.currentTitle} copy={copy} />
+            <VersionRow meta={cjenikMeta} label={copy.currentTitle} copy={copy} lang={lang} />
           </ul>
           {snapshots.length > 0 ? (
             <ul className="mt-6 border-t border-slate-200 pt-2">
               {snapshots.map((snapshot) => (
-                <VersionRow key={snapshot.meta.supersededAt} meta={snapshot.meta} label={snapshot.meta.publishedAt.replace("T", " ")} copy={copy} />
+                <VersionRow key={snapshot.meta.supersededAt} meta={snapshot.meta} label={formatCjenikDate(snapshot.meta.publishedAt, lang)} copy={copy} lang={lang} />
               ))}
             </ul>
           ) : (

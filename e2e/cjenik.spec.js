@@ -12,6 +12,11 @@ test("/cjenik has crawlable static content, official fields, and NEPAR services"
   expect(staticHtml).toContain("Usluge digitalnog cjenika");
   expect(staticHtml).toContain("Jednokratno");
   expect(staticHtml).toContain('id="cjenik-od-note"');
+  // Each category table must announce its own name, not one generic caption shared by all of them.
+  expect(staticHtml).toContain("digitalni cjenik usluga: Izrada web-stranica");
+  expect(staticHtml).toContain("digitalni cjenik usluga: Usluge digitalnog cjenika");
+  // The "as-of" date must be human-formatted, never the raw ISO value from cjenikMeta.
+  expect(staticHtml).not.toContain(cjenikMeta.publishedAt);
 
   await page.goto("/cjenik");
   await expect(page).toHaveTitle("NEPAR — digitalni cjenik usluga | Nepar Solutions");
@@ -65,6 +70,7 @@ test("/cjenik/arhiva lists the current version and states there is no history ye
   const staticHtml = await staticResponse.text();
   expect(staticHtml).toContain("data-nepar-static-content");
   expect(staticHtml).toContain("Nema starijih verzija");
+  expect(staticHtml).not.toContain(cjenikMeta.publishedAt);
 
   await page.goto("/cjenik/arhiva");
   await expect(page).toHaveTitle("Arhiva digitalnog cjenika | Nepar Solutions");
