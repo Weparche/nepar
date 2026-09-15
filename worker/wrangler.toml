@@ -1,6 +1,7 @@
 name = "nepar-contact"
 main = "index.js"
 compatibility_date = "2026-06-08"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 KIDS_EMAIL_FROM = "NEPAR Kids <orders@kids.nepar.hr>"

@@ -19,6 +19,7 @@ const EVENT_PARAM_ALLOWLIST = new Set([
   "utm_content",
   "utm_term",
   "landing_path",
+  "result",
 ]);
 export const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 const pendingPageViews = new Set();

@@ -6,6 +6,7 @@ import { Background, Navbar, siteContent } from "./SiteChrome.jsx";
 import { ConsentSettingsLink } from "./ConsentManager.jsx";
 import { trackEvent } from "./analytics.js";
 import { usePageMeta } from "./usePageMeta.js";
+import { submitContactLead } from "./contactLead.js";
 
 /** @type {[number, number, number, number]} */
 const easeOut = [0.23, 1, 0.32, 1];
@@ -112,8 +113,6 @@ export default function ContactPage() {
 
   usePageMeta("/kontakt", lang);
 
-  const WORKER_URL = import.meta.env.VITE_WORKER_URL || null;
-
   function handleFile(f) {
     if (!f || !f.type.startsWith("image/")) return;
     if (f.size > 10 * 1024 * 1024) return;
@@ -149,22 +148,15 @@ export default function ContactPage() {
       });
     }
 
-    if (!WORKER_URL) {
+    try {
+      const sentThroughWorker = await submitContactLead({ name, email, subject, message, image, imageName });
+      if (!sentThroughWorker) {
       const body = `Ime: ${name}\nE-mail: ${email}\nTema: ${subject}\n\nPoruka:\n${message}`;
       trackEvent("click_email", { form_name: "contact", link_location: "form_fallback" });
       window.location.href = `mailto:nepar@nepar.hr?subject=${encodeURIComponent(subject || "Upit s web stranice")}&body=${encodeURIComponent(body)}`;
-      setSending(false);
       setSubmitted(true);
       return;
-    }
-
-    try {
-      const res = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject, message, image, imageName }),
-      });
-      if (!res.ok) throw new Error("send_failed");
+      }
       trackEvent("generate_lead", { form_name: "contact" });
       setSubmitted(true);
     } catch {

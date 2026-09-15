@@ -43,6 +43,7 @@ const WebStartPage = lazy(() => import("./WebStartPage.jsx"));
 const PrivacyPage = lazy(() => import("./PrivacyPage.jsx"));
 const MozgalicaPage = lazy(() => import("./mozgalica/MozgalicaPage.jsx"));
 const NjamkoPage = lazy(() => import("./njamko/NjamkoPage.jsx"));
+const DigitalPriceListPage = lazy(() => import("./DigitalPriceListPage.jsx"));
 
 const easeOut = [0.23, 1, 0.32, 1];
 const revealTransition = { duration: 0.48, ease: easeOut };
@@ -1648,6 +1649,7 @@ export default function App() {
           <Route path="/usluge/web-stranica-bez-pocetnog-troska" element={<LegacyWebRedirect />} />
           <Route path="/mozgalica" element={<MozgalicaPage />} />
           <Route path="/njamko" element={<NjamkoPage />} />
+          <Route path="/digitalni-cjenik" element={<DigitalPriceListPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

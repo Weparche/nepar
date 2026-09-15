@@ -1,3 +1,5 @@
+import * as dns from "node:dns/promises";
+
 const ALLOWED_ORIGINS = [
   "https://nepar.hr",
   "https://www.nepar.hr",
@@ -23,6 +25,182 @@ function json(data, status, origin) {
     status,
     headers: corsHeaders(origin),
   });
+}
+
+const DIGITAL_PRICE_LIST_MAX_HTML_BYTES = 2 * 1024 * 1024;
+const DIGITAL_PRICE_LIST_MAX_DOCUMENT_BYTES = 128 * 1024;
+const DIGITAL_PRICE_LIST_TIMEOUT_MS = 8000;
+const DIGITAL_PRICE_LIST_MAX_REDIRECTS = 3;
+const DIGITAL_PRICE_LIST_MAX_CANDIDATES = 10;
+const DIGITAL_PRICE_LIST_METADATA_HOSTS = new Set([
+  "metadata.google.internal", "metadata", "instance-data", "instance-data.ec2.internal",
+]);
+
+function digitalPriceListResult(status, message, details = {}) {
+  return { status, message, details: { reachable: false, https: false, csvFound: false, xmlFound: false, pricePageFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null, ...details } };
+}
+
+function normalizedHostname(hostname) {
+  return String(hostname || "").replace(/^\[|\]$/g, "").replace(/\.$/, "").toLowerCase();
+}
+
+export function isForbiddenIp(address) {
+  const value = normalizedHostname(address);
+  if (!value) return true;
+  const ipv4 = value.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (ipv4) {
+    const octets = ipv4.slice(1).map(Number);
+    if (octets.some((part) => part > 255)) return true;
+    const [a, b] = octets;
+    return a === 0 || a === 10 || a === 127 || (a === 100 && b >= 64 && b <= 127)
+      || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31)
+      || (a === 192 && b === 168) || (a === 192 && b === 0)
+      || (a === 198 && (b === 18 || b === 19)) || a >= 224;
+  }
+  if (!value.includes(":")) return false;
+  if (value === "::" || value === "::1" || value.startsWith("fc") || value.startsWith("fd")) return true;
+  if (/^fe[89ab]/.test(value)) return true;
+  const mapped = value.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/);
+  return Boolean(mapped && isForbiddenIp(mapped[1]));
+}
+
+export function isForbiddenHostname(hostname) {
+  const host = normalizedHostname(hostname);
+  return !host || host === "localhost" || host.endsWith(".localhost") || host.endsWith(".local")
+    || host.endsWith(".internal") || DIGITAL_PRICE_LIST_METADATA_HOSTS.has(host) || isForbiddenIp(host);
+}
+
+export function normalizeDigitalPriceListUrl(value) {
+  if (typeof value !== "string" || !value.trim() || value.trim().length > 2048) throw new Error("invalid_url");
+  const raw = value.trim();
+  const candidate = /^[a-z][a-z\d+.-]*:/i.test(raw) ? raw : `https://${raw}`;
+  let url;
+  try { url = new URL(candidate); } catch { throw new Error("invalid_url"); }
+  if (!/^https?:$/.test(url.protocol) || url.username || url.password || isForbiddenHostname(url.hostname)) throw new Error("invalid_url");
+  return url;
+}
+
+function dnsResolverFor(env) { return env?.DIGITAL_PRICE_LIST_DNS_RESOLVER || dns; }
+
+export async function resolvePublicHostname(hostname, resolver = dns) {
+  const host = normalizedHostname(hostname);
+  if (isForbiddenHostname(host)) throw new Error("blocked_destination");
+  const responses = await Promise.allSettled([resolver.resolve4(host), resolver.resolve6(host)]);
+  const addresses = responses.flatMap((entry) => (entry.status === "fulfilled" && Array.isArray(entry.value) ? entry.value : []));
+  if (!addresses.length) throw new Error("dns_unavailable");
+  if (addresses.some((address) => isForbiddenIp(address))) throw new Error("blocked_destination");
+  return addresses;
+}
+
+async function assertPublicDigitalPriceListUrl(url, env, dnsCache) {
+  if (!/^https?:$/.test(url.protocol) || url.username || url.password || isForbiddenHostname(url.hostname)) throw new Error("blocked_destination");
+  const host = normalizedHostname(url.hostname);
+  if (!dnsCache.has(host)) dnsCache.set(host, resolvePublicHostname(host, dnsResolverFor(env)));
+  await dnsCache.get(host);
+}
+
+async function readResponseLimit(response, maxBytes) {
+  if (!response.body) return "";
+  const reader = response.body.getReader();
+  const chunks = [];
+  let total = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > maxBytes) { await reader.cancel(); throw new Error("response_too_large"); }
+      chunks.push(value);
+    }
+  } finally { reader.releaseLock(); }
+  const output = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) { output.set(chunk, offset); offset += chunk.byteLength; }
+  return new TextDecoder().decode(output);
+}
+
+function isRedirect(response) { return [301, 302, 303, 307, 308].includes(response.status); }
+
+async function safeDigitalPriceListFetch(initialUrl, env, dnsCache, signal) {
+  let current = initialUrl instanceof URL ? initialUrl : new URL(initialUrl);
+  for (let redirects = 0; redirects <= DIGITAL_PRICE_LIST_MAX_REDIRECTS; redirects += 1) {
+    await assertPublicDigitalPriceListUrl(current, env, dnsCache);
+    const response = await fetch(current.href, { method: "GET", redirect: "manual", cache: "no-store", signal, headers: { Accept: "text/html,application/xml,text/xml,text/csv,*/*;q=0.1" } });
+    if (!isRedirect(response)) return { response, url: current };
+    if (redirects === DIGITAL_PRICE_LIST_MAX_REDIRECTS) throw new Error("too_many_redirects");
+    const location = response.headers.get("Location");
+    if (!location) throw new Error("invalid_redirect");
+    current = new URL(location, current);
+  }
+  throw new Error("too_many_redirects");
+}
+
+function extractDigitalPriceListLinks(html, baseUrl) {
+  const results = [];
+  const anchorPattern = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
+  let match;
+  while ((match = anchorPattern.exec(html)) && results.length < DIGITAL_PRICE_LIST_MAX_CANDIDATES - 4) {
+    const href = match[1].match(/\bhref\s*=\s*["']([^"']+)["']/i)?.[1];
+    if (!href) continue;
+    let url;
+    try { url = new URL(href, baseUrl); } catch { continue; }
+    if (url.origin !== baseUrl.origin || !/^https?:$/.test(url.protocol)) continue;
+    const lowerHref = href.toLowerCase();
+    const text = match[2].replace(/<[^>]+>/g, " ").toLowerCase();
+    const isCsv = /\.csv(?:$|[?#])/.test(lowerHref);
+    const isXml = /\.xml(?:$|[?#])/.test(lowerHref);
+    if (isCsv || isXml || /(cjenik|cijene|price)/.test(`${lowerHref} ${text}`)) results.push({ url, kind: isCsv ? "csv" : isXml ? "xml" : "price" });
+  }
+  return results;
+}
+
+function documentLooksValid(kind, body, contentType) {
+  const trimmed = body.trim();
+  return kind === "csv" ? Boolean(trimmed) : Boolean(trimmed) && (/(?:application|text)\/xml/i.test(contentType || "") || /^<\?xml\b/i.test(trimmed));
+}
+
+async function handleDigitalPriceListCheck(request, env, origin) {
+  if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, origin);
+  const body = await parseInternalJson(request, 4096);
+  if (!body || typeof body.url !== "string") return json(digitalPriceListResult("red", "Unesite ispravnu adresu web stranice."), 400, origin);
+  let initialUrl;
+  try { initialUrl = normalizeDigitalPriceListUrl(body.url); } catch { return json(digitalPriceListResult("red", "Unesite ispravnu adresu web stranice."), 400, origin); }
+  const dnsCache = new Map();
+  const signal = AbortSignal.timeout(DIGITAL_PRICE_LIST_TIMEOUT_MS);
+  let homepage;
+  try {
+    homepage = await safeDigitalPriceListFetch(initialUrl, env, dnsCache, signal);
+    if (!homepage.response.ok) throw new Error("homepage_unavailable");
+  } catch (error) {
+    const blocked = error?.message === "blocked_destination";
+    return json(digitalPriceListResult("red", blocked ? "Unesite ispravnu adresu web stranice." : "Nismo uspjeli dohvatiti web stranicu."), blocked ? 400 : 200, origin);
+  }
+  let html;
+  try { html = await readResponseLimit(homepage.response, DIGITAL_PRICE_LIST_MAX_HTML_BYTES); } catch { return json(digitalPriceListResult("red", "Nismo uspjeli dohvatiti web stranicu."), 200, origin); }
+  const candidates = [...extractDigitalPriceListLinks(html, homepage.url), { url: new URL("/cjenik.csv", homepage.url.origin), kind: "csv" }, { url: new URL("/cjenik.xml", homepage.url.origin), kind: "xml" }, { url: new URL("/cjenik/", homepage.url.origin), kind: "price" }, { url: new URL("/cjenici/", homepage.url.origin), kind: "price" }];
+  const unique = [];
+  const seen = new Set();
+  for (const candidate of candidates) {
+    const key = `${candidate.kind}:${candidate.url.href}`;
+    if (!seen.has(key) && unique.length < DIGITAL_PRICE_LIST_MAX_CANDIDATES) { seen.add(key); unique.push(candidate); }
+  }
+  const details = { reachable: true, https: homepage.url.protocol === "https:", csvFound: false, xmlFound: false, pricePageFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null };
+  for (const candidate of unique) {
+    if (signal.aborted) break;
+    try {
+      const fetched = await safeDigitalPriceListFetch(candidate.url, env, dnsCache, signal);
+      if (!fetched.response.ok) continue;
+      if (candidate.kind === "price") { details.pricePageFound = true; details.pricePageUrl ||= fetched.url.href; continue; }
+      const documentBody = await readResponseLimit(fetched.response, DIGITAL_PRICE_LIST_MAX_DOCUMENT_BYTES);
+      if (!documentLooksValid(candidate.kind, documentBody, fetched.response.headers.get("Content-Type"))) continue;
+      details.pricePageFound = true;
+      if (candidate.kind === "csv") { details.csvFound = true; details.csvUrl ||= fetched.url.href; }
+      else { details.xmlFound = true; details.xmlUrl ||= fetched.url.href; }
+    } catch { /* An inaccessible candidate does not invalidate a fetched homepage. */ }
+  }
+  if (details.csvFound || details.xmlFound) return json(digitalPriceListResult("green", "Na web stranici pronađen je javno dostupan CSV ili XML dokument.", details), 200, origin);
+  if (details.pricePageFound) return json(digitalPriceListResult("yellow", "Na stranici postoje informacije o cijenama ili cjeniku, ali automatska provjera nije pronašla javno dostupan XML ili CSV dokument.", details), 200, origin);
+  return json(digitalPriceListResult("red", "Automatska provjera nije pronašla javno dostupan XML ili CSV cjenik.", details), 200, origin);
 }
 
 function internalTokenMatches(request, env) {
@@ -562,6 +740,10 @@ async function handleContact(request, env, origin) {
   const name = sanitizeContactText(body.name, 120);
   const email = sanitizeContactText(body.email, 254);
   const phone = sanitizeContactText(body.phone, 40);
+  const website = sanitizeContactText(body.website, 300);
+  const platform = sanitizeContactText(body.platform, 80);
+  const businessProgram = sanitizeContactText(body.businessProgram, 160);
+  const leadSource = formName === "digitalni_cjenik" ? "digitalni-cjenik" : "";
   const subject = sanitizeContactText(body.subject, 240);
   const message = sanitizeContactText(body.message, 4000);
   const image = body.image;
@@ -584,6 +766,10 @@ async function handleContact(request, env, origin) {
     `Ime: ${name}`,
     `E-mail: ${email}`,
     ...(phone ? [`Telefon: ${phone}`] : []),
+    ...(website ? [`Web stranica: ${website}`] : []),
+    ...(platform ? [`Platforma: ${platform}`] : []),
+    ...(businessProgram ? [`Poslovni program: ${businessProgram}`] : []),
+    ...(leadSource ? [`lead_source: ${leadSource}`] : []),
     `Tema: ${subjectLine}`,
     "",
     "Poruka:",
@@ -597,6 +783,10 @@ async function handleContact(request, env, origin) {
     <p><strong>Ime:</strong> ${escapeHtml(name)}</p>
     <p><strong>E-mail:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
     ${phone ? `<p><strong>Telefon:</strong> ${escapeHtml(phone)}</p>` : ""}
+    ${website ? `<p><strong>Web stranica:</strong> ${escapeHtml(website)}</p>` : ""}
+    ${platform ? `<p><strong>Platforma:</strong> ${escapeHtml(platform)}</p>` : ""}
+    ${businessProgram ? `<p><strong>Poslovni program:</strong> ${escapeHtml(businessProgram)}</p>` : ""}
+    ${leadSource ? `<p><strong>lead_source:</strong> ${leadSource}</p>` : ""}
     <p><strong>Tema:</strong> ${escapeHtml(subjectLine)}</p>
     <hr/>
     <p style="white-space:pre-wrap">${escapeHtml(message)}</p>
@@ -647,6 +837,10 @@ export default {
 
     if (url.pathname === "/analytics/reset" && request.method === "POST") {
       return handleAnalyticsReset(request, env, origin);
+    }
+
+    if (url.pathname === "/api/digitalni-cjenik/check") {
+      return handleDigitalPriceListCheck(request, env, origin);
     }
 
     if (url.pathname === "/internal/kids/openai" && request.method === "POST") {

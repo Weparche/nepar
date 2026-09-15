@@ -28,6 +28,17 @@ export const serviceFaq = {
   ],
 };
 
+export const digitalPriceListFaq = [
+  ["Tko mora objaviti digitalni cjenik?", "Odluka propisuje obvezu objave cjenika trgovcima odnosno pružateljima usluga koji imaju uspostavljene mrežne stranice. Kod konkretne primjenjivosti treba uzeti u obzir vrstu poslovanja i odnos prema potrošačima."],
+  ["Vrijedi li za B2B tvrtke?", "Odluka je usmjerena na maloprodajne cijene i zaštitu potrošača. Za poslovanje koje je isključivo B2B preporučuje se provjeriti primjenjivost na konkretan slučaj."],
+  ["Je li dovoljan PDF?", "Odluka izričito navodi objavu cjenika u .xml ili .csv formatu pogodnom za automatsku obradu."],
+  ["Mora li cjenik biti na vlastitoj web stranici?", "Odluka navodi da trgovac odnosno pružatelj usluge cjenike objavljuje na svojim mrežnim stranicama."],
+  ["Koliko dugo se čuvaju stare verzije?", "Objavljeni cjenici trebaju ostati dostupni 30 dana od objave odnosno promjene."],
+  ["Koliko često se ažurira cjenik usluga?", "Kod promjene cijena cjenik se ažurira najkasnije do 8:00 sati dana kada se objavljuje promjena."],
+  ["Treba li WooCommerce?", "Ne. Ako cijene već vodite u poslovnom sustavu ili drugom strukturiranom izvoru, obični WordPress može koristiti taj izvor."],
+  ["Može li se implementirati na Wix?", "Da. Način implementacije razlikuje se od WordPressa, ali digitalni cjenik moguće je povezati i s postojećom Wix stranicom."],
+];
+
 const localizedPages = {
   "/": {
     indexable: true,
@@ -77,6 +88,18 @@ const localizedPages = {
       description: "Send an inquiry about a website, web application, or AI solution. Nepar will respond with a clear scope recommendation and next step.",
     },
     schema: "contact",
+  },
+  "/digitalni-cjenik": {
+    indexable: true,
+    hr: {
+      title: "Digitalni cjenik XML/CSV od 1.10.2026. | NEPAR",
+      description: "Nova obveza digitalnih cjenika od 1. listopada 2026. Saznajte trebate li XML/CSV cjenik i kako ga implementirati na WordPress, Wix ili postojeću web stranicu.",
+    },
+    en: {
+      title: "Digital XML/CSV price list from 1 October 2026. | NEPAR",
+      description: "A new obligation for digital price lists begins on 1 October 2026. Find out whether you need an XML/CSV price list and how to implement it on WordPress, Wix, or an existing website.",
+    },
+    schema: "digital-price-list",
   },
   "/privatnost": {
     indexable: true,
@@ -275,6 +298,37 @@ export function getStructuredData(path = "/") {
         availableLanguage: ["Croatian", "English"],
       },
     });
+  }
+
+  if (page.schema === "digital-price-list") {
+    graph.push(
+      {
+        "@type": "Service",
+        "@id": `${canonicalUrl}#service`,
+        name: "Digitalni cjenik XML/CSV",
+        description: page.description,
+        serviceType: "Implementacija digitalnog cjenika",
+        areaServed: { "@type": "Country", name: "Hrvatska" },
+        provider: { "@id": ORGANIZATION_ID },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${canonicalUrl}#faq`,
+        mainEntity: digitalPriceListFaq.map(([question, answer]) => ({
+          "@type": "Question",
+          name: question,
+          acceptedAnswer: { "@type": "Answer", text: answer },
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${canonicalUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Naslovnica", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "Digitalni cjenik", item: canonicalUrl },
+        ],
+      },
+    );
   }
 
   if (page.schema === "privacy") {

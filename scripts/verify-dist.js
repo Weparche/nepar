@@ -29,6 +29,7 @@ for (const file of [
   "index.html",
   "web.html",
   "kontakt.html",
+  "digitalni-cjenik.html",
   "privatnost.html",
   "usluge/izrada-web-stranica.html",
   "mozgalica.html",
@@ -67,6 +68,10 @@ expect("usluge/izrada-web-stranica.html", "OfferCatalog", "service offer schema 
 expect("usluge/izrada-web-stranica.html", "FAQPage", "FAQPage schema is missing");
 expect("usluge/izrada-web-stranica.html", "BreadcrumbList", "breadcrumb schema is missing");
 expect("kontakt.html", "ContactPage", "ContactPage schema is missing");
+expect("digitalni-cjenik.html", "Digitalni cjenik XML/CSV od 1.10.2026. | NEPAR", "digital price list title is missing");
+expect("digitalni-cjenik.html", '<link rel="canonical" href="https://nepar.hr/digitalni-cjenik" />', "digital price list canonical is missing");
+expect("digitalni-cjenik.html", "FAQPage", "digital price list FAQPage schema is missing");
+expect("digitalni-cjenik.html", "BreadcrumbList", "digital price list breadcrumb schema is missing");
 expect("mozgalica.html", "SoftwareApplication", "SoftwareApplication schema is missing");
 expect("njamko.html", "SoftwareApplication", "SoftwareApplication schema is missing");
 expect("admin.html", '<meta name="robots" content="noindex,nofollow" />', "admin must be noindex,nofollow");
@@ -77,12 +82,13 @@ const expectedSitemap = `<?xml version="1.0" encoding="UTF-8"?>
   <url><loc>https://nepar.hr/</loc></url>
   <url><loc>https://nepar.hr/usluge/izrada-web-stranica</loc></url>
   <url><loc>https://nepar.hr/kontakt</loc></url>
+  <url><loc>https://nepar.hr/digitalni-cjenik</loc></url>
   <url><loc>https://nepar.hr/privatnost</loc></url>
   <url><loc>https://nepar.hr/mozgalica</loc></url>
   <url><loc>https://nepar.hr/njamko</loc></url>
 </urlset>
 `;
-if (read("sitemap.xml") !== expectedSitemap) failures.push("sitemap.xml must contain exactly the six canonical URLs.");
+if (read("sitemap.xml") !== expectedSitemap) failures.push("sitemap.xml must contain exactly the seven canonical URLs.");
 if (read("sitemap.xml").includes("https://nepar.hr/web")) failures.push("sitemap.xml must not contain the paid /web landing.");
 
 const expectedRobots = `User-agent: *
@@ -95,6 +101,7 @@ if (read("robots.txt") !== expectedRobots) failures.push("robots.txt does not ma
 const redirects = read("_redirects");
 for (const rule of [
   "/kontakt/ /kontakt 301",
+  "/digitalni-cjenik/ /digitalni-cjenik 301",
   "/privatnost/ /privatnost 301",
   "/usluge/izrada-web-stranica/ /usluge/izrada-web-stranica 301",
   "/mozgalica/ /mozgalica 301",
