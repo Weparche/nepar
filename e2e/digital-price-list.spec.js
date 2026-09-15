@@ -56,8 +56,11 @@ test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlabl
   await expect(page.getByText("od 129 €", { exact: true })).toBeVisible();
   await expect(page.getByText("79,90 €", { exact: true })).toBeVisible();
   await expect(page.getByText("139,80 €", { exact: true })).toBeVisible();
-  await expect(page.getByText("od 149 €", { exact: true })).toBeVisible();
+  await expect(page.getByText(/integracija je od 149 €/)).toBeVisible();
   await expect(page.getByText("19,90 € / godišnje", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "NEPAR implementira" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "WordPress opcija" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Provjera web stranice" })).toHaveCount(1);
   await expect(page.getByText("Odnosi li se nova obveza samo na webshopove?")).toBeVisible();
   await expect(page.getByText("Koja je razlika između sidrene cijene i digitalnog cjenika?")).toBeVisible();
   await expect(page.getByText("Imam samo Facebook ili Instagram. Moram li imati XML/CSV cjenik?")).toBeVisible();
@@ -65,6 +68,7 @@ test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlabl
   expect(schema).toContain("2026_09_101_1212");
   expect(schema).toContain("2026_09_101_1213");
   await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole("button", { name: "Provjeri", exact: true })).toBeInViewport();
   const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
 });

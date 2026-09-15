@@ -119,7 +119,7 @@ function renderDigitalPriceListStaticBody() {
       <p>Ako cijene već vodite u poslovnom programu, ERP-u, blagajni ili strukturiranom CSV/XML izvoru, NEPAR integracija može koristiti taj sustav kao izvor podataka i automatski objavljivati cjenik na vašoj web stranici.</p>
       <p>Poslovni program / ERP / CSV / XML → NEPAR integracija → vaša web stranica → cjenik za posjetitelje + XML/CSV + arhiva + automatizirani dohvat.</p>
       <h2>Jasne opcije implementacije</h2>
-      <ul><li>Provjera web stranice: 0 €</li><li>Digitalni cjenik na postojećem webu: od 129 €</li><li>WordPress plugin: 79,90 € — u pripremi</li><li>WordPress plugin + instalacija: 139,80 €</li><li>Wix, React / Next / Vite i custom webovi: od 149 €</li><li>Tehničko održavanje nakon prve uključene godine: 19,90 € / godišnje</li></ul>
+      <ul><li>Provjera web stranice: 0 €</li><li>NEPAR implementacija na postojećem webu: od 129 €; Wix, React / Next / Vite i custom webovi: od 149 €</li><li>WordPress opcija: plugin 79,90 € — u pripremi; plugin + instalacija: 139,80 €</li><li>Tehničko održavanje nakon prve uključene godine: 19,90 € / godišnje</li></ul>
       <h2>Što još nije definirano</h2>
       <p>Odluka navodi obvezne podatke, ali ne propisuje točan CSV delimiter, redoslijed stupaca ni službenu XML/XSD shemu. Hrvatska obrtnička komora najavila je traženje službenih pojašnjenja o obuhvatu, pojedinim djelatnostima i mogućim izuzećima. Ovaj vodič ne zamjenjuje pravno tumačenje.</p>
       <h2>Primjer digitalnog cjenika usluga</h2>
