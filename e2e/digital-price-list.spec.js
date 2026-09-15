@@ -135,3 +135,24 @@ test("checker renders a green CSV result without leaking the checked domain into
   const resultEvent = events.find((entry) => entry[1] === "price_list_check_result");
   expect(resultEvent?.[2]).toEqual({ result: "green" });
 });
+
+test("checker prevents malformed input and gives a recoverable unavailable state", async ({ page }) => {
+  let checkerCalls = 0;
+  await page.route(`${workerBase}/api/digitalni-cjenik/check`, async (route) => {
+    checkerCalls += 1;
+    await route.fulfill({ status: 503, contentType: "application/json", body: '{"error":"unavailable"}' });
+  });
+  await page.goto("/digitalni-cjenik");
+  const input = page.getByLabel("Provjerite digitalni cjenik svoje web stranice");
+  await input.fill("https://");
+  await page.getByRole("button", { name: "Provjeri", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText("Unesite ispravnu adresu");
+  expect(checkerCalls).toBe(0);
+  await input.fill("primjer.hr");
+  await page.getByRole("button", { name: "Provjeri", exact: true }).click();
+  const result = page.locator('[aria-live="polite"]');
+  await expect(result).toContainText("Provjera trenutačno nije dostupna");
+  await expect(result).toContainText("Pokušajte ponovo");
+  await expect(result).not.toContainText("CSV: nije pronađen");
+  expect(checkerCalls).toBe(1);
+});
