@@ -51,3 +51,18 @@ The package and asset-manifest change invalidated the preceding Fabela review. I
 - Existing production admin secrets were preserved. A localhost-only, token-protected release bridge ran the same validated handler through the owner's authenticated D1/R2 API transport after Wrangler remote-binding transport timed out. Its routes were restricted to creating Fabela V3 and uploading its QA; no outreach route existed. The temporary bridge is shut down after release.
 
 The six target references, prompt records, master/derived imagery, optimized assets, three prepared packages, screenshots and raw QA reports are included in the repository. Reference and verification directories are not published as runtime dependencies.
+
+## Finding the examples and generation scope
+
+- Fabela, pet-first: https://fabela-v3.nepar.hr (production).
+- Goldi, doctor-first: run `npm run v3:preview`, then open http://127.0.0.1:8793/?demo=goldi-doctor-first-v3 (local specimen).
+- Bond, clinic-first: run `npm run v3:preview`, then open http://127.0.0.1:8793/?demo=bond-clinic-first-v3 (local specimen).
+- Each example's desktop/mobile screenshots and review are under `local/<slug>/` beside this report.
+
+The standard admin generate-from-lead action and CLI `--lead` still generate `deterministic-v2` payloads without `designVersion`. V3 requires an explicit prepared package. Deploying the Worker enables its renderer; it does not switch this existing generation action to V3 or run Astra/ImageGen inside the Worker.
+
+## 15 September: missing legacy assets repaired
+
+Karaula was generated with null `design_version` and `generation_version: deterministic-v2`. Its HTML referenced `/health-trust-default/hero.webp` and `/health-trust-default/about.webp`, but both public URLs returned HTTP 404. Those existing repository assets had been omitted when preparing the production Pages asset release. Restored both files in the production build/source workspace and deployed Pages release `https://edfb25e7.nepar.pages.dev`. This repair does not change demo records or the Worker renderer. Future Pages builds must retain both `public/health-trust-default` and `public/health-trust-v3`.
+
+Live asset and browser verification is recorded in `karaula-asset-repair/result.json`, with desktop/mobile screenshots. The main site's HTML and entry script/style were compared against the production baseline before the asset release.
