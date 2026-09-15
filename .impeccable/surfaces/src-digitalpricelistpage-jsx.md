@@ -22,3 +22,7 @@ FIRST VIEWPORT: The deadline-led H1, lead and dual actions sit left; the officia
 FORM: Code-led ordinary extension; practical comparison, working checker, compact implementation form, and no decorative imagery or global redesign.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+
+## Shipping raster provenance
+
+- `public/brand/digital-price-list-proof-v1.png` — generated with built-in ImageGen on 15.09.2026 for the Digitalni cjenik hero. Prompt: premium editorial still life of unbranded structured paper data, cobalt acrylic tab and cyan glass token; no people, logos, readable text, legal seals, dashboard UI or watermark. Used as a supporting proof visual only; it makes no compliance claim.
