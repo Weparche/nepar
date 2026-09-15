@@ -221,6 +221,7 @@ export function SiteFooter({ copy, homeLink = true, lang = "hr" }) {
         <div className="footer-bottom">
           <p>{copy.footer.copyright}</p>
           <div className="footer-utility-links">
+            <Link to="/digitalni-cjenik">{lang === "hr" ? "Digitalni cjenik 2026." : "Digital price list 2026"}</Link>
             <Link to="/privatnost">{lang === "hr" ? "Privatnost" : "Privacy"}</Link>
             <ConsentSettingsLink lang={lang} />
             <a href={homeLink ? "#top" : "/"}>{copy.footer.top}</a>

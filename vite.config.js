@@ -88,8 +88,50 @@ function routeOutputPath(outDir, routePath) {
   return resolve(outDir, `${routePath.slice(1)}.html`);
 }
 
+function renderDigitalPriceListStaticBody() {
+  return `<main class="site-main" data-nepar-static-content>
+    <article class="section-shell" lang="hr">
+      <h1>Digitalni XML/CSV cjenik od 1. listopada 2026.</h1>
+      <p>Digitalni cjenik prema NN 101/2026 je javno dostupan cjenik proizvoda ili usluga u XML ili CSV formatu, pogodan za automatsku obradu. Za pružatelje usluga mora sadržavati naziv usluge, maloprodajnu cijenu, podatak o posebnom obliku prodaje ako postoji i sidrenu cijenu.</p>
+      <p>Objavljeno: 15.09.2026. · Zadnje provjereno prema službenim izvorima: 15.09.2026.</p>
+      <h2>Ukratko — što morate napraviti</h2>
+      <dl>
+        <dt>Tko?</dt><dd>Trgovci i pružatelji usluga s uspostavljenim mrežnim stranicama; za konkretnu primjenjivost treba uzeti u obzir djelatnost i odnos prema potrošačima.</dd>
+        <dt>Od kada?</dt><dd>1. listopada 2026.</dd>
+        <dt>Format?</dt><dd>XML ili CSV, pogodan za automatsku obradu.</dd>
+        <dt>Ažuriranje usluga?</dt><dd>Kod promjene, najkasnije do 8:00 sati dana objave izmjene.</dd>
+        <dt>Arhiva?</dt><dd>Objavljene verzije moraju ostati dostupne 30 dana od objave odnosno promjene.</dd>
+        <dt>Automatski dohvat?</dt><dd>Da, kroz tehnička rješenja za softverske alate i automatizirane programe.</dd>
+      </dl>
+      <h2>Što još nije definirano</h2>
+      <p>Odluka navodi obvezne podatke, ali ne propisuje točan CSV delimiter, redoslijed stupaca ni službenu XML/XSD shemu. Hrvatska obrtnička komora najavila je traženje službenih pojašnjenja o obuhvatu, pojedinim djelatnostima i mogućim izuzećima. Ovaj vodič ne zamjenjuje pravno tumačenje.</p>
+      <h2>Primjer digitalnog cjenika usluga</h2>
+      <p>Struktura je NEPAR-ov tehnički primjer prema obveznim poljima iz NN 101/2026; Odluka ne propisuje službenu CSV/XML shemu.</p>
+      <ul><li><a href="/digitalni-cjenik/primjer-usluge.csv">Preuzmite primjer-usluge.csv</a></li><li><a href="/digitalni-cjenik/primjer-usluge.xml">Preuzmite primjer-usluge.xml</a></li></ul>
+      <h2>Primjeri po platformama</h2>
+      <h3>Kako implementirati digitalni cjenik na WordPress?</h3><p>Strukturirani izvor cijena može generirati javni prikaz, CSV/XML datoteke i arhivu; WooCommerce nije uvjet ako cijene postoje u drugom sustavu.</p>
+      <h3>Treba li WooCommerce?</h3><p>Ne. WooCommerce je samo jedna moguća integracija, a rješenje može koristiti poslovni program ili drugi strukturirani izvor.</p>
+      <h3>Kako na Wixu?</h3><p>Wix implementacija može povezati javno dostupne CSV/XML datoteke i vidljivi cjenik; tehnički način ovisi o postojećoj strukturi stranice.</p>
+      <h3>Kako na React/Vite stranici?</h3><p>Rješenje obično koristi server-side ili API rutu za javni CSV/XML dohvat, prikaz cjenika i arhivu prethodnih verzija.</p>
+      <h2>Česta pitanja</h2>
+      <p>Je li dovoljan PDF? Ne. Odluka izričito navodi XML ili CSV format pogodan za automatsku obradu.</p>
+      <p>Koliko dugo se čuvaju stare verzije? 30 dana od objave odnosno promjene.</p>
+      <h2>Provjereno prema službenim izvorima</h2>
+      <ul><li><a href="https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1213.html">Narodne novine — NN 101/2026</a></li><li><a href="https://mingo.gov.hr/vijesti/vlada-rh-usvojila-11-paket-mjera-energetske-mjere-vrijedne-170-14-milijuna-eura-sidrena-cijena-prosiruje-se-na-sve-proizvode-i-usluge/10430">Ministarstvo gospodarstva</a></li><li><a href="https://www.hok.hr/aktualno/danasnja-cijena-svih-proizvoda-i-usluga-postaje-sidrena-cijena-vazna-obavijest">Hrvatska obrtnička komora</a></li></ul>
+    </article>
+  </main>`;
+}
+
+function replaceRouteBody(html, routePath) {
+  if (routePath !== "/digitalni-cjenik") return html;
+  return html.replace('<div id="root"></div>', `<div id="root">${renderDigitalPriceListStaticBody()}</div>`);
+}
+
 function renderSitemap(siteUrl) {
-  const urls = SITEMAP_PATHS.map((path) => `  <url><loc>${escapeAttr(absoluteUrl(siteUrl, path))}</loc></url>`).join("\n");
+  const urls = SITEMAP_PATHS.map((path) => {
+    const lastmod = path === "/digitalni-cjenik" ? "<lastmod>2026-09-15</lastmod>" : "";
+    return `  <url><loc>${escapeAttr(absoluteUrl(siteUrl, path))}</loc>${lastmod}</url>`;
+  }).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
@@ -134,13 +176,13 @@ function routeSeoPlugin(siteUrl) {
         const page = getSeoPage(routePath, "hr");
         const outputPath = routeOutputPath(outDir, routePath);
         mkdirSync(dirname(outputPath), { recursive: true });
-        writeFileSync(outputPath, replaceBuiltMeta(indexHtml, page, siteUrl), "utf8");
+        writeFileSync(outputPath, replaceRouteBody(replaceBuiltMeta(indexHtml, page, siteUrl), routePath), "utf8");
       }
 
       writeFileSync(resolve(outDir, "sitemap.xml"), renderSitemap(siteUrl), "utf8");
       writeFileSync(
         resolve(outDir, "robots.txt"),
-        `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`,
+        `User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`,
         "utf8",
       );
     },

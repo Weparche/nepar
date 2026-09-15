@@ -20,6 +20,41 @@ import { usePageMeta } from "./usePageMeta.js";
 const sourceUrl = "https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1213.html";
 const inputClass = "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-200";
 
+const guideContent = {
+  hr: {
+    published: "Objavljeno: 15.09.2026. · Zadnje provjereno prema službenim izvorima: 15.09.2026.",
+    summaryTitle: "Ukratko — što morate napraviti",
+    summaryLead: "Digitalni cjenik prema NN 101/2026 je javno dostupan cjenik proizvoda ili usluga u XML ili CSV formatu, pogodan za automatsku obradu. Za pružatelje usluga mora sadržavati naziv usluge, maloprodajnu cijenu, podatak o posebnom obliku prodaje ako postoji i sidrenu cijenu.",
+    summary: [["Tko?", "Trgovci i pružatelji usluga s mrežnom stranicom; konkretnu primjenjivost treba promatrati u kontekstu djelatnosti i potrošača."], ["Od kada?", "1. listopada 2026."], ["Format?", "XML ili CSV, pogodan za automatsku obradu."], ["Ažuriranje usluga?", "Kod promjene, najkasnije do 8:00 sati dana objave izmjene."], ["Arhiva?", "Objavljene verzije ostaju dostupne 30 dana od objave odnosno promjene."], ["Automatski dohvat?", "Da, kroz tehnička rješenja za softverske alate i automatizirane programe."]],
+    unknownTitle: "Što još nije definirano",
+    unknown: "Odluka navodi obvezne podatke, ali ne propisuje točan CSV delimiter, redoslijed stupaca ni službenu XML/XSD shemu. HOK je najavio traženje službenih pojašnjenja o obuhvatu, pojedinim djelatnostima i mogućim izuzećima. Zato ovaj vodič daje tehnički okvir, a ne pravno tumačenje.",
+    examplesTitle: "Stvarni primjeri digitalnog cjenika",
+    examplesLead: "Primjeri uključuju polja za usluge iz točke IV. Odluke. Struktura je NEPAR-ov tehnički primjer jer Odluka ne propisuje službenu CSV/XML shemu.",
+    csv: "Preuzmite primjer-usluge.csv",
+    xml: "Preuzmite primjer-usluge.xml",
+    platformGuidesTitle: "Primjeri po platformama",
+    platformGuides: [["Kako implementirati digitalni cjenik na WordPress?", "Strukturirani izvor cijena može generirati javni prikaz, CSV/XML datoteke i arhivu; WooCommerce nije potreban kada cijene već postoje u drugom sustavu."], ["Treba li WooCommerce?", "Ne. WooCommerce je samo jedna moguća integracija. Rješenje može koristiti poslovni program ili drugi strukturirani izvor cijena."], ["Kako na Wixu?", "Wix rješenje može povezati javno dostupne CSV/XML datoteke i vidljivi cjenik; tehnički način ovisi o postojećoj strukturi stranice."], ["Kako na React/Vite stranici?", "Rješenje obično koristi server-side ili API rutu za javni CSV/XML dohvat, prikaz cjenika i arhivu prethodnih verzija."]],
+    sourcesTitle: "Provjereno prema službenim izvorima",
+    sources: [["Narodne novine — NN 101/2026", sourceUrl], ["Ministarstvo gospodarstva", "https://mingo.gov.hr/vijesti/vlada-rh-usvojila-11-paket-mjera-energetske-mjere-vrijedne-170-14-milijuna-eura-sidrena-cijena-prosiruje-se-na-sve-proizvode-i-usluge/10430"], ["Hrvatska obrtnička komora", "https://www.hok.hr/aktualno/danasnja-cijena-svih-proizvoda-i-usluga-postaje-sidrena-cijena-vazna-obavijest"]],
+  },
+  en: {
+    published: "Published: 15 Sep 2026 · Last checked against official sources: 15 Sep 2026.",
+    summaryTitle: "In brief — what you need to do",
+    summaryLead: "A digital price list under NN 101/2026 is a publicly available product or service price list in XML or CSV format suitable for automated processing. For service providers, it must include the service name, retail price, information about a special sale where applicable, and the reference price.",
+    summary: [["Who?", "Traders and service providers with a website; applicability should be considered in the context of the activity and consumers."], ["From when?", "1 October 2026."], ["Format?", "XML or CSV suitable for automated processing."], ["Service updates?", "When a price changes, no later than 8:00 on the day the change is published."], ["Archive?", "Published versions remain available for 30 days from publication or change."], ["Automated retrieval?", "Yes, through technical solutions for software tools and automated programs."]],
+    unknownTitle: "What is not yet defined",
+    unknown: "The Decision lists mandatory data, but does not prescribe a CSV delimiter, column order, or official XML/XSD schema. HOK has announced it will seek official clarification on scope, individual activities, and possible exemptions. This guide therefore provides a technical framework, not legal interpretation.",
+    examplesTitle: "Real digital price-list examples",
+    examplesLead: "The examples include the service fields in point IV of the Decision. Their structure is a NEPAR technical example because the Decision does not prescribe an official CSV/XML schema.",
+    csv: "Download primjer-usluge.csv",
+    xml: "Download primjer-usluge.xml",
+    platformGuidesTitle: "Examples by platform",
+    platformGuides: [["How do you implement a digital price list on WordPress?", "A structured price source can generate a public display, CSV/XML files, and an archive; WooCommerce is not required when prices already exist in another system."], ["Is WooCommerce required?", "No. WooCommerce is only one integration option. The solution can use business software or another structured price source."], ["How does it work on Wix?", "A Wix implementation can connect public CSV/XML files and a visible price list; the technical approach depends on the current site structure."], ["How does it work on a React/Vite site?", "The implementation typically uses a server-side or API route for public CSV/XML retrieval, price-list display, and an archive of previous versions."]],
+    sourcesTitle: "Checked against official sources",
+    sources: [["Narodne novine — NN 101/2026", sourceUrl], ["Ministry of Economy", "https://mingo.gov.hr/vijesti/vlada-rh-usvojila-11-paket-mjera-energetske-mjere-vrijedne-170-14-milijuna-eura-sidrena-cijena-prosiruje-se-na-sve-proizvode-i-usluge/10430"], ["Croatian Chamber of Trades and Crafts", "https://www.hok.hr/aktualno/danasnja-cijena-svih-proizvoda-i-usluga-postaje-sidrena-cijena-vazna-obavijest"]],
+  },
+};
+
 const content = {
   hr: {
     eyebrow: "NN 101/2026 · primjena od 1.10.2026.",
@@ -173,6 +208,7 @@ export default function DigitalPriceListPage() {
   const checkerRef = useRef(null);
   const formRef = useRef(null);
   const copy = content[lang];
+  const guide = guideContent[lang];
 
   usePageMeta("/digitalni-cjenik", lang);
   useEffect(() => { trackEvent("view_digital_price_list"); }, []);
@@ -231,6 +267,12 @@ export default function DigitalPriceListPage() {
 
     <section className="content-section px-4 pt-0"><div className="section-shell grid gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-4">{copy.facts.map(([title, text]) => <article key={title} className="bg-white p-6"><h2 className="text-xl font-semibold tracking-tight text-slate-950">{title}</h2><p className="mt-3 text-sm leading-6 text-slate-600">{text}</p></article>)}</div></section>
 
+    <section className="content-section px-4"><div className="section-shell max-w-5xl"><p className="text-sm font-semibold text-slate-500">{guide.published}</p><div className="mt-5 border-y border-slate-200 py-8"><h2 className="max-w-3xl text-3xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-4xl">{guide.summaryTitle}</h2><p className="mt-5 max-w-4xl text-lg leading-8 text-slate-700">{guide.summaryLead}</p><dl className="mt-8 grid divide-y divide-slate-200 border-t border-slate-200 md:grid-cols-2 md:divide-x md:divide-y-0">{guide.summary.map(([term, detail]) => <div key={term} className="grid gap-1 py-4 pr-5 md:px-5"><dt className="text-sm font-bold text-blue-700">{term}</dt><dd className="leading-6 text-slate-700">{detail}</dd></div>)}</dl></div></div></section>
+
+    <section className="content-section px-4"><div className="section-shell max-w-5xl"><div className="border-t-2 border-slate-950 pt-5"><h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950">{guide.unknownTitle}</h2><p className="mt-4 max-w-4xl leading-7 text-slate-600">{guide.unknown}</p></div></div></section>
+
+    <section className="content-section px-4"><div className="section-shell max-w-5xl"><div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8"><h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950">{guide.examplesTitle}</h2><p className="mt-4 max-w-3xl leading-7 text-slate-600">{guide.examplesLead}</p><div className="mt-6 flex flex-col gap-3 sm:flex-row"><a className="button button-secondary" href="/digitalni-cjenik/primjer-usluge.csv" download>{guide.csv}</a><a className="button button-secondary" href="/digitalni-cjenik/primjer-usluge.xml" download>{guide.xml}</a></div></div></div></section>
+
     <section className="content-section px-4"><div className="section-shell"><div className="section-heading"><h2>{copy.practiceTitle}</h2><p>{copy.practice}</p></div><div className="grid overflow-hidden rounded-2xl border border-slate-200 lg:grid-cols-2"><div className="bg-slate-100 p-6 sm:p-9"><p className="text-sm font-bold text-slate-500">PDF / tekst / slika</p><ul className="mt-6 grid gap-3">{copy.old.map((item) => <li key={item} className="flex items-center gap-3 text-lg font-semibold text-slate-700"><FileText size={19} aria-hidden="true" />{item}</li>)}</ul></div><div className="bg-slate-950 p-6 text-white sm:p-9"><p className="text-sm font-bold text-cyan-300">Javno dostupni putovi</p><ul className="mt-6 grid gap-3">{copy.new.map((item) => <li key={item} className="flex items-center gap-3 font-mono text-base text-white"><FileCode2 size={19} className="text-cyan-300" aria-hidden="true" />{item}</li>)}</ul></div></div></div></section>
 
     <section ref={checkerRef} className="content-section scroll-mt-24 px-4"><div className="section-shell max-w-4xl"><div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-10"><div className="max-w-2xl"><h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-4xl">{copy.checkerTitle}</h2><p className="mt-3 leading-7 text-slate-600">{copy.checkerLead}</p></div><form onSubmit={check} noValidate className="mt-7 flex flex-col gap-3 sm:flex-row"><label className="sr-only" htmlFor="digital-price-list-url">{copy.checkerTitle}</label><input id="digital-price-list-url" className={inputClass} required type="url" value={url} onChange={(event) => setUrl(event.target.value)} placeholder={copy.checkerPlaceholder} inputMode="url" /><button className="button button-primary shrink-0" disabled={checking} type="submit">{checking ? copy.checkerLoading : copy.checkerButton}</button></form>
@@ -243,9 +285,13 @@ export default function DigitalPriceListPage() {
 
     <section className="content-section px-4"><div className="section-shell"><div className="section-heading"><h2>{copy.platformsTitle}</h2></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{copy.platforms.map(([title, text]) => <article key={title} className="border-t-2 border-slate-900 pt-5"><Globe2 size={20} className="text-cyan-700" aria-hidden="true" /><h3 className="mt-5 text-xl font-semibold text-slate-950">{title}</h3><p className="mt-3 text-sm leading-6 text-slate-600">{text}</p></article>)}</div></div></section>
 
+    <section className="content-section px-4"><div className="section-shell max-w-5xl"><div className="section-heading"><h2>{guide.platformGuidesTitle}</h2></div><div className="divide-y divide-slate-200 border-y border-slate-200">{guide.platformGuides.map(([question, answer]) => <article key={question} className="py-6"><h3 className="text-xl font-semibold tracking-tight text-slate-950">{question}</h3><p className="mt-3 max-w-3xl leading-7 text-slate-600">{answer}</p></article>)}</div></div></section>
+
     <section className="content-section px-4"><div className="section-shell grid gap-5 lg:grid-cols-2"><article className="rounded-2xl bg-slate-950 p-7 text-white sm:p-10"><Network className="text-cyan-300" aria-hidden="true" /><h2 className="mt-8 text-3xl font-semibold tracking-[-0.03em]">{copy.wordpressTitle}</h2><p className="mt-4 max-w-2xl leading-7 text-slate-300">{copy.wordpress}</p><div className="mt-7 grid gap-3 text-sm font-bold text-cyan-200">{copy.wordpressPrices.map((price) => <p key={price}>{price}</p>)}</div><button className="button mt-8 bg-white text-slate-950 hover:bg-slate-100" onClick={() => goTo(formRef, true)}>{copy.implementation}<ArrowRight size={17} aria-hidden="true" /></button></article><article className="rounded-2xl border border-slate-200 bg-white p-7 sm:p-10"><h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950">{copy.programTitle}</h2><p className="mt-4 leading-7 text-slate-600">{copy.program}</p><p className="mt-6 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-500">{copy.programExamples}</p></article></div></section>
 
     <section className="content-section px-4"><div className="section-shell"><div className="section-heading"><h2>{copy.faqTitle}</h2></div><div className="divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white">{copy.faq.map(([question, answer]) => <details key={question} className="group p-5 sm:p-6"><summary className="cursor-pointer list-none pr-8 text-lg font-semibold text-slate-950 marker:hidden">{question}<span className="float-right text-blue-700 group-open:rotate-45">+</span></summary><p className="mt-4 max-w-3xl leading-7 text-slate-600">{answer}</p></details>)}</div></div></section>
+
+    <section className="content-section px-4"><div className="section-shell max-w-5xl"><div className="section-heading"><h2>{guide.sourcesTitle}</h2></div><ul className="grid gap-3">{guide.sources.map(([label, href]) => <li key={href}><a href={href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">{label}<ArrowRight size={16} aria-hidden="true" /></a></li>)}</ul></div></section>
 
     <section ref={formRef} className="content-section scroll-mt-24 px-4"><div className="section-shell max-w-4xl rounded-2xl border border-slate-200 bg-white p-6 sm:p-10"><h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-4xl">{copy.formTitle}</h2><p className="mt-3 max-w-2xl leading-7 text-slate-600">{copy.formLead}</p><div className="mt-8"><LeadForm key={checkedWebsite} copy={copy} initialWebsite={checkedWebsite} /></div></div></section>
     <section className="px-4 pb-14"><div className="section-shell max-w-4xl border-t border-slate-200 pt-7 text-sm leading-6 text-slate-500">{copy.legal}</div></section>

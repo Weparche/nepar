@@ -23,12 +23,21 @@ async function mockWorker(page, checkerResult) {
 test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source", async ({ page }) => {
   const errors = [];
   page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
+  const staticResponse = await page.request.get("/digitalni-cjenik");
+  const staticHtml = await staticResponse.text();
+  expect(staticHtml).toContain('data-nepar-static-content');
+  expect(staticHtml).toContain('Digitalni cjenik prema NN 101/2026');
+  expect(staticHtml).toContain('Ukratko — što morate napraviti');
+  expect(staticHtml).toContain('Što još nije definirano');
+  expect(staticHtml).toContain('primjer-usluge.csv');
   await page.goto("/digitalni-cjenik");
   await expect(page).toHaveTitle("Digitalni cjenik XML/CSV od 1.10.2026. | NEPAR");
   await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /Nova obveza digitalnih cjenika/);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://nepar.hr/digitalni-cjenik");
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
-  await expect(page.getByRole("link", { name: "Narodne novine" })).toHaveAttribute("href", /101_1213/);
+  await expect(page.getByRole("link", { name: "Narodne novine", exact: true })).toHaveAttribute("href", /101_1213/);
+  await expect(page.getByRole("link", { name: "Ministarstvo gospodarstva" })).toHaveAttribute("href", /mingo\.gov\.hr/);
+  await expect(page.getByRole("link", { name: "Preuzmite primjer-usluge.csv" })).toHaveAttribute("href", "/digitalni-cjenik/primjer-usluge.csv");
   const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
   expect(errors).toEqual([]);

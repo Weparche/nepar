@@ -72,6 +72,10 @@ expect("digitalni-cjenik.html", "Digitalni cjenik XML/CSV od 1.10.2026. | NEPAR"
 expect("digitalni-cjenik.html", '<link rel="canonical" href="https://nepar.hr/digitalni-cjenik" />', "digital price list canonical is missing");
 expect("digitalni-cjenik.html", "FAQPage", "digital price list FAQPage schema is missing");
 expect("digitalni-cjenik.html", "BreadcrumbList", "digital price list breadcrumb schema is missing");
+expect("digitalni-cjenik.html", "TechArticle", "digital price list Article schema is missing");
+expect("digitalni-cjenik.html", "data-nepar-static-content", "digital price list initial HTML body is missing");
+expect("digitalni-cjenik.html", "Digitalni cjenik prema NN 101/2026", "digital price list answer-first text is missing");
+expect("digitalni-cjenik.html", "primjer-usluge.csv", "digital price list CSV example link is missing");
 expect("mozgalica.html", "SoftwareApplication", "SoftwareApplication schema is missing");
 expect("njamko.html", "SoftwareApplication", "SoftwareApplication schema is missing");
 expect("admin.html", '<meta name="robots" content="noindex,nofollow" />', "admin must be noindex,nofollow");
@@ -82,7 +86,7 @@ const expectedSitemap = `<?xml version="1.0" encoding="UTF-8"?>
   <url><loc>https://nepar.hr/</loc></url>
   <url><loc>https://nepar.hr/usluge/izrada-web-stranica</loc></url>
   <url><loc>https://nepar.hr/kontakt</loc></url>
-  <url><loc>https://nepar.hr/digitalni-cjenik</loc></url>
+  <url><loc>https://nepar.hr/digitalni-cjenik</loc><lastmod>2026-09-15</lastmod></url>
   <url><loc>https://nepar.hr/privatnost</loc></url>
   <url><loc>https://nepar.hr/mozgalica</loc></url>
   <url><loc>https://nepar.hr/njamko</loc></url>
@@ -92,6 +96,9 @@ if (read("sitemap.xml") !== expectedSitemap) failures.push("sitemap.xml must con
 if (read("sitemap.xml").includes("https://nepar.hr/web")) failures.push("sitemap.xml must not contain the paid /web landing.");
 
 const expectedRobots = `User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 Sitemap: https://nepar.hr/sitemap.xml

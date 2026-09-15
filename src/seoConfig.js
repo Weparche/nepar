@@ -39,6 +39,12 @@ export const digitalPriceListFaq = [
   ["Može li se implementirati na Wix?", "Da. Način implementacije razlikuje se od WordPressa, ali digitalni cjenik moguće je povezati i s postojećom Wix stranicom."],
 ];
 
+export const digitalPriceListSources = [
+  "https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1213.html",
+  "https://mingo.gov.hr/vijesti/vlada-rh-usvojila-11-paket-mjera-energetske-mjere-vrijedne-170-14-milijuna-eura-sidrena-cijena-prosiruje-se-na-sve-proizvode-i-usluge/10430",
+  "https://www.hok.hr/aktualno/danasnja-cijena-svih-proizvoda-i-usluga-postaje-sidrena-cijena-vazna-obavijest",
+];
+
 const localizedPages = {
   "/": {
     indexable: true,
@@ -302,6 +308,19 @@ export function getStructuredData(path = "/") {
 
   if (page.schema === "digital-price-list") {
     graph.push(
+      {
+        "@type": "TechArticle",
+        "@id": `${canonicalUrl}#article`,
+        headline: "Digitalni cjenik XML/CSV od 1.10.2026.",
+        description: page.description,
+        mainEntityOfPage: canonicalUrl,
+        inLanguage: "hr",
+        datePublished: "2026-09-15",
+        dateModified: "2026-09-15",
+        author: { "@id": ORGANIZATION_ID },
+        publisher: { "@id": ORGANIZATION_ID },
+        citation: digitalPriceListSources,
+      },
       {
         "@type": "Service",
         "@id": `${canonicalUrl}#service`,
