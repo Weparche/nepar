@@ -29,7 +29,11 @@ export const serviceFaq = {
 };
 
 export const digitalPriceListFaq = [
-  ["Tko mora objaviti digitalni cjenik?", "Odluka propisuje obvezu objave cjenika trgovcima odnosno pružateljima usluga koji imaju uspostavljene mrežne stranice. Kod konkretne primjenjivosti treba uzeti u obzir vrstu poslovanja i odnos prema potrošačima."],
+  ["Odnosi li se nova obveza samo na webshopove?", "Ne. Odluka 1213 obvezu objave digitalnog cjenika veže uz trgovca odnosno pružatelja usluge koji ima uspostavljenu mrežnu stranicu, a ne uz samu mogućnost online kupnje."],
+  ["Imam samo prezentacijsku web stranicu. Odnosi li se to na mene?", "Sama činjenica da putem weba ne naplaćujete uslugu ne znači automatski da ste izvan obuhvata. Za specifične poslovne modele provjerite službena pojašnjenja."],
+  ["Koja je razlika između sidrene cijene i digitalnog cjenika?", "Riječ je o dvije povezane, ali odvojene obveze. Odluka 1212 uređuje isticanje dodatne odnosno sidrene cijene, dok Odluka 1213 uređuje objavu strojno čitljivih XML/CSV cjenika na mrežnim stranicama."],
+  ["Imam samo Facebook ili Instagram. Moram li imati XML/CSV cjenik?", "Za poslovanje koje nema vlastitu web stranicu, a koristi samo društvene mreže, konačnu primjenjivost XML/CSV obveze treba provjeriti prema službenim pojašnjenjima nadležnih tijela. To ne znači da se pravila o dodatnoj odnosno sidrenoj cijeni mogu ignorirati pri oglašavanju cijena."],
+  ["Moram li svaki put ručno mijenjati cijenu i na webu?", "Ne nužno. Ako poslovni sustav iz kojeg vodite cijene može pružiti odgovarajući strukturirani izvor podataka, web integraciju moguće je automatizirati."],
   ["Vrijedi li za B2B tvrtke?", "Odluka je usmjerena na maloprodajne cijene i zaštitu potrošača. Za poslovanje koje je isključivo B2B preporučuje se provjeriti primjenjivost na konkretan slučaj."],
   ["Je li dovoljan PDF?", "Odluka izričito navodi objavu cjenika u .xml ili .csv formatu pogodnom za automatsku obradu."],
   ["Mora li cjenik biti na vlastitoj web stranici?", "Odluka navodi da trgovac odnosno pružatelj usluge cjenike objavljuje na svojim mrežnim stranicama."],
@@ -40,7 +44,9 @@ export const digitalPriceListFaq = [
 ];
 
 export const digitalPriceListSources = [
+  "https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1212.html",
   "https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1213.html",
+  "https://hgk.hr/webinar-mjere-izravne-kontrole-cijena-isticanje-dodatne-cijene-i-objava-cjenika-proizvoda-i-usluga-najava",
   "https://mingo.gov.hr/vijesti/vlada-rh-usvojila-11-paket-mjera-energetske-mjere-vrijedne-170-14-milijuna-eura-sidrena-cijena-prosiruje-se-na-sve-proizvode-i-usluge/10430",
   "https://www.hok.hr/aktualno/danasnja-cijena-svih-proizvoda-i-usluga-postaje-sidrena-cijena-vazna-obavijest",
 ];

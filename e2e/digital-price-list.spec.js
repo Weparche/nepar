@@ -26,8 +26,15 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   const staticResponse = await page.request.get("/digitalni-cjenik");
   const staticHtml = await staticResponse.text();
   expect(staticHtml).toContain('data-nepar-static-content');
-  expect(staticHtml).toContain('Digitalni cjenik prema NN 101/2026');
-  expect(staticHtml).toContain('Ukratko — što morate napraviti');
+  expect(staticHtml).toContain('NN 101/2026-1212');
+  expect(staticHtml).toContain('NN 101/2026-1213');
+  expect(staticHtml).toContain('Dvije povezane, ali odvojene obveze');
+  expect(staticHtml).toContain('Digitalni cjenik nije obveza samo za webshopove');
+  expect(staticHtml).toContain('od 129 €');
+  expect(staticHtml).toContain('79,90 €');
+  expect(staticHtml).toContain('139,80 €');
+  expect(staticHtml).toContain('od 149 €');
+  expect(staticHtml).toContain('19,90 € / godišnje');
   expect(staticHtml).toContain('Što još nije definirano');
   expect(staticHtml).toContain('primjer-usluge.csv');
   await page.goto("/digitalni-cjenik");
@@ -36,11 +43,30 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://nepar.hr/digitalni-cjenik");
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("link", { name: "Narodne novine", exact: true })).toHaveAttribute("href", /101_1213/);
+  await expect(page.getByRole("link", { name: "NN 101/2026-1212", exact: true }).first()).toHaveAttribute("href", /101_1212/);
   await expect(page.getByRole("link", { name: "Ministarstvo gospodarstva" })).toHaveAttribute("href", /mingo\.gov\.hr/);
   await expect(page.getByRole("link", { name: "Preuzmite primjer-usluge.csv" })).toHaveAttribute("href", "/digitalni-cjenik/primjer-usluge.csv");
   const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
   expect(errors).toEqual([]);
+});
+
+test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlable and responsive", async ({ page }) => {
+  await page.goto("/digitalni-cjenik");
+  await expect(page.getByText("od 129 €", { exact: true })).toBeVisible();
+  await expect(page.getByText("79,90 €", { exact: true })).toBeVisible();
+  await expect(page.getByText("139,80 €", { exact: true })).toBeVisible();
+  await expect(page.getByText("od 149 €", { exact: true })).toBeVisible();
+  await expect(page.getByText("19,90 € / godišnje", { exact: true })).toBeVisible();
+  await expect(page.getByText("Odnosi li se nova obveza samo na webshopove?")).toBeVisible();
+  await expect(page.getByText("Koja je razlika između sidrene cijene i digitalnog cjenika?")).toBeVisible();
+  await expect(page.getByText("Imam samo Facebook ili Instagram. Moram li imati XML/CSV cjenik?")).toBeVisible();
+  const schema = await page.locator('script[data-nepar-schema]').textContent();
+  expect(schema).toContain("2026_09_101_1212");
+  expect(schema).toContain("2026_09_101_1213");
+  await page.setViewportSize({ width: 390, height: 844 });
+  const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
+  expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
 });
 
 test("checker displays concrete yellow findings and prefills the lead form", async ({ page }) => {
@@ -56,6 +82,7 @@ test("checker displays concrete yellow findings and prefills the lead form", asy
   await expect(result).toContainText("Pronašli smo cjenik, ali ne i XML/CSV");
   await expect(result).toContainText("/cjenik.pdf");
   await expect(result).toContainText("CSV: nije pronađen");
+  await expect(result).toContainText("Ne provjerava obvezu isticanja dodatne/sidrene cijene");
   await result.getByRole("button", { name: "Zatraži implementaciju" }).click();
   await expect(page.getByLabel("Web stranica")).toHaveValue("https://primjer.hr");
   await page.getByLabel("Ime ili naziv tvrtke").fill("Test obrt");
@@ -66,6 +93,23 @@ test("checker displays concrete yellow findings and prefills the lead form", asy
   await expect(page.getByText("Upit je poslan. Javit ćemo se uskoro.")).toBeVisible();
   expect(contacts).toHaveLength(1);
   expect(contacts[0]).toMatchObject({ formName: "digitalni_cjenik", leadSource: "digitalni-cjenik", website: "https://primjer.hr" });
+});
+
+test("lead form accepts a bare www domain and sends its normalized website", async ({ page }) => {
+  const contacts = await mockWorker(page, { status: "red", message: "", details: {} });
+  await page.goto("/digitalni-cjenik");
+  const website = page.getByLabel("Web stranica");
+  await website.fill("www.mile.hr");
+  await website.press("Tab");
+  await expect(website).toHaveValue("https://www.mile.hr");
+  await page.getByLabel("Ime ili naziv tvrtke").fill("Mile doo");
+  await page.getByLabel("E-mail").fill("ig29007@gmail.com");
+  await page.getByLabel("Platforma").selectOption("WordPress");
+  await page.getByLabel("Poruka").fill("Digitalni cjenik");
+  await page.getByRole("button", { name: "Pošalji upit" }).click();
+  await expect(page.getByText("Upit je poslan. Javit ćemo se uskoro.")).toBeVisible();
+  expect(contacts).toHaveLength(1);
+  expect(contacts[0]).toMatchObject({ website: "https://www.mile.hr", formName: "digitalni_cjenik", leadSource: "digitalni-cjenik" });
 });
 
 test("checker renders a green CSV result without leaking the checked domain into analytics", async ({ page }) => {

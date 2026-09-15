@@ -74,7 +74,10 @@ expect("digitalni-cjenik.html", "FAQPage", "digital price list FAQPage schema is
 expect("digitalni-cjenik.html", "BreadcrumbList", "digital price list breadcrumb schema is missing");
 expect("digitalni-cjenik.html", "TechArticle", "digital price list Article schema is missing");
 expect("digitalni-cjenik.html", "data-nepar-static-content", "digital price list initial HTML body is missing");
-expect("digitalni-cjenik.html", "Digitalni cjenik prema NN 101/2026", "digital price list answer-first text is missing");
+expect("digitalni-cjenik.html", "NN 101/2026-1212", "digital price list additional-price citation is missing");
+expect("digitalni-cjenik.html", "NN 101/2026-1213", "digital price list XML/CSV citation is missing");
+expect("digitalni-cjenik.html", "Digitalni cjenik nije obveza samo za webshopove", "digital price list B2C scope text is missing");
+expect("digitalni-cjenik.html", "od 129 €", "digital price list primary price is missing");
 expect("digitalni-cjenik.html", "primjer-usluge.csv", "digital price list CSV example link is missing");
 expect("mozgalica.html", "SoftwareApplication", "SoftwareApplication schema is missing");
 expect("njamko.html", "SoftwareApplication", "SoftwareApplication schema is missing");

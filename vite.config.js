@@ -91,18 +91,35 @@ function routeOutputPath(outDir, routePath) {
 function renderDigitalPriceListStaticBody() {
   return `<main class="site-main" data-nepar-static-content>
     <article class="section-shell" lang="hr">
-      <h1>Digitalni XML/CSV cjenik od 1. listopada 2026.</h1>
-      <p>Digitalni cjenik prema NN 101/2026 je javno dostupan cjenik proizvoda ili usluga u XML ili CSV formatu, pogodan za automatsku obradu. Za pružatelje usluga mora sadržavati naziv usluge, maloprodajnu cijenu, podatak o posebnom obliku prodaje ako postoji i sidrenu cijenu.</p>
+      <h1>Digitalni cjenik XML/CSV od 1. listopada 2026.</h1>
+      <p>Nova pravila od 1. listopada ne odnose se samo na webshopove. Trgovci i pružatelji usluga s vlastitom web stranicom moraju objaviti strojno čitljivi XML ili CSV cjenik, a zasebna Odluka uvodi i obvezu isticanja dodatne odnosno sidrene cijene.</p>
+      <p>Od 1. listopada 2026. u Hrvatskoj se primjenjuju dvije povezane obveze vezane uz cijene. Odluka NN 101/2026-1212 uređuje isticanje dodatne odnosno sidrene cijene, dok Odluka NN 101/2026-1213 propisuje objavu digitalnih XML/CSV cjenika za trgovce i pružatelje usluga koji imaju uspostavljene mrežne stranice.</p>
       <p>Objavljeno: 15.09.2026. · Zadnje provjereno prema službenim izvorima: 15.09.2026.</p>
-      <h2>Ukratko — što morate napraviti</h2>
+      <h2>Dvije povezane, ali odvojene obveze</h2>
+      <h3>Sidrena / dodatna cijena</h3>
+      <p>Uz aktualnu cijenu proizvoda ili usluge potrebno je isticati i propisanu dodatnu cijenu. Ako se cijena oglašava na webu, dodatna cijena također se mora odgovarajuće istaknuti.</p>
+      <p><a href="https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1212.html">NN 101/2026-1212</a></p>
+      <h3>Digitalni XML/CSV cjenik</h3>
+      <p>Ako trgovac ili pružatelj usluge ima vlastitu mrežnu stranicu, Odluka propisuje objavu cjenika u XML ili CSV formatu pogodnom za automatsku obradu. Cjenik mora ostati dostupan 30 dana, a mora biti omogućen i automatizirani dohvat podataka.</p>
+      <p><a href="https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1213.html">NN 101/2026-1213</a></p>
+      <h2>Ukratko — dvije povezane obveze</h2>
+      <h3>Ako imate web stranicu</h3>
       <dl>
-        <dt>Tko?</dt><dd>Trgovci i pružatelji usluga s uspostavljenim mrežnim stranicama; za konkretnu primjenjivost treba uzeti u obzir djelatnost i odnos prema potrošačima.</dd>
-        <dt>Od kada?</dt><dd>1. listopada 2026.</dd>
-        <dt>Format?</dt><dd>XML ili CSV, pogodan za automatsku obradu.</dd>
-        <dt>Ažuriranje usluga?</dt><dd>Kod promjene, najkasnije do 8:00 sati dana objave izmjene.</dd>
-        <dt>Arhiva?</dt><dd>Objavljene verzije moraju ostati dostupne 30 dana od objave odnosno promjene.</dd>
-        <dt>Automatski dohvat?</dt><dd>Da, kroz tehnička rješenja za softverske alate i automatizirane programe.</dd>
+        <dt>Format</dt><dd>XML ili CSV, pogodan za automatsku obradu.</dd>
+        <dt>Arhiva</dt><dd>Objavljene verzije moraju ostati dostupne 30 dana.</dd>
+        <dt>Automatski dohvat</dt><dd>Podaci moraju biti dostupni softverskim alatima i automatiziranim programima.</dd>
+        <dt>Dodatna cijena</dt><dd>Primjenjuje se gdje je propisano zasebnom Odlukom.</dd>
       </dl>
+      <h3>Ako nemate web stranicu</h3>
+      <p>Obveza objave digitalnog XML/CSV cjenika iz Odluke 1213 vezana je uz trgovce i pružatelje usluga koji imaju uspostavljene mrežne stranice. Zasebna pravila o dodatnoj cijeni mogu se primjenjivati neovisno o tome imate li web.</p>
+      <h2>Digitalni cjenik nije obveza samo za webshopove</h2>
+      <p>Odluka ne uvjetuje obvezu online prodajom. Obveza objave XML/CSV cjenika vezana je uz postojanje mrežne stranice trgovca odnosno pružatelja usluge.</p>
+      <p>Primjeri uključuju restoran ili kafić s webom, salon, autoservis, obrtničke usluge, ordinaciju, veterinarsku praksu, wellness, telekomunikacijske i osiguravajuće usluge te trgovinu. Primjenjivost treba procijeniti prema stvarnoj djelatnosti i službenim pojašnjenjima.</p>
+      <h2>Jednom promijenite cijenu. Web se ažurira automatski.</h2>
+      <p>Ako cijene već vodite u poslovnom programu, ERP-u, blagajni ili strukturiranom CSV/XML izvoru, NEPAR integracija može koristiti taj sustav kao izvor podataka i automatski objavljivati cjenik na vašoj web stranici.</p>
+      <p>Poslovni program / ERP / CSV / XML → NEPAR integracija → vaša web stranica → cjenik za posjetitelje + XML/CSV + arhiva + automatizirani dohvat.</p>
+      <h2>Jasne opcije implementacije</h2>
+      <ul><li>Provjera web stranice: 0 €</li><li>Digitalni cjenik na postojećem webu: od 129 €</li><li>WordPress plugin: 79,90 € — u pripremi</li><li>WordPress plugin + instalacija: 139,80 €</li><li>Wix, React / Next / Vite i custom webovi: od 149 €</li><li>Tehničko održavanje nakon prve uključene godine: 19,90 € / godišnje</li></ul>
       <h2>Što još nije definirano</h2>
       <p>Odluka navodi obvezne podatke, ali ne propisuje točan CSV delimiter, redoslijed stupaca ni službenu XML/XSD shemu. Hrvatska obrtnička komora najavila je traženje službenih pojašnjenja o obuhvatu, pojedinim djelatnostima i mogućim izuzećima. Ovaj vodič ne zamjenjuje pravno tumačenje.</p>
       <h2>Primjer digitalnog cjenika usluga</h2>
@@ -114,10 +131,11 @@ function renderDigitalPriceListStaticBody() {
       <h3>Kako na Wixu?</h3><p>Wix implementacija može povezati javno dostupne CSV/XML datoteke i vidljivi cjenik; tehnički način ovisi o postojećoj strukturi stranice.</p>
       <h3>Kako na React/Vite stranici?</h3><p>Rješenje obično koristi server-side ili API rutu za javni CSV/XML dohvat, prikaz cjenika i arhivu prethodnih verzija.</p>
       <h2>Česta pitanja</h2>
-      <p>Je li dovoljan PDF? Ne. Odluka izričito navodi XML ili CSV format pogodan za automatsku obradu.</p>
-      <p>Koliko dugo se čuvaju stare verzije? 30 dana od objave odnosno promjene.</p>
+      <h3>Odnosi li se nova obveza samo na webshopove?</h3><p>Ne. Odluka 1213 obvezu objave digitalnog cjenika veže uz trgovca odnosno pružatelja usluge koji ima uspostavljenu mrežnu stranicu, a ne uz samu mogućnost online kupnje.</p>
+      <h3>Koja je razlika između sidrene cijene i digitalnog cjenika?</h3><p>Odluka 1212 uređuje isticanje dodatne odnosno sidrene cijene, dok Odluka 1213 uređuje objavu strojno čitljivih XML/CSV cjenika na mrežnim stranicama.</p>
+      <h3>Imam samo Facebook ili Instagram?</h3><p>Za poslovanje koje nema vlastitu web stranicu, a koristi samo društvene mreže, konačnu primjenjivost XML/CSV obveze treba provjeriti prema službenim pojašnjenjima. To ne znači da se pravila o dodatnoj cijeni mogu ignorirati pri oglašavanju cijena.</p>
       <h2>Provjereno prema službenim izvorima</h2>
-      <ul><li><a href="https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1213.html">Narodne novine — NN 101/2026</a></li><li><a href="https://mingo.gov.hr/vijesti/vlada-rh-usvojila-11-paket-mjera-energetske-mjere-vrijedne-170-14-milijuna-eura-sidrena-cijena-prosiruje-se-na-sve-proizvode-i-usluge/10430">Ministarstvo gospodarstva</a></li><li><a href="https://www.hok.hr/aktualno/danasnja-cijena-svih-proizvoda-i-usluga-postaje-sidrena-cijena-vazna-obavijest">Hrvatska obrtnička komora</a></li></ul>
+      <ul><li><a href="https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1212.html">NN 101/2026-1212</a></li><li><a href="https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1213.html">NN 101/2026-1213</a></li><li><a href="https://hgk.hr/webinar-mjere-izravne-kontrole-cijena-isticanje-dodatne-cijene-i-objava-cjenika-proizvoda-i-usluga-najava">Hrvatska gospodarska komora</a></li><li><a href="https://mingo.gov.hr/vijesti/vlada-rh-usvojila-11-paket-mjera-energetske-mjere-vrijedne-170-14-milijuna-eura-sidrena-cijena-prosiruje-se-na-sve-proizvode-i-usluge/10430">Ministarstvo gospodarstva</a></li><li><a href="https://www.hok.hr/aktualno/danasnja-cijena-svih-proizvoda-i-usluga-postaje-sidrena-cijena-vazna-obavijest">Hrvatska obrtnička komora</a></li></ul>
     </article>
   </main>`;
 }
