@@ -10,6 +10,10 @@ import {
   SITEMAP_PATHS,
   STATIC_HTML_PATHS,
 } from "./src/seoConfig.js";
+import { nepaUsluge } from "./src/cjenikData.js";
+import { cjenikMeta, canonicalCjenikFilename } from "./src/cjenikMeta.js";
+import { renderCjenikCsv, renderCjenikXml, renderCjenikHtmlBody, renderCjenikArhivaHtmlBody } from "./src/cjenikRender.js";
+import { retainedSnapshots } from "./scripts/cjenikArchive.js";
 
 /** Static HTML sites copied from public/ and served from a subdirectory. */
 const PUBLIC_STATIC_SITES = ["fabela"];
@@ -140,9 +144,18 @@ function renderDigitalPriceListStaticBody() {
   </main>`;
 }
 
-function replaceRouteBody(html, routePath) {
-  if (routePath !== "/digitalni-cjenik") return html;
-  return html.replace('<div id="root"></div>', `<div id="root">${renderDigitalPriceListStaticBody()}</div>`);
+function replaceRouteBody(html, routePath, archiveDir) {
+  if (routePath === "/digitalni-cjenik") {
+    return html.replace('<div id="root"></div>', `<div id="root">${renderDigitalPriceListStaticBody()}</div>`);
+  }
+  if (routePath === "/cjenik") {
+    return html.replace('<div id="root"></div>', `<div id="root">${renderCjenikHtmlBody(nepaUsluge, cjenikMeta)}</div>`);
+  }
+  if (routePath === "/cjenik/arhiva") {
+    const snapshots = retainedSnapshots(archiveDir);
+    return html.replace('<div id="root"></div>', `<div id="root">${renderCjenikArhivaHtmlBody(cjenikMeta, snapshots)}</div>`);
+  }
+  return html;
 }
 
 function renderSitemap(siteUrl) {
@@ -189,12 +202,13 @@ function routeSeoPlugin(siteUrl) {
       const outDir = outputOptions.dir ?? "dist";
       const indexPath = resolve(outDir, "index.html");
       const indexHtml = readFileSync(indexPath, "utf8");
+      const archiveDir = resolve(process.cwd(), "cjenik-archive");
 
       for (const routePath of STATIC_HTML_PATHS) {
         const page = getSeoPage(routePath, "hr");
         const outputPath = routeOutputPath(outDir, routePath);
         mkdirSync(dirname(outputPath), { recursive: true });
-        writeFileSync(outputPath, replaceRouteBody(replaceBuiltMeta(indexHtml, page, siteUrl), routePath), "utf8");
+        writeFileSync(outputPath, replaceRouteBody(replaceBuiltMeta(indexHtml, page, siteUrl), routePath, archiveDir), "utf8");
       }
 
       writeFileSync(resolve(outDir, "sitemap.xml"), renderSitemap(siteUrl), "utf8");
@@ -203,6 +217,22 @@ function routeSeoPlugin(siteUrl) {
         `User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`,
         "utf8",
       );
+
+      const cjeniciDir = resolve(outDir, "cjenici");
+      mkdirSync(cjeniciDir, { recursive: true });
+
+      const currentCsv = renderCjenikCsv(nepaUsluge);
+      const currentXml = renderCjenikXml(nepaUsluge, cjenikMeta);
+      writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(cjenikMeta, "csv")), currentCsv, "utf8");
+      writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(cjenikMeta, "xml")), currentXml, "utf8");
+      // /cjenik.csv i /cjenik.xml su praktični "trenutni" alias na kanonske datoteke iznad.
+      writeFileSync(resolve(outDir, "cjenik.csv"), currentCsv, "utf8");
+      writeFileSync(resolve(outDir, "cjenik.xml"), currentXml, "utf8");
+
+      for (const snapshot of retainedSnapshots(archiveDir)) {
+        writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(snapshot.meta, "csv")), renderCjenikCsv(snapshot.usluge), "utf8");
+        writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(snapshot.meta, "xml")), renderCjenikXml(snapshot.usluge, snapshot.meta), "utf8");
+      }
     },
   };
 }

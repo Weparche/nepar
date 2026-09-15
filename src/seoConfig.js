@@ -1,4 +1,5 @@
 import { webOfferContent } from "./webOfferContent.js";
+import { nepaUsluge } from "./cjenikData.js";
 
 export const SITE_URL = "https://nepar.hr";
 export const DEFAULT_SOCIAL_IMAGE = "/brand/web-app-manifest-512x512.png";
@@ -112,6 +113,30 @@ const localizedPages = {
       description: "A new obligation for digital price lists begins on 1 October 2026. Find out whether you need an XML/CSV price list and how to implement it on WordPress, Wix, or an existing website.",
     },
     schema: "digital-price-list",
+  },
+  "/cjenik": {
+    indexable: true,
+    hr: {
+      title: "NEPAR — digitalni cjenik usluga | Nepar Solutions",
+      description: "Strojno čitljiv digitalni cjenik svih NEPAR usluga, sukladno Odluci NN 101/2026-1213 o objavi digitalnog cjenika proizvoda i usluga.",
+    },
+    en: {
+      title: "NEPAR — digital service price list | Nepar Solutions",
+      description: "A machine-readable digital price list of all NEPAR services, published under Croatian Decision NN 101/2026-1213.",
+    },
+    schema: "cjenik",
+  },
+  "/cjenik/arhiva": {
+    indexable: true,
+    hr: {
+      title: "Arhiva digitalnog cjenika | Nepar Solutions",
+      description: "Prethodne objavljene verzije NEPAR digitalnog cjenika, dostupne 30 dana od promjene sukladno Odluci NN 101/2026-1213.",
+    },
+    en: {
+      title: "Digital price list archive | Nepar Solutions",
+      description: "Previously published versions of the NEPAR digital price list, available for 30 days after a change under Decision NN 101/2026-1213.",
+    },
+    schema: "cjenik-arhiva",
   },
   "/privatnost": {
     indexable: true,
@@ -242,6 +267,16 @@ function serviceOffers() {
   }));
 }
 
+function cjenikOffers() {
+  return nepaUsluge.map((usluga) => ({
+    "@type": "Offer",
+    name: usluga.naziv,
+    price: String(usluga.cijena),
+    priceCurrency: "EUR",
+    url: `${SITE_URL}/cjenik`,
+  }));
+}
+
 export function getStructuredData(path = "/") {
   const page = getSeoPage(path, "hr");
   const canonicalUrl = page.canonicalPath ? `${SITE_URL}${page.canonicalPath === "/" ? "/" : page.canonicalPath}` : undefined;
@@ -354,6 +389,44 @@ export function getStructuredData(path = "/") {
         ],
       },
     );
+  }
+
+  if (page.schema === "cjenik") {
+    graph.push(
+      {
+        "@type": "Service",
+        "@id": `${canonicalUrl}#service`,
+        name: "NEPAR digitalni cjenik usluga",
+        description: page.description,
+        provider: { "@id": ORGANIZATION_ID },
+        areaServed: { "@type": "Country", name: "Hrvatska" },
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "NEPAR cjenik usluga",
+          itemListElement: cjenikOffers(),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${canonicalUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Naslovnica", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "Cjenik", item: canonicalUrl },
+        ],
+      },
+    );
+  }
+
+  if (page.schema === "cjenik-arhiva") {
+    graph.push({
+      "@type": "WebPage",
+      "@id": `${canonicalUrl}#page`,
+      name: page.title,
+      description: page.description,
+      url: canonicalUrl,
+      inLanguage: ["hr", "en"],
+      isPartOf: { "@id": WEBSITE_ID },
+    });
   }
 
   if (page.schema === "privacy") {

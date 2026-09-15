@@ -1,43 +1,24 @@
 # Nepar Solutions
 
-## Njamko — zvukovi životinja
+Vite + React SPA. Build: `npm run build` (uključuje `scripts/verify-dist.js`). Testovi: `npm run test:e2e` (Playwright), `npm run test:worker` (Cloudflare Worker).
 
-Level **Pogodi zvuk** može koristiti prave audio datoteke umjesto Web Audio beep fallbacka.
+## Digitalni cjenik — ažuriranje cijena (NN 101/2026-1213)
 
-### API ključevi
+`src/cjenikData.js` je **jedini** izvor istine za cijene NEPAR usluga. `src/webOfferContent.js` (marketinški sadržaj na `/usluge/izrada-web-stranica` i drugdje) uvozi te brojeve — cijena se nikad ne smije ručno upisati na dva mjesta.
 
-Dodaj u `.env` u korijenu projekta:
+Odluka NN 101/2026-1213 traži da objavljene verzije cjenika ostanu dostupne 30 dana i da bude omogućen automatizirani dohvat podataka. Kod NEPAR-a (statični build) to znači: **promjena cijene mora odmah završiti u produkciji**, ne smije čekati sljedeći nepovezani deploy.
 
-```env
-PIXABAY_API_KEY=your_pixabay_key
-FREESOUND_API_KEY=your_freesound_key
-```
+Postupak kad se cijena neke usluge stvarno promijeni:
 
-- **PIXABAY_API_KEY** (obavezno za skriptu) — [Pixabay API docs](https://pixabay.com/api/docs/)
-- **FREESOUND_API_KEY** (opcionalno) — CC0 fallback ako Pixabay ne vrati rezultat — [Freesound API apply](https://freesound.org/apiv2/apply/)
+1. `npm run cjenik:archive` — snima trenutnu (uskoro zamijenjenu) verziju u `cjenik-archive/`, s vremenskom oznakom zamjene (`supersededAt`). Pokreni ovo **prije** uređivanja podataka.
+2. Uredi `src/cjenikData.js` — promijeni cijenu/cijene u `nepaUsluge`.
+3. Uredi `src/cjenikMeta.js` — postavi `publishedAt` na trenutni datum/vrijeme i inkrementiraj `brojPohrane`. Ove vrijednosti se **ne** mijenjaju automatski po buildu — to je namjerno, da ponovni deploy iste verzije ne generira lažnu "novu objavu".
+4. `npm run build` i odmah deploy.
 
-### Preuzimanje zvukova
+Build iz tih podataka generira:
+- `/cjenik` — čitljiv prikaz (HTML)
+- `/cjenici/<oblik>_<adresa>_<oznaka>_<broj-pohrane>_<datum>_<vrijeme>.csv|xml` — kanonske datoteke, naziv sukladan Odluci
+- `/cjenik.csv`, `/cjenik.xml` — praktični alias na najnoviju kanonsku datoteku (koristi ih i NEPAR-ov vlastiti checker na `/digitalni-cjenik`)
+- `/cjenik/arhiva` — popis trenutne i zadržanih arhiviranih verzija (do 30 dana od `supersededAt`)
 
-```bash
-npm run fetch:njamko-sounds
-```
-
-Skripta:
-
-1. Kreira `public/njamko/assets/sounds/`
-2. Traži legalne zvukove preko Pixabay API-ja (primarni izvor)
-3. Ako Pixabay ne uspije, pokušava Freesound API (**samo CC0** licenca)
-4. Sprema `*.mp3` datoteke i generira `licenses.json` + `LICENSES.md`
-
-### Ponašanje u igri
-
-- Zvuk se **nikad ne autoplaya** — pušta se samo na klik **Poslušaj zvuk**
-- Ako datoteka ne postoji ili se ne može učitati, igra koristi postojeći Web Audio beep fallback
-- Greške se hvataju — aplikacija ne puca
-
-### Testiranje
-
-```bash
-npm run build
-npx playwright test e2e/njamko.spec.js
-```
+Nikad ne mijenjaj prikazanu cijenu neke od pokrivenih usluga izravno u `webOfferContent.js` ili u JSX-u — jedini way in je `src/cjenikData.js`.

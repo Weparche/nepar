@@ -1,5 +1,8 @@
 import { existsSync, lstatSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { nepaUsluge } from "../src/cjenikData.js";
+import { cjenikMeta, canonicalCjenikFilename } from "../src/cjenikMeta.js";
+import { renderCjenikCsv, renderCjenikXml } from "../src/cjenikRender.js";
 
 const distDir = resolve(process.cwd(), "dist");
 const failures = [];
@@ -30,6 +33,10 @@ for (const file of [
   "web.html",
   "kontakt.html",
   "digitalni-cjenik.html",
+  "cjenik.html",
+  "cjenik/arhiva.html",
+  "cjenik.csv",
+  "cjenik.xml",
   "privatnost.html",
   "usluge/izrada-web-stranica.html",
   "mozgalica.html",
@@ -79,6 +86,28 @@ expect("digitalni-cjenik.html", "NN 101/2026-1213", "digital price list XML/CSV 
 expect("digitalni-cjenik.html", "Digitalni cjenik nije obveza samo za webshopove", "digital price list B2C scope text is missing");
 expect("digitalni-cjenik.html", "od 129 €", "digital price list primary price is missing");
 expect("digitalni-cjenik.html", "primjer-usluge.csv", "digital price list CSV example link is missing");
+
+expect("cjenik.html", "<title>NEPAR — digitalni cjenik usluga | Nepar Solutions</title>", "cjenik title is missing");
+expect("cjenik.html", '<link rel="canonical" href="https://nepar.hr/cjenik" />', "cjenik canonical is missing");
+expect("cjenik.html", "data-nepar-static-content", "cjenik initial HTML body is missing");
+expect("cjenik.html", "OfferCatalog", "cjenik offer catalog schema is missing");
+expect("cjenik.html", "BreadcrumbList", "cjenik breadcrumb schema is missing");
+expect("cjenik.html", "Web Basic", "cjenik must list known NEPAR services");
+expect("cjenik/arhiva.html", "<title>Arhiva digitalnog cjenika | Nepar Solutions</title>", "cjenik arhiva title is missing");
+expect("cjenik/arhiva.html", "data-nepar-static-content", "cjenik arhiva initial HTML body is missing");
+expect("cjenik/arhiva.html", "Nema starijih verzija", "cjenik arhiva must state there are no older versions yet");
+
+const expectedCjenikCsv = renderCjenikCsv(nepaUsluge);
+const expectedCjenikXml = renderCjenikXml(nepaUsluge, cjenikMeta);
+if (read("cjenik.csv") !== expectedCjenikCsv) failures.push("cjenik.csv does not match the data generated from src/cjenikData.js.");
+if (read("cjenik.xml") !== expectedCjenikXml) failures.push("cjenik.xml does not match the data generated from src/cjenikData.js.");
+if (!read("cjenik.csv").includes("nepar_cijena_od")) failures.push("cjenik.csv is missing the nepar_cijena_od extension column.");
+if (!read("cjenik.xml").includes("<nepar_cijena_od>")) failures.push("cjenik.xml is missing the nepar_cijena_od extension element.");
+
+const canonicalCsvName = canonicalCjenikFilename(cjenikMeta, "csv");
+const canonicalXmlName = canonicalCjenikFilename(cjenikMeta, "xml");
+if (read(`cjenici/${canonicalCsvName}`) !== expectedCjenikCsv) failures.push(`Missing or mismatched canonical dist/cjenici/${canonicalCsvName}`);
+if (read(`cjenici/${canonicalXmlName}`) !== expectedCjenikXml) failures.push(`Missing or mismatched canonical dist/cjenici/${canonicalXmlName}`);
 expect("mozgalica.html", "SoftwareApplication", "SoftwareApplication schema is missing");
 expect("njamko.html", "SoftwareApplication", "SoftwareApplication schema is missing");
 expect("admin.html", '<meta name="robots" content="noindex,nofollow" />', "admin must be noindex,nofollow");
@@ -90,12 +119,14 @@ const expectedSitemap = `<?xml version="1.0" encoding="UTF-8"?>
   <url><loc>https://nepar.hr/usluge/izrada-web-stranica</loc></url>
   <url><loc>https://nepar.hr/kontakt</loc></url>
   <url><loc>https://nepar.hr/digitalni-cjenik</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://nepar.hr/cjenik</loc></url>
+  <url><loc>https://nepar.hr/cjenik/arhiva</loc></url>
   <url><loc>https://nepar.hr/privatnost</loc></url>
   <url><loc>https://nepar.hr/mozgalica</loc></url>
   <url><loc>https://nepar.hr/njamko</loc></url>
 </urlset>
 `;
-if (read("sitemap.xml") !== expectedSitemap) failures.push("sitemap.xml must contain exactly the seven canonical URLs.");
+if (read("sitemap.xml") !== expectedSitemap) failures.push("sitemap.xml must contain exactly the nine canonical URLs.");
 if (read("sitemap.xml").includes("https://nepar.hr/web")) failures.push("sitemap.xml must not contain the paid /web landing.");
 
 const expectedRobots = `User-agent: *
@@ -112,6 +143,8 @@ const redirects = read("_redirects");
 for (const rule of [
   "/kontakt/ /kontakt 301",
   "/digitalni-cjenik/ /digitalni-cjenik 301",
+  "/cjenik/ /cjenik 301",
+  "/cjenik/arhiva/ /cjenik/arhiva 301",
   "/privatnost/ /privatnost 301",
   "/usluge/izrada-web-stranica/ /usluge/izrada-web-stranica 301",
   "/mozgalica/ /mozgalica 301",

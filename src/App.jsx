@@ -44,6 +44,8 @@ const PrivacyPage = lazy(() => import("./PrivacyPage.jsx"));
 const MozgalicaPage = lazy(() => import("./mozgalica/MozgalicaPage.jsx"));
 const NjamkoPage = lazy(() => import("./njamko/NjamkoPage.jsx"));
 const DigitalPriceListPage = lazy(() => import("./DigitalPriceListPage.jsx"));
+const CjenikPage = lazy(() => import("./CjenikPage.jsx"));
+const CjenikArhivaPage = lazy(() => import("./CjenikArhivaPage.jsx"));
 
 const easeOut = [0.23, 1, 0.32, 1];
 const revealTransition = { duration: 0.48, ease: easeOut };
@@ -1650,6 +1652,8 @@ export default function App() {
           <Route path="/mozgalica" element={<MozgalicaPage />} />
           <Route path="/njamko" element={<NjamkoPage />} />
           <Route path="/digitalni-cjenik" element={<DigitalPriceListPage />} />
+          <Route path="/cjenik" element={<CjenikPage />} />
+          <Route path="/cjenik/arhiva" element={<CjenikArhivaPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
