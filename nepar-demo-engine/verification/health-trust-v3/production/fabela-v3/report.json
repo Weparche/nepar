@@ -1,0 +1,243 @@
+{
+  "v3": {
+    "contentFingerprint": "d9dab30d8aa582ee9f09fb7d1787c5abf9cfbabc2d7500d8ee60f4e2d1242493",
+    "captures": [
+      {
+        "viewport": "mobile",
+        "technicalScore": 100,
+        "geometryScore": 100,
+        "screenshotSha256": "47d334999a5d8c3487246f1075d320b06789b16f06299579c37c1cb384d3a41b",
+        "referenceSha256": "8280d3a7ad4161832989b8d94ea82cb4caf94de2623e445e617309220bf0a289",
+        "designJudgment": {
+          "score": 91,
+          "reviewer": "gpt-6-astra",
+          "checkedAt": "2026-09-14T19:47:13.105373Z",
+          "reviewFingerprint": "8155dd1f24bb5ae61a36cdf26cc468bc8525e7905f6ebe2a21344ccdedf3a0b9",
+          "rationale": "The headline reads in two deliberate lines at 390px, both animals retain ears and paws, and contact stays immediately reachable. Stacked services and the closing contact block remain readable. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance. Confirmed on the canonical production domain after the new font manifest was deployed.",
+          "findings": [
+            {
+              "severity": "minor",
+              "detail": "The mobile hero leaves generous negative space; the subjects feel quieter than in the target reference."
+            }
+          ]
+        }
+      },
+      {
+        "viewport": "desktop",
+        "technicalScore": 100,
+        "geometryScore": 100,
+        "screenshotSha256": "83e9e22c2f7ccd040beac6de86cbcbb3f33a380fedfeae60c668a9d4a179ce9d",
+        "referenceSha256": "528db4cf2e7a40dfa7cf76bdf84bbc7ca7a3299e77197956e6ca8dee9018d8e9",
+        "designJudgment": {
+          "score": 93,
+          "reviewer": "gpt-6-astra",
+          "checkedAt": "2026-09-14T19:47:13.105356Z",
+          "reviewFingerprint": "8155dd1f24bb5ae61a36cdf26cc468bc8525e7905f6ebe2a21344ccdedf3a0b9",
+          "rationale": "The asymmetric serif headline and arched portrait establish a warm editorial hierarchy. Spacious ruled services, the distinct supporting photograph and local contact details sustain a coherent full-page identity. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance. Confirmed on the canonical production domain after the new font manifest was deployed.",
+          "findings": []
+        }
+      }
+    ]
+  },
+  "status": "passed",
+  "checkedAt": "2026-09-14T19:44:29.328Z",
+  "url": "https://fabela-v3.nepar.hr",
+  "technicalScore": 100,
+  "visualScore": 100,
+  "visualStatus": "passed",
+  "referenceKey": "health-trust-v3/pet-first",
+  "visualChecks": [
+    {
+      "viewport": "mobile",
+      "name": "hero_image_dominance",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "mobile",
+      "name": "responsive_composition",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "mobile",
+      "name": "contact_first_view",
+      "passed": true,
+      "weight": 2
+    },
+    {
+      "viewport": "mobile",
+      "name": "hero_balance",
+      "passed": true,
+      "weight": 1
+    },
+    {
+      "viewport": "mobile",
+      "name": "trust_before_services",
+      "passed": true,
+      "weight": 1
+    },
+    {
+      "viewport": "desktop",
+      "name": "hero_image_dominance",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "desktop",
+      "name": "responsive_composition",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "desktop",
+      "name": "contact_first_view",
+      "passed": true,
+      "weight": 2
+    },
+    {
+      "viewport": "desktop",
+      "name": "hero_balance",
+      "passed": true,
+      "weight": 1
+    },
+    {
+      "viewport": "desktop",
+      "name": "trust_before_services",
+      "passed": true,
+      "weight": 1
+    }
+  ],
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "screenshotKey": "screenshots/6/mobile-1789415058219-066fbd4f-cefa-4fe9-938c-e5f9635ef767.png",
+      "checks": [
+        {
+          "name": "http_200",
+          "passed": true
+        },
+        {
+          "name": "no_overflow",
+          "passed": true
+        },
+        {
+          "name": "images_loaded",
+          "passed": true
+        },
+        {
+          "name": "anchors_resolve",
+          "passed": true
+        },
+        {
+          "name": "hero_priority_and_lazy_support",
+          "passed": true
+        },
+        {
+          "name": "image_dimensions",
+          "passed": true
+        },
+        {
+          "name": "sticky_space_reserved",
+          "passed": true
+        },
+        {
+          "name": "all_services_visible",
+          "passed": true
+        },
+        {
+          "name": "no_runtime_reference_or_script",
+          "passed": true
+        },
+        {
+          "name": "no_console_errors",
+          "passed": true
+        },
+        {
+          "name": "wcag_axe",
+          "passed": true
+        },
+        {
+          "name": "keyboard_focus_visible",
+          "passed": true
+        },
+        {
+          "name": "reduced_motion",
+          "passed": true
+        },
+        {
+          "name": "text_200_percent_no_overlap",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "screenshotKey": "screenshots/6/desktop-1789415065541-5c4fa974-d938-409c-a061-7c4284057246.png",
+      "checks": [
+        {
+          "name": "http_200",
+          "passed": true
+        },
+        {
+          "name": "no_overflow",
+          "passed": true
+        },
+        {
+          "name": "images_loaded",
+          "passed": true
+        },
+        {
+          "name": "anchors_resolve",
+          "passed": true
+        },
+        {
+          "name": "hero_priority_and_lazy_support",
+          "passed": true
+        },
+        {
+          "name": "image_dimensions",
+          "passed": true
+        },
+        {
+          "name": "sticky_space_reserved",
+          "passed": true
+        },
+        {
+          "name": "all_services_visible",
+          "passed": true
+        },
+        {
+          "name": "no_runtime_reference_or_script",
+          "passed": true
+        },
+        {
+          "name": "no_console_errors",
+          "passed": true
+        },
+        {
+          "name": "wcag_axe",
+          "passed": true
+        },
+        {
+          "name": "keyboard_focus_visible",
+          "passed": true
+        },
+        {
+          "name": "reduced_motion",
+          "passed": true
+        },
+        {
+          "name": "text_200_percent_no_overlap",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "consoleErrors": [],
+  "brokenImages": []
+}

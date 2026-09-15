@@ -1,0 +1,7 @@
+node_modules/
+.wrangler/
+.dev.vars
+qa-output/
+playwright-report/
+test-results/
+*.log
