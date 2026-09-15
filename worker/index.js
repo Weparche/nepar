@@ -31,13 +31,15 @@ const DIGITAL_PRICE_LIST_MAX_HTML_BYTES = 2 * 1024 * 1024;
 const DIGITAL_PRICE_LIST_MAX_DOCUMENT_BYTES = 128 * 1024;
 const DIGITAL_PRICE_LIST_TIMEOUT_MS = 8000;
 const DIGITAL_PRICE_LIST_MAX_REDIRECTS = 3;
-const DIGITAL_PRICE_LIST_MAX_CANDIDATES = 10;
+const DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES = 3;
+const DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES = 5;
+const DIGITAL_PRICE_LIST_MAX_DISCOVERED_LINKS = 50;
 const DIGITAL_PRICE_LIST_METADATA_HOSTS = new Set([
   "metadata.google.internal", "metadata", "instance-data", "instance-data.ec2.internal",
 ]);
 
 function digitalPriceListResult(status, message, details = {}) {
-  return { status, message, details: { reachable: false, https: false, csvFound: false, xmlFound: false, pricePageFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null, ...details } };
+  return { status, message, details: { reachable: false, https: false, csvFound: false, xmlFound: false, pricePageFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null, csvLinkDiscovered: false, xmlLinkDiscovered: false, ...details } };
 }
 
 function normalizedHostname(hostname) {
@@ -119,10 +121,37 @@ async function readResponseLimit(response, maxBytes) {
   return new TextDecoder().decode(output);
 }
 
+async function readResponsePrefix(response, maxBytes) {
+  if (!response.body) return "";
+  const reader = response.body.getReader();
+  const chunks = [];
+  let total = 0;
+  try {
+    while (total < maxBytes) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const available = maxBytes - total;
+      const chunk = value.byteLength > available ? value.slice(0, available) : value;
+      chunks.push(chunk);
+      total += chunk.byteLength;
+      if (value.byteLength > available) { await reader.cancel(); break; }
+    }
+  } finally { reader.releaseLock(); }
+  const output = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) { output.set(chunk, offset); offset += chunk.byteLength; }
+  return new TextDecoder().decode(output);
+}
+
 function isRedirect(response) { return [301, 302, 303, 307, 308].includes(response.status); }
 
-async function safeDigitalPriceListFetch(initialUrl, env, dnsCache, signal) {
+function decodeHtmlHref(value) {
+  return value.replace(/&(?:amp|#0*38|#x0*26);/gi, "&");
+}
+
+async function safeDigitalPriceListFetch(initialUrl, env, dnsCache) {
   let current = initialUrl instanceof URL ? initialUrl : new URL(initialUrl);
+  const signal = AbortSignal.timeout(DIGITAL_PRICE_LIST_TIMEOUT_MS);
   for (let redirects = 0; redirects <= DIGITAL_PRICE_LIST_MAX_REDIRECTS; redirects += 1) {
     await assertPublicDigitalPriceListUrl(current, env, dnsCache);
     const response = await fetch(current.href, { method: "GET", redirect: "manual", cache: "no-store", signal, headers: { Accept: "text/html,application/xml,text/xml,text/csv,*/*;q=0.1" } });
@@ -139,24 +168,44 @@ function extractDigitalPriceListLinks(html, baseUrl) {
   const results = [];
   const anchorPattern = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match;
-  while ((match = anchorPattern.exec(html)) && results.length < DIGITAL_PRICE_LIST_MAX_CANDIDATES - 4) {
-    const href = match[1].match(/\bhref\s*=\s*["']([^"']+)["']/i)?.[1];
-    if (!href) continue;
+  while ((match = anchorPattern.exec(html)) && results.length < DIGITAL_PRICE_LIST_MAX_DISCOVERED_LINKS) {
+    const rawHref = match[1].match(/\bhref\s*=\s*["']([^"']+)["']/i)?.[1];
+    if (!rawHref) continue;
+    const href = decodeHtmlHref(rawHref);
     let url;
     try { url = new URL(href, baseUrl); } catch { continue; }
     if (url.origin !== baseUrl.origin || !/^https?:$/.test(url.protocol)) continue;
     const lowerHref = href.toLowerCase();
     const text = match[2].replace(/<[^>]+>/g, " ").toLowerCase();
-    const isCsv = /\.csv(?:$|[?#])/.test(lowerHref);
-    const isXml = /\.xml(?:$|[?#])/.test(lowerHref);
+    const format = (url.searchParams.get("format") || url.searchParams.get("type") || "").toLowerCase();
+    const isCsv = /\.csv(?:$|[?#])/.test(lowerHref) || format === "csv" || lowerHref.includes("csv");
+    const isXml = /\.xml(?:$|[?#])/.test(lowerHref) || format === "xml" || lowerHref.includes("xml");
     if (isCsv || isXml || /(cjenik|cijene|price)/.test(`${lowerHref} ${text}`)) results.push({ url, kind: isCsv ? "csv" : isXml ? "xml" : "price" });
   }
   return results;
 }
 
-function documentLooksValid(kind, body, contentType) {
+function documentLooksValid(kind, body) {
   const trimmed = body.trim();
-  return kind === "csv" ? Boolean(trimmed) : Boolean(trimmed) && (/(?:application|text)\/xml/i.test(contentType || "") || /^<\?xml\b/i.test(trimmed));
+  if (kind === "csv") return Boolean(trimmed) && (/\r?\n/.test(trimmed) || /[,;\t]/.test(trimmed));
+  return Boolean(trimmed) && (/^<\?xml\b/i.test(trimmed) || trimmed.startsWith("<")) && trimmed.includes("</");
+}
+
+function appendUniqueCandidate(candidates, candidate, limit) {
+  if (candidates.length >= limit || candidates.some((item) => item.href === candidate.href)) return;
+  candidates.push(candidate);
+}
+
+async function findConfirmedDigitalPriceListDocument(kind, candidates, env, dnsCache) {
+  for (const candidate of candidates) {
+    try {
+      const fetched = await safeDigitalPriceListFetch(candidate, env, dnsCache);
+      if (!fetched.response.ok) continue;
+      const documentBody = await readResponsePrefix(fetched.response, DIGITAL_PRICE_LIST_MAX_DOCUMENT_BYTES);
+      if (documentLooksValid(kind, documentBody)) return fetched.url.href;
+    } catch { /* Try the next candidate of the same format. */ }
+  }
+  return null;
 }
 
 async function handleDigitalPriceListCheck(request, env, origin) {
@@ -166,10 +215,9 @@ async function handleDigitalPriceListCheck(request, env, origin) {
   let initialUrl;
   try { initialUrl = normalizeDigitalPriceListUrl(body.url); } catch { return json(digitalPriceListResult("red", "Unesite ispravnu adresu web stranice."), 400, origin); }
   const dnsCache = new Map();
-  const signal = AbortSignal.timeout(DIGITAL_PRICE_LIST_TIMEOUT_MS);
   let homepage;
   try {
-    homepage = await safeDigitalPriceListFetch(initialUrl, env, dnsCache, signal);
+    homepage = await safeDigitalPriceListFetch(initialUrl, env, dnsCache);
     if (!homepage.response.ok) throw new Error("homepage_unavailable");
   } catch (error) {
     const blocked = error?.message === "blocked_destination";
@@ -177,27 +225,37 @@ async function handleDigitalPriceListCheck(request, env, origin) {
   }
   let html;
   try { html = await readResponseLimit(homepage.response, DIGITAL_PRICE_LIST_MAX_HTML_BYTES); } catch { return json(digitalPriceListResult("red", "Nismo uspjeli dohvatiti web stranicu."), 200, origin); }
-  const candidates = [...extractDigitalPriceListLinks(html, homepage.url), { url: new URL("/cjenik.csv", homepage.url.origin), kind: "csv" }, { url: new URL("/cjenik.xml", homepage.url.origin), kind: "xml" }, { url: new URL("/cjenik/", homepage.url.origin), kind: "price" }, { url: new URL("/cjenici/", homepage.url.origin), kind: "price" }];
-  const unique = [];
-  const seen = new Set();
-  for (const candidate of candidates) {
-    const key = `${candidate.kind}:${candidate.url.href}`;
-    if (!seen.has(key) && unique.length < DIGITAL_PRICE_LIST_MAX_CANDIDATES) { seen.add(key); unique.push(candidate); }
+  const homepageLinks = extractDigitalPriceListLinks(html, homepage.url);
+  const secondaryPages = [];
+  const csvCandidates = [];
+  const xmlCandidates = [];
+  const details = { reachable: true, https: homepage.url.protocol === "https:", csvFound: false, xmlFound: false, pricePageFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null, csvLinkDiscovered: false, xmlLinkDiscovered: false };
+  for (const candidate of homepageLinks) {
+    if (candidate.kind === "price") appendUniqueCandidate(secondaryPages, candidate.url, DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES);
+    if (candidate.kind === "csv") { details.csvLinkDiscovered = true; appendUniqueCandidate(csvCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES); }
+    if (candidate.kind === "xml") { details.xmlLinkDiscovered = true; appendUniqueCandidate(xmlCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES); }
   }
-  const details = { reachable: true, https: homepage.url.protocol === "https:", csvFound: false, xmlFound: false, pricePageFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null };
-  for (const candidate of unique) {
-    if (signal.aborted) break;
+  appendUniqueCandidate(secondaryPages, new URL("/cjenik/", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES);
+  appendUniqueCandidate(secondaryPages, new URL("/cjenici/", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES);
+  appendUniqueCandidate(csvCandidates, new URL("/cjenik.csv", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES);
+  appendUniqueCandidate(xmlCandidates, new URL("/cjenik.xml", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES);
+  for (const secondaryPage of secondaryPages) {
     try {
-      const fetched = await safeDigitalPriceListFetch(candidate.url, env, dnsCache, signal);
+      const fetched = await safeDigitalPriceListFetch(secondaryPage, env, dnsCache);
       if (!fetched.response.ok) continue;
-      if (candidate.kind === "price") { details.pricePageFound = true; details.pricePageUrl ||= fetched.url.href; continue; }
-      const documentBody = await readResponseLimit(fetched.response, DIGITAL_PRICE_LIST_MAX_DOCUMENT_BYTES);
-      if (!documentLooksValid(candidate.kind, documentBody, fetched.response.headers.get("Content-Type"))) continue;
       details.pricePageFound = true;
-      if (candidate.kind === "csv") { details.csvFound = true; details.csvUrl ||= fetched.url.href; }
-      else { details.xmlFound = true; details.xmlUrl ||= fetched.url.href; }
-    } catch { /* An inaccessible candidate does not invalidate a fetched homepage. */ }
+      details.pricePageUrl ||= fetched.url.href;
+      const secondaryHtml = await readResponseLimit(fetched.response, DIGITAL_PRICE_LIST_MAX_HTML_BYTES);
+      for (const candidate of extractDigitalPriceListLinks(secondaryHtml, fetched.url)) {
+        if (candidate.kind === "csv") { details.csvLinkDiscovered = true; appendUniqueCandidate(csvCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES); }
+        if (candidate.kind === "xml") { details.xmlLinkDiscovered = true; appendUniqueCandidate(xmlCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES); }
+      }
+    } catch { /* A secondary page is optional; every fetch still used the safe path. */ }
   }
+  details.csvUrl = await findConfirmedDigitalPriceListDocument("csv", csvCandidates, env, dnsCache);
+  details.xmlUrl = await findConfirmedDigitalPriceListDocument("xml", xmlCandidates, env, dnsCache);
+  details.csvFound = Boolean(details.csvUrl);
+  details.xmlFound = Boolean(details.xmlUrl);
   if (details.csvFound || details.xmlFound) return json(digitalPriceListResult("green", "Na web stranici pronađen je javno dostupan CSV ili XML dokument.", details), 200, origin);
   if (details.pricePageFound) return json(digitalPriceListResult("yellow", "Na stranici postoje informacije o cijenama ili cjeniku, ali automatska provjera nije pronašla javno dostupan XML ili CSV dokument.", details), 200, origin);
   return json(digitalPriceListResult("red", "Automatska provjera nije pronašla javno dostupan XML ili CSV cjenik.", details), 200, origin);

@@ -32,7 +32,8 @@ async function check(url, fetchImpl, resolver = publicResolver()) {
 
 function routeFetch(routes) {
   return async (url) => {
-    const response = routes[new URL(url).pathname];
+    const parsed = new URL(url);
+    const response = routes[`${parsed.pathname}${parsed.search}`] ?? routes[parsed.pathname];
     return response instanceof Function ? response() : response || new Response("Not found", { status: 404 });
   };
 }
@@ -95,7 +96,7 @@ test("a non-empty publicly reachable CSV is green", async () => {
 test("a public XML document is green while empty or malformed documents are not", async () => {
   const xml = await check("https://example.com", routeFetch({
     "/": () => new Response('<a href="/cjenik.xml">XML cjenik</a>', { status: 200 }),
-    "/cjenik.xml": () => new Response("<?xml version=\"1.0\"?><cjenik />", { status: 200, headers: { "Content-Type": "application/xml" } }),
+    "/cjenik.xml": () => new Response("<?xml version=\"1.0\"?><cjenik></cjenik>", { status: 200, headers: { "Content-Type": "application/xml" } }),
   }));
   assert.equal(xml.body.status, "green");
   assert.equal(xml.body.details.xmlUrl, "https://example.com/cjenik.xml");
@@ -105,6 +106,55 @@ test("a public XML document is green while empty or malformed documents are not"
     "/cjenik.csv": () => new Response("", { status: 200 }),
   }));
   assert.notEqual(empty.body.status, "green");
+});
+
+test("discovers CSV and XML links on a secondary price-list page and falls back after an XML failure", async () => {
+  const result = await check("https://klinci.example", routeFetch({
+    "/": () => new Response('<a href="/cjenici/">Cjenici</a>', { status: 200 }),
+    "/cjenici/": () => new Response([
+      '<a href="/izvoz/trenutni?vrsta=proizvodi&#038;format=csv">Trenutni CSV</a>',
+      '<a href="/izvoz/trenutni?vrsta=proizvodi&#038;format=xml">Trenutni XML</a>',
+      '<a href="/arhiva/cjenik.csv">Arhivirani CSV</a>',
+      '<a href="/arhiva/cjenik.xml">Arhivirani XML</a>',
+    ].join(""), { status: 200, headers: { "Content-Type": "text/html" } }),
+    "/izvoz/trenutni?vrsta=proizvodi&format=csv": () => new Response("usluga,cijena\nŠišanje,15", { status: 200 }),
+    "/izvoz/trenutni?vrsta=proizvodi&format=xml": () => { throw new DOMException("Timed out", "AbortError"); },
+    "/arhiva/cjenik.csv": () => new Response("usluga,cijena\nŠišanje,15", { status: 200 }),
+    "/arhiva/cjenik.xml": () => new Response("<?xml version=\"1.0\"?><cjenik></cjenik>", { status: 200 }),
+  }));
+  assert.equal(result.body.status, "green");
+  assert.equal(result.body.details.pricePageFound, true);
+  assert.equal(result.body.details.pricePageUrl, "https://klinci.example/cjenici/");
+  assert.equal(result.body.details.csvFound, true);
+  assert.equal(result.body.details.xmlFound, true);
+  assert.equal(result.body.details.csvUrl, "https://klinci.example/izvoz/trenutni?vrsta=proizvodi&format=csv");
+  assert.equal(result.body.details.xmlUrl, "https://klinci.example/arhiva/cjenik.xml");
+});
+
+test("keeps an unconfirmed XML link distinct from a missing XML link when CSV is confirmed", async () => {
+  const result = await check("https://example.com", routeFetch({
+    "/": () => new Response('<a href="/cjenici/">Cjenici</a>', { status: 200 }),
+    "/cjenici/": () => new Response('<a href="/cjenik.csv">CSV</a><a href="/izvoz?format=xml">XML</a>', { status: 200 }),
+    "/cjenik.csv": () => new Response("usluga,cijena\nŠišanje,15", { status: 200 }),
+    "/izvoz": () => new Response("unavailable", { status: 503 }),
+  }));
+  assert.equal(result.body.status, "green");
+  assert.equal(result.body.details.csvFound, true);
+  assert.equal(result.body.details.xmlFound, false);
+  assert.equal(result.body.details.xmlLinkDiscovered, true);
+});
+
+test("a secondary price-list page with only a PDF remains yellow", async () => {
+  const result = await check("https://example.com", routeFetch({
+    "/": () => new Response('<a href="/cjenici/">Cjenici</a>', { status: 200 }),
+    "/cjenici/": () => new Response('<a href="/dokumenti/cjenik.pdf">PDF cjenik</a>', { status: 200 }),
+    "/dokumenti/cjenik.pdf": () => new Response("pdf", { status: 200 }),
+  }));
+  assert.equal(result.body.status, "yellow");
+  assert.equal(result.body.details.pricePageFound, true);
+  assert.equal(result.body.details.pricePageUrl, "https://example.com/cjenici/");
+  assert.equal(result.body.details.csvFound, false);
+  assert.equal(result.body.details.xmlFound, false);
 });
 
 test("a homepage timeout returns a graceful red result", async () => {

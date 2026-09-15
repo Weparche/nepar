@@ -77,15 +77,17 @@ test("checker displays concrete yellow findings and prefills the lead form", asy
   const contacts = await mockWorker(page, {
     status: "yellow",
     message: "Na stranici postoje informacije o cijenama ili cjeniku, ali automatska provjera nije pronašla javno dostupan XML ili CSV dokument.",
-    details: { reachable: true, https: true, csvFound: false, xmlFound: false, pricePageFound: true, csvUrl: null, xmlUrl: null, pricePageUrl: "https://primjer.hr/cjenik.pdf" },
+    details: { reachable: true, https: true, csvFound: false, xmlFound: false, pricePageFound: true, csvUrl: null, xmlUrl: null, pricePageUrl: "https://primjer.hr/cjenici/", xmlLinkDiscovered: true },
   });
   await page.goto("/digitalni-cjenik");
   await page.getByLabel("Provjerite digitalni cjenik svoje web stranice").fill("primjer.hr");
   await page.getByRole("button", { name: "Provjeri", exact: true }).click();
   const result = page.locator('[aria-live="polite"]');
   await expect(result).toContainText("Pronašli smo cjenik, ali ne i XML/CSV");
-  await expect(result).toContainText("/cjenik.pdf");
+  await expect(result).toContainText("Stranica cjenika: /cjenici/");
   await expect(result).toContainText("CSV: nije pronađen");
+  await expect(result).toContainText("XML: pronađen link, ali dostupnost nije potvrđena");
+  await expect(result).not.toContainText("XML: nije pronađen");
   await expect(result).toContainText("Ne provjerava obvezu isticanja dodatne/sidrene cijene");
   await result.getByRole("button", { name: "Zatraži implementaciju" }).click();
   await expect(page.getByLabel("Web stranica")).toHaveValue("https://primjer.hr");
@@ -121,12 +123,14 @@ test("checker renders a green CSV result without leaking the checked domain into
   await page.route("https://www.googletagmanager.com/**", (route) => route.fulfill({ status: 200, contentType: "application/javascript", body: "" }));
   await mockWorker(page, {
     status: "green", message: "Na web stranici pronađen je javno dostupan CSV ili XML dokument.",
-    details: { reachable: true, https: true, csvFound: true, xmlFound: false, pricePageFound: true, csvUrl: "https://primjer.hr/cjenik.csv", xmlUrl: null, pricePageUrl: "https://primjer.hr/cjenik.csv" },
+    details: { reachable: true, https: true, csvFound: true, xmlFound: true, pricePageFound: true, csvUrl: "https://primjer.hr/cjenik.csv", xmlUrl: "https://primjer.hr/cjenik.xml", pricePageUrl: "https://primjer.hr/cjenici/" },
   });
   await page.goto("/digitalni-cjenik");
   await page.getByLabel("Provjerite digitalni cjenik svoje web stranice").fill("https://primjer.hr");
   await page.getByRole("button", { name: "Provjeri", exact: true }).click();
   await expect(page.locator('[aria-live="polite"]')).toContainText("Pronađen CSV: /cjenik.csv");
+  await expect(page.locator('[aria-live="polite"]')).toContainText("Pronađen XML: /cjenik.xml");
+  await expect(page.locator('[aria-live="polite"]')).toContainText("Stranica cjenika: /cjenici/");
   const events = await page.evaluate(() => (window.dataLayer || []).map((entry) => Array.from(entry)).filter((entry) => entry[0] === "event"));
   const resultEvent = events.find((entry) => entry[1] === "price_list_check_result");
   expect(resultEvent?.[2]).toEqual({ result: "green" });
