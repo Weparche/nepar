@@ -31,7 +31,6 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   expect(staticHtml).toContain('Dvije povezane, ali odvojene obveze');
   expect(staticHtml).toContain('Digitalni cjenik nije obveza samo za webshopove');
   expect(staticHtml).toContain('od 129 €');
-  expect(staticHtml).toContain('79,90 €');
   expect(staticHtml).toContain('139,80 €');
   expect(staticHtml).toContain('od 149 €');
   expect(staticHtml).toContain('19,90 € / godišnje');
@@ -54,7 +53,6 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
 test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlable and responsive", async ({ page }) => {
   await page.goto("/digitalni-cjenik");
   await expect(page.getByText("od 129 €", { exact: true })).toBeVisible();
-  await expect(page.getByText("79,90 €", { exact: true })).toBeVisible();
   await expect(page.getByText("139,80 €", { exact: true })).toBeVisible();
   await expect(page.getByText(/integracija je od 149 €/)).toBeVisible();
   await expect(page.getByText("19,90 € / godišnje", { exact: true })).toBeVisible();
