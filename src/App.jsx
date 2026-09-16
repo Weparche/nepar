@@ -228,6 +228,11 @@ const content = {
       title: "Rje\u0161enja koja donose vrijednost.",
       description: "Od ideje do stabilnog proizvoda, brzo i fokusirano na korisnika.",
     },
+    priceListBanner: {
+      tag: "NN 101/2026 \u00b7 od 1.10.2026.",
+      text: "Trgovci i pru\u017eatelji usluga s web stranicom moraju objaviti digitalni XML/CSV cjenik.",
+      cta: "Provjerite svoju web stranicu",
+    },
     webStartPromo: {
       eyebrow: "JASNA PONUDA",
       title: "Web-stranica koja pripada va\u0161em poslovanju",
@@ -433,6 +438,11 @@ const content = {
       eyebrow: "WHAT WE DO",
       title: "Solutions that create value.",
       description: "From idea to stable product, fast and focused on the user.",
+    },
+    priceListBanner: {
+      tag: "NN 101/2026 · from 1 Oct 2026",
+      text: "Traders and service providers with a website must publish a digital XML/CSV price list.",
+      cta: "Check your website",
     },
     webStartPromo: {
       eyebrow: "CLEAR OFFER",
@@ -1128,6 +1138,32 @@ function StatsBar({ copy }) {
   );
 }
 
+function PriceListBanner({ copy }) {
+  const banner = copy.priceListBanner;
+  return (
+    <section className="px-4 py-3 sm:py-4">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={quickRevealTransition}
+        className="mx-auto flex max-w-[1180px] flex-col items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 px-5 py-3 text-sm sm:flex-row sm:items-center sm:justify-between lg:max-w-[1380px]"
+      >
+        <p className="text-blue-950">
+          <span className="font-bold">{banner.tag}</span> {banner.text}
+        </p>
+        <Link
+          to="/digitalni-cjenik"
+          className="inline-flex shrink-0 items-center gap-1.5 font-bold text-blue-700 transition hover:text-blue-900"
+        >
+          {banner.cta}
+          <ArrowRight size={16} aria-hidden="true" />
+        </Link>
+      </motion.div>
+    </section>
+  );
+}
+
 function Services({ copy }) {
   const isMobile = useMediaQuery("(max-width: 767px)");
 
@@ -1487,6 +1523,7 @@ function HomePage() {
       <Navbar lang={lang} setLang={setLang} copy={copy} />
       <Hero copy={copy} lang={lang} />
       <StatsBar copy={copy} />
+      <PriceListBanner copy={copy} />
       <Services copy={copy} />
       <FeaturedProjects copy={copy} />
       <WebStartPromo copy={copy} />
