@@ -12,10 +12,12 @@ import { chromium } from "playwright";
 import { preview } from "vite";
 import { readFileSync, writeFileSync } from "node:fs";
 import { PRERENDER_PATHS } from "../src/seoConfig.js";
+import { DIGITAL_PRICE_LIST_GUIDE_PATHS } from "../src/digitalPriceListGuides.js";
 import { routeOutputPath } from "../src/seoRoutes.js";
 
 const ROOT_MARKER = '<div id="root"></div>';
 const outDir = "dist";
+const prerenderPaths = [...new Set([...PRERENDER_PATHS, ...DIGITAL_PRICE_LIST_GUIDE_PATHS])];
 
 async function prerenderRoute(browser, baseUrl, routePath) {
   const context = await browser.newContext({
@@ -84,7 +86,7 @@ async function main() {
   const failures = [];
 
   try {
-    for (const routePath of PRERENDER_PATHS) {
+    for (const routePath of prerenderPaths) {
       try {
         await prerenderRoute(browser, baseUrl, routePath);
       } catch (error) {

@@ -201,6 +201,9 @@ export function Background() {
 }
 
 export function SiteFooter({ copy, homeLink = true, lang = "hr" }) {
+  const location = useLocation();
+  const showDigitalPriceListGuides = location.pathname.replace(/\/+$/, "") === "/digitalni-cjenik";
+
   return (
     <footer className="site-footer">
       <div className="section-shell">
@@ -224,6 +227,11 @@ export function SiteFooter({ copy, homeLink = true, lang = "hr" }) {
           <p>{copy.footer.copyright}</p>
           <div className="footer-utility-links">
             <Link to="/digitalni-cjenik">{lang === "hr" ? "Digitalni cjenik 2026." : "Digital price list 2026"}</Link>
+            {showDigitalPriceListGuides && <>
+              <Link to="/digitalni-cjenik/sidrena-cijena">Sidrena cijena</Link>
+              <Link to="/digitalni-cjenik/xml-csv">XML/CSV vodič</Link>
+              <Link to="/digitalni-cjenik/automatizacija">Automatizacija cjenika</Link>
+            </>}
             <Link to="/cjenik">{lang === "hr" ? "Cjenik" : "Price list"}</Link>
             <Link to="/mozgalica">Mozgalica</Link>
             <Link to="/njamko">Njamko</Link>
