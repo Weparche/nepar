@@ -9,10 +9,6 @@ import { subscribeConsentChanges, trackEvent } from "./analytics.js";
 
 const pageCopy = {
   hr: {
-    meta: {
-      title: "Izrada web-stranica, redizajn i vođenje društvenih mreža | Nepar",
-      description: "Izrada web-stranica od 300 €, redizajn s migracijom od 800 €, opcionalno godišnje održavanje i vođenje Facebooka i Instagrama od 300 € mjesečno. Jasno definiran opseg i cijene.",
-    },
     hero: {
       label: "Jasne cijene · bez skrivenog najma",
       title: "Izrada web-stranica za obrte i tvrtke.",
@@ -90,10 +86,6 @@ const pageCopy = {
     backHome: "Natrag na naslovnicu",
   },
   en: {
-    meta: {
-      title: "Website development, redesign, and social media management | Nepar",
-      description: "Website development from €300, redesign with migration from €800, optional annual maintenance, and Facebook and Instagram management from €300 per month. Clear scope and pricing.",
-    },
     hero: {
       label: "Clear pricing · no hidden rental model",
       title: "Website development for trades and companies.",

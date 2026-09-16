@@ -1,8 +1,10 @@
 import { existsSync, lstatSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { relative, resolve } from "node:path";
 import { nepaUsluge } from "../src/cjenikData.js";
 import { cjenikMeta, canonicalCjenikFilename } from "../src/cjenikMeta.js";
 import { renderCjenikCsv, renderCjenikXml } from "../src/cjenikRender.js";
+import { PRERENDER_PATHS } from "../src/seoConfig.js";
+import { routeOutputPath } from "../src/seoRoutes.js";
 
 const distDir = resolve(process.cwd(), "dist");
 const failures = [];
@@ -45,7 +47,7 @@ for (const file of [
   "404.html",
 ]) read(file);
 
-expect("web.html", "<title>Profesionalna web stranica od 240 € | Nepar</title>", "paid landing title is missing");
+expect("web.html", "<title>Profesionalna web stranica od 240 € | Nepar Solutions</title>", "paid landing title is missing");
 expect("web.html", '<meta name="robots" content="noindex,follow" />', "paid landing must be noindex,follow");
 expect("web.html", '<meta property="og:image" content="https://nepar.hr/brand/og-web.png" />', "paid landing Open Graph image is missing");
 expect("web.html", '<meta name="twitter:card" content="summary_large_image" />', "paid landing Twitter card is missing");
@@ -53,7 +55,7 @@ if (read("web.html").includes('<link rel="canonical"')) failures.push("web.html:
 
 expect(
   "usluge/izrada-web-stranica.html",
-  "<title>Izrada web-stranica za obrte i tvrtke | Nepar</title>",
+  "<title>Izrada web-stranica za obrte i tvrtke | Nepar Solutions</title>",
   "route-specific title is missing from raw HTML",
 );
 expect(
@@ -75,7 +77,7 @@ expect("usluge/izrada-web-stranica.html", "OfferCatalog", "service offer schema 
 expect("usluge/izrada-web-stranica.html", "FAQPage", "FAQPage schema is missing");
 expect("usluge/izrada-web-stranica.html", "BreadcrumbList", "breadcrumb schema is missing");
 expect("kontakt.html", "ContactPage", "ContactPage schema is missing");
-expect("digitalni-cjenik.html", "Digitalni cjenik XML/CSV od 1.10.2026. | NEPAR", "digital price list title is missing");
+expect("digitalni-cjenik.html", "Digitalni cjenik XML/CSV od 1.10.2026. | Nepar Solutions", "digital price list title is missing");
 expect("digitalni-cjenik.html", '<link rel="canonical" href="https://nepar.hr/digitalni-cjenik" />', "digital price list canonical is missing");
 expect("digitalni-cjenik.html", "FAQPage", "digital price list FAQPage schema is missing");
 expect("digitalni-cjenik.html", "BreadcrumbList", "digital price list breadcrumb schema is missing");
@@ -108,6 +110,41 @@ const canonicalCsvName = canonicalCjenikFilename(cjenikMeta, "csv");
 const canonicalXmlName = canonicalCjenikFilename(cjenikMeta, "xml");
 if (read(`cjenici/${canonicalCsvName}`) !== expectedCjenikCsv) failures.push(`Missing or mismatched canonical dist/cjenici/${canonicalCsvName}`);
 if (read(`cjenici/${canonicalXmlName}`) !== expectedCjenikXml) failures.push(`Missing or mismatched canonical dist/cjenici/${canonicalXmlName}`);
+// Smoke-test za sve prerenderirane rute (ne formalna "SEO pravila" — interna provjera
+// zdravlja da prerender nije tiho snimio prazan/polomljen sadržaj).
+for (const routePath of PRERENDER_PATHS) {
+  const relativePath = relative(distDir, routeOutputPath(distDir, routePath));
+  const html = read(relativePath);
+  if (!html) continue;
+
+  if (!html.includes('<html lang="hr"')) {
+    failures.push(`${relativePath}: <html lang="hr"> is missing after prerender`);
+  }
+  if (!html.includes("data-nepar-static-content")) {
+    failures.push(`${relativePath}: data-nepar-static-content marker is missing — prerender may not have run`);
+  }
+
+  const rootMatch = html.match(/<div id="root"[^>]*>([\s\S]*)<\/div>\s*<\/body>/);
+  const rootHtml = rootMatch ? rootMatch[1] : "";
+  const rootText = rootHtml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  if (rootText.length <= 200) {
+    failures.push(`${relativePath}: prerendered #root text is only ${rootText.length} chars — looks empty/thin`);
+  }
+
+  const h1Count = (rootHtml.match(/<h1[\s>]/g) || []).length;
+  if (h1Count !== 1) {
+    failures.push(`${relativePath}: expected exactly one <h1> (internal convention), found ${h1Count}`);
+  }
+
+  // Framer Motion entrance animations (initial={{opacity:0}}) must not survive into the
+  // snapshot frozen — prerender.mjs scrolls through the page and clears inline styles to
+  // settle whileInView/mount animations before capturing. A literal "opacity: 0;" here
+  // means that step regressed and content is invisible until JS hydrates.
+  if (/opacity:\s?0[;"']/.test(rootHtml)) {
+    failures.push(`${relativePath}: prerendered content has an element frozen at opacity:0 (unsettled entrance animation)`);
+  }
+}
+
 expect("mozgalica.html", "SoftwareApplication", "SoftwareApplication schema is missing");
 expect("njamko.html", "SoftwareApplication", "SoftwareApplication schema is missing");
 expect("admin.html", '<meta name="robots" content="noindex,nofollow" />', "admin must be noindex,nofollow");

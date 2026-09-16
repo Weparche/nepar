@@ -13,15 +13,15 @@ test("/cjenik has crawlable static content, official fields, and NEPAR services"
   expect(staticHtml).toContain("Jednokratno");
   expect(staticHtml).toContain('id="cjenik-od-note"');
   // Each category table must announce its own name, not one generic caption shared by all of them.
-  expect(staticHtml).toContain("digitalni cjenik usluga: Izrada web-stranica");
-  expect(staticHtml).toContain("digitalni cjenik usluga: Usluge digitalnog cjenika");
+  expect(staticHtml).toContain("digitalni cjenik usluga — Izrada web-stranica");
+  expect(staticHtml).toContain("digitalni cjenik usluga — Usluge digitalnog cjenika");
   // The "as-of" date must be human-formatted, never the raw ISO value from cjenikMeta.
   expect(staticHtml).not.toContain(cjenikMeta.publishedAt);
   // The static (non-JS/crawler) snapshot must link the canonical filename too, not just /cjenik.csv.
   expect(staticHtml).toContain(`/cjenici/${canonicalCjenikFilename(cjenikMeta, "csv")}`);
   expect(staticHtml).toContain(`/cjenici/${canonicalCjenikFilename(cjenikMeta, "xml")}`);
   // Legal footnote paragraphs must carry a typographic measure in the static snapshot too.
-  expect(staticHtml).toContain('id="cjenik-od-note" class="max-w-prose"');
+  expect(staticHtml).toMatch(/<p id="cjenik-od-note" class="[^"]*\bmax-w-prose\b[^"]*"/);
 
   await page.goto("/cjenik");
   await expect(page).toHaveTitle("NEPAR — digitalni cjenik usluga | Nepar Solutions");

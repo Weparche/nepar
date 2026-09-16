@@ -1,5 +1,6 @@
 import { webOfferContent } from "./webOfferContent.js";
 import { nepaUsluge } from "./cjenikData.js";
+import { BUSINESS } from "./siteIdentity.js";
 
 export const SITE_URL = "https://nepar.hr";
 export const DEFAULT_SOCIAL_IMAGE = "/brand/web-app-manifest-512x512.png";
@@ -68,17 +69,18 @@ const localizedPages = {
   "/usluge/izrada-web-stranica": {
     indexable: true,
     hr: {
-      title: "Izrada web-stranica za obrte i tvrtke | Nepar",
+      title: "Izrada web-stranica za obrte i tvrtke | Nepar Solutions",
       description: "Izrada modernih, brzih i SEO optimiziranih web-stranica od 300 €. Jasne jednokratne cijene, vlasništvo klijenta i opcionalno održavanje.",
     },
     en: {
-      title: "Website development for trades and companies | Nepar",
+      title: "Website development for trades and companies | Nepar Solutions",
       description: "Modern, fast, SEO-ready websites from €300, with clear one-time pricing, client ownership, and optional maintenance.",
     },
     schema: "service",
   },
   "/web": {
     indexable: false,
+    prerender: false,
     robots: "noindex,follow",
     staticHtml: true,
     image: "/brand/og-web.png",
@@ -86,7 +88,7 @@ const localizedPages = {
     imageWidth: 1200,
     imageHeight: 630,
     hr: {
-      title: "Profesionalna web stranica od 240 € | Nepar",
+      title: "Profesionalna web stranica od 240 € | Nepar Solutions",
       description: "Brza, moderna i za Google optimizirana web stranica za tvrtke i obrte u Hrvatskoj. Akcijska jednokratna izrada od 240 €, bez obavezne mjesečne pretplate.",
     },
   },
@@ -105,12 +107,12 @@ const localizedPages = {
   "/digitalni-cjenik": {
     indexable: true,
     hr: {
-      title: "Digitalni cjenik XML/CSV od 1.10.2026. | NEPAR",
+      title: "Digitalni cjenik XML/CSV od 1.10.2026. | Nepar Solutions",
       description: "Nova obveza digitalnih cjenika od 1. listopada 2026. Saznajte trebate li XML/CSV cjenik i kako ga implementirati na WordPress, Wix ili postojeću web stranicu.",
     },
     en: {
-      title: "Digital XML/CSV price list from 1 October 2026. | NEPAR",
-      description: "A new obligation for digital price lists begins on 1 October 2026. Find out whether you need an XML/CSV price list and how to implement it on WordPress, Wix, or an existing website.",
+      title: "Digital XML/CSV price list from 1 October 2026. | Nepar Solutions",
+      description: "New digital price-list obligation from 1 October 2026. Find out if you need an XML/CSV price list and how to implement it on WordPress, Wix, or your website.",
     },
     schema: "digital-price-list",
   },
@@ -184,27 +186,33 @@ const localizedPages = {
   },
   "/admin": {
     indexable: false,
+    prerender: false,
     hr: {
-      title: "Administracija | Nepar",
+      title: "Administracija | Nepar Solutions",
       description: "Privatno administracijsko sučelje Nepar Solutions.",
     },
     en: {
-      title: "Administration | Nepar",
+      title: "Administration | Nepar Solutions",
       description: "Private Nepar Solutions administration interface.",
     },
   },
   "/404": {
     indexable: false,
+    prerender: false,
     hr: {
-      title: "Stranica nije pronađena | Nepar",
+      title: "Stranica nije pronađena | Nepar Solutions",
       description: "Tražena stranica nije pronađena.",
     },
     en: {
-      title: "Page not found | Nepar",
+      title: "Page not found | Nepar Solutions",
       description: "The requested page could not be found.",
     },
   },
 };
+
+export const PRERENDER_PATHS = Object.entries(localizedPages)
+  .filter(([, page]) => page.prerender ?? page.indexable)
+  .map(([path]) => path);
 
 export const SITEMAP_PATHS = Object.entries(localizedPages)
   .filter(([, page]) => page.indexable)
@@ -247,7 +255,10 @@ function organizationSchema() {
     email: "nepar@nepar.hr",
     address: {
       "@type": "PostalAddress",
-      addressCountry: "HR",
+      streetAddress: BUSINESS.streetAddress,
+      postalCode: BUSINESS.postalCode,
+      addressLocality: BUSINESS.addressLocality,
+      addressCountry: BUSINESS.addressCountry,
     },
   };
 }

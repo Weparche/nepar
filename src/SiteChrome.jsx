@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowUpRight, Mail, Menu, Send, X } from "lucide-react";
 import { ConsentSettingsLink } from "./ConsentManager.jsx";
+import { BUSINESS } from "./siteIdentity.js";
 
 export const siteContent = {
   hr: {
     navLinks: [
       ["Usluge", "#usluge"],
       ["Projekti", "#projekti"],
-      ["Proces", "#proces"],
+      ["Proces", "#onama"],
       ["Cjenik", "/usluge/izrada-web-stranica#paketi"],
       ["Kontakt", "/kontakt"],
     ],
@@ -29,7 +30,7 @@ export const siteContent = {
     navLinks: [
       ["Services", "#usluge"],
       ["Projects", "#projekti"],
-      ["Process", "#proces"],
+      ["Process", "#onama"],
       ["Pricing", "/usluge/izrada-web-stranica#paketi"],
       ["Contact", "/kontakt"],
     ],
@@ -210,6 +211,7 @@ export function SiteFooter({ copy, homeLink = true, lang = "hr" }) {
             <div className="footer-details">
               <span>{copy.footer.owner}</span>
               <span>{copy.footer.mbo}</span>
+              <span>{BUSINESS.streetAddress}, {BUSINESS.postalCode} {BUSINESS.addressLocality}</span>
               <a href="mailto:nepar@nepar.hr">{copy.footer.email}</a>
             </div>
           </div>
@@ -222,6 +224,9 @@ export function SiteFooter({ copy, homeLink = true, lang = "hr" }) {
           <p>{copy.footer.copyright}</p>
           <div className="footer-utility-links">
             <Link to="/digitalni-cjenik">{lang === "hr" ? "Digitalni cjenik 2026." : "Digital price list 2026"}</Link>
+            <Link to="/cjenik">{lang === "hr" ? "Cjenik" : "Price list"}</Link>
+            <Link to="/mozgalica">Mozgalica</Link>
+            <Link to="/njamko">Njamko</Link>
             <Link to="/privatnost">{lang === "hr" ? "Privatnost" : "Privacy"}</Link>
             <ConsentSettingsLink lang={lang} />
             <a href={homeLink ? "#top" : "/"}>{copy.footer.top}</a>

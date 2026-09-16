@@ -7,6 +7,7 @@ import { ConsentSettingsLink } from "./ConsentManager.jsx";
 import { trackEvent } from "./analytics.js";
 import { usePageMeta } from "./usePageMeta.js";
 import { submitContactLead } from "./contactLead.js";
+import { BUSINESS } from "./siteIdentity.js";
 
 /** @type {[number, number, number, number]} */
 const easeOut = [0.23, 1, 0.32, 1];
@@ -20,7 +21,7 @@ const contactContent = {
     info: [
       { Icon: Mail, label: "E-mail", value: "nepar@nepar.hr", href: "mailto:nepar@nepar.hr" },
       { Icon: Clock, label: "Odgovor", value: "Unutar 24h", href: null },
-      { Icon: MapPin, label: "Lokacija", value: "Hrvatska", href: null },
+      { Icon: MapPin, label: "Adresa", value: `${BUSINESS.streetAddress}, ${BUSINESS.postalCode} ${BUSINESS.addressLocality}`, href: null },
     ],
     processEyebrow: "ŠTO SLIJEDI",
     process: [
@@ -57,7 +58,7 @@ const contactContent = {
     info: [
       { Icon: Mail, label: "Email", value: "nepar@nepar.hr", href: "mailto:nepar@nepar.hr" },
       { Icon: Clock, label: "Response", value: "Within 24h", href: null },
-      { Icon: MapPin, label: "Location", value: "Croatia", href: null },
+      { Icon: MapPin, label: "Address", value: `${BUSINESS.streetAddress}, ${BUSINESS.postalCode} ${BUSINESS.addressLocality}, Croatia`, href: null },
     ],
     processEyebrow: "WHAT HAPPENS NEXT",
     process: [

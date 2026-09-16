@@ -1523,6 +1523,8 @@ function HomePage() {
             <div className="flex flex-col items-center justify-between gap-2 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
               <p>{copy.footer.copyright}</p>
               <div className="footer-utility-links">
+                <Link to="/digitalni-cjenik">{lang === "hr" ? "Digitalni cjenik 2026." : "Digital price list 2026"}</Link>
+                <Link to="/cjenik">{lang === "hr" ? "Cjenik" : "Price list"}</Link>
                 <Link to="/privatnost">{lang === "hr" ? "Privatnost" : "Privacy"}</Link>
                 <ConsentSettingsLink lang={lang} />
                 <a href="#top" className="transition hover:text-slate-900">{copy.footer.top}</a>

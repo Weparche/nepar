@@ -8,9 +8,11 @@
  * promijeni (nikad automatski po buildu) — vidi scripts/archive-cjenik-snapshot.js.
  * Prije svake izmjene pokreni `npm run cjenik:archive` da se trenutna verzija sačuva.
  */
+import { BUSINESS } from "./siteIdentity.js";
+
 export const cjenikMeta = {
   oblikProdajnogObjekta: "mrežna stranica",
-  adresaProdajnogObjekta: "Koprivnička ulica 52, 10000 Zagreb",
+  adresaProdajnogObjekta: `${BUSINESS.streetAddress}, ${BUSINESS.postalCode} ${BUSINESS.addressLocality}`,
   oznakaProdajnogObjekta: "WEB-NEPAR-01",
   brojPohrane: 1,
   publishedAt: "2026-09-15T22:45:00",
