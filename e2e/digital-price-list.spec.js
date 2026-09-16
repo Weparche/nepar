@@ -52,6 +52,8 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
 
 test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlable and responsive", async ({ page }) => {
   await page.goto("/digitalni-cjenik");
+  await expect(page.getByText(/Automatska provjera provjerava tehničku dostupnost XML\/CSV cjenika/).first()).toBeVisible();
+  await page.getByRole("heading", { name: "Tri jasna puta do digitalnog cjenika" }).scrollIntoViewIfNeeded();
   await expect(page.getByText("od 129 €", { exact: true })).toBeVisible();
   await expect(page.getByText("139,80 €", { exact: true })).toBeVisible();
   await expect(page.getByText("79,90 €", { exact: true })).toHaveCount(0);
@@ -60,7 +62,7 @@ test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlabl
   await expect(page.getByRole("heading", { name: "WordPress implementacija" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Provjera web stranice" })).toHaveCount(1);
   await expect(page.getByText(/Samostalni plugin je u pripremi/)).toBeVisible();
-  await expect(page.getByText(/Automatska provjera provjerava tehničku dostupnost XML\/CSV cjenika/).first()).toBeVisible();
+  await page.getByRole("heading", { name: "Česta pitanja" }).scrollIntoViewIfNeeded();
   await expect(page.getByText("Odnosi li se nova obveza samo na webshopove?")).toBeVisible();
   await expect(page.getByText("Koja je razlika između sidrene cijene i digitalnog cjenika?")).toBeVisible();
   await expect(page.getByText("Imam samo Facebook ili Instagram. Moram li imati XML/CSV cjenik?")).toBeVisible();
@@ -68,6 +70,7 @@ test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlabl
   expect(schema).toContain("2026_09_101_1212");
   expect(schema).toContain("2026_09_101_1213");
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.evaluate(() => window.scrollTo(0, 0));
   const h1Box = await page.getByRole("heading", { level: 1 }).boundingBox();
   const leadBox = await page.getByText(/Nova pravila od 1\. listopada ne odnose se samo na webshopove/).boundingBox();
   const answerBox = await page.getByText(/Od 1\. listopada 2026\. u Hrvatskoj se primjenjuju dvije povezane obveze/).boundingBox();
