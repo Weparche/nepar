@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { ArrowRight, Check, ExternalLink, FileCode2, Network, Search } from "lucide-react";
+import { ConsentSettingsLink } from "./ConsentManager.jsx";
 import { Background } from "./SiteChrome.jsx";
 import {
   DIGITAL_PRICE_LIST_GUIDE_PATHS,
@@ -39,7 +40,7 @@ function applyGuideMeta(routePath) {
   upsertMeta("name", "twitter:description", page.description);
   upsertMeta("name", "twitter:image", image);
 
-  let canonicalLink = document.querySelector('link[rel="canonical"]');
+  let canonicalLink = /** @type {HTMLLinkElement | null} */ (document.querySelector('link[rel="canonical"]'));
   if (!canonicalLink) {
     canonicalLink = document.createElement("link");
     canonicalLink.rel = "canonical";
@@ -104,6 +105,7 @@ function GuideFooter() {
             <a href="/digitalni-cjenik">Digitalni cjenik 2026.</a>
             <a href="/cjenik">Cjenik</a>
             <a href="/privatnost">Privatnost</a>
+            <ConsentSettingsLink lang="hr" />
             <a href="#top">Povratak na vrh</a>
           </div>
         </div>
@@ -218,7 +220,7 @@ export default function DigitalPriceListGuidePage({ routePath }) {
                   <strong className="text-lg">Izvor → NEPAR → web + XML/CSV + arhiva</strong>
                 </div>
                 <p className="mt-4 text-sm leading-6 text-slate-300">Prvo provjeravamo gdje cijene stvarno nastaju. Tek zatim biramo najjednostavniji način povezivanja postojećeg sustava i web stranice.</p>
-                <a href="/digitalni-cjenik#upit" className="button button-primary mt-6 w-full">
+                <a href="/digitalni-cjenik" className="button button-primary mt-6 w-full">
                   Zatražite implementaciju
                   <ArrowRight size={17} aria-hidden="true" />
                 </a>
