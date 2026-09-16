@@ -1,0 +1,1 @@
+function e(){return`https://nepar-contact.ig29007.workers.dev`.replace(/\/$/,``)}async function t(t){let n=e();if(!n)return!1;if(!(await fetch(n,{method:`POST`,headers:{"Content-Type":`application/json`},body:JSON.stringify(t)})).ok)throw Error(`send_failed`);return!0}export{t as n,e as t};
