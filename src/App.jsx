@@ -231,7 +231,7 @@ const content = {
     priceListBanner: {
       tag: "NN 101/2026 \u00b7 od 1.10.2026.",
       text: "Trgovci i pru\u017eatelji usluga s web stranicom moraju objaviti digitalni XML/CSV cjenik.",
-      cta: "Provjerite svoju web stranicu",
+      cta: "Digitalni cjenik 2026 i sidrena cijena",
     },
     webStartPromo: {
       eyebrow: "JASNA PONUDA",

@@ -89,7 +89,7 @@ function replaceBuiltMeta(html, page, siteUrl) {
 
 function renderSitemap(siteUrl) {
   const urls = SITEMAP_PATHS.map((path) => {
-    const lastmod = path === "/digitalni-cjenik" ? "<lastmod>2026-09-15</lastmod>" : "";
+    const lastmod = path === "/digitalni-cjenik" ? "<lastmod>2026-09-16</lastmod>" : "";
     return `  <url><loc>${escapeAttr(absoluteUrl(siteUrl, path))}</loc>${lastmod}</url>`;
   }).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;

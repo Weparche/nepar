@@ -106,9 +106,10 @@ const localizedPages = {
   },
   "/digitalni-cjenik": {
     indexable: true,
+    robots: "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1",
     hr: {
-      title: "Digitalni cjenik XML/CSV od 1.10.2026. | Nepar Solutions",
-      description: "Nova obveza digitalnih cjenika od 1. listopada 2026. Saznajte trebate li XML/CSV cjenik i kako ga implementirati na WordPress, Wix ili postojeću web stranicu.",
+      title: "Digitalni cjenik 2026 – CSV/XML i sidrena cijena | NEPAR",
+      description: "Digitalni cjenik 2026 prema NN 101/2026: CSV/XML, sidrena cijena, 30-dnevna arhiva i automatizirani dohvat. Provjerite obvezu i implementaciju na vašoj web stranici.",
     },
     en: {
       title: "Digital XML/CSV price list from 1 October 2026. | Nepar Solutions",
@@ -363,12 +364,18 @@ export function getStructuredData(path = "/") {
       {
         "@type": "TechArticle",
         "@id": `${canonicalUrl}#article`,
-        headline: "Digitalni cjenik XML/CSV od 1.10.2026.",
+        headline: "Digitalni cjenik 2026 – CSV/XML i sidrena cijena",
         description: page.description,
+        keywords: ["digitalni cjenik 2026", "sidrena cijena", "CSV cjenik", "XML cjenik", "NN 101/2026", "digitalni cjenik za usluge"],
+        about: [
+          { "@type": "Thing", name: "Digitalni cjenik 2026" },
+          { "@type": "Thing", name: "Sidrena cijena" },
+          { "@type": "Thing", name: "CSV i XML cjenik" },
+        ],
         mainEntityOfPage: canonicalUrl,
         inLanguage: "hr",
         datePublished: "2026-09-15",
-        dateModified: "2026-09-15",
+        dateModified: "2026-09-16",
         author: { "@id": ORGANIZATION_ID },
         publisher: { "@id": ORGANIZATION_ID },
         citation: digitalPriceListSources,
