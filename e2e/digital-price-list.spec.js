@@ -31,9 +31,8 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   expect(staticHtml).toContain('Dvije povezane, ali odvojene obveze');
   expect(staticHtml).toContain('Digitalni cjenik nije obveza samo za webshopove');
   expect(staticHtml).toContain('od 129 €');
-  expect(staticHtml).toContain('79,90 €');
   expect(staticHtml).toContain('139,80 €');
-  expect(staticHtml).toContain('od 149 €');
+  expect(staticHtml).not.toContain('79,90 €');
   expect(staticHtml).toContain('19,90 € / godišnje');
   expect(staticHtml).toContain('Što još nije definirano');
   expect(staticHtml).toContain('primjer-usluge.csv');
@@ -53,14 +52,17 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
 
 test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlable and responsive", async ({ page }) => {
   await page.goto("/digitalni-cjenik");
+  await expect(page.getByText(/Automatska provjera provjerava tehničku dostupnost XML\/CSV cjenika/).first()).toBeVisible();
+  await page.getByRole("heading", { name: "Tri jasna puta do digitalnog cjenika" }).scrollIntoViewIfNeeded();
   await expect(page.getByText("od 129 €", { exact: true })).toBeVisible();
-  await expect(page.getByText("79,90 €", { exact: true })).toBeVisible();
   await expect(page.getByText("139,80 €", { exact: true })).toBeVisible();
-  await expect(page.getByText(/integracija je od 149 €/)).toBeVisible();
+  await expect(page.getByText("79,90 €", { exact: true })).toHaveCount(0);
   await expect(page.getByText("19,90 € / godišnje", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "NEPAR implementira" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "WordPress opcija" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "WordPress implementacija" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Provjera web stranice" })).toHaveCount(1);
+  await expect(page.getByText(/Samostalni plugin je u pripremi/)).toBeVisible();
+  await page.getByRole("heading", { name: "Česta pitanja" }).scrollIntoViewIfNeeded();
   await expect(page.getByText("Odnosi li se nova obveza samo na webshopove?")).toBeVisible();
   await expect(page.getByText("Koja je razlika između sidrene cijene i digitalnog cjenika?")).toBeVisible();
   await expect(page.getByText("Imam samo Facebook ili Instagram. Moram li imati XML/CSV cjenik?")).toBeVisible();
@@ -68,7 +70,19 @@ test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlabl
   expect(schema).toContain("2026_09_101_1212");
   expect(schema).toContain("2026_09_101_1213");
   await page.setViewportSize({ width: 390, height: 844 });
-  await expect(page.getByRole("button", { name: "Provjeri", exact: true })).toBeInViewport();
+  await page.evaluate(() => window.scrollTo(0, 0));
+  const h1Box = await page.getByRole("heading", { level: 1 }).boundingBox();
+  const leadBox = await page.getByText(/Nova pravila od 1\. listopada ne odnose se samo na webshopove/).boundingBox();
+  const answerBox = await page.getByText(/Od 1\. listopada 2026\. u Hrvatskoj se primjenjuju dvije povezane obveze/).boundingBox();
+  const checkerBox = await page.getByRole("heading", { name: "Provjerite digitalni cjenik svoje web stranice" }).boundingBox();
+  expect(h1Box).not.toBeNull();
+  expect(leadBox).not.toBeNull();
+  expect(answerBox).not.toBeNull();
+  expect(checkerBox).not.toBeNull();
+  expect(h1Box.y).toBeLessThan(leadBox.y);
+  expect(leadBox.y).toBeLessThan(answerBox.y);
+  expect(answerBox.y).toBeLessThan(checkerBox.y);
+  await expect(page.getByRole("button", { name: "Provjeri", exact: true })).toBeVisible();
   const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
 });
@@ -134,6 +148,24 @@ test("checker renders a green CSV result without leaking the checked domain into
   const events = await page.evaluate(() => (window.dataLayer || []).map((entry) => Array.from(entry)).filter((entry) => entry[0] === "event"));
   const resultEvent = events.find((entry) => entry[1] === "price_list_check_result");
   expect(resultEvent?.[2]).toEqual({ result: "green" });
+});
+
+test("checker result copy follows the selected English language instead of worker message text", async ({ page }) => {
+  await mockWorker(page, {
+    status: "red",
+    message: "HRVATSKA PORUKA IZ WORKERA",
+    details: { reachable: true, https: true, csvFound: false, xmlFound: false, pricePageFound: false },
+  });
+  await page.goto("/digitalni-cjenik");
+  await page.getByRole("button", { name: "ENG", exact: true }).click();
+  await page.getByLabel("Check your website’s digital price list").fill("example.com");
+  await page.getByRole("button", { name: "Check", exact: true }).click();
+  const result = page.locator('[aria-live="polite"]');
+  await expect(result).toContainText("We did not find a digital price list");
+  await expect(result).toContainText("The automated check did not find a publicly available XML or CSV price list.");
+  await expect(result).toContainText("CSV: not found");
+  await expect(result).toContainText("XML: not found");
+  await expect(result).not.toContainText("HRVATSKA PORUKA IZ WORKERA");
 });
 
 test("checker prevents malformed input and gives a recoverable unavailable state", async ({ page }) => {
