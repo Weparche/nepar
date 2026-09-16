@@ -10,6 +10,11 @@ import {
   SITEMAP_PATHS,
   STATIC_HTML_PATHS,
 } from "./src/seoConfig.js";
+import {
+  DIGITAL_PRICE_LIST_GUIDE_PATHS,
+  getDigitalPriceListGuideSeoPage,
+  getDigitalPriceListGuideStructuredData,
+} from "./src/digitalPriceListGuides.js";
 import { routeOutputPath } from "./src/seoRoutes.js";
 import { nepaUsluge } from "./src/cjenikData.js";
 import { cjenikMeta, canonicalCjenikFilename } from "./src/cjenikMeta.js";
@@ -40,7 +45,7 @@ function safeJson(value) {
 function renderSeoHead(page, siteUrl) {
   const canonical = page.canonicalPath ? absoluteUrl(siteUrl, page.canonicalPath) : "";
   const image = absoluteUrl(siteUrl, page.image);
-  const schema = getStructuredData(page.path);
+  const schema = getDigitalPriceListGuideStructuredData(page.path) || getStructuredData(page.path);
 
   return `<!-- seo-meta:start -->
     <meta name="robots" content="${escapeAttr(page.robots)}" />
@@ -88,8 +93,9 @@ function replaceBuiltMeta(html, page, siteUrl) {
 }
 
 function renderSitemap(siteUrl) {
-  const urls = SITEMAP_PATHS.map((path) => {
-    const lastmod = path === "/digitalni-cjenik" ? "<lastmod>2026-09-16</lastmod>" : "";
+  const sitemapPaths = [...new Set([...SITEMAP_PATHS, ...DIGITAL_PRICE_LIST_GUIDE_PATHS])];
+  const urls = sitemapPaths.map((path) => {
+    const lastmod = path.startsWith("/digitalni-cjenik") ? "<lastmod>2026-09-17</lastmod>" : "";
     return `  <url><loc>${escapeAttr(absoluteUrl(siteUrl, path))}</loc>${lastmod}</url>`;
   }).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
@@ -135,6 +141,13 @@ function routeSeoPlugin(siteUrl) {
 
       for (const routePath of STATIC_HTML_PATHS) {
         const page = getSeoPage(routePath, "hr");
+        const outputPath = routeOutputPath(outDir, routePath);
+        mkdirSync(dirname(outputPath), { recursive: true });
+        writeFileSync(outputPath, replaceBuiltMeta(indexHtml, page, siteUrl), "utf8");
+      }
+
+      for (const routePath of DIGITAL_PRICE_LIST_GUIDE_PATHS) {
+        const page = getDigitalPriceListGuideSeoPage(routePath);
         const outputPath = routeOutputPath(outDir, routePath);
         mkdirSync(dirname(outputPath), { recursive: true });
         writeFileSync(outputPath, replaceBuiltMeta(indexHtml, page, siteUrl), "utf8");
