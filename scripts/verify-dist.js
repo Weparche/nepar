@@ -3,11 +3,14 @@ import { relative, resolve } from "node:path";
 import { nepaUsluge } from "../src/cjenikData.js";
 import { cjenikMeta, canonicalCjenikFilename } from "../src/cjenikMeta.js";
 import { renderCjenikCsv, renderCjenikXml } from "../src/cjenikRender.js";
-import { PRERENDER_PATHS } from "../src/seoConfig.js";
+import { PRERENDER_PATHS, SITEMAP_PATHS } from "../src/seoConfig.js";
+import { DIGITAL_PRICE_LIST_GUIDE_PATHS } from "../src/digitalPriceListGuides.js";
 import { routeOutputPath } from "../src/seoRoutes.js";
 
 const distDir = resolve(process.cwd(), "dist");
 const failures = [];
+const prerenderPaths = [...new Set([...PRERENDER_PATHS, ...DIGITAL_PRICE_LIST_GUIDE_PATHS])];
+const sitemapPaths = [...new Set([...SITEMAP_PATHS, ...DIGITAL_PRICE_LIST_GUIDE_PATHS])];
 
 function read(relativePath) {
   const filePath = resolve(distDir, relativePath);
@@ -35,6 +38,9 @@ for (const file of [
   "web.html",
   "kontakt.html",
   "digitalni-cjenik.html",
+  "digitalni-cjenik/sidrena-cijena.html",
+  "digitalni-cjenik/xml-csv.html",
+  "digitalni-cjenik/automatizacija.html",
   "cjenik.html",
   "cjenik/arhiva.html",
   "cjenik.csv",
@@ -77,7 +83,7 @@ expect("usluge/izrada-web-stranica.html", "OfferCatalog", "service offer schema 
 expect("usluge/izrada-web-stranica.html", "FAQPage", "FAQPage schema is missing");
 expect("usluge/izrada-web-stranica.html", "BreadcrumbList", "breadcrumb schema is missing");
 expect("kontakt.html", "ContactPage", "ContactPage schema is missing");
-expect("digitalni-cjenik.html", "Digitalni cjenik XML/CSV od 1.10.2026. | Nepar Solutions", "digital price list title is missing");
+expect("digitalni-cjenik.html", "Digitalni cjenik 2026 – CSV/XML i sidrena cijena | NEPAR", "digital price list title is missing");
 expect("digitalni-cjenik.html", '<link rel="canonical" href="https://nepar.hr/digitalni-cjenik" />', "digital price list canonical is missing");
 expect("digitalni-cjenik.html", "FAQPage", "digital price list FAQPage schema is missing");
 expect("digitalni-cjenik.html", "BreadcrumbList", "digital price list breadcrumb schema is missing");
@@ -88,6 +94,17 @@ expect("digitalni-cjenik.html", "NN 101/2026-1213", "digital price list XML/CSV 
 expect("digitalni-cjenik.html", "Digitalni cjenik nije obveza samo za webshopove", "digital price list B2C scope text is missing");
 expect("digitalni-cjenik.html", "od 129 €", "digital price list primary price is missing");
 expect("digitalni-cjenik.html", "primjer-usluge.csv", "digital price list CSV example link is missing");
+
+for (const routePath of DIGITAL_PRICE_LIST_GUIDE_PATHS) {
+  const relativePath = relative(distDir, routeOutputPath(distDir, routePath));
+  expect(relativePath, `<link rel="canonical" href="https://nepar.hr${routePath}" />`, `${routePath} canonical is missing`);
+  expect(relativePath, "data-nepar-static-content", `${routePath} prerendered body is missing`);
+  expect(relativePath, "TechArticle", `${routePath} TechArticle schema is missing`);
+  expect(relativePath, "FAQPage", `${routePath} FAQPage schema is missing`);
+  expect(relativePath, "BreadcrumbList", `${routePath} breadcrumb schema is missing`);
+  expect(relativePath, "NEPAR Digital Price Engine", `${routePath} Price Engine entity is missing`);
+  expect(relativePath, "NN 101/2026-1213", `${routePath} official XML/CSV source is missing`);
+}
 
 expect("cjenik.html", "<title>NEPAR — digitalni cjenik usluga | Nepar Solutions</title>", "cjenik title is missing");
 expect("cjenik.html", '<link rel="canonical" href="https://nepar.hr/cjenik" />', "cjenik canonical is missing");
@@ -112,7 +129,7 @@ if (read(`cjenici/${canonicalCsvName}`) !== expectedCjenikCsv) failures.push(`Mi
 if (read(`cjenici/${canonicalXmlName}`) !== expectedCjenikXml) failures.push(`Missing or mismatched canonical dist/cjenici/${canonicalXmlName}`);
 // Smoke-test za sve prerenderirane rute (ne formalna "SEO pravila" — interna provjera
 // zdravlja da prerender nije tiho snimio prazan/polomljen sadržaj).
-for (const routePath of PRERENDER_PATHS) {
+for (const routePath of prerenderPaths) {
   const relativePath = relative(distDir, routeOutputPath(distDir, routePath));
   const html = read(relativePath);
   if (!html) continue;
@@ -150,20 +167,17 @@ expect("njamko.html", "SoftwareApplication", "SoftwareApplication schema is miss
 expect("admin.html", '<meta name="robots" content="noindex,nofollow" />', "admin must be noindex,nofollow");
 expect("404.html", '<meta name="robots" content="noindex,nofollow" />', "404 must be noindex,nofollow");
 
+const expectedSitemapUrls = sitemapPaths.map((path) => {
+  const loc = path === "/" ? "https://nepar.hr/" : `https://nepar.hr${path}`;
+  const lastmod = path.startsWith("/digitalni-cjenik") ? "<lastmod>2026-09-17</lastmod>" : "";
+  return `  <url><loc>${loc}</loc>${lastmod}</url>`;
+}).join("\n");
 const expectedSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://nepar.hr/</loc></url>
-  <url><loc>https://nepar.hr/usluge/izrada-web-stranica</loc></url>
-  <url><loc>https://nepar.hr/kontakt</loc></url>
-  <url><loc>https://nepar.hr/digitalni-cjenik</loc><lastmod>2026-09-15</lastmod></url>
-  <url><loc>https://nepar.hr/cjenik</loc></url>
-  <url><loc>https://nepar.hr/cjenik/arhiva</loc></url>
-  <url><loc>https://nepar.hr/privatnost</loc></url>
-  <url><loc>https://nepar.hr/mozgalica</loc></url>
-  <url><loc>https://nepar.hr/njamko</loc></url>
+${expectedSitemapUrls}
 </urlset>
 `;
-if (read("sitemap.xml") !== expectedSitemap) failures.push("sitemap.xml must contain exactly the nine canonical URLs.");
+if (read("sitemap.xml") !== expectedSitemap) failures.push("sitemap.xml does not match the canonical SEO route registry.");
 if (read("sitemap.xml").includes("https://nepar.hr/web")) failures.push("sitemap.xml must not contain the paid /web landing.");
 
 const expectedRobots = `User-agent: *
@@ -180,6 +194,9 @@ const redirects = read("_redirects");
 for (const rule of [
   "/kontakt/ /kontakt 301",
   "/digitalni-cjenik/ /digitalni-cjenik 301",
+  "/digitalni-cjenik/sidrena-cijena/ /digitalni-cjenik/sidrena-cijena 301",
+  "/digitalni-cjenik/xml-csv/ /digitalni-cjenik/xml-csv 301",
+  "/digitalni-cjenik/automatizacija/ /digitalni-cjenik/automatizacija 301",
   "/cjenik/ /cjenik 301",
   "/cjenik/arhiva/ /cjenik/arhiva 301",
   "/privatnost/ /privatnost 301",
