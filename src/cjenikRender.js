@@ -89,11 +89,17 @@ export function formatCjenikDisplayPrice(usluga, lang = "hr") {
   return `${prefix}${formatEur(usluga.cijena, lang)}${suffix}`;
 }
 
-/** Ljudski čitljiv datum/vrijeme za publishedAt/supersededAt (nikad sirovi ISO string). */
+/**
+ * Ljudski čitljiv datum/vrijeme za publishedAt/supersededAt (nikad sirovi ISO string).
+ * `timeZone` je fiksiran na Europe/Zagreb jer je riječ o vremenu pravne objave, ne
+ * lokalnom vremenu posjetitelja — bez toga bi build (Node/CI, obično UTC) i preglednik
+ * posjetitelja mogli prikazati različito vrijeme za isti trenutak.
+ */
 export function formatCjenikDate(value, lang = "hr") {
   return new Intl.DateTimeFormat(lang === "hr" ? "hr-HR" : "en-GB", {
     dateStyle: "long",
     timeStyle: "short",
+    timeZone: "Europe/Zagreb",
   }).format(new Date(value));
 }
 
@@ -164,17 +170,22 @@ export function renderCjenikHtmlBody(usluge, meta) {
       ${renderCjenikSection(group.usluge, group.kategorija)}`).join("\n");
 
   const cjenikSection = cjenikGroup ? `      <h2>${escapeXml(cjenikGroup.kategorija)}</h2>
-      <p>Ovo su usluge koje NEPAR nudi drugim tvrtkama za implementaciju digitalnog cjenika na njihovoj web-stranici — nisu dio NEPAR-ove web ili social ponude iznad.</p>
+      <p class="max-w-prose">Ovo su usluge koje NEPAR nudi drugim tvrtkama za implementaciju digitalnog cjenika na njihovoj web-stranici — nisu dio NEPAR-ove web ili social ponude iznad.</p>
       ${renderCjenikSection(cjenikGroup.usluge, cjenikGroup.kategorija)}` : "";
 
   return `<main class="site-main" data-nepar-static-content>
     <article class="section-shell" lang="hr">
       <h1>NEPAR — digitalni cjenik usluga</h1>
-      <p>Prema Odluci NN 101/2026-1213, ovo je strojno čitljiv cjenik svih NEPAR usluga. Objavljeno: ${formatCjenikDate(meta.publishedAt, "hr")}. Prodajni objekt: ${escapeXml(meta.oblikProdajnogObjekta)}, ${escapeXml(meta.adresaProdajnogObjekta)} (oznaka ${escapeXml(meta.oznakaProdajnogObjekta)}).</p>
+      <p class="max-w-prose">Prema Odluci NN 101/2026-1213, ovo je strojno čitljiv cjenik svih NEPAR usluga. Objavljeno: ${formatCjenikDate(meta.publishedAt, "hr")}. Prodajni objekt: ${escapeXml(meta.oblikProdajnogObjekta)}, ${escapeXml(meta.adresaProdajnogObjekta)} (oznaka ${escapeXml(meta.oznakaProdajnogObjekta)}).</p>
 ${coreSections}
 ${cjenikSection}
-      <p id="cjenik-od-note">* Cijena je početna ("od") — konačna cijena ovisi o opsegu ili platformi. Odluka ne definira posebnu semantiku za početnu cijenu; ovo je NEPAR-ovo tehničko pojašnjenje, vidljivo i u strojnom zapisu kao dodatno polje <code>nepar_cijena_od</code>.</p>
-      <p>Usluge bez sidrene cijene uvedene su nakon 10.9.2026. i za njih Odluka NN 101/2026-1212 ne definira sidrenu cijenu.</p>
+      <p id="cjenik-od-note" class="max-w-prose">* Cijena je početna ("od") — konačna cijena ovisi o opsegu ili platformi. Odluka ne definira posebnu semantiku za početnu cijenu; ovo je NEPAR-ovo tehničko pojašnjenje, vidljivo i u strojnom zapisu kao dodatno polje <code>nepar_cijena_od</code>.</p>
+      <p class="max-w-prose">Usluge bez sidrene cijene uvedene su nakon 10.9.2026. i za njih Odluka NN 101/2026-1212 ne definira sidrenu cijenu.</p>
+      <p class="max-w-prose">
+        Kanonska datoteka (naziv sukladan Odluci):
+        <a href="/cjenici/${canonicalCjenikFilename(meta, "csv")}">${canonicalCjenikFilename(meta, "csv")}</a>
+        · <a href="/cjenici/${canonicalCjenikFilename(meta, "xml")}">${canonicalCjenikFilename(meta, "xml")}</a>
+      </p>
       <p><a href="/cjenik.csv">Preuzmite /cjenik.csv</a> · <a href="/cjenik.xml">Preuzmite /cjenik.xml</a> · <a href="/cjenik/arhiva">Arhiva prethodnih verzija</a></p>
     </article>
   </main>`;
@@ -195,7 +206,7 @@ export function renderCjenikArhivaHtmlBody(currentMeta, snapshots) {
   return `<main class="site-main" data-nepar-static-content>
     <article class="section-shell" lang="hr">
       <h1>Arhiva digitalnog cjenika</h1>
-      <p>Prethodne objavljene verzije NEPAR cjenika ostaju dostupne 30 dana od promjene, sukladno Odluci NN 101/2026-1213.</p>
+      <p class="max-w-prose">Prethodne objavljene verzije NEPAR cjenika ostaju dostupne 30 dana od promjene, sukladno Odluci NN 101/2026-1213.</p>
       <h2>Trenutna verzija</h2>
       <ul>
 ${row(currentMeta, "Trenutna verzija")}
