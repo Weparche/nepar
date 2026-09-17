@@ -24,6 +24,8 @@
     "src/WebStartPage.jsx",
     "src/PackageInquiryModal.jsx",
     "src/ContactPage.jsx",
+    "src/DigitalPriceListGuidePage.jsx",
+    "src/digitalPriceListGuides.js",
     "src/ConsentManager.jsx",
     "src/PrivacyPage.jsx",
     "src/analytics.js",

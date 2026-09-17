@@ -37,8 +37,8 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   expect(staticHtml).toContain('Što još nije definirano');
   expect(staticHtml).toContain('primjer-usluge.csv');
   await page.goto("/digitalni-cjenik");
-  await expect(page).toHaveTitle("Digitalni cjenik XML/CSV od 1.10.2026. | Nepar Solutions");
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /Nova obveza digitalnih cjenika/);
+  await expect(page).toHaveTitle("Digitalni cjenik 2026 – CSV/XML i sidrena cijena | NEPAR");
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /Digitalni cjenik 2026 prema NN 101\/2026/);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://nepar.hr/digitalni-cjenik");
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("link", { name: "Narodne novine", exact: true })).toHaveAttribute("href", /101_1213/);
