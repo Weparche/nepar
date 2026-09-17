@@ -45,6 +45,7 @@ const MozgalicaPage = lazy(() => import("./mozgalica/MozgalicaPage.jsx"));
 const NjamkoPage = lazy(() => import("./njamko/NjamkoPage.jsx"));
 const DigitalPriceListPage = lazy(() => import("./DigitalPriceListPage.jsx"));
 const DigitalPriceListGuidePage = lazy(() => import("./DigitalPriceListGuidePage.jsx"));
+const SidreneCijenePage = lazy(() => import("./SidreneCijenePage.jsx"));
 const CjenikPage = lazy(() => import("./CjenikPage.jsx"));
 const CjenikArhivaPage = lazy(() => import("./CjenikArhivaPage.jsx"));
 
@@ -1695,6 +1696,7 @@ export default function App() {
           <Route path="/digitalni-cjenik/sidrena-cijena" element={<DigitalPriceListGuidePage routePath="/digitalni-cjenik/sidrena-cijena" />} />
           <Route path="/digitalni-cjenik/xml-csv" element={<DigitalPriceListGuidePage routePath="/digitalni-cjenik/xml-csv" />} />
           <Route path="/digitalni-cjenik/automatizacija" element={<DigitalPriceListGuidePage routePath="/digitalni-cjenik/automatizacija" />} />
+          <Route path="/sidrene-cijene" element={<SidreneCijenePage />} />
           <Route path="/cjenik" element={<CjenikPage />} />
           <Route path="/cjenik/arhiva" element={<CjenikArhivaPage />} />
           <Route path="*" element={<NotFoundPage />} />

@@ -31,7 +31,7 @@ Call log:
       - waiting 100ms
     - waiting for element to be visible, enabled and stable
     - element is not stable
-  208 × retrying click action
+  211 × retrying click action
         - waiting 500ms
         - waiting for element to be visible, enabled and stable
         - element is visible, enabled and stable
@@ -70,12 +70,12 @@ Call log:
           - paragraph [ref=e17]: Zeko je gladan!
           - paragraph [ref=e18]: Što jede zeko?
         - generic [ref=e20]:
-          - button "Odaberi Riba" [ref=e21] [cursor=pointer]:
-            - generic [ref=e23]: Riba
+          - button "Odaberi Banana" [ref=e21] [cursor=pointer]:
+            - generic [ref=e23]: Banana
           - button "Odaberi Mrkva" [ref=e24] [cursor=pointer]:
             - generic [ref=e26]: Mrkva
-          - button "Odaberi Banana" [ref=e27] [cursor=pointer]:
-            - generic [ref=e29]: Banana
+          - button "Odaberi Riba" [ref=e27] [cursor=pointer]:
+            - generic [ref=e29]: Riba
   - dialog "Vi birate analitiku" [ref=e30]:
     - generic [ref=e31]:
       - img [ref=e33]

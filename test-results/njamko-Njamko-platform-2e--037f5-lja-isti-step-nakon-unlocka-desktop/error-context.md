@@ -29,7 +29,7 @@ Call log:
       - element is not stable
     - retrying click action
       - waiting 100ms
-    431 × waiting for element to be visible, enabled and stable
+    433 × waiting for element to be visible, enabled and stable
         - element is visible, enabled and stable
         - scrolling into view if needed
         - done scrolling

@@ -31,7 +31,7 @@ Call log:
       - waiting 100ms
     - waiting for element to be visible, enabled and stable
     - element is not stable
-  202 × retrying click action
+  209 × retrying click action
         - waiting 500ms
         - waiting for element to be visible, enabled and stable
         - element is visible, enabled and stable
@@ -40,6 +40,7 @@ Call log:
         - <button type="button" class="button button-primary">Prihvati analitiku</button> from <aside role="dialog" aria-modal="false" class="consent-panel" data-testid="consent-panel" aria-labelledby="consent-title" aria-describedby="consent-description">…</aside> subtree intercepts pointer events
   - retrying click action
     - waiting 500ms
+    - waiting for element to be visible, enabled and stable
 
 ```
 

@@ -35,13 +35,17 @@ Call log:
       - <aside role="dialog" aria-modal="false" class="consent-panel" data-testid="consent-panel" aria-labelledby="consent-title" aria-describedby="consent-description">…</aside> intercepts pointer events
     - retrying click action
       - waiting 100ms
-    50 × waiting for element to be visible, enabled and stable
-       - element is visible, enabled and stable
-       - scrolling into view if needed
-       - done scrolling
-       - <aside role="dialog" aria-modal="false" class="consent-panel" data-testid="consent-panel" aria-labelledby="consent-title" aria-describedby="consent-description">…</aside> intercepts pointer events
-     - retrying click action
-       - waiting 500ms
+    8 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <aside role="dialog" aria-modal="false" class="consent-panel" data-testid="consent-panel" aria-labelledby="consent-title" aria-describedby="consent-description">…</aside> intercepts pointer events
+    - retrying click action
+      - waiting 500ms
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+    - done scrolling
 
 ```
 
@@ -64,7 +68,7 @@ Call log:
             - strong [ref=e22]: "0"
           - generic [ref=e23]:
             - generic [ref=e24]: Vrijeme
-            - strong [ref=e25]: 00:27
+            - strong [ref=e25]: 00:05
           - generic [ref=e26]:
             - generic [ref=e27]: Grupe
             - strong [ref=e28]: 2/4

@@ -50,3 +50,26 @@ for (const guide of guides) {
     expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
   });
 }
+
+test("client-side navigation from /digitalni-cjenik reaches a guide without a 404", async ({ page }) => {
+  await page.goto("/digitalni-cjenik");
+  await page.getByRole("link", { name: "Vodič za sidrenu cijenu", exact: true }).click();
+  await expect(page).toHaveURL(/\/digitalni-cjenik\/sidrena-cijena$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Sidrena cijena 2026: što znači i kako se razlikuje od digitalnog cjenika");
+});
+
+test("sidrena-cijena guide states the 10 September 2026 date and its 2 May 2025 exception", async ({ page }) => {
+  const staticHtml = await (await page.request.get("/digitalni-cjenik/sidrena-cijena")).text();
+  expect(staticHtml).toContain("10. rujna 2026.");
+  expect(staticHtml).toContain("2. svibnja 2025.");
+  expect(staticHtml).toContain("Iznimka");
+});
+
+test("xml-csv guide gives products and services non-identical required fields and explains the prescribed filename elements", async ({ page }) => {
+  const staticHtml = await (await page.request.get("/digitalni-cjenik/xml-csv")).text();
+  expect(staticHtml).toContain("naziv usluge, maloprodajnu cijenu");
+  expect(staticHtml).toContain("naziv, šifru, marku, jedinicu mjere, cijenu, EAN odnosno barkod");
+  expect(staticHtml).toContain("nisu univerzalno obvezni podaci za pružatelje usluga");
+  expect(staticHtml).toContain("oblik, adresu i oznaku prodajnog objekta, broj pohrane");
+  expect(staticHtml).toContain("ne propisuje točan separator, slug format ni encoding naziva");
+});

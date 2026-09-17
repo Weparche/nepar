@@ -50,6 +50,49 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   expect(errors).toEqual([]);
 });
 
+test("compliance summary separates legal requirements from NEPAR implementation choices", async ({ page }) => {
+  const staticResponse = await page.request.get("/digitalni-cjenik");
+  const staticHtml = await staticResponse.text();
+  expect(staticHtml).toContain("Digitalni cjenik od 1.10.2026. — što je stvarno obvezno?");
+  expect(staticHtml).toContain("jednom dnevno, najkasnije do 8:00, za tekući radni dan");
+  expect(staticHtml).toContain("kod svake promjene, najkasnije do 8:00");
+  expect(staticHtml).toContain("30 dana od objave odnosno promjene");
+  expect(staticHtml).toContain("ne propisuje direktorij, ZIP arhivu, bazu podataka");
+  expect(staticHtml).toContain("ne propisuje konkretan API framework, REST endpoint, cron raspored ni webhook");
+  expect(staticHtml).toContain("Propis vs. NEPAR implementacija");
+  expect(staticHtml).toContain("Propisane elemente naziva datoteke");
+  expect(staticHtml).toContain("oblik prodajnog objekta, adresu prodajnog objekta, oznaku prodajnog objekta, broj pohrane");
+  expect(staticHtml).toContain("ne propisuje točan separator, slug format ni encoding naziva");
+  expect(staticHtml).toContain("Primjer NEPAR implementacije");
+  expect(staticHtml).toContain("Sidrena cijena je praktičan naziv za dodatnu maloprodajnu cijenu");
+  expect(staticHtml).toContain("Trgovac ili pružatelj usluge — što cjenik mora sadržavati?");
+  expect(staticHtml).toContain("EAN odnosno barkod");
+  expect(staticHtml).toContain("Barkod, marka, jedinica mjere i dostupnost odnose se na proizvode");
+  await page.goto("/digitalni-cjenik");
+  await expect(page.getByRole("link", { name: "Vodič za sidrenu cijenu", exact: true }).first()).toHaveAttribute("href", "/digitalni-cjenik/sidrena-cijena");
+  await expect(page.getByRole("link", { name: "XML/CSV vodič", exact: true }).first()).toHaveAttribute("href", "/digitalni-cjenik/xml-csv");
+  await expect(page.getByRole("link", { name: "Vodič za automatizaciju", exact: true }).first()).toHaveAttribute("href", "/digitalni-cjenik/automatizacija");
+});
+
+test("FAQ visible content and JSON-LD schema come from the same source", async ({ page }) => {
+  await page.goto("/digitalni-cjenik");
+  await expect(page.getByText("Je li 10. rujna 2026. datum sidrene cijene za sve proizvode?")).toBeVisible();
+  await expect(page.getByText("Mora li arhiva biti u /cjenik/arhiva/ direktoriju?")).toBeVisible();
+  const schema = await page.locator('script[data-nepar-schema]').textContent();
+  expect(schema).toContain("Je li 10. rujna 2026. datum sidrene cijene za sve proizvode?");
+  expect(schema).toContain("2. svibnja 2025.");
+  expect(schema).toContain("Mora li arhiva biti u /cjenik/arhiva/ direktoriju?");
+});
+
+test("checker archive signal wording reads as a technical signal, not a legal verdict", async ({ page }) => {
+  await mockWorker(page, { status: "green", message: "ok", details: { reachable: true, https: true, csvFound: true, xmlFound: false, pricePageFound: true, archiveFound: true, csvUrl: "https://primjer.hr/cjenik.csv", xmlUrl: null, pricePageUrl: "https://primjer.hr/cjenik/", archiveUrl: "https://primjer.hr/cjenik/arhiva", csvLinkDiscovered: true, xmlLinkDiscovered: false, archiveLinkDiscovered: true } });
+  await page.goto("/digitalni-cjenik");
+  await page.getByLabel("Provjerite digitalni cjenik svoje web stranice").fill("https://primjer.hr");
+  await page.getByRole("button", { name: "Provjeri", exact: true }).click();
+  await expect(page.locator('[aria-live="polite"]')).toContainText("Pronađen signal arhive cjenika");
+  await expect(page.locator('[aria-live="polite"]')).not.toContainText("zakonski obvezna");
+});
+
 test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlable and responsive", async ({ page }) => {
   await page.goto("/digitalni-cjenik");
   await expect(page.getByText("od 129 €", { exact: true })).toBeVisible();

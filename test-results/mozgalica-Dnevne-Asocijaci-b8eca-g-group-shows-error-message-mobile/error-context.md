@@ -35,16 +35,13 @@ Call log:
       - <button type="button" class="button button-secondary">Odbij analitiku</button> from <aside role="dialog" aria-modal="false" class="consent-panel" data-testid="consent-panel" aria-labelledby="consent-title" aria-describedby="consent-description">…</aside> subtree intercepts pointer events
     - retrying click action
       - waiting 100ms
-    49 × waiting for element to be visible, enabled and stable
+    53 × waiting for element to be visible, enabled and stable
        - element is visible, enabled and stable
        - scrolling into view if needed
        - done scrolling
        - <button type="button" class="button button-secondary">Odbij analitiku</button> from <aside role="dialog" aria-modal="false" class="consent-panel" data-testid="consent-panel" aria-labelledby="consent-title" aria-describedby="consent-description">…</aside> subtree intercepts pointer events
      - retrying click action
        - waiting 500ms
-    - waiting for element to be visible, enabled and stable
-    - element is visible, enabled and stable
-    - scrolling into view if needed
 
 ```
 
@@ -67,7 +64,7 @@ Call log:
             - strong [ref=e21]: "0"
           - generic [ref=e22]:
             - generic [ref=e23]: Vrijeme
-            - strong [ref=e24]: 00:26
+            - strong [ref=e24]: 00:28
           - generic [ref=e25]:
             - generic [ref=e26]: Grupe
             - strong [ref=e27]: 0/4

@@ -108,6 +108,18 @@ const localizedPages = {
     },
     schema: "digital-price-list",
   },
+  "/sidrene-cijene": {
+    indexable: true,
+    hr: {
+      title: "Sidrena cijena od 1.10.2026. — što trebate napraviti | NEPAR",
+      description: "Sidrena cijena i digitalni XML/CSV cjenik prema NN 101/2026: tko je obveznik, koji je datum i kako to riješiti na postojećem webu uz besplatnu provjeru.",
+    },
+    en: {
+      title: "Reference price from 1 Oct 2026 — what to do | NEPAR",
+      description: "Reference price and digital XML/CSV price list under NN 101/2026: who is covered, which date applies, and how to fix it on your existing website with a free check.",
+    },
+    schema: "sidrene-cijene",
+  },
   "/cjenik": {
     indexable: true,
     hr: {
@@ -366,7 +378,7 @@ export function getStructuredData(path = "/") {
         mainEntityOfPage: canonicalUrl,
         inLanguage: "hr",
         datePublished: "2026-09-15",
-        dateModified: "2026-09-16",
+        dateModified: "2026-09-17",
         author: { "@id": ORGANIZATION_ID },
         publisher: { "@id": ORGANIZATION_ID },
         citation: digitalPriceListSources,
@@ -397,6 +409,40 @@ export function getStructuredData(path = "/") {
           { "@type": "ListItem", position: 1, name: "Naslovnica", item: `${SITE_URL}/` },
           { "@type": "ListItem", position: 2, name: "Digitalni cjenik", item: canonicalUrl },
         ],
+      },
+    );
+  }
+
+  if (page.schema === "sidrene-cijene") {
+    graph.push(
+      {
+        "@type": "WebPage",
+        "@id": `${canonicalUrl}#page`,
+        name: page.title,
+        description: page.description,
+        url: canonicalUrl,
+        inLanguage: "hr",
+        about: [
+          { "@type": "Thing", name: "Sidrena cijena" },
+          { "@type": "Thing", name: "Dodatna cijena" },
+          { "@type": "Thing", name: "Digitalni cjenik" },
+        ],
+        isPartOf: { "@id": WEBSITE_ID },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${canonicalUrl}#faq`,
+        mainEntity: digitalPriceListFaq
+          .filter(([question]) => [
+            "Koja je razlika između sidrene cijene i digitalnog cjenika?",
+            "Je li 10. rujna 2026. datum sidrene cijene za sve proizvode?",
+            "Moram li dodati posebno polje u bazu podataka za sidrenu cijenu?",
+          ].includes(question))
+          .map(([question, answer]) => ({
+            "@type": "Question",
+            name: question,
+            acceptedAnswer: { "@type": "Answer", text: answer },
+          })),
       },
     );
   }

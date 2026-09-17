@@ -18,12 +18,18 @@ Test timeout of 120000ms exceeded.
 ```
 Error: locator.click: Test timeout of 120000ms exceeded.
 Call log:
-  - waiting for locator('[data-answer="Mrkva"]')
-    - locator resolved to <button type="button" data-answer="Mrkva" aria-label="Odaberi Mrkva" data-testid="option-card-mrkva" class="nj-option-card nj-option-card--premium">…</button>
+  - waiting for locator('[data-answer="Banana"]')
+    - locator resolved to <button type="button" data-answer="Banana" aria-label="Odaberi Banana" data-testid="option-card-banana" class="nj-option-card nj-option-card--premium">…</button>
   - attempting click action
-    2 × waiting for element to be visible, enabled and stable
-      - element is not stable
-    - retrying click action
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+    - done scrolling
+    - <button type="button" class="button button-primary">Prihvati analitiku</button> from <aside role="dialog" aria-modal="false" class="consent-panel" data-testid="consent-panel" aria-labelledby="consent-title" aria-describedby="consent-description">…</aside> subtree intercepts pointer events
+  - retrying click action
+    - waiting for element to be visible, enabled and stable
+    - element is not stable
+  - retrying click action
     - waiting 20ms
     2 × waiting for element to be visible, enabled and stable
       - element is not stable
@@ -31,7 +37,7 @@ Call log:
       - waiting 100ms
     - waiting for element to be visible, enabled and stable
     - element is not stable
-  207 × retrying click action
+  208 × retrying click action
         - waiting 500ms
         - waiting for element to be visible, enabled and stable
         - element is visible, enabled and stable
@@ -54,8 +60,6 @@ Call log:
       - generic: 🌤️
       - generic: 🌳
       - generic: 🌲
-    - generic:
-      - img "Zeko na livadi"
     - generic [ref=e5]:
       - banner [ref=e6]:
         - button "Natrag na izbor razine" [ref=e7] [cursor=pointer]:
@@ -64,18 +68,18 @@ Call log:
         - generic [ref=e11]:
           - button "Isključi zvuk" [pressed] [ref=e12] [cursor=pointer]:
             - generic [ref=e13]: 🔊
-          - generic [ref=e14]: 1/10
+          - generic [ref=e14]: 2/10
       - generic [ref=e15]:
         - generic [ref=e16]:
-          - paragraph [ref=e17]: Zeko je gladan!
-          - paragraph [ref=e18]: Što jede zeko?
+          - paragraph [ref=e17]: Majmun je gladan!
+          - paragraph [ref=e18]: Što jede majmun?
         - generic [ref=e20]:
-          - button "Odaberi Banana" [ref=e21] [cursor=pointer]:
-            - generic [ref=e23]: Banana
-          - button "Odaberi Riba" [ref=e24] [cursor=pointer]:
-            - generic [ref=e26]: Riba
-          - button "Odaberi Mrkva" [ref=e27] [cursor=pointer]:
-            - generic [ref=e29]: Mrkva
+          - button "Odaberi Riba" [ref=e21] [cursor=pointer]:
+            - generic [ref=e23]: Riba
+          - button "Odaberi Salata" [ref=e24] [cursor=pointer]:
+            - generic [ref=e26]: Salata
+          - button "Odaberi Banana" [ref=e27] [cursor=pointer]:
+            - generic [ref=e29]: Banana
   - dialog "Vi birate analitiku" [ref=e30]:
     - generic [ref=e31]:
       - img [ref=e33]

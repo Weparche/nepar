@@ -14,6 +14,10 @@ export const digitalPriceListFaqHr = [
   ["Koliko dugo se čuvaju stare verzije?", "Objavljeni cjenici trebaju ostati dostupni 30 dana od objave odnosno promjene."],
   ["Treba li WooCommerce?", "Ne. WooCommerce je samo jedna moguća integracija kada cijene već vodite u drugom strukturiranom sustavu."],
   ["Može li se implementirati na Wix?", "Da. Način implementacije razlikuje se od WordPressa, ali digitalni cjenik moguće je povezati i s postojećom Wix stranicom."],
+  ["Moram li dodati posebno polje u bazu podataka za sidrenu cijenu?", "Ne kao zakonski zahtjev. To je samo jedna implementacijska opcija. Bitno je da obvezni podatak ispravno objavite u propisanom cjeniku i, gdje je primjenjivo, prikažete uz cijenu — kako ga interno pohranjujete bira se prema tehničkim mogućnostima postojećeg sustava."],
+  ["Mora li arhiva biti u /cjenik/arhiva/ direktoriju?", "Ne. Odluka propisuje da objavljeni cjenici ostanu dostupni 30 dana od objave odnosno promjene, ali ne propisuje konkretnu URL strukturu ili naziv direktorija. /cjenik/arhiva je NEPAR-ov primjer implementacije, ne zakonski zahtjev."],
+  ["Mora li naziv datoteke sadržavati propisane podatke?", "Da. Odluka propisuje da naziv datoteke uključuje oblik, adresu i oznaku prodajnog objekta, broj pohrane te vremensku oznaku s datumom i vremenom slanja. Točan separator, slug format ili encoding naziva nisu propisani — to je tehnička implementacija."],
+  ["Je li 10. rujna 2026. datum sidrene cijene za sve proizvode?", "Ne u potpunosti. Za većinu proizvoda i usluga referentna je cijena koja je bila na snazi 10. rujna 2026. Trgovci koji su prema ranijoj mjeri već isticali dodatnu cijenu za određene kategorije proizvoda nastavljaju s cijenom koja je bila na snazi 2. svibnja 2025. za te kategorije."],
 ];
 
 export const digitalPriceListFaqEn = [
@@ -27,4 +31,8 @@ export const digitalPriceListFaqEn = [
   ["How long are old versions kept?", "Published price lists should remain available for 30 days from publication or change."],
   ["Is WooCommerce required?", "No. WooCommerce is only one possible integration."],
   ["Can it be implemented on Wix?", "Yes. A digital price list can also be connected to an existing Wix site."],
+  ["Do I have to add a dedicated database field for the reference price?", "Not as a legal requirement. That is only one implementation option. What matters is that you correctly publish the required data in the prescribed price list and, where applicable, display it alongside the price — how you store it internally is chosen based on what your existing system supports."],
+  ["Does the archive have to live at /cjenik/arhiva/?", "No. The Decision requires published price lists to remain available for 30 days from publication or change, but it does not prescribe a specific URL structure or directory name. /cjenik/arhiva is NEPAR's own implementation example, not a legal requirement."],
+  ["Does the file name have to contain the prescribed data?", "Yes. The Decision requires the file name to include the point-of-sale form, address, and code, the storage/archive number, and a timestamp with the date and time of sending. The exact separator, slug format, or encoding is not prescribed — that is a technical implementation choice."],
+  ["Is 10 September 2026 the reference-price date for every product?", "Not entirely. For most products and services, the reference price is the one in effect on 10 September 2026. Traders who already displayed an additional price for certain categories under an earlier measure continue with the price in effect on 2 May 2025 for those categories."],
 ];

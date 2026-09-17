@@ -78,6 +78,7 @@ Call log:
     - <p id="consent-description">Nužne postavke održavaju stranicu funkcionalnom. …</p> from <aside role="dialog" aria-modal="false" class="consent-panel" data-testid="consent-panel" aria-labelledby="consent-title" aria-describedby="consent-description">…</aside> subtree intercepts pointer events
   - retrying click action
     - waiting 500ms
+    - waiting for element to be visible, enabled and stable
 
 ```
 

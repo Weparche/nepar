@@ -55,7 +55,8 @@ const guides = {
       {
         heading: "Što je sidrena odnosno dodatna cijena?",
         paragraphs: [
-          "Odluka NN 101/2026-1212 propisuje isticanje dodatne maloprodajne cijene uz važeću cijenu proizvoda ili usluge. Za većinu proizvoda i usluga referentna je cijena koja je bila na snazi 10. rujna 2026., uz posebna pravila za kategorije koje su već bile obuhvaćene ranijim mjerama.",
+          "Odluka NN 101/2026-1212 propisuje isticanje dodatne maloprodajne cijene uz važeću cijenu proizvoda ili usluge. Za većinu proizvoda i usluga referentna je cijena koja je bila na snazi 10. rujna 2026.",
+          "Iznimka: trgovci odnosno pružatelji usluga koji su prema ranijoj mjeri već isticali dodatnu cijenu za određene kategorije proizvoda nastavljaju s cijenom koja je bila na snazi 2. svibnja 2025. za te kategorije. Datum 10. rujna 2026. zato nije univerzalan za svaki proizvod ili uslugu bez iznimke.",
           "Dodatna cijena mora biti jasno istaknuta uz aktualnu cijenu tamo gdje se cijena prikazuje prema pravilima Odluke. Ako cijene oglašavate na vlastitoj web stranici, i web prikaz treba promatrati odvojeno od tehničke obveze XML/CSV cjenika.",
         ],
       },
@@ -76,9 +77,10 @@ const guides = {
     ],
     faq: [
       ["Je li sidrena cijena isto što i XML/CSV cjenik?", "Ne. Sidrena odnosno dodatna cijena uređena je Odlukom NN 101/2026-1212, a objava digitalnog XML/CSV cjenika Odlukom NN 101/2026-1213."],
-      ["Koji je datum važan za sidrenu cijenu?", "Za većinu proizvoda i usluga Odluka 1212 kao dodatnu cijenu veže cijenu koja je bila na snazi 10. rujna 2026. Za dio kategorija postoje posebna pravila iz ranijih mjera, pa treba provjeriti konkretan slučaj."],
+      ["Koji je datum važan za sidrenu cijenu?", "Za većinu proizvoda i usluga Odluka 1212 kao dodatnu cijenu veže cijenu koja je bila na snazi 10. rujna 2026. Trgovci koji su prema ranijoj mjeri već isticali dodatnu cijenu za određene kategorije proizvoda nastavljaju s cijenom koja je bila na snazi 2. svibnja 2025. za te kategorije."],
       ["Vrijedi li obveza samo za webshopove?", "Ne. Pravilo o dodatnoj cijeni nije ograničeno samo na online prodaju. Način primjene ovisi o tome gdje i kako trgovac ili pružatelj usluge ističe odnosno oglašava cijene."],
       ["Može li se sidrena cijena automatski prikazivati na webu?", "Da, ako postoji pouzdan strukturirani izvor podataka koji sadrži aktualnu i odgovarajuću dodatnu cijenu. Tada ih web integracija može prikazivati iz istog izvora."],
+      ["Moram li dodati posebno polje u bazu podataka za sidrenu cijenu?", "Ne kao zakonski zahtjev. To je samo jedna implementacijska opcija. Bitno je da obvezni podatak ispravno objavite i, gdje je primjenjivo, prikažete uz cijenu — interna pohrana bira se prema mogućnostima postojećeg sustava."],
     ],
     keywords: ["sidrena cijena", "dodatna cijena 2026", "NN 101/2026-1212", "digitalni cjenik", "1.10.2026"],
   },
@@ -101,8 +103,8 @@ const guides = {
       {
         heading: "Koji podaci ulaze u cjenik?",
         paragraphs: [
-          "Za usluge Odluka navodi naziv usluge, maloprodajnu cijenu te podatke povezane s posebnim oblikom prodaje i dodatnom odnosno sidrenom cijenom kada su primjenjivi. Za proizvode je skup podataka širi i uključuje, među ostalim, naziv, šifru, marku, jedinicu mjere, cijenu, EAN odnosno barkod i raspoloživost.",
-          "Naziv datoteke također nosi propisane identifikacijske elemente vezane uz prodajni objekt i vrijeme objave, pa produkcijsko rješenje ne bi trebalo svesti samo na generički export bez provjere strukture.",
+          "Za usluge Odluka navodi naziv usluge, maloprodajnu cijenu te podatke povezane s posebnim oblikom prodaje i dodatnom odnosno sidrenom cijenom kada su primjenjivi. Za proizvode je skup podataka širi i uključuje, među ostalim, naziv, šifru, marku, jedinicu mjere, cijenu, EAN odnosno barkod i raspoloživost. Barkod, marka i jedinica mjere nisu univerzalno obvezni podaci za pružatelje usluga.",
+          "Naziv datoteke ima propisane elemente: oblik, adresu i oznaku prodajnog objekta, broj pohrane te vremensku oznaku s datumom i vremenom slanja. Odluka ne propisuje točan separator, slug format ni encoding naziva — produkcijsko rješenje treba imati stabilnu naming konvenciju, ali ona je tehnička implementacija, a ne doslovan zakonski format.",
         ],
       },
       {
@@ -135,14 +137,15 @@ const guides = {
     description: "Kako automatizirati digitalni cjenik iz ERP-a, poslovnog programa, API-ja ili strukturiranog izvora: web prikaz, XML/CSV, arhiva i automatizirani dohvat bez dvostrukog unosa.",
     eyebrow: "TEHNIČKI VODIČ · NEPAR DIGITAL PRICE ENGINE",
     h1: "Automatizacija digitalnog cjenika: promijenite cijenu jednom, objavite je svugdje",
-    lead: "Najveći operativni problem digitalnog cjenika nije izrada jedne CSV datoteke, nego održavanje više prikaza cijena bez nesklada. Ako cijene već postoje u ERP-u, poslovnom programu, API-ju ili drugom strukturiranom izvoru, taj sustav može postati izvor istine za web.",
+    lead: "Najveći operativni problem digitalnog cjenika nije izrada jedne CSV datoteke, nego održavanje više prikaza cijena bez nesklada. Ako cijene već postoje u ERP-u, poslovnom programu, Excelu, webshopu, POS/blagajničkom sustavu ili drugom strukturiranom izvoru, taj sustav može postati izvor istine za web.",
     answer: "Najkraće: cijenu ne treba prepisivati ručno na više mjesta ako vaš postojeći sustav može pouzdano izvesti strukturirane podatke. Integracijski sloj može iz istog izvora generirati javni cjenik, XML/CSV, 30-dnevnu arhivu i endpoint za automatizirani dohvat, uz prikaz aktualne i dodatne cijene gdje je primjenjivo.",
     sections: [
       {
         heading: "Arhitektura: jedan izvor istine",
         paragraphs: [
-          "Izvor cijena može biti ERP, blagajna, poslovni program, API ili strukturirani izvoz. Bitno je da izvor pouzdano sadrži podatke potrebne za objavu i da se promjene mogu dohvatiti bez ručnog prepisivanja.",
+          "Izvor cijena može biti ERP, blagajna/POS, poslovni program, Excel, webshop, API ili strukturirani izvoz. Bitno je da izvor pouzdano sadrži podatke potrebne za objavu i da se promjene mogu dohvatiti bez ručnog prepisivanja.",
           "NEPAR integracija tada djeluje kao sloj između poslovnog sustava i web stranice: normalizira podatke, generira javni prikaz i strojno čitljive izlaze te zadržava prethodne objave.",
+          "Odluka propisuje rezultat — automatizirani dohvat podataka o cijenama — a ne konkretnu tehnologiju. Cron raspored, API, webhook ili pozadinski Worker su moguće tehničke implementacije tog rezultata, ne zakonom propisane tehnologije.",
         ],
       },
       {
