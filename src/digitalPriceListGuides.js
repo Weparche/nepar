@@ -24,6 +24,10 @@ export const digitalPriceListGuideSources = [
     label: "Ministarstvo gospodarstva — 11. paket mjera i sidrena cijena",
     href: "https://mingo.gov.hr/vijesti/vlada-rh-usvojila-11-paket-mjera-energetske-mjere-vrijedne-170-14-milijuna-eura-sidrena-cijena-prosiruje-se-na-sve-proizvode-i-usluge/10430",
   },
+  {
+    label: "Hrvatska gospodarska komora — webinar o mjerama izravne kontrole cijena",
+    href: "https://hgk.hr/webinar-mjere-izravne-kontrole-cijena-isticanje-dodatne-cijene-i-objava-cjenika-proizvoda-i-usluga-najava",
+  },
 ];
 
 const commonEngine = {

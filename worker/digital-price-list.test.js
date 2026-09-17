@@ -157,6 +157,25 @@ test("a secondary price-list page with only a PDF remains yellow", async () => {
   assert.equal(result.body.details.xmlFound, false);
 });
 
+test("a discovered archive link is reported found, and a missing one is reported not found", async () => {
+  const withArchive = await check("https://example.com", routeFetch({
+    "/": () => new Response('<a href="/cjenik.csv">CSV</a><a href="/cjenik/arhiva/">Arhiva cjenika</a>', { status: 200 }),
+    "/cjenik.csv": () => new Response("usluga,cijena\nŠišanje,15", { status: 200 }),
+    "/cjenik/arhiva/": () => new Response("<p>Arhiva</p>", { status: 200 }),
+  }));
+  assert.equal(withArchive.body.details.archiveFound, true);
+  assert.equal(withArchive.body.details.archiveUrl, "https://example.com/cjenik/arhiva/");
+
+  const withoutArchive = await check("https://example.com", routeFetch({
+    "/": () => new Response('<a href="/cjenik.csv">CSV</a>', { status: 200 }),
+    "/cjenik.csv": () => new Response("usluga,cijena\nŠišanje,15", { status: 200 }),
+    "/cjenik/arhiva/": () => new Response("not found", { status: 404 }),
+    "/cjenik/arhiva": () => new Response("not found", { status: 404 }),
+  }));
+  assert.equal(withoutArchive.body.details.archiveFound, false);
+  assert.equal(withoutArchive.body.details.archiveUrl, null);
+});
+
 test("a homepage timeout returns a graceful red result", async () => {
   const result = await check("https://example.com", async () => { throw new DOMException("Timed out", "AbortError"); });
   assert.equal(result.response.status, 200);

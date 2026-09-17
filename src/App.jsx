@@ -44,6 +44,7 @@ const PrivacyPage = lazy(() => import("./PrivacyPage.jsx"));
 const MozgalicaPage = lazy(() => import("./mozgalica/MozgalicaPage.jsx"));
 const NjamkoPage = lazy(() => import("./njamko/NjamkoPage.jsx"));
 const DigitalPriceListPage = lazy(() => import("./DigitalPriceListPage.jsx"));
+const DigitalPriceListGuidePage = lazy(() => import("./DigitalPriceListGuidePage.jsx"));
 const CjenikPage = lazy(() => import("./CjenikPage.jsx"));
 const CjenikArhivaPage = lazy(() => import("./CjenikArhivaPage.jsx"));
 
@@ -1626,7 +1627,7 @@ function ScrollToTop() {
   return null;
 }
 
-function PageViewTracker() {
+export function PageViewTracker() {
   const { pathname, key } = useLocation();
 
   useEffect(() => {
@@ -1691,6 +1692,9 @@ export default function App() {
           <Route path="/mozgalica" element={<MozgalicaPage />} />
           <Route path="/njamko" element={<NjamkoPage />} />
           <Route path="/digitalni-cjenik" element={<DigitalPriceListPage />} />
+          <Route path="/digitalni-cjenik/sidrena-cijena" element={<DigitalPriceListGuidePage routePath="/digitalni-cjenik/sidrena-cijena" />} />
+          <Route path="/digitalni-cjenik/xml-csv" element={<DigitalPriceListGuidePage routePath="/digitalni-cjenik/xml-csv" />} />
+          <Route path="/digitalni-cjenik/automatizacija" element={<DigitalPriceListGuidePage routePath="/digitalni-cjenik/automatizacija" />} />
           <Route path="/cjenik" element={<CjenikPage />} />
           <Route path="/cjenik/arhiva" element={<CjenikArhivaPage />} />
           <Route path="*" element={<NotFoundPage />} />

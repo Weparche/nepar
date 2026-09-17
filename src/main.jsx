@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { MotionConfig } from "framer-motion";
 import { BrowserRouter } from "react-router-dom";
-import App from "./App.jsx";
+import App, { PageViewTracker } from "./App.jsx";
 import ConsentManager from "./ConsentManager.jsx";
 import DigitalPriceListGuidePage, { isDigitalPriceListGuidePath } from "./DigitalPriceListGuidePage.jsx";
 import "@fontsource-variable/inter";
@@ -18,6 +18,7 @@ const pathname = window.location.pathname !== "/"
 const page = isDigitalPriceListGuidePath(pathname)
   ? (
     <BrowserRouter>
+      <PageViewTracker />
       <DigitalPriceListGuidePage routePath={pathname} />
       <ConsentManager />
     </BrowserRouter>

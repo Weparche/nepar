@@ -1,6 +1,7 @@
 import { webOfferContent } from "./webOfferContent.js";
 import { nepaUsluge } from "./cjenikData.js";
 import { BUSINESS } from "./siteIdentity.js";
+import { digitalPriceListFaqHr } from "./digitalPriceListFaq.js";
 
 export const SITE_URL = "https://nepar.hr";
 export const DEFAULT_SOCIAL_IMAGE = "/brand/web-app-manifest-512x512.png";
@@ -30,20 +31,10 @@ export const serviceFaq = {
   ],
 };
 
-export const digitalPriceListFaq = [
-  ["Odnosi li se nova obveza samo na webshopove?", "Ne. Odluka 1213 obvezu objave digitalnog cjenika veže uz trgovca odnosno pružatelja usluge koji ima uspostavljenu mrežnu stranicu, a ne uz samu mogućnost online kupnje."],
-  ["Imam samo prezentacijsku web stranicu. Odnosi li se to na mene?", "Sama činjenica da putem weba ne naplaćujete uslugu ne znači automatski da ste izvan obuhvata. Za specifične poslovne modele provjerite službena pojašnjenja."],
-  ["Koja je razlika između sidrene cijene i digitalnog cjenika?", "Riječ je o dvije povezane, ali odvojene obveze. Odluka 1212 uređuje isticanje dodatne odnosno sidrene cijene, dok Odluka 1213 uređuje objavu strojno čitljivih XML/CSV cjenika na mrežnim stranicama."],
-  ["Imam samo Facebook ili Instagram. Moram li imati XML/CSV cjenik?", "Za poslovanje koje nema vlastitu web stranicu, a koristi samo društvene mreže, konačnu primjenjivost XML/CSV obveze treba provjeriti prema službenim pojašnjenjima nadležnih tijela. To ne znači da se pravila o dodatnoj odnosno sidrenoj cijeni mogu ignorirati pri oglašavanju cijena."],
-  ["Moram li svaki put ručno mijenjati cijenu i na webu?", "Ne nužno. Ako poslovni sustav iz kojeg vodite cijene može pružiti odgovarajući strukturirani izvor podataka, web integraciju moguće je automatizirati."],
-  ["Vrijedi li za B2B tvrtke?", "Odluka je usmjerena na maloprodajne cijene i zaštitu potrošača. Za poslovanje koje je isključivo B2B preporučuje se provjeriti primjenjivost na konkretan slučaj."],
-  ["Je li dovoljan PDF?", "Odluka izričito navodi objavu cjenika u .xml ili .csv formatu pogodnom za automatsku obradu."],
-  ["Mora li cjenik biti na vlastitoj web stranici?", "Odluka navodi da trgovac odnosno pružatelj usluge cjenike objavljuje na svojim mrežnim stranicama."],
-  ["Koliko dugo se čuvaju stare verzije?", "Objavljeni cjenici trebaju ostati dostupni 30 dana od objave odnosno promjene."],
-  ["Koliko često se ažurira cjenik usluga?", "Kod promjene cijena cjenik se ažurira najkasnije do 8:00 sati dana kada se objavljuje promjena."],
-  ["Treba li WooCommerce?", "Ne. Ako cijene već vodite u poslovnom sustavu ili drugom strukturiranom izvoru, obični WordPress može koristiti taj izvor."],
-  ["Može li se implementirati na Wix?", "Da. Način implementacije razlikuje se od WordPressa, ali digitalni cjenik moguće je povezati i s postojećom Wix stranicom."],
-];
+// Kept as a re-export for backward compatibility with any existing imports;
+// the canonical content now lives in digitalPriceListFaq.js so the FAQPage
+// schema always matches the visible on-page FAQ (see that file's header comment).
+export const digitalPriceListFaq = digitalPriceListFaqHr;
 
 export const digitalPriceListSources = [
   "https://narodne-novine.nn.hr/clanci/sluzbeni/2026_09_101_1212.html",
@@ -382,12 +373,13 @@ export function getStructuredData(path = "/") {
       },
       {
         "@type": "Service",
-        "@id": `${canonicalUrl}#service`,
-        name: "Digitalni cjenik XML/CSV",
-        description: page.description,
-        serviceType: "Implementacija digitalnog cjenika",
+        "@id": `${SITE_URL}/digitalni-cjenik#price-engine`,
+        name: "NEPAR Digital Price Engine",
+        description: "NEPAR Digital Price Engine povezuje postojeći strukturirani izvor cijena (ERP, poslovni program, API ili CSV/XML) s web stranicom trgovca ili pružatelja usluge te automatski generira javni cjenik, XML/CSV datoteke, 30-dnevnu arhivu i automatizirani dohvat podataka.",
+        serviceType: "Automatizacija i implementacija digitalnog cjenika",
         areaServed: { "@type": "Country", name: "Hrvatska" },
         provider: { "@id": ORGANIZATION_ID },
+        url: `${SITE_URL}/digitalni-cjenik`,
       },
       {
         "@type": "FAQPage",

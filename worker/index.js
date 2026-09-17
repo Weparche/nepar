@@ -39,7 +39,7 @@ const DIGITAL_PRICE_LIST_METADATA_HOSTS = new Set([
 ]);
 
 function digitalPriceListResult(status, message, details = {}) {
-  return { status, message, details: { reachable: false, https: false, csvFound: false, xmlFound: false, pricePageFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null, csvLinkDiscovered: false, xmlLinkDiscovered: false, ...details } };
+  return { status, message, details: { reachable: false, https: false, csvFound: false, xmlFound: false, pricePageFound: false, archiveFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null, archiveUrl: null, csvLinkDiscovered: false, xmlLinkDiscovered: false, archiveLinkDiscovered: false, ...details } };
 }
 
 function normalizedHostname(hostname) {
@@ -180,7 +180,8 @@ function extractDigitalPriceListLinks(html, baseUrl) {
     const format = (url.searchParams.get("format") || url.searchParams.get("type") || "").toLowerCase();
     const isCsv = /\.csv(?:$|[?#])/.test(lowerHref) || format === "csv" || lowerHref.includes("csv");
     const isXml = /\.xml(?:$|[?#])/.test(lowerHref) || format === "xml" || lowerHref.includes("xml");
-    if (isCsv || isXml || /(cjenik|cijene|price)/.test(`${lowerHref} ${text}`)) results.push({ url, kind: isCsv ? "csv" : isXml ? "xml" : "price" });
+    const isArchive = /(arhiva|archive)/.test(`${lowerHref} ${text}`) && /(cjenik|cijene|price)/.test(`${lowerHref} ${text}`);
+    if (isCsv || isXml || isArchive || /(cjenik|cijene|price)/.test(`${lowerHref} ${text}`)) results.push({ url, kind: isCsv ? "csv" : isXml ? "xml" : isArchive ? "archive" : "price" });
   }
   return results;
 }
@@ -229,16 +230,20 @@ async function handleDigitalPriceListCheck(request, env, origin) {
   const secondaryPages = [];
   const csvCandidates = [];
   const xmlCandidates = [];
-  const details = { reachable: true, https: homepage.url.protocol === "https:", csvFound: false, xmlFound: false, pricePageFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null, csvLinkDiscovered: false, xmlLinkDiscovered: false };
+  const archiveCandidates = [];
+  const details = { reachable: true, https: homepage.url.protocol === "https:", csvFound: false, xmlFound: false, pricePageFound: false, archiveFound: false, csvUrl: null, xmlUrl: null, pricePageUrl: null, archiveUrl: null, csvLinkDiscovered: false, xmlLinkDiscovered: false, archiveLinkDiscovered: false };
   for (const candidate of homepageLinks) {
     if (candidate.kind === "price") appendUniqueCandidate(secondaryPages, candidate.url, DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES);
     if (candidate.kind === "csv") { details.csvLinkDiscovered = true; appendUniqueCandidate(csvCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES); }
     if (candidate.kind === "xml") { details.xmlLinkDiscovered = true; appendUniqueCandidate(xmlCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES); }
+    if (candidate.kind === "archive") { details.archiveLinkDiscovered = true; appendUniqueCandidate(archiveCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES); }
   }
   appendUniqueCandidate(secondaryPages, new URL("/cjenik/", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES);
   appendUniqueCandidate(secondaryPages, new URL("/cjenici/", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES);
   appendUniqueCandidate(csvCandidates, new URL("/cjenik.csv", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES);
   appendUniqueCandidate(xmlCandidates, new URL("/cjenik.xml", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES);
+  appendUniqueCandidate(archiveCandidates, new URL("/cjenik/arhiva/", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES);
+  appendUniqueCandidate(archiveCandidates, new URL("/cjenik/arhiva", homepage.url.origin), DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES);
   for (const secondaryPage of secondaryPages) {
     try {
       const fetched = await safeDigitalPriceListFetch(secondaryPage, env, dnsCache);
@@ -249,6 +254,7 @@ async function handleDigitalPriceListCheck(request, env, origin) {
       for (const candidate of extractDigitalPriceListLinks(secondaryHtml, fetched.url)) {
         if (candidate.kind === "csv") { details.csvLinkDiscovered = true; appendUniqueCandidate(csvCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES); }
         if (candidate.kind === "xml") { details.xmlLinkDiscovered = true; appendUniqueCandidate(xmlCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_DOCUMENT_CANDIDATES); }
+        if (candidate.kind === "archive") { details.archiveLinkDiscovered = true; appendUniqueCandidate(archiveCandidates, candidate.url, DIGITAL_PRICE_LIST_MAX_SECONDARY_PAGES); }
       }
     } catch { /* A secondary page is optional; every fetch still used the safe path. */ }
   }
@@ -256,6 +262,12 @@ async function handleDigitalPriceListCheck(request, env, origin) {
   details.xmlUrl = await findConfirmedDigitalPriceListDocument("xml", xmlCandidates, env, dnsCache);
   details.csvFound = Boolean(details.csvUrl);
   details.xmlFound = Boolean(details.xmlUrl);
+  for (const candidate of archiveCandidates) {
+    try {
+      const fetched = await safeDigitalPriceListFetch(candidate, env, dnsCache);
+      if (fetched.response.ok) { details.archiveFound = true; details.archiveUrl = fetched.url.href; break; }
+    } catch { /* Try the next archive candidate. */ }
+  }
   if (details.csvFound || details.xmlFound) return json(digitalPriceListResult("green", "Na web stranici pronađen je javno dostupan CSV ili XML dokument.", details), 200, origin);
   if (details.pricePageFound) return json(digitalPriceListResult("yellow", "Na stranici postoje informacije o cijenama ili cjeniku, ali automatska provjera nije pronašla javno dostupan XML ili CSV dokument.", details), 200, origin);
   return json(digitalPriceListResult("red", "Automatska provjera nije pronašla javno dostupan XML ili CSV cjenik.", details), 200, origin);
