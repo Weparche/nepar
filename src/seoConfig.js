@@ -111,11 +111,11 @@ const localizedPages = {
   "/sidrene-cijene": {
     indexable: true,
     hr: {
-      title: "Sidrena cijena od 1.10.2026. — što trebate napraviti | NEPAR",
+      title: "Sidrena cijena od 1.10.2026. — što morate napraviti | NEPAR",
       description: "Sidrena cijena i digitalni XML/CSV cjenik prema NN 101/2026: tko je obveznik, koji je datum i kako to riješiti na postojećem webu uz besplatnu provjeru.",
     },
     en: {
-      title: "Reference price from 1 Oct 2026 — what to do | NEPAR",
+      title: "Reference price from 1 Oct 2026 — what you must do | NEPAR",
       description: "Reference price and digital XML/CSV price list under NN 101/2026: who is covered, which date applies, and how to fix it on your existing website with a free check.",
     },
     schema: "sidrene-cijene",

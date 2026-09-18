@@ -49,8 +49,8 @@ if (faqEn.length !== TARGET_QUESTIONS_EN.length) {
 const content = {
   hr: {
     eyebrow: "NN 101/2026-1212 · primjena od 1.10.2026.",
-    title: "Sidrena cijena od 1.10.2026. — što trebate napraviti na svom webu?",
-    lead: "Od 1. listopada 2026. trgovci u maloprodaji i pružatelji usluga obuhvaćeni su pravilima o dodatnoj cijeni. Ako imate web stranicu, postoje i dodatne obveze objave digitalnog XML/CSV cjenika. Ovdje provjerite što trebate napraviti na svom postojećem webu.",
+    title: "Sidrena cijena od 1.10.2026. — što morate napraviti?",
+    lead: "Od 1. listopada 2026. trgovci u maloprodaji i pružatelji usluga obuhvaćeni su pravilima o dodatnoj cijeni, bez obzira imaju li web stranicu. Imate web stranicu? Provjerite i dodatne obveze XML/CSV digitalnog cjenika.",
     ctaPrimary: "Izradi digitalni cjenik",
     ctaSecondary: "Besplatna provjera",
     obligationsTitle: "Tko je obveznik?",
@@ -82,8 +82,8 @@ const content = {
   },
   en: {
     eyebrow: "NN 101/2026-1212 · effective from 1 Oct 2026",
-    title: "Reference price from 1 Oct 2026 — what you need to do on your website",
-    lead: "From 1 October 2026, retail traders and service providers are covered by the additional-price rules. If you have a website, there are also additional obligations to publish a digital XML/CSV price list. Check here what you need to do on your existing website.",
+    title: "Reference price from 1 Oct 2026 — what you must do",
+    lead: "From 1 October 2026, retail traders and service providers are covered by the additional-price rules, regardless of whether they have a website. Do you have a website? Check the additional XML/CSV digital price list obligations too.",
     ctaPrimary: "Build a digital price list",
     ctaSecondary: "Free check",
     obligationsTitle: "Who is covered?",

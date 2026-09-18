@@ -5,10 +5,10 @@ test("/sidrene-cijene has a self-canonical, correct title, and one H1", async ({
   const staticHtml = await staticResponse.text();
   expect(staticHtml).toContain("data-nepar-static-content");
   await page.goto("/sidrene-cijene");
-  await expect(page).toHaveTitle("Sidrena cijena od 1.10.2026. — što trebate napraviti | NEPAR");
+  await expect(page).toHaveTitle("Sidrena cijena od 1.10.2026. — što morate napraviti | NEPAR");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://nepar.hr/sidrene-cijene");
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Sidrena cijena od 1.10.2026. — što trebate napraviti na svom webu?");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Sidrena cijena od 1.10.2026. — što morate napraviti?");
   const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
 });
