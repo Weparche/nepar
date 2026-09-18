@@ -94,7 +94,7 @@ const guides = {
     eyebrow: "VODIČ · NN 101/2026-1213",
     h1: "XML/CSV digitalni cjenik 2026: što mora biti javno dostupno na webu",
     lead: "Odluka NN 101/2026-1213 od 1. listopada 2026. uvodi objavu važećih cjenika proizvoda i usluga u strojno čitljivom .xml ili .csv formatu za trgovce i pružatelje usluga koji imaju uspostavljene mrežne stranice.",
-    answer: "Najkraće: PDF, slika ili obična HTML tablica nisu zamjena za strojno čitljivi cjenik. Odluka traži XML ili CSV pogodan za automatsku obradu, dostupnost prethodnih objava 30 dana i tehničko rješenje koje softverskim alatima omogućuje automatizirano prikupljanje podataka.",
+    answer: "Najkraće: XML/CSV digitalni cjenik je javno dostupna datoteka s cijenama proizvoda ili usluga u strojno čitljivom XML ili CSV formatu, namijenjena automatskoj obradi — PDF, slika ili obična HTML tablica nisu zamjena za nju. Odluka traži takav format, dostupnost prethodnih objava 30 dana i tehničko rješenje koje softverskim alatima omogućuje automatizirano prikupljanje podataka.",
     sections: [
       {
         heading: "Tko prema Odluci 1213 objavljuje digitalni cjenik?",
@@ -138,12 +138,12 @@ const guides = {
   },
   "/digitalni-cjenik/automatizacija": {
     slug: "automatizacija",
-    title: "Automatizacija digitalnog cjenika: ERP, web i XML/CSV | NEPAR",
+    title: "Automatizacija digitalnog cjenika: kako povezati cijene s webom | NEPAR",
     description: "Kako automatizirati digitalni cjenik iz ERP-a, poslovnog programa, API-ja ili strukturiranog izvora: web prikaz, XML/CSV, arhiva i automatizirani dohvat bez dvostrukog unosa.",
     eyebrow: "TEHNIČKI VODIČ · NEPAR DIGITAL PRICE ENGINE",
-    h1: "Automatizacija digitalnog cjenika: promijenite cijenu jednom, objavite je svugdje",
+    h1: "Automatizacija digitalnog cjenika: kako povezati cijene s webom bez dvostrukog unosa",
     lead: "Najveći operativni problem digitalnog cjenika nije izrada jedne CSV datoteke, nego održavanje više prikaza cijena bez nesklada. Ako cijene već postoje u ERP-u, poslovnom programu, Excelu, webshopu, POS/blagajničkom sustavu ili drugom strukturiranom izvoru, taj sustav može postati izvor istine za web.",
-    answer: "Najkraće: cijenu ne treba prepisivati ručno na više mjesta ako vaš postojeći sustav može pouzdano izvesti strukturirane podatke. Integracijski sloj može iz istog izvora generirati javni cjenik, XML/CSV, 30-dnevnu arhivu i endpoint za automatizirani dohvat, uz prikaz aktualne i dodatne cijene gdje je primjenjivo.",
+    answer: "Najkraće: automatizacija digitalnog cjenika znači da se cijene povlače iz postojećeg izvora — ERP-a, poslovnog programa ili drugog strukturiranog sustava — i iz njega automatski generiraju u javni cjenik, XML/CSV, 30-dnevnu arhivu i endpoint za automatizirani dohvat, bez ručnog prepisivanja na više mjesta. Prikaz aktualne i dodatne cijene ide iz istog izvora, gdje je primjenjivo.",
     sections: [
       {
         heading: "Arhitektura: jedan izvor istine",

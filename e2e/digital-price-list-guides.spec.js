@@ -13,8 +13,8 @@ const guides = [
   },
   {
     path: "/digitalni-cjenik/automatizacija",
-    title: "Automatizacija digitalnog cjenika: ERP, web i XML/CSV | NEPAR",
-    h1: "Automatizacija digitalnog cjenika: promijenite cijenu jednom, objavite je svugdje",
+    title: "Automatizacija digitalnog cjenika: kako povezati cijene s webom | NEPAR",
+    h1: "Automatizacija digitalnog cjenika: kako povezati cijene s webom bez dvostrukog unosa",
   },
 ];
 
@@ -72,4 +72,28 @@ test("xml-csv guide gives products and services non-identical required fields an
   expect(staticHtml).toContain("nisu univerzalno obvezni podaci za pružatelje usluga");
   expect(staticHtml).toContain("oblik, adresu i oznaku prodajnog objekta, broj pohrane");
   expect(staticHtml).toContain("ne propisuje točan separator, slug format ni encoding naziva");
+});
+
+test("xml-csv and automatizacija intros open with a definition, not a comparison or narrative frame", async ({ page }) => {
+  const xmlCsvHtml = await (await page.request.get("/digitalni-cjenik/xml-csv")).text();
+  expect(xmlCsvHtml).toContain("XML/CSV digitalni cjenik je javno dostupna datoteka s cijenama");
+
+  const automationHtml = await (await page.request.get("/digitalni-cjenik/automatizacija")).text();
+  expect(automationHtml).toContain("automatizacija digitalnog cjenika znači da se cijene povlače iz postojećeg izvora");
+  expect(automationHtml).toContain("automatski generiraju");
+});
+
+test("hub and its three supporting guides all have unique title and H1", async ({ page }) => {
+  const pages = ["/digitalni-cjenik", ...guides.map((guide) => guide.path)];
+  const titles = new Set();
+  const h1s = new Set();
+  for (const path of pages) {
+    await page.goto(path);
+    const title = await page.title();
+    const h1 = await page.getByRole("heading", { level: 1 }).textContent();
+    expect(titles.has(title), `duplicate title on ${path}: ${title}`).toBe(false);
+    expect(h1s.has(h1), `duplicate H1 on ${path}: ${h1}`).toBe(false);
+    titles.add(title);
+    h1s.add(h1);
+  }
 });

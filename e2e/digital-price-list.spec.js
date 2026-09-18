@@ -70,8 +70,8 @@ test("compliance summary separates legal requirements from NEPAR implementation 
   expect(staticHtml).toContain("Barkod, marka, jedinica mjere i dostupnost odnose se na proizvode");
   await page.goto("/digitalni-cjenik");
   await expect(page.getByRole("link", { name: "Vodič za sidrenu cijenu", exact: true }).first()).toHaveAttribute("href", "/digitalni-cjenik/sidrena-cijena");
-  await expect(page.getByRole("link", { name: "XML/CSV vodič", exact: true }).first()).toHaveAttribute("href", "/digitalni-cjenik/xml-csv");
-  await expect(page.getByRole("link", { name: "Vodič za automatizaciju", exact: true }).first()).toHaveAttribute("href", "/digitalni-cjenik/automatizacija");
+  await expect(page.getByRole("link", { name: "XML i CSV digitalni cjenik", exact: true }).first()).toHaveAttribute("href", "/digitalni-cjenik/xml-csv");
+  await expect(page.getByRole("link", { name: "Automatizacija digitalnog cjenika", exact: true }).first()).toHaveAttribute("href", "/digitalni-cjenik/automatizacija");
 });
 
 test("FAQ visible content and JSON-LD schema come from the same source", async ({ page }) => {
