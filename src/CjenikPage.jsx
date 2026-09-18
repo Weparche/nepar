@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, FileCode2, FileText } from "lucide-react";
 import { Background, Navbar, SiteFooter, siteContent } from "./SiteChrome.jsx";
 import { usePageMeta } from "./usePageMeta.js";
@@ -39,6 +40,8 @@ const content = {
     odNoteId: "cjenik-od-note",
     odNote: "* Cijena je početna (\"od\") — konačna cijena ovisi o opsegu ili platformi. Odluka ne definira posebnu semantiku za početnu cijenu; ovo je NEPAR-ovo tehničko pojašnjenje, vidljivo i u strojnom zapisu kao dodatno polje nepar_cijena_od.",
     newServiceNote: "Usluge bez sidrene cijene uvedene su nakon 10.9.2026., a Odluka NN 101/2026-1212 za njih ne definira sidrenu cijenu.",
+    sidrenaGuideLink: "Vodič za sidrenu cijenu",
+    xmlCsvGuideLink: "Tehnički zahtjevi XML/CSV digitalnog cjenika",
     cjenikCategoryNote: "Ovo su usluge koje NEPAR nudi drugim tvrtkama za implementaciju digitalnog cjenika na njihovoj web-stranici — nisu dio NEPAR-ove web ili social ponude iznad.",
     noSidrena: "— (nova usluga)",
     noSpecial: "—",
@@ -61,6 +64,8 @@ const content = {
     odNoteId: "cjenik-od-note",
     odNote: "* This is a starting (\"from\") price — the final price depends on scope or platform. The Decision does not define \"starting price\" semantics; this is a NEPAR technical clarification, also present in the machine file as the nepar_cijena_od field.",
     newServiceNote: "Services without a reference price were introduced after 10 September 2026, and Decision NN 101/2026-1212 does not define one for them.",
+    sidrenaGuideLink: "Reference-price guide",
+    xmlCsvGuideLink: "XML/CSV digital price list technical requirements",
     cjenikCategoryNote: "These are services NEPAR sells to other businesses to implement a digital price list on their own website — they are not part of NEPAR's own web or social offering above.",
     noSidrena: "— (new service)",
     noSpecial: "—",
@@ -179,6 +184,7 @@ export default function CjenikPage() {
         <div className="section-shell max-w-5xl">
           <p id={copy.odNoteId} className="max-w-prose text-xs leading-5 text-slate-500">{copy.odNote}</p>
           <p className="mt-2 max-w-prose text-xs leading-5 text-slate-500">{copy.newServiceNote}</p>
+          <Link to="/digitalni-cjenik/sidrena-cijena" className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">{copy.sidrenaGuideLink}<ArrowRight size={15} aria-hidden="true" /></Link>
         </div>
       </section>
 
@@ -202,6 +208,9 @@ export default function CjenikPage() {
           <a href="/cjenik/arhiva" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">
             {copy.archiveLink}<ArrowRight size={16} aria-hidden="true" />
           </a>
+          <div>
+            <Link to="/digitalni-cjenik/xml-csv" className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">{copy.xmlCsvGuideLink}<ArrowRight size={15} aria-hidden="true" /></Link>
+          </div>
         </div>
       </section>
       <SiteFooter copy={siteContent[lang]} lang={lang} />

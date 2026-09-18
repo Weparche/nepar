@@ -1,5 +1,6 @@
 const SITE_URL = "https://nepar.hr";
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+const WEBSITE_ID = `${SITE_URL}/#website`;
 
 export const DIGITAL_PRICE_LIST_GUIDE_PATHS = [
   "/digitalni-cjenik/sidrena-cijena",
@@ -83,6 +84,8 @@ const guides = {
       ["Moram li dodati posebno polje u bazu podataka za sidrenu cijenu?", "Ne kao zakonski zahtjev. To je samo jedna implementacijska opcija. Bitno je da obvezni podatak ispravno objavite i, gdje je primjenjivo, prikažete uz cijenu — interna pohrana bira se prema mogućnostima postojećeg sustava."],
     ],
     keywords: ["sidrena cijena", "dodatna cijena 2026", "NN 101/2026-1212", "digitalni cjenik", "1.10.2026"],
+    datePublished: "2026-09-17",
+    dateModified: "2026-09-18",
   },
   "/digitalni-cjenik/xml-csv": {
     slug: "xml-csv",
@@ -130,6 +133,8 @@ const guides = {
       ["Mora li se sve ručno ažurirati?", "Ne. Ako postojeći sustav cijena daje pouzdan strukturirani izvor ili API, objavu web cjenika i XML/CSV datoteka moguće je automatizirati."],
     ],
     keywords: ["XML cjenik", "CSV cjenik", "digitalni cjenik 2026", "NN 101/2026-1213", "30 dana cjenik", "automatizirani dohvat cijena"],
+    datePublished: "2026-09-17",
+    dateModified: "2026-09-18",
   },
   "/digitalni-cjenik/automatizacija": {
     slug: "automatizacija",
@@ -178,6 +183,8 @@ const guides = {
       ["Može li se povezati postojeća web stranica?", "Da, ako su dostupni potrebni tehnički pristupi. NEPAR implementira na postojećim WordPress, Wix, React/Next/Vite i custom webovima, uz procjenu konkretnog sustava."],
     ],
     keywords: ["automatizacija digitalnog cjenika", "ERP cjenik web", "digitalni cjenik API", "XML CSV automatizacija", "NEPAR Digital Price Engine"],
+    datePublished: "2026-09-17",
+    dateModified: "2026-09-18",
   },
 };
 
@@ -215,6 +222,7 @@ export function getDigitalPriceListGuideSeoPage(path) {
     lang: "hr",
     title: guide.title,
     description: guide.description,
+    lastmod: guide.dateModified,
   };
 }
 
@@ -236,6 +244,17 @@ export function getDigitalPriceListGuideStructuredData(path) {
         email: "nepar@nepar.hr",
       },
       {
+        "@type": "WebPage",
+        "@id": `${canonicalUrl}#page`,
+        name: guide.h1,
+        description: guide.description,
+        url: canonicalUrl,
+        inLanguage: "hr",
+        isPartOf: { "@id": WEBSITE_ID },
+        about: guide.keywords.slice(0, 4).map((name) => ({ "@type": "Thing", name })),
+        mainEntity: { "@id": `${canonicalUrl}#article` },
+      },
+      {
         "@type": "TechArticle",
         "@id": `${canonicalUrl}#article`,
         headline: guide.h1,
@@ -243,12 +262,11 @@ export function getDigitalPriceListGuideStructuredData(path) {
         keywords: guide.keywords,
         mainEntityOfPage: canonicalUrl,
         inLanguage: "hr",
-        datePublished: "2026-09-17",
-        dateModified: "2026-09-17",
+        datePublished: guide.datePublished,
+        dateModified: guide.dateModified,
         author: { "@id": ORGANIZATION_ID },
         publisher: { "@id": ORGANIZATION_ID },
         citation: guide.sources.map((source) => source.href),
-        about: guide.keywords.slice(0, 4).map((name) => ({ "@type": "Thing", name })),
       },
       {
         "@type": "FAQPage",

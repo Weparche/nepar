@@ -43,6 +43,12 @@ test("both CTAs point to the right destinations and analytics events are wired",
   await expect(page.getByRole("link", { name: "Pročitajte detaljno →", exact: true })).toHaveAttribute("href", "/digitalni-cjenik/sidrena-cijena");
 });
 
+test("obligation cards link to their respective supporting guides", async ({ page }) => {
+  await page.goto("/sidrene-cijene");
+  await expect(page.getByRole("link", { name: "Detaljan vodič za sidrenu cijenu" })).toHaveAttribute("href", "/digitalni-cjenik/sidrena-cijena");
+  await expect(page.getByRole("link", { name: "Tehnički zahtjevi XML/CSV digitalnog cjenika" })).toHaveAttribute("href", "/digitalni-cjenik/xml-csv");
+});
+
 test("FAQ visible content matches JSON-LD schema and has exactly 3 questions", async ({ page }) => {
   await page.goto("/sidrene-cijene");
   await expect(page.getByText("Koja je razlika između sidrene cijene i digitalnog cjenika?")).toBeVisible();

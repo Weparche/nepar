@@ -56,8 +56,10 @@ const content = {
     obligationsTitle: "Tko je obveznik?",
     obligation1Title: "Tko mora isticati sidrenu/dodatnu cijenu?",
     obligation1Body: "Trgovci u maloprodaji i pružatelji usluga obuhvaćeni Odlukom NN 101/2026-1212. Ako oglašavaju cijene na svojoj mrežnoj stranici, dodatna cijena ističe se i tamo.",
+    obligation1LinkLabel: "Detaljan vodič za sidrenu cijenu",
     obligation2Title: "Tko mora objaviti XML/CSV digitalni cjenik?",
     obligation2Body: "Trgovac odnosno pružatelj usluge koji ima uspostavljenu mrežnu stranicu, prema NN 101/2026-1213.",
+    obligation2LinkLabel: "Tehnički zahtjevi XML/CSV digitalnog cjenika",
     terminologyNote: "U Odluci NN 101/2026-1212 koristi se izraz \"dodatna cijena\". U povezanoj Odluci NN 101/2026-1213 za digitalne cjenike koristi se izraz \"sidrena cijena\".",
     dateTitle: "Koji je datum?",
     dateBody: "Za većinu proizvoda i usluga referentna je cijena koja je bila na snazi 10. rujna 2026. Iznimka: trgovci koji su prema ranijoj mjeri već isticali dodatnu cijenu za određene kategorije proizvoda nastavljaju s cijenom koja je bila na snazi 2. svibnja 2025. za te kategorije.",
@@ -89,8 +91,10 @@ const content = {
     obligationsTitle: "Who is covered?",
     obligation1Title: "Who must display the additional/reference price?",
     obligation1Body: "Retail traders and service providers covered by Decision NN 101/2026-1212. If they advertise prices on their website, the additional price must be displayed there too.",
+    obligation1LinkLabel: "Detailed reference-price guide",
     obligation2Title: "Who must publish an XML/CSV digital price list?",
     obligation2Body: "A trader or service provider with an established website, under Decision NN 101/2026-1213.",
+    obligation2LinkLabel: "XML/CSV digital price list technical requirements",
     terminologyNote: "Decision NN 101/2026-1212 uses the term “additional price”. The related Decision NN 101/2026-1213, for digital price lists, uses the term “reference price”.",
     dateTitle: "Which date applies?",
     dateBody: "For most products and services, the reference price is the one in effect on 10 September 2026. Exception: traders who already displayed an additional price for certain categories under an earlier measure continue with the price in effect on 2 May 2025 for those categories.",
@@ -159,10 +163,12 @@ export default function SidreneCijenePage() {
             <article className="rounded-2xl border border-slate-200 bg-white p-6">
               <h3 className="text-lg font-semibold text-slate-950">{copy.obligation1Title}</h3>
               <p className="mt-3 text-sm leading-6 text-slate-700">{copy.obligation1Body}</p>
+              <Link to="/digitalni-cjenik/sidrena-cijena" className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">{copy.obligation1LinkLabel}<ArrowRight size={15} aria-hidden="true" /></Link>
             </article>
             <article className="rounded-2xl border border-slate-200 bg-white p-6">
               <h3 className="text-lg font-semibold text-slate-950">{copy.obligation2Title}</h3>
               <p className="mt-3 text-sm leading-6 text-slate-700">{copy.obligation2Body}</p>
+              <Link to="/digitalni-cjenik/xml-csv" className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">{copy.obligation2LinkLabel}<ArrowRight size={15} aria-hidden="true" /></Link>
             </article>
           </div>
           <p className="mt-6 rounded-xl bg-cyan-50 px-5 py-4 text-sm font-medium leading-6 text-cyan-950">{copy.terminologyNote}</p>

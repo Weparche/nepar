@@ -98,6 +98,7 @@ const localizedPages = {
   "/digitalni-cjenik": {
     indexable: true,
     robots: "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1",
+    lastmod: "2026-09-18",
     hr: {
       title: "Digitalni cjenik 2026 – CSV/XML i sidrena cijena | NEPAR",
       description: "Digitalni cjenik 2026 prema NN 101/2026: CSV/XML, sidrena cijena, 30-dnevna arhiva i automatizirani dohvat. Provjerite obvezu i implementaciju na vašoj web stranici.",
@@ -110,6 +111,7 @@ const localizedPages = {
   },
   "/sidrene-cijene": {
     indexable: true,
+    lastmod: "2026-09-18",
     hr: {
       title: "Sidrena cijena od 1.10.2026. — što morate napraviti | NEPAR",
       description: "Sidrena cijena i digitalni XML/CSV cjenik prema NN 101/2026: tko je obveznik, koji je datum i kako to riješiti na postojećem webu uz besplatnu provjeru.",
@@ -237,6 +239,7 @@ export function getSeoPage(path = "/", lang = "hr") {
     path: normalizedPath,
     canonicalPath: entry.canonicalPath ?? (entry.indexable ? normalizedPath : undefined),
     indexable: entry.indexable,
+    lastmod: entry.lastmod,
     robots: entry.robots || (entry.indexable ? "index,follow" : "noindex,nofollow"),
     image: entry.image || DEFAULT_SOCIAL_IMAGE,
     imageAlt: entry.imageAlt || "Nepar Solutions",
@@ -365,20 +368,30 @@ export function getStructuredData(path = "/") {
   if (page.schema === "digital-price-list") {
     graph.push(
       {
-        "@type": "TechArticle",
-        "@id": `${canonicalUrl}#article`,
-        headline: "Digitalni cjenik 2026 – CSV/XML i sidrena cijena",
+        "@type": "WebPage",
+        "@id": `${canonicalUrl}#page`,
+        name: page.title,
         description: page.description,
-        keywords: ["digitalni cjenik 2026", "sidrena cijena", "CSV cjenik", "XML cjenik", "NN 101/2026", "digitalni cjenik za usluge"],
+        url: canonicalUrl,
+        inLanguage: "hr",
+        isPartOf: { "@id": WEBSITE_ID },
         about: [
           { "@type": "Thing", name: "Digitalni cjenik 2026" },
           { "@type": "Thing", name: "Sidrena cijena" },
           { "@type": "Thing", name: "CSV i XML cjenik" },
         ],
+        mainEntity: { "@id": `${canonicalUrl}#article` },
+      },
+      {
+        "@type": "TechArticle",
+        "@id": `${canonicalUrl}#article`,
+        headline: "Digitalni cjenik 2026 – CSV/XML i sidrena cijena",
+        description: page.description,
+        keywords: ["digitalni cjenik 2026", "sidrena cijena", "CSV cjenik", "XML cjenik", "NN 101/2026", "digitalni cjenik za usluge"],
         mainEntityOfPage: canonicalUrl,
         inLanguage: "hr",
         datePublished: "2026-09-15",
-        dateModified: "2026-09-17",
+        dateModified: page.lastmod || "2026-09-17",
         author: { "@id": ORGANIZATION_ID },
         publisher: { "@id": ORGANIZATION_ID },
         citation: digitalPriceListSources,

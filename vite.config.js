@@ -92,11 +92,15 @@ function replaceBuiltMeta(html, page, siteUrl) {
     );
 }
 
+function sitemapLastmod(path) {
+  const page = getDigitalPriceListGuideSeoPage(path) || getSeoPage(path, "hr");
+  return page.lastmod ? `<lastmod>${page.lastmod}</lastmod>` : "";
+}
+
 function renderSitemap(siteUrl) {
   const sitemapPaths = [...new Set([...SITEMAP_PATHS, ...DIGITAL_PRICE_LIST_GUIDE_PATHS])];
   const urls = sitemapPaths.map((path) => {
-    const lastmod = path.startsWith("/digitalni-cjenik") ? "<lastmod>2026-09-17</lastmod>" : "";
-    return `  <url><loc>${escapeAttr(absoluteUrl(siteUrl, path))}</loc>${lastmod}</url>`;
+    return `  <url><loc>${escapeAttr(absoluteUrl(siteUrl, path))}</loc>${sitemapLastmod(path)}</url>`;
   }).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }

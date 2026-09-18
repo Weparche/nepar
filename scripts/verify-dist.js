@@ -3,8 +3,8 @@ import { relative, resolve } from "node:path";
 import { nepaUsluge } from "../src/cjenikData.js";
 import { cjenikMeta, canonicalCjenikFilename } from "../src/cjenikMeta.js";
 import { renderCjenikCsv, renderCjenikXml } from "../src/cjenikRender.js";
-import { PRERENDER_PATHS, SITEMAP_PATHS } from "../src/seoConfig.js";
-import { DIGITAL_PRICE_LIST_GUIDE_PATHS } from "../src/digitalPriceListGuides.js";
+import { PRERENDER_PATHS, SITEMAP_PATHS, getSeoPage } from "../src/seoConfig.js";
+import { DIGITAL_PRICE_LIST_GUIDE_PATHS, getDigitalPriceListGuideSeoPage } from "../src/digitalPriceListGuides.js";
 import { routeOutputPath } from "../src/seoRoutes.js";
 
 const distDir = resolve(process.cwd(), "dist");
@@ -88,6 +88,7 @@ expect("digitalni-cjenik.html", '<link rel="canonical" href="https://nepar.hr/di
 expect("digitalni-cjenik.html", "FAQPage", "digital price list FAQPage schema is missing");
 expect("digitalni-cjenik.html", "BreadcrumbList", "digital price list breadcrumb schema is missing");
 expect("digitalni-cjenik.html", "TechArticle", "digital price list Article schema is missing");
+expect("digitalni-cjenik.html", "https://nepar.hr/digitalni-cjenik#page", "digital price list WebPage @id is missing");
 expect("digitalni-cjenik.html", "data-nepar-static-content", "digital price list initial HTML body is missing");
 expect("digitalni-cjenik.html", "NN 101/2026-1212", "digital price list additional-price citation is missing");
 expect("digitalni-cjenik.html", "NN 101/2026-1213", "digital price list XML/CSV citation is missing");
@@ -100,10 +101,34 @@ for (const routePath of DIGITAL_PRICE_LIST_GUIDE_PATHS) {
   expect(relativePath, `<link rel="canonical" href="https://nepar.hr${routePath}" />`, `${routePath} canonical is missing`);
   expect(relativePath, "data-nepar-static-content", `${routePath} prerendered body is missing`);
   expect(relativePath, "TechArticle", `${routePath} TechArticle schema is missing`);
+  expect(relativePath, `https://nepar.hr${routePath}#page`, `${routePath} WebPage @id is missing`);
   expect(relativePath, "FAQPage", `${routePath} FAQPage schema is missing`);
   expect(relativePath, "BreadcrumbList", `${routePath} breadcrumb schema is missing`);
   expect(relativePath, "NEPAR Digital Price Engine", `${routePath} Price Engine entity is missing`);
   expect(relativePath, "NN 101/2026-1213", `${routePath} official XML/CSV source is missing`);
+}
+
+// Uniqueness guard: the hub and its three supporting guides must read as four distinct
+// documents to a crawler, not four near-identical pages sharing one title/H1.
+{
+  const uniquenessTargets = [
+    ["digitalni-cjenik.html", "/digitalni-cjenik"],
+    ["digitalni-cjenik/sidrena-cijena.html", "/digitalni-cjenik/sidrena-cijena"],
+    ["digitalni-cjenik/xml-csv.html", "/digitalni-cjenik/xml-csv"],
+    ["digitalni-cjenik/automatizacija.html", "/digitalni-cjenik/automatizacija"],
+  ];
+  const titles = new Set();
+  const h1s = new Set();
+  for (const [file] of uniquenessTargets) {
+    const html = read(file);
+    const title = html.match(/<title>([\s\S]*?)<\/title>/)?.[1];
+    const rootMatch = html.match(/<div id="root"[^>]*>([\s\S]*)<\/div>\s*<\/body>/);
+    const h1 = rootMatch?.[1]?.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, "").trim();
+    if (!title || titles.has(title)) failures.push(`${file}: <title> is missing or duplicates another page in the hub cluster`);
+    titles.add(title);
+    if (!h1 || h1s.has(h1)) failures.push(`${file}: <h1> is missing or duplicates another page in the hub cluster`);
+    h1s.add(h1);
+  }
 }
 
 expect("cjenik.html", "<title>NEPAR — digitalni cjenik usluga | Nepar Solutions</title>", "cjenik title is missing");
@@ -169,7 +194,8 @@ expect("404.html", '<meta name="robots" content="noindex,nofollow" />', "404 mus
 
 const expectedSitemapUrls = sitemapPaths.map((path) => {
   const loc = path === "/" ? "https://nepar.hr/" : `https://nepar.hr${path}`;
-  const lastmod = path.startsWith("/digitalni-cjenik") ? "<lastmod>2026-09-17</lastmod>" : "";
+  const page = getDigitalPriceListGuideSeoPage(path) || getSeoPage(path, "hr");
+  const lastmod = page.lastmod ? `<lastmod>${page.lastmod}</lastmod>` : "";
   return `  <url><loc>${loc}</loc>${lastmod}</url>`;
 }).join("\n");
 const expectedSitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -197,6 +223,7 @@ for (const rule of [
   "/digitalni-cjenik/sidrena-cijena/ /digitalni-cjenik/sidrena-cijena 301",
   "/digitalni-cjenik/xml-csv/ /digitalni-cjenik/xml-csv 301",
   "/digitalni-cjenik/automatizacija/ /digitalni-cjenik/automatizacija 301",
+  "/sidrene-cijene/ /sidrene-cijene 301",
   "/cjenik/ /cjenik 301",
   "/cjenik/arhiva/ /cjenik/arhiva 301",
   "/privatnost/ /privatnost 301",
