@@ -1401,6 +1401,7 @@ img {
 }
 
 .inquiry-dialog {
+  margin: auto;
   width: min(calc(100% - 2rem), 600px);
   max-height: min(90vh, 760px);
   padding: 0;

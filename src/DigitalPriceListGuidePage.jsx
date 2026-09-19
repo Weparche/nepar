@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, Check, ExternalLink, FileCode2, Network, Search } from "lucide-react";
 import { ConsentSettingsLink } from "./ConsentManager.jsx";
 import { Background } from "./SiteChrome.jsx";
@@ -8,6 +8,7 @@ import {
   getDigitalPriceListGuideSeoPage,
   getDigitalPriceListGuideStructuredData,
 } from "./digitalPriceListGuides.js";
+import { DigitalCjenikChecker, DigitalCjenikImplementationModal } from "./DigitalCjenikChecker.jsx";
 
 const SITE_URL = "https://nepar.hr";
 
@@ -121,10 +122,17 @@ export function isDigitalPriceListGuidePath(path) {
 
 export default function DigitalPriceListGuidePage({ routePath }) {
   const guide = getDigitalPriceListGuide(routePath);
+  const [implementationOpen, setImplementationOpen] = useState(false);
+  const [implementationWebsite, setImplementationWebsite] = useState("");
 
   useEffect(() => {
     applyGuideMeta(routePath);
   }, [routePath]);
+
+  function openImplementation(website = "") {
+    setImplementationWebsite(website || "");
+    setImplementationOpen(true);
+  }
 
   if (!guide) {
     return (
@@ -149,7 +157,7 @@ export default function DigitalPriceListGuidePage({ routePath }) {
 
       <article>
         <section className="content-section px-4 pt-28 sm:pt-36">
-          <div className="section-shell grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(300px,.75fr)] lg:items-start">
+          <div className="section-shell grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(340px,.9fr)] lg:items-start">
             <div>
               <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-500">
                 <a href="/" className="hover:text-blue-700">Naslovnica</a>
@@ -167,17 +175,9 @@ export default function DigitalPriceListGuidePage({ routePath }) {
               </div>
             </div>
 
-            <aside className="rounded-2xl bg-slate-950 p-6 text-white sm:p-7 lg:sticky lg:top-28">
-              <div className="grid size-11 place-items-center rounded-xl bg-cyan-300 text-blue-950">
-                <Search size={21} aria-hidden="true" />
-              </div>
-              <h2 className="mt-5 text-2xl font-semibold tracking-[-0.025em]">Imate web? Provjerite digitalni cjenik.</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300">Besplatni NEPAR checker traži javno dostupni XML/CSV i tehničke signale na vašoj domeni.</p>
-              <a href="/digitalni-cjenik" className="button mt-6 w-full bg-cyan-300 text-blue-950 hover:bg-cyan-200">
-                Besplatna provjera
-                <ArrowRight size={17} aria-hidden="true" />
-              </a>
-              <a href="/cjenik" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-white underline decoration-cyan-300 underline-offset-4 hover:text-cyan-200">
+            <aside className="lg:sticky lg:top-28">
+              <DigitalCjenikChecker lang="hr" onRequestImplementation={openImplementation} />
+              <a href="/cjenik" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">
                 Pogledajte NEPAR primjer
                 <ArrowRight size={16} aria-hidden="true" />
               </a>
@@ -278,6 +278,12 @@ export default function DigitalPriceListGuidePage({ routePath }) {
       </article>
 
       <GuideFooter />
+      <DigitalCjenikImplementationModal
+        open={implementationOpen}
+        onClose={() => setImplementationOpen(false)}
+        lang="hr"
+        initialWebsite={implementationWebsite}
+      />
     </main>
   );
 }

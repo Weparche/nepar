@@ -30,9 +30,9 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   expect(staticHtml).toContain('NN 101/2026-1213');
   expect(staticHtml).toContain('Dvije povezane, ali odvojene obveze');
   expect(staticHtml).toContain('Digitalni cjenik nije obveza samo za webshopove');
-  expect(staticHtml).toContain('od 129 €');
-  expect(staticHtml).toContain('139,80 €');
-  expect(staticHtml).toContain('od 149 €');
+  expect(staticHtml).toContain('49,90 €');
+  expect(staticHtml).toContain('89,90 €');
+  expect(staticHtml).toContain('integracija je od 149 €');
   expect(staticHtml).toContain('19,90 € / godišnje');
   expect(staticHtml).toContain('Što još nije definirano');
   expect(staticHtml).toContain('primjer-usluge.csv');
@@ -95,13 +95,13 @@ test("checker archive signal wording reads as a technical signal, not a legal ve
 
 test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlable and responsive", async ({ page }) => {
   await page.goto("/digitalni-cjenik");
-  await expect(page.getByText("od 129 €", { exact: true })).toBeVisible();
-  await expect(page.getByText("139,80 €", { exact: true })).toBeVisible();
+  await expect(page.getByText("49,90 €", { exact: true })).toBeVisible();
+  await expect(page.getByText("89,90 €", { exact: true })).toBeVisible();
   await expect(page.getByText(/integracija je od 149 €/)).toBeVisible();
   await expect(page.getByText("19,90 € / godišnje", { exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "NEPAR implementira" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "WordPress opcija" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Provjera web stranice" })).toHaveCount(1);
+  await expect(page.getByRole("heading", { name: "Plugin", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Plugin + implementacija" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Provjera", exact: true })).toHaveCount(1);
   await expect(page.getByText("Odnosi li se nova obveza samo na webshopove?")).toBeVisible();
   await expect(page.getByText("Koja je razlika između sidrene cijene i digitalnog cjenika?")).toBeVisible();
   await expect(page.getByText("Imam samo Facebook ili Instagram. Moram li imati XML/CSV cjenik?")).toBeVisible();
@@ -130,7 +130,7 @@ test("checker displays concrete yellow findings and prefills the lead form", asy
   await expect(result).toContainText("XML: pronađen link, ali dostupnost nije potvrđena");
   await expect(result).not.toContainText("XML: nije pronađen");
   await expect(result).toContainText("Ne provjerava obvezu isticanja dodatne/sidrene cijene");
-  await result.getByRole("button", { name: "Zatraži implementaciju" }).click();
+  await result.getByRole("button", { name: "Zatraži ponudu" }).click();
   await expect(page.getByLabel("Web stranica")).toHaveValue("https://primjer.hr");
   await page.getByLabel("Ime ili naziv tvrtke").fill("Test obrt");
   await page.getByLabel("E-mail").fill("test@example.com");

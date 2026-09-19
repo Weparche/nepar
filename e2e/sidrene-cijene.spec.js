@@ -36,11 +36,29 @@ test("date exception and prescribed-vs-implementation facts are stated correctly
   expect(staticHtml).toContain("javno dostupnim najmanje 30 dana od objave odnosno promjene — to je zakonski zahtjev; način pohrane i URL struktura arhive nisu propisani.");
 });
 
-test("both CTAs point to the right destinations and analytics events are wired", async ({ page }) => {
+test("quote CTA and product link point to the right destinations, with pricing visible", async ({ page }) => {
   await page.goto("/sidrene-cijene");
-  await expect(page.getByRole("link", { name: "Izradi digitalni cjenik", exact: true }).first()).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr");
-  await expect(page.getByRole("link", { name: "Besplatna provjera", exact: true })).toHaveAttribute("href", "/digitalni-cjenik");
+  await expect(page.getByText("Plugin 49,90 € · Implementacija 49,90 € · Zajedno 89,90 €").first()).toBeVisible();
+  const productLinks = page.getByRole("link", { name: "Alat je dio NEPAR Publishera →", exact: true });
+  await expect(productLinks).toHaveCount(2);
+  await expect(productLinks.first()).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr");
+  await expect(productLinks.last()).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr");
+  await expect(page.getByRole("button", { name: "Zatražite ponudu", exact: true })).toHaveCount(2);
   await expect(page.getByRole("link", { name: "Pročitajte detaljno →", exact: true })).toHaveAttribute("href", "/digitalni-cjenik/sidrena-cijena");
+});
+
+test("hero checker is immediately present and opens the implementation popup", async ({ page }) => {
+  await page.goto("/sidrene-cijene");
+  await expect(page.getByRole("heading", { name: "Provjerite digitalni cjenik svoje web stranice" })).toBeVisible();
+  await expect(page.getByPlaceholder("https://vasadomena.hr")).toBeVisible();
+
+  await page.getByRole("button", { name: "Zatražite ponudu", exact: true }).first().click();
+  const dialog = page.locator("dialog.inquiry-dialog");
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("heading", { name: "Zatražite ponudu" })).toBeVisible();
+  await expect(dialog.getByLabel("E-mail")).toBeVisible();
+  await dialog.getByRole("button", { name: "Zatvori" }).click();
+  await expect(dialog).toBeHidden();
 });
 
 test("obligation cards link to their respective supporting guides", async ({ page }) => {

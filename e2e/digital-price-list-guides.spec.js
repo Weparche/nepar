@@ -35,7 +35,8 @@ for (const guide of guides) {
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://nepar.hr${guide.path}`);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(guide.h1);
     await expect(page.getByRole("heading", { name: "Jedan izvor cijena, svi potrebni izlazi" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Besplatna provjera", exact: true }).first()).toHaveAttribute("href", "/digitalni-cjenik");
+    await expect(page.getByRole("heading", { name: "Provjerite digitalni cjenik svoje web stranice" })).toBeVisible();
+    await expect(page.getByPlaceholder("https://vasadomena.hr")).toBeVisible();
     const schema = await page.locator('script[data-nepar-schema]').textContent();
     expect(schema).toContain("TechArticle");
     expect(schema).toContain("NEPAR Digital Price Engine");

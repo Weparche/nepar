@@ -93,7 +93,7 @@ expect("digitalni-cjenik.html", "data-nepar-static-content", "digital price list
 expect("digitalni-cjenik.html", "NN 101/2026-1212", "digital price list additional-price citation is missing");
 expect("digitalni-cjenik.html", "NN 101/2026-1213", "digital price list XML/CSV citation is missing");
 expect("digitalni-cjenik.html", "Digitalni cjenik nije obveza samo za webshopove", "digital price list B2C scope text is missing");
-expect("digitalni-cjenik.html", "od 129 €", "digital price list primary price is missing");
+expect("digitalni-cjenik.html", "49,90 €", "digital price list primary price is missing");
 expect("digitalni-cjenik.html", "primjer-usluge.csv", "digital price list CSV example link is missing");
 
 for (const routePath of DIGITAL_PRICE_LIST_GUIDE_PATHS) {

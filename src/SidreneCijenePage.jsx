@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Check, Search } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Background, Navbar, SiteFooter, siteContent } from "./SiteChrome.jsx";
 import { trackEvent } from "./analytics.js";
 import { usePageMeta } from "./usePageMeta.js";
 import { digitalPriceListFaqHr, digitalPriceListFaqEn } from "./digitalPriceListFaq.js";
+import { DigitalCjenikChecker, DigitalCjenikImplementationModal } from "./DigitalCjenikChecker.jsx";
 
 const PRODUCT_URL = "https://digitalnicjenik.nepar.hr";
 
@@ -51,8 +52,9 @@ const content = {
     eyebrow: "NN 101/2026-1212 · primjena od 1.10.2026.",
     title: "Sidrena cijena od 1.10.2026. — što morate napraviti?",
     lead: "Od 1. listopada 2026. trgovci u maloprodaji i pružatelji usluga obuhvaćeni su pravilima o dodatnoj cijeni, bez obzira imaju li web stranicu. Imate web stranicu? Provjerite i dodatne obveze XML/CSV digitalnog cjenika.",
-    ctaPrimary: "Izradi digitalni cjenik",
-    ctaSecondary: "Besplatna provjera",
+    priceStrip: "Plugin 49,90 € · Implementacija 49,90 € · Zajedno 89,90 €",
+    implementationCta: "Zatražite ponudu",
+    productLink: "Alat je dio NEPAR Publishera",
     obligationsTitle: "Tko je obveznik?",
     obligation1Title: "Tko mora isticati sidrenu/dodatnu cijenu?",
     obligation1Body: "Trgovci u maloprodaji i pružatelji usluga obuhvaćeni Odlukom NN 101/2026-1212. Ako oglašavaju cijene na svojoj mrežnoj stranici, dodatna cijena ističe se i tamo.",
@@ -73,12 +75,8 @@ const content = {
     solutionTitle: "NEPAR Digital Price Engine",
     solutionBody: "Praktični put za tehničku implementaciju zahtjeva: NEPAR Digital Price Engine povezuje postojeći izvor cijena (ERP, poslovni program, Excel, webshop) s vašom web stranicom i generira javni cjenik, XML/CSV datoteke i arhivu prethodnih verzija. Ovo je tehnička implementacija, ne pravno mišljenje niti jamstvo usklađenosti.",
     solutionLink: "Saznajte više →",
-    checkerTitle: "Besplatna provjera vašeg weba",
-    checkerBody: "Provjerite ima li vaša web stranica javno dostupan XML ili CSV cjenik — tehnička provjera javno dostupnih signala, ne pravna procjena.",
-    checkerCta: "Provjeri svoj web",
     faqTitle: "Česta pitanja",
     finalTitle: "Spremni riješiti sidrenu cijenu i digitalni cjenik?",
-    finalCta: "Izradi digitalni cjenik",
     legal: "Informacije na ovoj stranici služe kao tehnički i informativni pregled propisa i ne predstavljaju pravni savjet. Za tumačenje primjenjivosti propisa na konkretno poslovanje obratite se nadležnom tijelu ili pravnom stručnjaku.",
     faq: faqHr,
   },
@@ -86,8 +84,9 @@ const content = {
     eyebrow: "NN 101/2026-1212 · effective from 1 Oct 2026",
     title: "Reference price from 1 Oct 2026 — what you must do",
     lead: "From 1 October 2026, retail traders and service providers are covered by the additional-price rules, regardless of whether they have a website. Do you have a website? Check the additional XML/CSV digital price list obligations too.",
-    ctaPrimary: "Build a digital price list",
-    ctaSecondary: "Free check",
+    priceStrip: "Plugin €49.90 · Implementation €49.90 · Together €89.90",
+    implementationCta: "Request a quote",
+    productLink: "The tool is part of NEPAR Publisher",
     obligationsTitle: "Who is covered?",
     obligation1Title: "Who must display the additional/reference price?",
     obligation1Body: "Retail traders and service providers covered by Decision NN 101/2026-1212. If they advertise prices on their website, the additional price must be displayed there too.",
@@ -108,12 +107,8 @@ const content = {
     solutionTitle: "NEPAR Digital Price Engine",
     solutionBody: "A practical way to technically implement the requirement: NEPAR Digital Price Engine connects an existing price source (ERP, business software, a spreadsheet, a webshop) to your website and generates a public price list, XML/CSV files, and an archive of previous versions. This is a technical implementation, not legal advice or a compliance guarantee.",
     solutionLink: "Learn more →",
-    checkerTitle: "Free check for your website",
-    checkerBody: "Check whether your website has a publicly available XML or CSV price list — a technical check of public signals, not a legal assessment.",
-    checkerCta: "Check your website",
     faqTitle: "Frequently asked questions",
     finalTitle: "Ready to sort out the reference price and digital price list?",
-    finalCta: "Build a digital price list",
     legal: "Information on this page is a technical and informational overview of Croatian regulation and does not constitute legal advice. For interpretation of the regulation’s applicability to a specific business, contact the competent authority or a legal professional.",
     faq: faqEn,
   },
@@ -121,9 +116,17 @@ const content = {
 
 export default function SidreneCijenePage() {
   const [lang, setLang] = useState("hr");
+  const [implementationOpen, setImplementationOpen] = useState(false);
+  const [implementationWebsite, setImplementationWebsite] = useState("");
   const copy = content[lang];
   usePageMeta("/sidrene-cijene", lang);
   useEffect(() => { trackEvent("view_sidrene_cijene"); }, []);
+
+  function openImplementation(website = "") {
+    setImplementationWebsite(website || "");
+    setImplementationOpen(true);
+    trackEvent("sidrene_cijene_implementation_cta");
+  }
 
   return (
     <main id="top" className="site-main font-sans text-slate-800">
@@ -135,23 +138,26 @@ export default function SidreneCijenePage() {
           <p className="text-sm font-bold text-cyan-700">{copy.eyebrow}</p>
           <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.035em] text-slate-950 sm:text-6xl">{copy.title}</h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">{copy.lead}</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a
-              href={PRODUCT_URL}
-              onClick={(event) => goToProduct(event, "sidrene_cijene_primary_cta")}
+          <div className="mt-8">
+            <DigitalCjenikChecker lang={lang} onRequestImplementation={openImplementation} />
+          </div>
+          <p className="mt-5 text-sm font-semibold text-slate-700">{copy.priceStrip}</p>
+          <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <button
+              type="button"
+              onClick={() => openImplementation()}
               className="button button-primary"
             >
-              {copy.ctaPrimary}
+              {copy.implementationCta}
               <ArrowRight size={17} aria-hidden="true" />
-            </a>
-            <Link
-              to="/digitalni-cjenik"
-              onClick={() => trackEvent("sidrene_cijene_checker_cta")}
-              className="button button-secondary"
+            </button>
+            <a
+              href={PRODUCT_URL}
+              onClick={(event) => goToProduct(event, "sidrene_cijene_product_link")}
+              className="text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900"
             >
-              {copy.ctaSecondary}
-              <ArrowRight size={17} aria-hidden="true" />
-            </Link>
+              {copy.productLink} →
+            </a>
           </div>
         </div>
       </section>
@@ -207,28 +213,6 @@ export default function SidreneCijenePage() {
       </section>
 
       <section className="content-section px-4">
-        <div className="section-shell max-w-4xl rounded-2xl bg-slate-950 p-7 text-white sm:p-10">
-          <div className="flex items-start gap-3">
-            <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-cyan-300 text-blue-950">
-              <Search size={20} aria-hidden="true" />
-            </span>
-            <div>
-              <h2 className="text-2xl font-semibold tracking-[-0.025em]">{copy.checkerTitle}</h2>
-              <p className="mt-1 max-w-xl text-sm leading-6 text-slate-300">{copy.checkerBody}</p>
-            </div>
-          </div>
-          <Link
-            to="/digitalni-cjenik"
-            onClick={() => trackEvent("sidrene_cijene_checker_cta")}
-            className="button mt-6 bg-cyan-300 text-blue-950 hover:bg-cyan-200"
-          >
-            {copy.checkerCta}
-            <ArrowRight size={17} aria-hidden="true" />
-          </Link>
-        </div>
-      </section>
-
-      <section className="content-section px-4">
         <div className="section-shell max-w-4xl">
           <div className="section-heading"><h2>{copy.faqTitle}</h2></div>
           <div className="mt-7 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white">
@@ -248,14 +232,24 @@ export default function SidreneCijenePage() {
       <section className="content-section px-4">
         <div className="section-shell max-w-4xl rounded-2xl border border-slate-200 bg-white p-7 text-center sm:p-10">
           <h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950">{copy.finalTitle}</h2>
-          <a
-            href={PRODUCT_URL}
-            onClick={(event) => goToProduct(event, "sidrene_cijene_final_cta")}
-            className="button button-primary mt-6 inline-flex"
-          >
-            {copy.finalCta}
-            <ArrowRight size={17} aria-hidden="true" />
-          </a>
+          <p className="mt-3 text-sm font-semibold text-slate-700">{copy.priceStrip}</p>
+          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => openImplementation()}
+              className="button button-primary inline-flex"
+            >
+              {copy.implementationCta}
+              <ArrowRight size={17} aria-hidden="true" />
+            </button>
+            <a
+              href={PRODUCT_URL}
+              onClick={(event) => goToProduct(event, "sidrene_cijene_product_link")}
+              className="text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900"
+            >
+              {copy.productLink} →
+            </a>
+          </div>
         </div>
       </section>
 
@@ -264,6 +258,12 @@ export default function SidreneCijenePage() {
       </section>
 
       <SiteFooter copy={siteContent[lang]} lang={lang} />
+      <DigitalCjenikImplementationModal
+        open={implementationOpen}
+        onClose={() => setImplementationOpen(false)}
+        lang={lang}
+        initialWebsite={implementationWebsite}
+      />
     </main>
   );
 }
