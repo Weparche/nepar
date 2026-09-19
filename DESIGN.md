@@ -100,7 +100,7 @@ Paleta zadržava prepoznatljivu Nepar plavu, cijan i ljubičastu, ali koristi je
 - **Body** (`#334155`): osnovni tekst.
 - **Muted** (`#64748b`): sekundarni tekst samo kada prolazi AA kontrast.
 - **Canvas** (`#f8fafc`), **Surface** (`#ffffff`) i **Border** (`#e2e8f0`): osnovna dubina bez dekorativnog stakla.
-- **Tamni ink** (`#07111f`) i **tamna tonalna površina** (`#0f1e32`): isključivo podloga i dubina Product Laba te dokaza unutar cijena.
+- **Tamni ink** (`#07111f`) i **tamna tonalna površina** (`#0f1e32`): podloga i dubina Product Laba, dokaza unutar cijena, te digitalni-cjenik checker alata (`src/DigitalCjenikChecker.jsx`) gdje god je ugrađen — checker je namjerno tamna, autoritativna "tehnička" površina koja se ponavlja identično na svih pet mjesta (hub, /sidrene-cijene, tri vodiča) kako bi ostala prepoznatljiva kao isti alat, ne slučajan dark-mode fragment.
 
 ### Named Rules
 
@@ -211,7 +211,7 @@ Cijena i način plaćanja čine prvu vizualnu skupinu. Business je istaknut puno
 
 - **Do** zadržati logo i plavo–cijan–ljubičasti identitet uz discipliniranu raspodjelu uloga.
 - **Do** koristiti stvarne projekte, jasne cijene i precizne opise opsega kao glavni vizualni dokaz.
-- **Do** zadržati dominantan svijetli canvas i ograničiti tamni ink-reveal na Product Lab i dokaz unutar cijena.
+- **Do** zadržati dominantan svijetli canvas i ograničiti tamni ink-reveal na Product Lab, dokaz unutar cijena i digitalni-cjenik checker alat.
 - **Do** provjeriti WCAG 2.2 AA, tipkovnicu, fokus, reduced motion i mobilni prikaz.
 
 ### Don't:

@@ -130,7 +130,7 @@ test("checker displays concrete yellow findings and prefills the lead form", asy
   await expect(result).toContainText("XML: pronađen link, ali dostupnost nije potvrđena");
   await expect(result).not.toContainText("XML: nije pronađen");
   await expect(result).toContainText("Ne provjerava obvezu isticanja dodatne/sidrene cijene");
-  await result.getByRole("button", { name: "Zatraži ponudu" }).click();
+  await result.getByRole("button", { name: "Zatražite ponudu" }).click();
   await expect(page.getByLabel("Web stranica")).toHaveValue("https://primjer.hr");
   await page.getByLabel("Ime ili naziv tvrtke").fill("Test obrt");
   await page.getByLabel("E-mail").fill("test@example.com");
@@ -145,6 +145,8 @@ test("checker displays concrete yellow findings and prefills the lead form", asy
 test("lead form accepts a bare www domain and sends its normalized website", async ({ page }) => {
   const contacts = await mockWorker(page, { status: "red", message: "", details: {} });
   await page.goto("/digitalni-cjenik");
+  await page.getByRole("button", { name: "Zatražite ponudu", exact: true }).first().click();
+  await expect(page.locator("dialog.inquiry-dialog")).toBeVisible();
   const website = page.getByLabel("Web stranica");
   await website.fill("www.mile.hr");
   await website.press("Tab");

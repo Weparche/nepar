@@ -220,10 +220,10 @@ export default function DigitalPriceListGuidePage({ routePath }) {
                   <strong className="text-lg">Izvor → NEPAR → web + XML/CSV + arhiva</strong>
                 </div>
                 <p className="mt-4 text-sm leading-6 text-slate-300">Prvo provjeravamo gdje cijene stvarno nastaju. Tek zatim biramo najjednostavniji način povezivanja postojećeg sustava i web stranice.</p>
-                <a href="/digitalni-cjenik" className="button button-primary mt-6 w-full">
-                  Zatražite implementaciju
+                <button type="button" onClick={() => openImplementation()} className="button button-primary mt-6 w-full">
+                  Zatražite ponudu
                   <ArrowRight size={17} aria-hidden="true" />
-                </a>
+                </button>
               </div>
             </div>
           </div>

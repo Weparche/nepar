@@ -3,7 +3,7 @@
 // rules in its own hero, without touching the working /digitalni-cjenik page. Keep this file's
 // checker/lead copy and behaviour in sync with DigitalPriceListPage.jsx if that page's own checker
 // ever changes — they are meant to read as the same tool.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Check, CheckCircle2, CircleAlert, Loader2, Search, Send, X } from "lucide-react";
 import { getContactWorkerUrl, submitContactLead } from "./contactLead.js";
@@ -16,10 +16,10 @@ const inputClass = "w-full rounded-xl border border-slate-300 bg-white px-4 py-3
 
 export const checkerCopy = {
   hr: {
-    checkerTitle: "Provjerite digitalni cjenik svoje web stranice", checkerLead: "Unesite adresu. Provjera se izvršava na našem serveru i gleda samo javno dostupne tehničke signale.", checkerButton: "Provjeri", checkerPlaceholder: "https://vasadomena.hr", checkerMissing: "Provjera trenutno nije dostupna. Pokušajte ponovo ili nam pošaljite upit.", checkerInvalid: "Unesite ispravnu adresu, primjerice https://vasadomena.hr.", checkerUnavailableTitle: "Provjera trenutačno nije dostupna", checkerRetry: "Pokušajte ponovo", checkerLoading: "Provjeravamo javno dostupne dokumente…", technicalNotice: "Automatska provjera provjerava tehničku dostupnost XML/CSV cjenika. Ne provjerava obvezu isticanja dodatne/sidrene cijene niti potvrđuje pravnu usklađenost poslovanja.", pricePage: "Stranica cjenika", csvFoundLabel: "Pronađen CSV", xmlFoundLabel: "Pronađen XML", archiveFoundLabel: "Pronađen signal arhive cjenika", csvMissing: "CSV: nije pronađen", xmlMissing: "XML: nije pronađen", archiveMissing: "Signal arhive cjenika: nije pronađen", csvUnconfirmed: "CSV: pronađen link, ali dostupnost nije potvrđena", xmlUnconfirmed: "XML: pronađen link, ali dostupnost nije potvrđena", archiveUnconfirmed: "Signal arhive cjenika: pronađen link, ali dostupnost nije potvrđena", greenTitle: "Pronašli smo digitalni cjenik", greenBody: "Na web stranici pronađen je javno dostupan CSV ili XML dokument.", yellowTitle: "Pronašli smo cjenik, ali ne i XML/CSV", yellowBody: "Na stranici postoje informacije o cijenama ili cjeniku, ali automatska provjera nije pronašla javno dostupan XML ili CSV dokument.", redTitle: "Nismo pronašli digitalni cjenik", redBody: "Automatska provjera nije pronašla javno dostupan XML ili CSV cjenik.", checks: ["Javno dostupni signali", "Bez pravne procjene", "Server-side provjera"], sendInquiry: "Pošaljite upit", requestImplementation: "Zatražite ponudu", sendFoundUrl: "Pošaljite pronađeni URL na dodatnu provjeru",
+    checkerTitle: "Provjerite digitalni cjenik svoje web stranice", checkerLead: "Unesite adresu. Provjera se izvršava na našem serveru i gleda samo javno dostupne tehničke signale.", checkerButton: "Provjeri", checkerPlaceholder: "https://vasadomena.hr", checkerMissing: "Provjera trenutno nije dostupna. Pokušajte ponovo ili nam pošaljite upit.", checkerInvalid: "Unesite ispravnu adresu, primjerice https://vasadomena.hr.", checkerUnavailableTitle: "Provjera trenutačno nije dostupna", checkerRetry: "Pokušajte ponovo", checkerLoading: "Provjeravamo javno dostupne dokumente…", technicalNotice: "Automatska provjera provjerava tehničku dostupnost XML/CSV cjenika. Ne provjerava obvezu isticanja dodatne/sidrene cijene niti potvrđuje pravnu usklađenost poslovanja.", pricePage: "Stranica cjenika", csvFoundLabel: "Pronađen CSV", xmlFoundLabel: "Pronađen XML", archiveFoundLabel: "Pronađen signal arhive cjenika", csvMissing: "CSV: nije pronađen", xmlMissing: "XML: nije pronađen", archiveMissing: "Signal arhive cjenika: nije pronađen", csvUnconfirmed: "CSV: pronađen link, ali dostupnost nije potvrđena", xmlUnconfirmed: "XML: pronađen link, ali dostupnost nije potvrđena", archiveUnconfirmed: "Signal arhive cjenika: pronađen link, ali dostupnost nije potvrđena", greenTitle: "Pronašli smo digitalni cjenik", greenBody: "Na web stranici pronađen je javno dostupan CSV ili XML dokument.", yellowTitle: "Pronašli smo cjenik, ali ne i XML/CSV", yellowBody: "Na stranici postoje informacije o cijenama ili cjeniku, ali automatska provjera nije pronašla javno dostupan XML ili CSV dokument.", redTitle: "Nismo pronašli digitalni cjenik", redBody: "Automatska provjera nije pronašla javno dostupan XML ili CSV cjenik.", checks: ["Javno dostupni signali", "Bez pravne procjene", "Server-side provjera"], sendInquiry: "Pošaljite upit", requestImplementation: "Zatražite ponudu", sendFoundUrl: "Zatražite pomoć s usklađivanjem", whyNotEnoughTitle: "Zašto sama datoteka možda nije dovoljna?", whyNotEnoughIntro: "Ova provjera potvrđuje samo da je CSV/XML tehnički dostupan na webu. Ne potvrđuje da ispunjavate Odluku o digitalnom cjeniku. Često i dalje nedostaje:", whyNotEnoughItems: [["Arhiva", "prethodne objavljene verzije moraju ostati javno dostupne najmanje 30 dana"], ["Naziv datoteke", "propisani elementi (objekt, adresa, oznaka, broj pohrane, datum i vrijeme)"], ["Sadržaj", "obavezna polja, sidrena/dodatna cijena, posebni oblici prodaje gdje treba"], ["Strojna vidljivost", "softverski alati moraju moći dohvatiti aktualne cijene bez prijave"], ["Ažurnost", "aktualni cjenik mora odgovarati stvarnim cijenama u propisanom roku"]], whyNotEnoughDisclaimer: "Ovo nije pravni savjet — tehnička napomena što ova automatska provjera ne pokriva.",
   },
   en: {
-    checkerTitle: "Check your website’s digital price list", checkerLead: "Enter an address. The check runs on our server and looks only at publicly available technical signals.", checkerButton: "Check", checkerPlaceholder: "https://yourdomain.com", checkerMissing: "The check is currently unavailable. Please try again or send us an enquiry.", checkerInvalid: "Enter a valid address, for example https://yourdomain.com.", checkerUnavailableTitle: "The check is currently unavailable", checkerRetry: "Try again", checkerLoading: "Checking publicly available documents…", technicalNotice: "The automated check verifies the technical availability of XML/CSV price lists. It does not check the additional/reference-price obligation or confirm legal compliance.", pricePage: "Price-list page", csvFoundLabel: "CSV found", xmlFoundLabel: "XML found", archiveFoundLabel: "Price-list archive signal found", csvMissing: "CSV: not found", xmlMissing: "XML: not found", archiveMissing: "Price-list archive signal: not found", csvUnconfirmed: "CSV: link found, but availability was not confirmed", xmlUnconfirmed: "XML: link found, but availability was not confirmed", archiveUnconfirmed: "Price-list archive signal: link found, but availability was not confirmed", greenTitle: "We found a digital price list", greenBody: "A publicly available CSV or XML document was found on the website.", yellowTitle: "We found a price list, but not XML/CSV", yellowBody: "The website contains price or price-list information, but the automated check did not find a publicly available XML or CSV document.", redTitle: "We did not find a digital price list", redBody: "The automated check did not find a publicly available XML or CSV price list.", checks: ["Public technical signals", "No legal assessment", "Server-side check"], sendInquiry: "Send an enquiry", requestImplementation: "Request a quote", sendFoundUrl: "Send the found URL for a further check",
+    checkerTitle: "Check your website’s digital price list", checkerLead: "Enter an address. The check runs on our server and looks only at publicly available technical signals.", checkerButton: "Check", checkerPlaceholder: "https://yourdomain.com", checkerMissing: "The check is currently unavailable. Please try again or send us an enquiry.", checkerInvalid: "Enter a valid address, for example https://yourdomain.com.", checkerUnavailableTitle: "The check is currently unavailable", checkerRetry: "Try again", checkerLoading: "Checking publicly available documents…", technicalNotice: "The automated check verifies the technical availability of XML/CSV price lists. It does not check the additional/reference-price obligation or confirm legal compliance.", pricePage: "Price-list page", csvFoundLabel: "CSV found", xmlFoundLabel: "XML found", archiveFoundLabel: "Price-list archive signal found", csvMissing: "CSV: not found", xmlMissing: "XML: not found", archiveMissing: "Price-list archive signal: not found", csvUnconfirmed: "CSV: link found, but availability was not confirmed", xmlUnconfirmed: "XML: link found, but availability was not confirmed", archiveUnconfirmed: "Price-list archive signal: link found, but availability was not confirmed", greenTitle: "We found a digital price list", greenBody: "A publicly available CSV or XML document was found on the website.", yellowTitle: "We found a price list, but not XML/CSV", yellowBody: "The website contains price or price-list information, but the automated check did not find a publicly available XML or CSV document.", redTitle: "We did not find a digital price list", redBody: "The automated check did not find a publicly available XML or CSV price list.", checks: ["Public technical signals", "No legal assessment", "Server-side check"], sendInquiry: "Send an enquiry", requestImplementation: "Request a quote", sendFoundUrl: "Get help closing these gaps", whyNotEnoughTitle: "Why the file alone might not be enough?", whyNotEnoughIntro: "This check only confirms that a CSV/XML file is technically available on the website. It does not confirm that you meet the digital price list Decision. This is often still missing:", whyNotEnoughItems: [["Archive", "previously published versions must remain publicly available for at least 30 days"], ["File name", "the prescribed elements (location, address, code, storage number, date and time)"], ["Content", "required fields, the reference/additional price, special sale formats where applicable"], ["Machine visibility", "software tools must be able to retrieve current prices without logging in"], ["Freshness", "the current price list must match real prices within the prescribed deadline"]], whyNotEnoughDisclaimer: "This is not legal advice — a technical note on what this automated check does not cover.",
   },
 };
 
@@ -36,7 +36,7 @@ function normalizeForPrefill(value) { const trimmed = value.trim(); return trimm
 function normalizeCheckerUrl(value) { const normalized = normalizeForPrefill(value); if (!normalized || normalized.length > 2048) return null; try { const parsed = new URL(normalized); if (!/^https?:$/.test(parsed.protocol) || parsed.username || parsed.password) return null; return parsed.pathname === "/" && !parsed.search && !parsed.hash ? parsed.origin : parsed.href; } catch { return null; } }
 function displayUrl(value) { try { const url = new URL(value); const format = url.searchParams.get("format") || url.searchParams.get("type"); return `${url.pathname || "/"}${format ? `?format=${format}` : ""}`; } catch { return value; } }
 
-export function DigitalCjenikLeadForm({ lang = "hr", initialWebsite = "" }) {
+export function DigitalCjenikLeadForm({ lang = "hr", initialWebsite = "", firstFieldRef }) {
   const copy = leadFormCopy[lang];
   const [form, setForm] = useState({ name: "", email: "", phone: "", website: initialWebsite, platform: "", businessProgram: "", message: "" });
   const [sending, setSending] = useState(false); const [notice, setNotice] = useState(""); const started = useRef(false);
@@ -44,7 +44,7 @@ export function DigitalCjenikLeadForm({ lang = "hr", initialWebsite = "" }) {
   const normalizeWebsite = () => setForm((current) => ({ ...current, website: normalizeForPrefill(current.website) }));
   const start = () => { if (!started.current) { started.current = true; trackEvent("start_digital_price_list_lead"); } };
   async function submit(event) { event.preventDefault(); const normalizedWebsite = normalizeForPrefill(form.website); setForm((current) => ({ ...current, website: normalizedWebsite })); setSending(true); setNotice(""); try { const sent = await submitContactLead({ ...form, website: normalizedWebsite, subject: "Digitalni cjenik", formName: "digitalni_cjenik", leadSource: "digitalni-cjenik" }); if (!sent) throw new Error("worker_missing"); trackEvent("generate_digital_price_list_lead"); setNotice(copy.formSuccess); } catch { setNotice(copy.formError); } finally { setSending(false); } }
-  return <form onSubmit={submit} onFocusCapture={start} className="grid gap-4"><div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.name}<input className={inputClass} required value={form.name} onChange={update("name")} /></label><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.email}<input className={inputClass} required type="email" value={form.email} onChange={update("email")} /></label></div><div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.phone}<input className={inputClass} type="tel" value={form.phone} onChange={update("phone")} /></label><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.website}<input className={inputClass} required type="text" inputMode="url" autoCapitalize="none" value={form.website} onBlur={normalizeWebsite} onChange={update("website")} /></label></div><div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.platform}<select className={inputClass} required value={form.platform} onChange={update("platform")}><option value="" disabled>—</option>{["WordPress", "Wix", "React / Next / Vite", "Shopify", "Webflow", "Custom", "Ne znam"].map((value) => <option key={value}>{value}</option>)}</select></label><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.program}<input className={inputClass} value={form.businessProgram} onChange={update("businessProgram")} /></label></div><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.message}<textarea className={`${inputClass} min-h-32 resize-y`} required value={form.message} onChange={update("message")} /></label><AnimatePresence>{notice && <motion.p key={notice} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={revealTransition} role="status" className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">{notice}</motion.p>}</AnimatePresence><button type="submit" disabled={sending} className="button button-primary w-full disabled:cursor-wait disabled:opacity-60 sm:w-fit">{sending ? <motion.span animate={{ rotate: 360 }} transition={spinTransition} className="inline-flex"><Loader2 size={17} aria-hidden="true" /></motion.span> : <Send size={17} aria-hidden="true" />}{sending ? "…" : copy.fields.submit}</button></form>;
+  return <form onSubmit={submit} onFocusCapture={start} className="grid gap-4"><div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.name}<input ref={firstFieldRef} className={inputClass} required value={form.name} onChange={update("name")} /></label><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.email}<input className={inputClass} required type="email" value={form.email} onChange={update("email")} /></label></div><div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.phone}<input className={inputClass} type="tel" value={form.phone} onChange={update("phone")} /></label><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.website}<input className={inputClass} required type="text" inputMode="url" autoCapitalize="none" value={form.website} onBlur={normalizeWebsite} onChange={update("website")} /></label></div><div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.platform}<select className={inputClass} required value={form.platform} onChange={update("platform")}><option value="" disabled>—</option>{["WordPress", "Wix", "React / Next / Vite", "Shopify", "Webflow", "Custom", "Ne znam"].map((value) => <option key={value}>{value}</option>)}</select></label><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.program}<input className={inputClass} value={form.businessProgram} onChange={update("businessProgram")} /></label></div><label className="grid gap-1.5 text-sm font-semibold text-slate-700">{copy.fields.message}<textarea className={`${inputClass} min-h-32 resize-y`} required value={form.message} onChange={update("message")} /></label><AnimatePresence>{notice && <motion.p key={notice} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={revealTransition} role="status" className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">{notice}</motion.p>}</AnimatePresence><button type="submit" disabled={sending} className="button button-primary w-full disabled:cursor-wait disabled:opacity-60 sm:w-fit">{sending ? <motion.span animate={{ rotate: 360 }} transition={spinTransition} className="inline-flex"><Loader2 size={17} aria-hidden="true" /></motion.span> : <Send size={17} aria-hidden="true" />}{sending ? "…" : copy.fields.submit}</button></form>;
 }
 
 /** Popup wrapper around DigitalCjenikLeadForm — same fields/rules as the bottom of /digitalni-cjenik,
@@ -52,15 +52,22 @@ export function DigitalCjenikLeadForm({ lang = "hr", initialWebsite = "" }) {
  * pattern already established in src/PackageInquiryModal.jsx. */
 export function DigitalCjenikImplementationModal({ open, onClose, lang = "hr", initialWebsite = "" }) {
   const dialogRef = useRef(null);
+  const firstFieldRef = useRef(null);
   const returnFocusRef = useRef(null);
   const copy = leadFormCopy[lang];
+  // Remounts the form fresh on every open (not just when initialWebsite changes) so a
+  // closed-without-submitting draft, or a lingering success/error notice, never survives
+  // into the next time this modal is opened — even when reopened with the same website.
+  const [sessionId, setSessionId] = useState(0);
 
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
     if (open && !dialog.open) {
       returnFocusRef.current = document.activeElement;
+      setSessionId((value) => value + 1);
       dialog.showModal();
+      window.setTimeout(() => firstFieldRef.current?.focus(), 0);
     } else if (!open && dialog.open) {
       dialog.close();
     }
@@ -89,7 +96,7 @@ export function DigitalCjenikImplementationModal({ open, onClose, lang = "hr", i
           <button type="button" className="icon-button" aria-label={copy.close} onClick={closeDialog}><X aria-hidden="true" /></button>
         </header>
         <div className="dialog-body">
-          <DigitalCjenikLeadForm lang={lang} initialWebsite={initialWebsite} />
+          <DigitalCjenikLeadForm key={sessionId} lang={lang} initialWebsite={initialWebsite} firstFieldRef={firstFieldRef} />
           <p className="mt-5 border-t border-slate-200 pt-4 text-xs leading-5 text-slate-500">{copy.legal}</p>
         </div>
       </div>
@@ -103,6 +110,9 @@ export function DigitalCjenikImplementationModal({ open, onClose, lang = "hr", i
  * means on its own page (there: scroll to the inline form; here: open the popup). */
 export function DigitalCjenikChecker({ lang = "hr", onRequestImplementation }) {
   const copy = checkerCopy[lang];
+  const inputId = useId();
+  const helpId = `${inputId}-help`;
+  const errorId = `${inputId}-error`;
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState("");
   const [result, setResult] = useState(null);
@@ -119,8 +129,10 @@ export function DigitalCjenikChecker({ lang = "hr", onRequestImplementation }) {
     if (!workerUrl) { setResult({ unavailable: true, status: "unavailable", message: copy.checkerMissing, details: {} }); return; }
     setChecking(true); setResult(null); setCheckId((value) => value + 1);
     trackEvent("start_price_list_check");
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
     try {
-      const response = await fetch(`${workerUrl}/api/digitalni-cjenik/check`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: normalized }) });
+      const response = await fetch(`${workerUrl}/api/digitalni-cjenik/check`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: normalized }), signal: controller.signal });
       const payload = await response.json().catch(() => null);
       if (!payload || !["green", "yellow", "red"].includes(payload.status)) throw new Error("invalid_response");
       setCheckedWebsite(normalized);
@@ -129,6 +141,7 @@ export function DigitalCjenikChecker({ lang = "hr", onRequestImplementation }) {
     } catch {
       setResult({ unavailable: true, status: "unavailable", message: copy.checkerMissing, details: {} });
     } finally {
+      clearTimeout(timeout);
       setChecking(false);
     }
   }
@@ -144,11 +157,11 @@ export function DigitalCjenikChecker({ lang = "hr", onRequestImplementation }) {
         <div><h2 className="text-2xl font-semibold tracking-[-0.025em]">{copy.checkerTitle}</h2><p className="mt-1 max-w-xl text-sm leading-6 text-slate-300">{copy.checkerLead}</p></div>
       </div>
       <form onSubmit={check} noValidate className="mt-5 flex flex-col gap-3 sm:flex-row">
-        <label className="sr-only" htmlFor="sidrene-cijene-checker-url">{copy.checkerTitle}</label>
+        <label className="sr-only" htmlFor={inputId}>{copy.checkerTitle}</label>
         <input
-          id="sidrene-cijene-checker-url"
+          id={inputId}
           aria-invalid={Boolean(urlError)}
-          aria-describedby={urlError ? "sidrene-cijene-checker-url-help sidrene-cijene-checker-url-error" : "sidrene-cijene-checker-url-help"}
+          aria-describedby={urlError ? `${helpId} ${errorId}` : helpId}
           className={`min-h-14 w-full rounded-xl border bg-white px-4 text-base font-medium text-slate-950 outline-none transition placeholder:text-slate-500 focus:ring-2 ${urlError ? "border-rose-400 focus:border-rose-400 focus:ring-rose-300" : "border-white/20 focus:border-cyan-300 focus:ring-cyan-300"}`}
           required type="text" value={url}
           onChange={(event) => { setUrl(event.target.value); if (urlError) setUrlError(""); }}
@@ -161,8 +174,8 @@ export function DigitalCjenikChecker({ lang = "hr", onRequestImplementation }) {
         </button>
       </form>
       <div className="mt-3 space-y-1">
-        <p id="sidrene-cijene-checker-url-help" className="text-xs leading-5 text-slate-300">{lang === "hr" ? "Možete unijeti i samo vasadomena.hr — dodat ćemo https://." : "You can enter yourdomain.com — we will add https://."}</p>
-        {urlError && <p id="sidrene-cijene-checker-url-error" role="alert" className="text-sm font-semibold text-rose-200">{urlError}</p>}
+        <p id={helpId} className="text-xs leading-5 text-slate-300">{lang === "hr" ? "Možete unijeti i samo vasadomena.hr — dodat ćemo https://." : "You can enter yourdomain.com — we will add https://."}</p>
+        {urlError && <p id={errorId} role="alert" className="text-sm font-semibold text-rose-200">{urlError}</p>}
       </div>
       <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-slate-300">{copy.checks.map((item) => <span key={item} className="inline-flex items-center gap-1.5"><Check size={15} className="text-cyan-300" aria-hidden="true" />{item}</span>)}</div>
       <p className="mt-4 max-w-xl text-xs leading-5 text-slate-400">{copy.technicalNotice}</p>
@@ -182,6 +195,18 @@ export function DigitalCjenikChecker({ lang = "hr", onRequestImplementation }) {
                     {result.details?.archiveUrl ? <span>{copy.archiveFoundLabel}: <strong title={result.details.archiveUrl}>{displayUrl(result.details.archiveUrl)}</strong></span> : result.details?.archiveLinkDiscovered ? <span>{copy.archiveUnconfirmed}</span> : <span>{copy.archiveMissing}</span>}
                   </div>
                 )}
+                {result.status === "green" && (
+                  <div className="mt-4 rounded-xl border-2 border-amber-300 bg-amber-50 p-4">
+                    <p className="text-sm font-bold text-amber-900">{copy.whyNotEnoughTitle}</p>
+                    <p className="mt-1.5 text-sm leading-6 text-amber-950">{copy.whyNotEnoughIntro}</p>
+                    <ul className="mt-3 grid gap-1.5 text-sm leading-6 text-amber-950">
+                      {copy.whyNotEnoughItems.map(([label, description]) => (
+                        <li key={label}><strong>{label}</strong> — {description}</li>
+                      ))}
+                    </ul>
+                    <p className="mt-3 text-xs leading-5 text-amber-800">{copy.whyNotEnoughDisclaimer}</p>
+                  </div>
+                )}
                 {result.unavailable ? (
                   <div className="mt-5 flex flex-col gap-3 sm:flex-row">
                     <button className="button button-secondary" onClick={check}>{copy.checkerRetry}<ArrowRight size={17} aria-hidden="true" /></button>
@@ -192,7 +217,9 @@ export function DigitalCjenikChecker({ lang = "hr", onRequestImplementation }) {
                 ) : (
                   <button className="button button-primary mt-5" onClick={() => onRequestImplementation(checkedWebsite)}>{copy.requestImplementation}<ArrowRight size={17} aria-hidden="true" /></button>
                 )}
-                <p className="mt-4 text-xs leading-5 text-slate-600">{copy.technicalNotice}</p>
+                {result.status !== "green" && (
+                  <p className="mt-4 text-xs leading-5 text-slate-600">{copy.technicalNotice}</p>
+                )}
               </div>
             </div>
           </motion.div>
