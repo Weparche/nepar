@@ -30,15 +30,17 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   expect(staticHtml).toContain('NN 101/2026-1213');
   expect(staticHtml).toContain('Dvije povezane, ali odvojene obveze');
   expect(staticHtml).toContain('Digitalni cjenik nije obveza samo za webshopove');
-  expect(staticHtml).toContain('49,90 €');
+  expect(staticHtml).toContain('39,90 €');
+  expect(staticHtml).toContain('NEPAR Publisher');
   expect(staticHtml).toContain('89,90 €');
-  expect(staticHtml).toContain('integracija je od 149 €');
-  expect(staticHtml).toContain('19,90 € / godišnje');
+  expect(staticHtml).not.toContain('Plugin 49,90');
+  expect(staticHtml).not.toContain('19,90 € / godišnje');
+  expect(staticHtml).not.toContain('NEPAR Digital Price Engine');
   expect(staticHtml).toContain('Što još nije definirano');
   expect(staticHtml).toContain('primjer-usluge.csv');
   await page.goto("/digitalni-cjenik");
   await expect(page).toHaveTitle("Digitalni cjenik 2026 – CSV/XML i sidrena cijena | NEPAR");
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /Digitalni cjenik 2026 prema NN 101\/2026/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /MIKROeRAČUN\? Objavite cjenik na webu uz NEPAR Publisher/);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://nepar.hr/digitalni-cjenik");
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("link", { name: "Narodne novine", exact: true })).toHaveAttribute("href", /101_1213/);
@@ -95,13 +97,12 @@ test("checker archive signal wording reads as a technical signal, not a legal ve
 
 test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlable and responsive", async ({ page }) => {
   await page.goto("/digitalni-cjenik");
-  await expect(page.getByText("49,90 €", { exact: true })).toBeVisible();
-  await expect(page.getByText("89,90 €", { exact: true })).toBeVisible();
-  await expect(page.getByText(/integracija je od 149 €/)).toBeVisible();
-  await expect(page.getByText("19,90 € / godišnje", { exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Plugin", exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Plugin + implementacija" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "NEPAR Publisher", exact: true })).toBeVisible();
+  await expect(page.getByText(/Uvodna cijena: 39,90 €\/god za prvih 100/).first()).toBeVisible();
+  await expect(page.getByText("Nakon toga 49,90 €/god.").first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "Provjera", exact: true })).toHaveCount(1);
+  await expect(page.getByText("Rješava li MIKROeRAČUN i digitalni cjenik?")).toBeVisible();
+  await expect(page.locator('a[href="https://digitalnicjenik.nepar.hr"]').first()).toBeVisible();
   await expect(page.getByText("Odnosi li se nova obveza samo na webshopove?")).toBeVisible();
   await expect(page.getByText("Koja je razlika između sidrene cijene i digitalnog cjenika?")).toBeVisible();
   await expect(page.getByText("Imam samo Facebook ili Instagram. Moram li imati XML/CSV cjenik?")).toBeVisible();
@@ -145,7 +146,7 @@ test("checker displays concrete yellow findings and prefills the lead form", asy
 test("lead form accepts a bare www domain and sends its normalized website", async ({ page }) => {
   const contacts = await mockWorker(page, { status: "red", message: "", details: {} });
   await page.goto("/digitalni-cjenik");
-  await page.getByRole("button", { name: "Zatražite ponudu", exact: true }).first().click();
+  await page.getByRole("button", { name: "Zatraži postavljanje", exact: true }).first().click();
   await expect(page.locator("dialog.inquiry-dialog")).toBeVisible();
   const website = page.getByLabel("Web stranica");
   await website.fill("www.mile.hr");

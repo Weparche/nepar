@@ -98,10 +98,10 @@ const localizedPages = {
   "/digitalni-cjenik": {
     indexable: true,
     robots: "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1",
-    lastmod: "2026-09-18",
+    lastmod: "2026-09-21",
     hr: {
       title: "Digitalni cjenik 2026 – CSV/XML i sidrena cijena | NEPAR",
-      description: "Digitalni cjenik 2026 prema NN 101/2026: CSV/XML, sidrena cijena, 30-dnevna arhiva i automatizirani dohvat. Provjerite obvezu i implementaciju na vašoj web stranici.",
+      description: "Digitalni cjenik od 1.10.2026.: CSV/XML, sidrena cijena, 30 dana dostupnosti i automatizirani dohvat. Koristite MIKROeRAČUN? Objavite cjenik na webu uz NEPAR Publisher.",
     },
     en: {
       title: "Digital XML/CSV price list from 1 October 2026. | Nepar Solutions",
@@ -111,9 +111,9 @@ const localizedPages = {
   },
   "/sidrene-cijene": {
     indexable: true,
-    lastmod: "2026-09-18",
+    lastmod: "2026-09-21",
     hr: {
-      title: "Sidrena cijena od 1.10.2026. — što morate napraviti | NEPAR",
+      title: "Sidrena cijena od 1.10.2026. – obveze i digitalni cjenik | NEPAR",
       description: "Sidrena cijena i digitalni XML/CSV cjenik prema NN 101/2026: tko je obveznik, koji je datum i kako to riješiti na postojećem webu uz besplatnu provjeru.",
     },
     en: {
@@ -398,10 +398,10 @@ export function getStructuredData(path = "/") {
       },
       {
         "@type": "Service",
-        "@id": `${SITE_URL}/digitalni-cjenik#price-engine`,
-        name: "NEPAR Digital Price Engine",
-        description: "NEPAR Digital Price Engine povezuje postojeći strukturirani izvor cijena (ERP, poslovni program, API ili CSV/XML) s web stranicom trgovca ili pružatelja usluge te automatski generira javni cjenik, XML/CSV datoteke, 30-dnevnu arhivu i automatizirani dohvat podataka.",
-        serviceType: "Automatizacija i implementacija digitalnog cjenika",
+        "@id": `${SITE_URL}/digitalni-cjenik#publisher`,
+        name: "NEPAR Publisher",
+        description: "NEPAR Publisher omogućuje učitavanje Excel/CSV cjenika, provjeru podataka i objavu digitalnog cjenika na webu s javnim CSV/XML datotekama, verzioniranjem i poviješću objava.",
+        serviceType: "Self-service objava digitalnog cjenika",
         areaServed: { "@type": "Country", name: "Hrvatska" },
         provider: { "@id": ORGANIZATION_ID },
         url: `${SITE_URL}/digitalni-cjenik`,

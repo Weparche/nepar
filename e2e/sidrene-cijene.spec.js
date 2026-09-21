@@ -5,7 +5,7 @@ test("/sidrene-cijene has a self-canonical, correct title, and one H1", async ({
   const staticHtml = await staticResponse.text();
   expect(staticHtml).toContain("data-nepar-static-content");
   await page.goto("/sidrene-cijene");
-  await expect(page).toHaveTitle("Sidrena cijena od 1.10.2026. — što morate napraviti | NEPAR");
+  await expect(page).toHaveTitle("Sidrena cijena od 1.10.2026. – obveze i digitalni cjenik | NEPAR");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://nepar.hr/sidrene-cijene");
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Sidrena cijena od 1.10.2026. — što morate napraviti?");
@@ -36,14 +36,13 @@ test("date exception and prescribed-vs-implementation facts are stated correctly
   expect(staticHtml).toContain("javno dostupnim najmanje 30 dana od objave odnosno promjene — to je zakonski zahtjev; način pohrane i URL struktura arhive nisu propisani.");
 });
 
-test("quote CTA and product link point to the right destinations, with pricing visible", async ({ page }) => {
+test("Publisher CTA and guide links point to the right destinations", async ({ page }) => {
   await page.goto("/sidrene-cijene");
-  await expect(page.getByText("Plugin 49,90 € · Implementacija 49,90 € · Zajedno 89,90 €").first()).toBeVisible();
-  const productLinks = page.getByRole("link", { name: "Alat je dio NEPAR Publishera →", exact: true });
+  await expect(page.getByText(/Uvodna cijena: 39,90 €\/god za prvih 100/).first()).toBeVisible();
+  await expect(page.getByText("Plugin 49,90")).toHaveCount(0);
+  const productLinks = page.locator('a[href="https://digitalnicjenik.nepar.hr"]');
   await expect(productLinks).toHaveCount(2);
-  await expect(productLinks.first()).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr");
-  await expect(productLinks.last()).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr");
-  await expect(page.getByRole("button", { name: "Zatražite ponudu", exact: true })).toHaveCount(2);
+  await expect(page.getByRole("link", { name: "Provjerite obvezu digitalnog cjenika na webu →", exact: true })).toHaveAttribute("href", "/digitalni-cjenik");
   await expect(page.getByRole("link", { name: "Pročitajte detaljno →", exact: true })).toHaveAttribute("href", "/digitalni-cjenik/sidrena-cijena");
 });
 
@@ -52,7 +51,7 @@ test("hero checker is immediately present and opens the implementation popup", a
   await expect(page.getByRole("heading", { name: "Provjerite digitalni cjenik svoje web stranice" })).toBeVisible();
   await expect(page.getByPlaceholder("https://vasadomena.hr")).toBeVisible();
 
-  await page.getByRole("button", { name: "Zatražite ponudu", exact: true }).first().click();
+  await page.getByRole("button", { name: "Pošaljite upit", exact: true }).first().click();
   const dialog = page.locator("dialog.inquiry-dialog");
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole("heading", { name: "Zatražite ponudu" })).toBeVisible();

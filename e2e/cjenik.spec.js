@@ -45,6 +45,8 @@ test("/cjenik.csv has the official Odluka columns plus clearly-marked NEPAR exte
   expect(header).toBe("naziv_usluge,maloprodajna_cijena,posebni_oblik_prodaje,naziv_posebnog_oblika_prodaje,sidrena_cijena,nepar_cijena_od,nepar_napomena");
   expect(csv).toContain("Web Basic,300.00,false,,300.00,false,");
   expect(csv).toContain("Provjera digitalnog cjenika web-stranice,0.00,false,,,false,");
+  expect(csv).toContain("NEPAR Publisher – godišnja pretplata,39.90,false,,,false,");
+  expect(csv).not.toMatch(/NEPAR Publisher[^\n]*49\.90/);
 });
 
 test("/cjenik.xml has the digitalni-cjenik root, official fields, and NEPAR extensions", async ({ page }) => {

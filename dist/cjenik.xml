@@ -189,31 +189,22 @@
     <nepar_napomena>Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva.</nepar_napomena>
   </usluga>
   <usluga>
-    <naziv_usluge>Digitalni cjenik – plugin (samostalna implementacija)</naziv_usluge>
-    <maloprodajna_cijena valuta="EUR">49.90</maloprodajna_cijena>
+    <naziv_usluge>NEPAR Publisher – godišnja pretplata</naziv_usluge>
+    <maloprodajna_cijena valuta="EUR">39.90</maloprodajna_cijena>
     <posebni_oblik_prodaje>false</posebni_oblik_prodaje>
     <naziv_posebnog_oblika_prodaje />
     <sidrena_cijena />
-    <nepar_cijena_od>true</nepar_cijena_od>
-    <nepar_napomena>Cijena je početna (&quot;od&quot;) — konačna cijena ovisi o opsegu ili platformi. Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva. Samostalna implementacija putem digitalnicjenik.nepar.hr.</nepar_napomena>
+    <nepar_cijena_od>false</nepar_cijena_od>
+    <nepar_napomena>Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije utvrđena (REGULATORY TODO). Self-service putem digitalnicjenik.nepar.hr.</nepar_napomena>
   </usluga>
   <usluga>
-    <naziv_usluge>Digitalni cjenik – implementacija na postojeći web</naziv_usluge>
-    <maloprodajna_cijena valuta="EUR">49.90</maloprodajna_cijena>
-    <posebni_oblik_prodaje>false</posebni_oblik_prodaje>
-    <naziv_posebnog_oblika_prodaje />
-    <sidrena_cijena />
-    <nepar_cijena_od>true</nepar_cijena_od>
-    <nepar_napomena>Cijena je početna (&quot;od&quot;) — konačna cijena ovisi o opsegu ili platformi. Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva.</nepar_napomena>
-  </usluga>
-  <usluga>
-    <naziv_usluge>Digitalni cjenik – plugin i implementacija (paket)</naziv_usluge>
+    <naziv_usluge>Postavljanje NEPAR Publishera (prva godina)</naziv_usluge>
     <maloprodajna_cijena valuta="EUR">89.90</maloprodajna_cijena>
     <posebni_oblik_prodaje>false</posebni_oblik_prodaje>
     <naziv_posebnog_oblika_prodaje />
     <sidrena_cijena />
-    <nepar_cijena_od>true</nepar_cijena_od>
-    <nepar_napomena>Cijena je početna (&quot;od&quot;) — konačna cijena ovisi o opsegu ili platformi. Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva. Plugin (49,90 €) i implementacija (49,90 €) zajedno.</nepar_napomena>
+    <nepar_cijena_od>false</nepar_cijena_od>
+    <nepar_napomena>Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva.</nepar_napomena>
   </usluga>
   <usluga>
     <naziv_usluge>Wix / React / Next / Vite / custom integracija</naziv_usluge>
@@ -222,15 +213,6 @@
     <naziv_posebnog_oblika_prodaje />
     <sidrena_cijena />
     <nepar_cijena_od>true</nepar_cijena_od>
-    <nepar_napomena>Cijena je početna (&quot;od&quot;) — konačna cijena ovisi o opsegu ili platformi. Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva.</nepar_napomena>
-  </usluga>
-  <usluga>
-    <naziv_usluge>Tehničko održavanje digitalnog cjenika</naziv_usluge>
-    <maloprodajna_cijena valuta="EUR">19.90</maloprodajna_cijena>
-    <posebni_oblik_prodaje>false</posebni_oblik_prodaje>
-    <naziv_posebnog_oblika_prodaje />
-    <sidrena_cijena />
-    <nepar_cijena_od>false</nepar_cijena_od>
-    <nepar_napomena>Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva. Prva godina uključena u implementaciju.</nepar_napomena>
+    <nepar_napomena>Cijena je početna (&quot;od&quot;) — konačna cijena ovisi o opsegu ili platformi. Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva. Prilagođena integracija ERP/POS/webshop — individualna ponuda.</nepar_napomena>
   </usluga>
 </digitalni-cjenik>

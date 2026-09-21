@@ -6,27 +6,13 @@ import { trackEvent } from "./analytics.js";
 import { usePageMeta } from "./usePageMeta.js";
 import { digitalPriceListFaqHr, digitalPriceListFaqEn } from "./digitalPriceListFaq.js";
 import { DigitalCjenikChecker, DigitalCjenikImplementationModal } from "./DigitalCjenikChecker.jsx";
+import {
+  PRODUCT_URL,
+  goToProduct,
+  marketingPriceEn,
+  marketingPriceHr,
+} from "./publisherOffer.js";
 
-const PRODUCT_URL = "https://digitalnicjenik.nepar.hr";
-
-// A plain <a href> click navigates on the same tick the click handler returns; trackEvent()
-// is async and gtag()'s own network beacon can dispatch after gtag() itself returns (verified
-// empirically: awaiting trackEvent() alone was not enough — the collect request for the click
-// event was still lost to the navigation). Prevent the default navigation, fire the event, wait
-// a short fixed delay for GA's beacon to actually leave the page, then navigate manually.
-function goToProduct(event, eventName) {
-  event.preventDefault();
-  trackEvent(eventName).finally(() => {
-    window.setTimeout(() => { window.location.href = PRODUCT_URL; }, 300);
-  });
-}
-
-// Curated subset of the single FAQ source of truth (digitalPriceListFaq.js) — filtered by exact
-// question text rather than a stable id, to avoid widening this page's scope into a refactor of
-// the shared FAQ array (which is also consumed by DigitalPriceListPage.jsx and seoConfig.js).
-// If any of these three questions is ever reworded there, this filter silently returns fewer than
-// 3 items — the invariants below turn that into a loud build-time failure instead of a silently
-// empty FAQ section.
 const TARGET_QUESTIONS_HR = [
   "Koja je razlika između sidrene cijene i digitalnog cjenika?",
   "Je li 10. rujna 2026. datum sidrene cijene za sve proizvode?",
@@ -52,9 +38,11 @@ const content = {
     eyebrow: "NN 101/2026-1212 · primjena od 1.10.2026.",
     title: "Sidrena cijena od 1.10.2026. — što morate napraviti?",
     lead: "Od 1. listopada 2026. trgovci u maloprodaji i pružatelji usluga obuhvaćeni su pravilima o dodatnoj cijeni, bez obzira imaju li web stranicu. Imate web stranicu? Provjerite i dodatne obveze XML/CSV digitalnog cjenika.",
-    priceStrip: "Plugin 49,90 € · Implementacija 49,90 € · Zajedno 89,90 €",
-    implementationCta: "Zatražite ponudu",
-    productLink: "Alat je dio NEPAR Publishera",
+    contextualTitle: "Imate web stranicu?",
+    contextualLead: "Sidrena cijena nije isto što i digitalni cjenik. Ako imate vlastitu web stranicu, provjerite i zasebnu obvezu objave XML/CSV cjenika.",
+    contextualMikro: "Koristite MIKROeRAČUN? NEPAR Publisher može iz vašeg Excel/CSV cjenika napraviti javnu objavu za web.",
+    contextualProductCta: "Isprobaj Publisher 7 dana",
+    contextualGuideCta: "Provjerite obvezu digitalnog cjenika na webu",
     obligationsTitle: "Tko je obveznik?",
     obligation1Title: "Tko mora isticati sidrenu/dodatnu cijenu?",
     obligation1Body: "Trgovci u maloprodaji i pružatelji usluga obuhvaćeni Odlukom NN 101/2026-1212. Ako oglašavaju cijene na svojoj mrežnoj stranici, dodatna cijena ističe se i tamo.",
@@ -72,11 +60,16 @@ const content = {
       "Cjenik održavajte ažurnim i javno dostupnim najmanje 30 dana od objave odnosno promjene — to je zakonski zahtjev; način pohrane i URL struktura arhive nisu propisani.",
     ],
     whatMoreLink: "Pročitajte detaljno →",
-    solutionTitle: "NEPAR Digital Price Engine",
-    solutionBody: "Praktični put za tehničku implementaciju zahtjeva: NEPAR Digital Price Engine povezuje postojeći izvor cijena (ERP, poslovni program, Excel, webshop) s vašom web stranicom i generira javni cjenik, XML/CSV datoteke i arhivu prethodnih verzija. Ovo je tehnička implementacija, ne pravno mišljenje niti jamstvo usklađenosti.",
-    solutionLink: "Saznajte više →",
+    crossSellTitle: "Digitalni cjenik na webu",
+    crossSellBody: "Za XML/CSV obvezu, provjeru sadržaja i tehničke zahtjeve pogledajte vodič za digitalni cjenik. NEPAR Publisher je self-service alat za objavu cjenika iz Excel/CSV — nije zamjena za isticanje sidrene cijene u poslovnom prostoru.",
+    crossSellLink: "Vodič za digitalni cjenik →",
     faqTitle: "Česta pitanja",
-    finalTitle: "Spremni riješiti sidrenu cijenu i digitalni cjenik?",
+    finalTitle: "Imate web i trebate objaviti digitalni cjenik?",
+    finalLead: "Ako cijene već imate u Excelu ili CSV-u, NEPAR Publisher ih pretvara u javnu web objavu s CSV/XML datotekama i poviješću objava.",
+    finalProductCta: "Učitaj cjenik i isprobaj",
+    finalCustomTitle: "Složenija integracija ili prikaz sidrene cijene",
+    finalCustomBody: "Za prikaz dodatne/sidrene cijene na postojećoj web stranici ili prilagođenu integraciju pošaljite upit.",
+    finalCustomCta: "Pošaljite upit",
     legal: "Informacije na ovoj stranici služe kao tehnički i informativni pregled propisa i ne predstavljaju pravni savjet. Za tumačenje primjenjivosti propisa na konkretno poslovanje obratite se nadležnom tijelu ili pravnom stručnjaku.",
     faq: faqHr,
   },
@@ -84,9 +77,11 @@ const content = {
     eyebrow: "NN 101/2026-1212 · effective from 1 Oct 2026",
     title: "Reference price from 1 Oct 2026 — what you must do",
     lead: "From 1 October 2026, retail traders and service providers are covered by the additional-price rules, regardless of whether they have a website. Do you have a website? Check the additional XML/CSV digital price list obligations too.",
-    priceStrip: "Plugin €49.90 · Implementation €49.90 · Together €89.90",
-    implementationCta: "Request a quote",
-    productLink: "The tool is part of NEPAR Publisher",
+    contextualTitle: "Do you have a website?",
+    contextualLead: "The reference price is not the same as the digital price list. If you have your own website, check the separate obligation to publish an XML/CSV price list.",
+    contextualMikro: "Use MIKROeRAČUN? NEPAR Publisher can turn your Excel/CSV price list into a public web publication.",
+    contextualProductCta: "Try Publisher for 7 days",
+    contextualGuideCta: "Check your digital price list obligation on the web",
     obligationsTitle: "Who is covered?",
     obligation1Title: "Who must display the additional/reference price?",
     obligation1Body: "Retail traders and service providers covered by Decision NN 101/2026-1212. If they advertise prices on their website, the additional price must be displayed there too.",
@@ -104,11 +99,16 @@ const content = {
       "Keep the price list current and publicly available for at least 30 days from publication or change — that is a legal requirement; the storage method and archive URL structure are not prescribed.",
     ],
     whatMoreLink: "Read the full guide →",
-    solutionTitle: "NEPAR Digital Price Engine",
-    solutionBody: "A practical way to technically implement the requirement: NEPAR Digital Price Engine connects an existing price source (ERP, business software, a spreadsheet, a webshop) to your website and generates a public price list, XML/CSV files, and an archive of previous versions. This is a technical implementation, not legal advice or a compliance guarantee.",
-    solutionLink: "Learn more →",
+    crossSellTitle: "Digital price list on the web",
+    crossSellBody: "For the XML/CSV obligation, content checks, and technical requirements, see the digital price list guide. NEPAR Publisher is a self-service tool to publish from Excel/CSV — it does not replace displaying the reference price in a physical premises.",
+    crossSellLink: "Digital price list guide →",
     faqTitle: "Frequently asked questions",
-    finalTitle: "Ready to sort out the reference price and digital price list?",
+    finalTitle: "Have a website and need to publish a digital price list?",
+    finalLead: "If your prices are already in Excel or CSV, NEPAR Publisher turns them into a public web publication with CSV/XML files and publication history.",
+    finalProductCta: "Upload your price list and try it",
+    finalCustomTitle: "Complex integration or reference-price display",
+    finalCustomBody: "For displaying the additional/reference price on an existing website or a tailored integration, send an inquiry.",
+    finalCustomCta: "Send an inquiry",
     legal: "Information on this page is a technical and informational overview of Croatian regulation and does not constitute legal advice. For interpretation of the regulation’s applicability to a specific business, contact the competent authority or a legal professional.",
     faq: faqEn,
   },
@@ -119,6 +119,7 @@ export default function SidreneCijenePage() {
   const [implementationOpen, setImplementationOpen] = useState(false);
   const [implementationWebsite, setImplementationWebsite] = useState("");
   const copy = content[lang];
+  const marketing = lang === "hr" ? marketingPriceHr : marketingPriceEn;
   usePageMeta("/sidrene-cijene", lang);
   useEffect(() => { trackEvent("view_sidrene_cijene"); }, []);
 
@@ -141,23 +142,27 @@ export default function SidreneCijenePage() {
           <div className="mt-8">
             <DigitalCjenikChecker lang={lang} onRequestImplementation={openImplementation} />
           </div>
-          <p className="mt-5 text-sm font-semibold text-slate-700">{copy.priceStrip}</p>
-          <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <button
-              type="button"
-              onClick={() => openImplementation()}
-              className="button button-primary"
-            >
-              {copy.implementationCta}
-              <ArrowRight size={17} aria-hidden="true" />
-            </button>
-            <a
-              href={PRODUCT_URL}
-              onClick={(event) => goToProduct(event, "sidrene_cijene_product_link")}
-              className="text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900"
-            >
-              {copy.productLink} →
-            </a>
+          <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 sm:p-7">
+            <h2 className="text-xl font-semibold text-slate-950">{copy.contextualTitle}</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-700">{copy.contextualLead}</p>
+            <p className="mt-3 text-sm leading-6 text-slate-700">{copy.contextualMikro}</p>
+            <p className="mt-4 text-sm font-semibold text-slate-800">{marketing.launchLine}</p>
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <a
+                href={PRODUCT_URL}
+                onClick={(event) => goToProduct(event, "sidrene_cijene_product_link")}
+                className="button button-primary inline-flex"
+              >
+                {copy.contextualProductCta}
+                <ArrowRight size={17} aria-hidden="true" />
+              </a>
+              <Link
+                to="/digitalni-cjenik"
+                className="text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900"
+              >
+                {copy.contextualGuideCta} →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -204,10 +209,10 @@ export default function SidreneCijenePage() {
 
       <section className="content-section px-4">
         <div className="section-shell max-w-4xl rounded-2xl border-2 border-slate-900 bg-white p-7 sm:p-10">
-          <h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950">{copy.solutionTitle}</h2>
-          <p className="mt-4 leading-7 text-slate-600">{copy.solutionBody}</p>
+          <h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950">{copy.crossSellTitle}</h2>
+          <p className="mt-4 leading-7 text-slate-600">{copy.crossSellBody}</p>
           <Link to="/digitalni-cjenik" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">
-            {copy.solutionLink}
+            {copy.crossSellLink}
           </Link>
         </div>
       </section>
@@ -230,25 +235,26 @@ export default function SidreneCijenePage() {
       </section>
 
       <section className="content-section px-4">
-        <div className="section-shell max-w-4xl rounded-2xl border border-slate-200 bg-white p-7 text-center sm:p-10">
+        <div className="section-shell max-w-4xl rounded-2xl border border-slate-200 bg-white p-7 sm:p-10">
           <h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950">{copy.finalTitle}</h2>
-          <p className="mt-3 text-sm font-semibold text-slate-700">{copy.priceStrip}</p>
-          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <button
-              type="button"
-              onClick={() => openImplementation()}
-              className="button button-primary inline-flex"
-            >
-              {copy.implementationCta}
+          <p className="mt-4 text-sm leading-6 text-slate-700">{copy.finalLead}</p>
+          <p className="mt-3 text-sm font-semibold text-slate-800">{marketing.launchLine}</p>
+          <p className="mt-1 text-sm text-slate-600">{marketing.afterLine}</p>
+          <a
+            href={PRODUCT_URL}
+            onClick={(event) => goToProduct(event, "sidrene_cijene_final_product")}
+            className="button button-primary mt-6 inline-flex"
+          >
+            {copy.finalProductCta}
+            <ArrowRight size={17} aria-hidden="true" />
+          </a>
+          <div className="mt-8 border-t border-slate-200 pt-6">
+            <h3 className="text-lg font-semibold text-slate-950">{copy.finalCustomTitle}</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-600">{copy.finalCustomBody}</p>
+            <button type="button" className="button button-secondary mt-4" onClick={() => openImplementation()}>
+              {copy.finalCustomCta}
               <ArrowRight size={17} aria-hidden="true" />
             </button>
-            <a
-              href={PRODUCT_URL}
-              onClick={(event) => goToProduct(event, "sidrene_cijene_product_link")}
-              className="text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900"
-            >
-              {copy.productLink} →
-            </a>
           </div>
         </div>
       </section>

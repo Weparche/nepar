@@ -4,6 +4,7 @@
 // so this must not be forked into separate copies again.
 
 export const digitalPriceListFaqHr = [
+  ["Rješava li MIKROeRAČUN i digitalni cjenik?", "Ne u istom smislu. MIKROeRAČUN Porezne uprave odnosi se na eRačune u propisanom sustavu. Obveza objave digitalnog XML/CSV cjenika na vašoj web stranici dolazi iz Odluke NN 101/2026-1213 i zahtijeva zasebnu tehničku objavu cjenika — to nije isto što i eRačun servis. Ako imate Excel ili CSV s cijenama, NEPAR Publisher može pomoći objaviti cjenik na webu."],
   ["Odnosi li se nova obveza samo na webshopove?", "Ne. Odluka 1213 obvezu objave digitalnog cjenika veže uz trgovca odnosno pružatelja usluge koji ima uspostavljenu mrežnu stranicu, a ne uz samu mogućnost online kupnje."],
   ["Imam samo prezentacijsku web stranicu. Odnosi li se to na mene?", "Sama činjenica da putem weba ne naplaćujete uslugu ne znači automatski da ste izvan obuhvata. Odluka govori o trgovcima i pružateljima usluga koji imaju uspostavljene mrežne stranice. Za specifične poslovne modele provjerite službena pojašnjenja."],
   ["Koja je razlika između sidrene cijene i digitalnog cjenika?", "Riječ je o dvije povezane, ali odvojene obveze. Odluka 1212 uređuje isticanje dodatne odnosno sidrene cijene, dok Odluka 1213 uređuje objavu strojno čitljivih XML/CSV cjenika na mrežnim stranicama."],
@@ -21,6 +22,7 @@ export const digitalPriceListFaqHr = [
 ];
 
 export const digitalPriceListFaqEn = [
+  ["Does MIKROeRAČUN also publish my digital price list?", "Not in the same sense. Croatia's MIKROeRAČUN service is for e-invoices in the tax authority's system. The obligation to publish a digital XML/CSV price list on your website comes from Decision NN 101/2026-1213 and requires a separate technical publication — it is not the same as the e-invoice service. If you have prices in Excel or CSV, NEPAR Publisher can help publish them on the web."],
   ["Does the new obligation apply only to webshops?", "No. Decision 1213 ties the digital-price-list obligation to a trader or service provider with an established website, not to online purchasing itself."],
   ["I only have a presentation website. Does this apply to me?", "The fact that you do not charge for a service through the website does not automatically place you outside the scope. Check official guidance for specific business models."],
   ["What is the difference between an additional/reference price and a digital price list?", "These are related but separate obligations. Decision 1212 governs displaying the additional/reference price, while Decision 1213 governs publishing machine-readable XML/CSV price lists on websites."],
