@@ -1,0 +1,45 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nepar-demo-engine",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-22",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "vars": {
+    "ROOT_DOMAIN": "nepar.hr",
+    "ZONE_NAME": "nepar.hr",
+    "WORKER_SERVICE": "nepar-demo-engine",
+    "ACTIVE_DOMAIN_LIMIT": "80",
+    "DEFAULT_EXPIRY_DAYS": "7",
+    "ADMIN_RATE_LIMIT_PER_MINUTE": "120"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nepar-demo-engine",
+      "database_id": "6dec7207-efd9-4cf7-bca5-9d80b01c6cba",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "ASSETS",
+      "bucket_name": "nepar-demo-assets",
+      "jurisdiction": "eu"
+    }
+  ],
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "allowed_sender_addresses": ["nepar@nepar.hr"]
+    }
+  ],
+  "triggers": {
+    "crons": ["17 3 * * *", "30 7 * * *", "30 9 * * *"]
+  },
+  "observability": {
+    "enabled": true,
+    "logs": { "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.05 }
+  }
+}

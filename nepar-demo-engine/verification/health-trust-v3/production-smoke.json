@@ -1,0 +1,28 @@
+{
+  "preservation": [
+    {
+      "slug": "fabela",
+      "unchanged": true
+    },
+    {
+      "slug": "nera-vet-zagreb",
+      "unchanged": true
+    },
+    {
+      "slug": "don-vet-zagreb",
+      "unchanged": true
+    },
+    {
+      "slug": "nepar-main-site",
+      "unchanged": false
+    }
+  ],
+  "cta": {
+    "status": 302,
+    "target": "tel:+38513095340"
+  },
+  "mainSiteDifference": "One blank HTML line only; scripts, styles, text and route artifacts preserved.",
+  "canonicalUrl": "https://fabela-v3.nepar.hr",
+  "workerVersion": "7e3b1007-45df-44b1-8a8d-81a54d577063",
+  "pagesDeployment": "https://9561fd35.nepar.pages.dev"
+}

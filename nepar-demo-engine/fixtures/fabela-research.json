@@ -1,0 +1,63 @@
+{
+  "businessName": "Fabela",
+  "slug": "fabela",
+  "websiteUrl": "https://www.fabela.hr/",
+  "publicPhone": "+385 1 3095 340",
+  "city": "Zagreb",
+  "industry": "Veterinarska ambulanta",
+  "source": "official-website+public-register-cross-check",
+  "score": 94,
+  "scoreReasons": [
+    "Aktivna veterinarska ambulanta s jasno objavljenim kontaktom i adresom.",
+    "Službena stranica javno navodi stručnog voditelja i više od 15 godina iskustva.",
+    "Postoji dovoljno provjerljivih usluga za vjerodostojan personalizirani demo."
+  ],
+  "services": [
+    { "title": "Preventivni pregledi i cijepljenje", "description": "Preventivna skrb i cijepljenje prema javno navedenim uslugama ambulante.", "sourceField": "fabela.services" },
+    { "title": "Ultrazvuk i RTG dijagnostika", "description": "Dijagnostičke usluge uključuju ultrazvuk i rendgensku dijagnostiku.", "sourceField": "fabela.services" },
+    { "title": "Kardiologija", "description": "Kardiološka obrada nalazi se među javno navedenim uslugama ambulante.", "sourceField": "fabela.services" },
+    { "title": "Kirurgija", "description": "Kirurški zahvati navedeni su u javnoj ponudi veterinarskih usluga.", "sourceField": "fabela.services" },
+    { "title": "Dermatologija i oftalmologija", "description": "Ambulanta javno navodi dermatološku i oftalmološku skrb.", "sourceField": "fabela.services" },
+    { "title": "Laboratorijska dijagnostika", "description": "Laboratorijske, virusološke i parazitološke pretrage dio su javno navedenih usluga.", "sourceField": "fabela.services" }
+  ],
+  "facts": {
+    "fabela.location": "Tratinska 53/I, Zagreb",
+    "fabela.experience": "15+ godina",
+    "fabela.lead": "dr. Alan Jurca"
+  },
+  "sources": [
+    { "field": "fabela.services", "url": "https://www.fabela.hr/", "note": "Službena stranica ambulante; izvor javno navedenih veterinarskih usluga.", "verifiedAt": "2026-08-23T11:45:00.000Z" },
+    { "field": "fabela.location", "url": "https://www.fabela.hr/", "note": "Službena stranica; kontaktna adresa.", "verifiedAt": "2026-08-23T11:45:00.000Z" },
+    { "field": "fabela.experience", "url": "https://www.fabela.hr/", "note": "Službena stranica javno navodi više od 15 godina iskustva.", "verifiedAt": "2026-08-23T11:45:00.000Z" },
+    { "field": "fabela.lead", "url": "https://www.fabela.hr/", "note": "Službena stranica navodi dr. Alana Jurcu.", "verifiedAt": "2026-08-23T11:45:00.000Z" }
+  ],
+  "visualAssets": [
+    {
+      "kind": "hero",
+      "role": "pet",
+      "url": "https://nepar.hr/fabela/hero.webp",
+      "alt": "Topao veterinarski vizual za Fabela demo bez identifikacije stvarne osobe.",
+      "sourceUrl": "https://nepar.hr/fabela/hero.webp",
+      "provenance": "nepar-owned",
+      "verifiedAt": "2026-08-23T11:45:00.000Z",
+      "depictsNamedPerson": false,
+      "heroEligible": true
+    },
+    {
+      "kind": "gallery",
+      "role": "clinic",
+      "url": "https://nepar.hr/fabela/about.webp",
+      "alt": "Mirna unutrašnjost veterinarske ordinacije bez identifikacije stvarne lokacije ili osobe.",
+      "sourceUrl": "https://nepar.hr/fabela/about.webp",
+      "provenance": "nepar-owned",
+      "verifiedAt": "2026-08-23T15:38:00.000Z",
+      "depictsNamedPerson": false,
+      "heroEligible": false
+    }
+  ],
+  "verifiedObservations": [
+    "Fabela je veterinarska ambulanta na adresi Tratinska 53/I u Zagrebu.",
+    "Službena stranica navodi dr. Alana Jurcu i više od 15 godina iskustva."
+  ],
+  "proposedServiceAngle": "Modernizirati prezentaciju ambulante uz call-first mobilni CTA, provjerene usluge i jasno istaknuto povjerenje bez izmišljenih recenzija ili društvenih profila."
+}
