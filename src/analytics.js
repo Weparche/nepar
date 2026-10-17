@@ -331,6 +331,81 @@ export async function trackPageView({ path, title, navigationKey = path }) {
   return true;
 }
 
+function analyticsDate(value) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? new Date() : date;
+}
+
+function isoDateKey(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function mondayDateKey(date) {
+  const monday = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const day = monday.getUTCDay() || 7;
+  monday.setUTCDate(monday.getUTCDate() - day + 1);
+  return isoDateKey(monday);
+}
+
+function aggregateRows(rows) {
+  return rows.reduce((result, row) => ({
+    total: result.total + (row.total || 0),
+    ownerTotal: result.ownerTotal + (row.ownerTotal || 0),
+    visitorTotal: result.visitorTotal + (row.visitorTotal ?? Math.max(0, (row.total || 0) - (row.ownerTotal || 0))),
+  }), { total: 0, ownerTotal: 0, visitorTotal: 0 });
+}
+
+function decorateKidsAnalytics(summary) {
+  if (!summary || typeof summary !== "object") return summary;
+  const daily = Array.isArray(summary.daily) ? summary.daily : [];
+  const kidsDaily = daily.filter((row) => typeof row?.path === "string" && row.path.startsWith("/kids"));
+  const byDate = new Map();
+  for (const row of kidsDaily) {
+    if (!row?.date) continue;
+    const current = byDate.get(row.date) || { date: row.date, path: "NEPAR Kids · sve stranice", total: 0, ownerTotal: 0, visitorTotal: 0 };
+    current.total += row.total || 0;
+    current.ownerTotal += row.ownerTotal || 0;
+    current.visitorTotal += row.visitorTotal ?? Math.max(0, (row.total || 0) - (row.ownerTotal || 0));
+    byDate.set(row.date, current);
+  }
+
+  const generated = analyticsDate(summary.generatedAt);
+  const today = isoDateKey(generated);
+  const weekStart = mondayDateKey(generated);
+  const monthPrefix = today.slice(0, 7);
+  const kidsAll = aggregateRows(kidsDaily);
+  const kidsToday = aggregateRows(kidsDaily.filter((row) => row.date === today));
+  const kidsWeek = aggregateRows(kidsDaily.filter((row) => row.date >= weekStart && row.date <= today));
+  const kidsMonth = aggregateRows(kidsDaily.filter((row) => String(row.date || "").startsWith(monthPrefix)));
+  const kidsLastSeen = (Array.isArray(summary.pages) ? summary.pages : [])
+    .filter((page) => typeof page?.path === "string" && page.path.startsWith("/kids"))
+    .map((page) => page.lastSeen)
+    .filter(Boolean)
+    .sort()
+    .at(-1) || summary.generatedAt;
+
+  const periodRows = [
+    ["NEPAR Kids · DANAS", "Sve Kids stranice ukupno danas", kidsToday],
+    ["NEPAR Kids · OVAJ TJEDAN", `Sve Kids stranice od ${weekStart} do danas`, kidsWeek],
+    ["NEPAR Kids · OVAJ MJESEC", `Sve Kids stranice u ${monthPrefix}`, kidsMonth],
+    ["NEPAR Kids · SVE VRIJEME", "Sve zabilježene Kids stranice ukupno", kidsAll],
+  ].map(([path, title, totals]) => ({
+    path,
+    title,
+    ...totals,
+    firstSeen: null,
+    lastSeen: kidsLastSeen,
+    referrers: {},
+  }));
+
+  const kidsDailyTotals = [...byDate.values()].sort((a, b) => b.date.localeCompare(a.date));
+  return {
+    ...summary,
+    pages: [...periodRows, ...(Array.isArray(summary.pages) ? summary.pages : [])],
+    daily: [...kidsDailyTotals, ...daily],
+  };
+}
+
 export async function fetchAnalyticsSummary({ username, password }) {
   const url = analyticsUrl("/analytics/summary");
   if (!url) throw new Error("Analytics API nije konfiguriran. Postavi VITE_WORKER_URL.");
@@ -340,7 +415,7 @@ export async function fetchAnalyticsSummary({ username, password }) {
   });
   if (res.status === 401) throw new Error("Pogrešno korisničko ime ili lozinka.");
   if (!res.ok) throw new Error("Statistika trenutno nije dostupna.");
-  return res.json();
+  return decorateKidsAnalytics(await res.json());
 }
 
 export async function resetAnalytics({ username, password }) {
