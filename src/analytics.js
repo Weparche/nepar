@@ -358,6 +358,7 @@ function aggregateRows(rows) {
 function decorateKidsAnalytics(summary) {
   if (!summary || typeof summary !== "object") return summary;
   const daily = Array.isArray(summary.daily) ? summary.daily : [];
+  const pages = Array.isArray(summary.pages) ? summary.pages : [];
   const kidsDaily = daily.filter((row) => typeof row?.path === "string" && row.path.startsWith("/kids"));
   const byDate = new Map();
   for (const row of kidsDaily) {
@@ -377,7 +378,7 @@ function decorateKidsAnalytics(summary) {
   const kidsToday = aggregateRows(kidsDaily.filter((row) => row.date === today));
   const kidsWeek = aggregateRows(kidsDaily.filter((row) => row.date >= weekStart && row.date <= today));
   const kidsMonth = aggregateRows(kidsDaily.filter((row) => String(row.date || "").startsWith(monthPrefix)));
-  const kidsLastSeen = (Array.isArray(summary.pages) ? summary.pages : [])
+  const kidsLastSeen = pages
     .filter((page) => typeof page?.path === "string" && page.path.startsWith("/kids"))
     .map((page) => page.lastSeen)
     .filter(Boolean)
@@ -401,7 +402,7 @@ function decorateKidsAnalytics(summary) {
   const kidsDailyTotals = [...byDate.values()].sort((a, b) => b.date.localeCompare(a.date));
   return {
     ...summary,
-    pages: [...periodRows, ...(Array.isArray(summary.pages) ? summary.pages : [])],
+    pages: [...pages, ...periodRows],
     daily: [...kidsDailyTotals, ...daily],
   };
 }
