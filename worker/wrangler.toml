@@ -3,6 +3,10 @@ main = "index.js"
 compatibility_date = "2026-06-08"
 compatibility_flags = ["nodejs_compat"]
 
+routes = [
+  { pattern = "nepar.hr/analytics/*", zone_name = "nepar.hr" }
+]
+
 [vars]
 KIDS_EMAIL_FROM = "NEPAR Kids <orders@kids.nepar.hr>"
 
