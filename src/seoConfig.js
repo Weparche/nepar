@@ -98,22 +98,22 @@ const localizedPages = {
   "/digitalni-cjenik": {
     indexable: true,
     robots: "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1",
-    lastmod: "2026-09-21",
+    lastmod: "2026-10-18",
     hr: {
       title: "Digitalni cjenik 2026 – CSV/XML i sidrena cijena | NEPAR",
-      description: "Digitalni cjenik od 1.10.2026.: CSV/XML, sidrena cijena, 30 dana dostupnosti i automatizirani dohvat. Koristite MIKROeRAČUN? Objavite cjenik na webu uz NEPAR Publisher.",
+      description: "Digitalni cjenik do 17.11.2026.: CSV/XML, sidrena cijena, 30 dana dostupnosti i automatizirani dohvat. Objavite cjenik na webu uz NEPAR Publisher, s nadzorom ispravnosti.",
     },
     en: {
-      title: "Digital XML/CSV price list from 1 October 2026. | Nepar Solutions",
-      description: "New digital price-list obligation from 1 October 2026. Find out if you need an XML/CSV price list and how to implement it on WordPress, Wix, or your website.",
+      title: "Digital XML/CSV price list: 17 November 2026 deadline. | Nepar Solutions",
+      description: "New digital price-list obligation from 17 November 2026 (postponed from 1 October). Find out if you need an XML/CSV price list and how to implement it on WordPress, Wix, or your website.",
     },
     schema: "digital-price-list",
   },
   "/sidrene-cijene": {
     indexable: true,
-    lastmod: "2026-09-21",
+    lastmod: "2026-10-18",
     hr: {
-      title: "Sidrena cijena od 1.10.2026. – obveze i digitalni cjenik | NEPAR",
+      title: "Sidrena cijena do 17.11.2026. – obveze i digitalni cjenik | NEPAR",
       description: "Sidrena cijena i digitalni XML/CSV cjenik prema NN 101/2026: tko je obveznik, koji je datum i kako to riješiti na postojećem webu uz besplatnu provjeru.",
     },
     en: {

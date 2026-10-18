@@ -35,9 +35,9 @@ if (faqEn.length !== TARGET_QUESTIONS_EN.length) {
 
 const content = {
   hr: {
-    eyebrow: "NN 101/2026-1212 · primjena od 1.10.2026.",
-    title: "Sidrena cijena od 1.10.2026. — što morate napraviti?",
-    lead: "Od 1. listopada 2026. trgovci u maloprodaji i pružatelji usluga obuhvaćeni su pravilima o dodatnoj cijeni, bez obzira imaju li web stranicu. Imate web stranicu? Provjerite i dodatne obveze XML/CSV digitalnog cjenika.",
+    eyebrow: "NN 101/2026-1212 · rok primjene 17.11.2026.",
+    title: "Sidrena cijena do 17.11.2026. — što morate napraviti?",
+    lead: "Od 17. studenoga 2026. (odgoda s 1. listopada) trgovci u maloprodaji i pružatelji usluga obuhvaćeni su pravilima o dodatnoj cijeni, bez obzira imaju li web stranicu. Imate web stranicu? Provjerite i dodatne obveze XML/CSV digitalnog cjenika.",
     contextualTitle: "Imate web stranicu?",
     contextualLead: "Sidrena cijena nije isto što i digitalni cjenik. Ako imate vlastitu web stranicu, provjerite i zasebnu obvezu objave XML/CSV cjenika.",
     contextualMikro: "Koristite MIKROeRAČUN? NEPAR Publisher može iz vašeg Excel/CSV cjenika napraviti javnu objavu za web.",
@@ -76,7 +76,7 @@ const content = {
   en: {
     eyebrow: "NN 101/2026-1212 · effective from 1 Oct 2026",
     title: "Reference price from 1 Oct 2026 — what you must do",
-    lead: "From 1 October 2026, retail traders and service providers are covered by the additional-price rules, regardless of whether they have a website. Do you have a website? Check the additional XML/CSV digital price list obligations too.",
+    lead: "From 17 November 2026 (postponed from 1 October), retail traders and service providers are covered by the additional-price rules, regardless of whether they have a website. Do you have a website? Check the additional XML/CSV digital price list obligations too.",
     contextualTitle: "Do you have a website?",
     contextualLead: "The reference price is not the same as the digital price list. If you have your own website, check the separate obligation to publish an XML/CSV price list.",
     contextualMikro: "Use MIKROeRAČUN? NEPAR Publisher can turn your Excel/CSV price list into a public web publication.",

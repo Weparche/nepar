@@ -40,7 +40,7 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   expect(staticHtml).toContain('primjer-usluge.csv');
   await page.goto("/digitalni-cjenik");
   await expect(page).toHaveTitle("Digitalni cjenik 2026 – CSV/XML i sidrena cijena | NEPAR");
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /MIKROeRAČUN\? Objavite cjenik na webu uz NEPAR Publisher/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /Objavite cjenik na webu uz NEPAR Publisher, s nadzorom ispravnosti/);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://nepar.hr/digitalni-cjenik");
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("link", { name: "Narodne novine", exact: true })).toHaveAttribute("href", /101_1213/);
@@ -55,7 +55,7 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
 test("compliance summary separates legal requirements from NEPAR implementation choices", async ({ page }) => {
   const staticResponse = await page.request.get("/digitalni-cjenik");
   const staticHtml = await staticResponse.text();
-  expect(staticHtml).toContain("Digitalni cjenik od 1.10.2026. — što je stvarno obvezno?");
+  expect(staticHtml).toContain("Digitalni cjenik do 17.11.2026. — što je stvarno obvezno?");
   expect(staticHtml).toContain("jednom dnevno, najkasnije do 8:00, za tekući radni dan");
   expect(staticHtml).toContain("kod svake promjene, najkasnije do 8:00");
   expect(staticHtml).toContain("30 dana od objave odnosno promjene");

@@ -47,11 +47,11 @@ const guides = {
   "/digitalni-cjenik/sidrena-cijena": {
     slug: "sidrena-cijena",
     title: "Sidrena cijena 2026: što znači i kako se ističe | NEPAR",
-    description: "Što je sidrena odnosno dodatna cijena od 1.10.2026., kako se razlikuje od digitalnog XML/CSV cjenika i što NN 101/2026-1212 traži od trgovaca i pružatelja usluga.",
+    description: "Što je sidrena odnosno dodatna cijena (primjena do 17.11.2026.), kako se razlikuje od digitalnog XML/CSV cjenika i što NN 101/2026-1212 traži od trgovaca i pružatelja usluga.",
     eyebrow: "VODIČ · NN 101/2026-1212",
     h1: "Sidrena cijena 2026: što znači i kako se razlikuje od digitalnog cjenika",
-    lead: "Od 1. listopada 2026. primjenjuje se Odluka NN 101/2026-1212 o isticanju dodatne cijene. U javnosti se ta referentna cijena često naziva sidrena cijena. To je zasebna obveza od objave XML/CSV digitalnog cjenika iz Odluke 1213.",
-    answer: "Najkraće: sidrena odnosno dodatna cijena je referentna cijena koja se ističe uz aktualnu cijenu, dok je digitalni cjenik strojno čitljiva XML ili CSV objava cijena na web stranici. Od 1.10.2026. te dvije obveze mogu postojati istodobno, ali imaju različitu pravnu i tehničku svrhu.",
+    lead: "Odluka NN 101/2026-1212 o isticanju dodatne cijene primjenjuje se od 17. studenoga 2026. (Vlada je 29. rujna 2026. pomaknula rok s 1. listopada). U javnosti se ta referentna cijena često naziva sidrena cijena. To je zasebna obveza od objave XML/CSV digitalnog cjenika iz Odluke 1213.",
+    answer: "Najkraće: sidrena odnosno dodatna cijena je referentna cijena koja se ističe uz aktualnu cijenu, dok je digitalni cjenik strojno čitljiva XML ili CSV objava cijena na web stranici. Od 17.11.2026. te dvije obveze mogu postojati istodobno, ali imaju različitu pravnu i tehničku svrhu.",
     sections: [
       {
         heading: "Što je sidrena odnosno dodatna cijena?",
@@ -83,7 +83,7 @@ const guides = {
       ["Može li se sidrena cijena automatski prikazivati na webu?", "Da, ako postoji pouzdan strukturirani izvor podataka koji sadrži aktualnu i odgovarajuću dodatnu cijenu. Tada ih web integracija može prikazivati iz istog izvora."],
       ["Moram li dodati posebno polje u bazu podataka za sidrenu cijenu?", "Ne kao zakonski zahtjev. To je samo jedna implementacijska opcija. Bitno je da obvezni podatak ispravno objavite i, gdje je primjenjivo, prikažete uz cijenu — interna pohrana bira se prema mogućnostima postojećeg sustava."],
     ],
-    keywords: ["sidrena cijena", "dodatna cijena 2026", "NN 101/2026-1212", "digitalni cjenik", "1.10.2026"],
+    keywords: ["sidrena cijena", "dodatna cijena 2026", "NN 101/2026-1212", "digitalni cjenik", "17.11.2026"],
     datePublished: "2026-09-17",
     dateModified: "2026-09-18",
   },
@@ -93,7 +93,7 @@ const guides = {
     description: "Vodič za XML/CSV digitalni cjenik prema NN 101/2026-1213: tko ga objavljuje, što mora sadržavati, 30-dnevna dostupnost, ažuriranje i automatizirani dohvat.",
     eyebrow: "VODIČ · NN 101/2026-1213",
     h1: "XML/CSV digitalni cjenik 2026: što mora biti javno dostupno na webu",
-    lead: "Odluka NN 101/2026-1213 od 1. listopada 2026. uvodi objavu važećih cjenika proizvoda i usluga u strojno čitljivom .xml ili .csv formatu za trgovce i pružatelje usluga koji imaju uspostavljene mrežne stranice.",
+    lead: "Odluka NN 101/2026-1213, čija je primjena odgođena do 17. studenoga 2026. (izvorno 1. listopada), uvodi objavu važećih cjenika proizvoda i usluga u strojno čitljivom .xml ili .csv formatu za trgovce i pružatelje usluga koji imaju uspostavljene mrežne stranice.",
     answer: "Najkraće: XML/CSV digitalni cjenik je javno dostupna datoteka s cijenama proizvoda ili usluga u strojno čitljivom XML ili CSV formatu, namijenjena automatskoj obradi — PDF, slika ili obična HTML tablica nisu zamjena za nju. Odluka traži takav format, dostupnost prethodnih objava 30 dana i tehničko rješenje koje softverskim alatima omogućuje automatizirano prikupljanje podataka.",
     sections: [
       {
