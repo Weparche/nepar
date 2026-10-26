@@ -2,27 +2,30 @@ import { trackEvent } from "./analytics.js";
 
 export const PRODUCT_URL = "https://digitalnicjenik.nepar.hr";
 
-/** Aktualna maloprodajna cijena (marketing / landings). */
-export const LAUNCH_PRICE_EUR = 39.9;
-/** Planirana cijena nakon uvodnog razdoblja — nije sidrena niti druga MPC u /cjenik. */
-export const FUTURE_LIST_PRICE_EUR = 49.9;
-export const SETUP_FIRST_YEAR_EUR = 89.9;
-export const INTRO_SUBSCRIBER_CAP = 100;
+/** Aktualne godišnje cijene moraju biti usklađene s digitalnicjenik.nepar.hr. */
+export const LINK_PRICE_EUR = 19.9;
+export const PUBLISHER_PRICE_EUR = 49.9;
+export const SETUP_FIRST_YEAR_EUR = 79.9;
+
+/** Backward-compatible aliases for older imports. */
+export const LAUNCH_PRICE_EUR = PUBLISHER_PRICE_EUR;
+export const FUTURE_LIST_PRICE_EUR = PUBLISHER_PRICE_EUR;
+export const INTRO_SUBSCRIBER_CAP = 0;
 
 export function formatPublisherEur(amount) {
   return `${amount.toFixed(2).replace(".", ",")} €`;
 }
 
 export const marketingPriceHr = {
-  launchLine: `Uvodna cijena: ${formatPublisherEur(LAUNCH_PRICE_EUR)}/god za prvih ${INTRO_SUBSCRIBER_CAP} aktiviranih pretplata.`,
-  afterLine: `Nakon toga ${formatPublisherEur(FUTURE_LIST_PRICE_EUR)}/god.`,
-  shortLaunch: `Launch cijena: ${formatPublisherEur(LAUNCH_PRICE_EUR)}/god za prvih ${INTRO_SUBSCRIBER_CAP} pretplata.`,
+  launchLine: `Publisher: ${formatPublisherEur(PUBLISHER_PRICE_EUR)}/god.`,
+  afterLine: `Link: ${formatPublisherEur(LINK_PRICE_EUR)}/god · Web + Publisher: ${formatPublisherEur(SETUP_FIRST_YEAR_EUR)}/god.`,
+  shortLaunch: `Publisher ${formatPublisherEur(PUBLISHER_PRICE_EUR)}/god.`,
 };
 
 export const marketingPriceEn = {
-  launchLine: `Introductory price: ${formatPublisherEur(LAUNCH_PRICE_EUR)}/year for the first ${INTRO_SUBSCRIBER_CAP} activated subscriptions.`,
-  afterLine: `After that, ${formatPublisherEur(FUTURE_LIST_PRICE_EUR)}/year.`,
-  shortLaunch: `Launch price: ${formatPublisherEur(LAUNCH_PRICE_EUR)}/year for the first ${INTRO_SUBSCRIBER_CAP} subscriptions.`,
+  launchLine: `Publisher: ${formatPublisherEur(PUBLISHER_PRICE_EUR)}/year.`,
+  afterLine: `Link: ${formatPublisherEur(LINK_PRICE_EUR)}/year · Web + Publisher: ${formatPublisherEur(SETUP_FIRST_YEAR_EUR)}/year.`,
+  shortLaunch: `Publisher ${formatPublisherEur(PUBLISHER_PRICE_EUR)}/year.`,
 };
 
 export function goToProduct(event, eventName) {
