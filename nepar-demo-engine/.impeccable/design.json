@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-22T23:10:20.2861430+02:00",
+  "title": "Design System: NEPAR Demo Engine",
+  "extensions": {
+    "colorMeta": {
+      "action-blue": {
+        "role": "primary",
+        "displayName": "Decision Blue",
+        "canonical": "#2563eb",
+        "tonalRamp": ["oklch(20% 0.13 260)", "oklch(30% 0.16 260)", "oklch(40% 0.19 260)", "oklch(50% 0.21 260)", "oklch(60% 0.19 260)", "oklch(72% 0.14 260)", "oklch(84% 0.08 260)", "oklch(95% 0.025 260)"]
+      },
+      "action-blue-soft": {
+        "role": "primary",
+        "displayName": "Decision Wash",
+        "canonical": "#eaf1ff",
+        "tonalRamp": ["oklch(20% 0.04 260)", "oklch(30% 0.04 260)", "oklch(40% 0.04 260)", "oklch(50% 0.04 260)", "oklch(60% 0.035 260)", "oklch(72% 0.03 260)", "oklch(84% 0.025 260)", "oklch(95% 0.018 260)"]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Ledger Canvas",
+        "canonical": "#f5f7fa",
+        "tonalRamp": ["oklch(15% 0.008 255)", "oklch(27% 0.008 255)", "oklch(39% 0.008 255)", "oklch(51% 0.008 255)", "oklch(63% 0.007 255)", "oklch(75% 0.006 255)", "oklch(86% 0.005 255)", "oklch(95% 0.004 255)"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Record Paper",
+        "canonical": "#ffffff",
+        "tonalRamp": ["oklch(15% 0 0)", "oklch(27% 0 0)", "oklch(39% 0 0)", "oklch(51% 0 0)", "oklch(63% 0 0)", "oklch(75% 0 0)", "oklch(87% 0 0)", "oklch(100% 0 0)"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Register Ink",
+        "canonical": "#0f172a",
+        "tonalRamp": ["oklch(15% 0.025 260)", "oklch(27% 0.025 260)", "oklch(39% 0.023 260)", "oklch(51% 0.02 260)", "oklch(63% 0.017 260)", "oklch(75% 0.013 260)", "oklch(87% 0.008 260)", "oklch(95% 0.004 260)"]
+      },
+      "body": {
+        "role": "neutral",
+        "displayName": "Slate Body",
+        "canonical": "#334155",
+        "tonalRamp": ["oklch(15% 0.025 255)", "oklch(27% 0.028 255)", "oklch(39% 0.03 255)", "oklch(51% 0.027 255)", "oklch(63% 0.023 255)", "oklch(75% 0.017 255)", "oklch(87% 0.01 255)", "oklch(95% 0.005 255)"]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Quiet Metadata",
+        "canonical": "#526278",
+        "tonalRamp": ["oklch(15% 0.025 255)", "oklch(27% 0.03 255)", "oklch(39% 0.032 255)", "oklch(51% 0.03 255)", "oklch(63% 0.025 255)", "oklch(75% 0.018 255)", "oklch(87% 0.011 255)", "oklch(95% 0.005 255)"]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Archive Line",
+        "canonical": "#dce3ec",
+        "tonalRamp": ["oklch(15% 0.012 255)", "oklch(27% 0.014 255)", "oklch(39% 0.015 255)", "oklch(51% 0.015 255)", "oklch(63% 0.014 255)", "oklch(75% 0.012 255)", "oklch(87% 0.01 255)", "oklch(95% 0.006 255)"]
+      },
+      "environment-cyan": {
+        "role": "secondary",
+        "displayName": "Environment Cyan",
+        "canonical": "#0e7490",
+        "tonalRamp": ["oklch(15% 0.055 220)", "oklch(27% 0.075 220)", "oklch(39% 0.09 220)", "oklch(51% 0.10 220)", "oklch(63% 0.09 220)", "oklch(75% 0.065 220)", "oklch(87% 0.035 220)", "oklch(95% 0.015 220)"]
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Action Red",
+        "canonical": "#b42318",
+        "tonalRamp": ["oklch(15% 0.07 28)", "oklch(27% 0.11 28)", "oklch(39% 0.15 28)", "oklch(51% 0.17 28)", "oklch(63% 0.15 28)", "oklch(75% 0.10 28)", "oklch(87% 0.055 28)", "oklch(95% 0.02 28)"]
+      }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Queue Headline", "purpose": "Names the active work collection." },
+      "title": { "displayName": "Record Title", "purpose": "Names the selected case file." },
+      "body": { "displayName": "Operational Body", "purpose": "Carries explanations, summaries, and ordinary interface text." },
+      "label": { "displayName": "Ledger Label", "purpose": "Marks compact structural sections and metadata." },
+      "control": { "displayName": "Control Label", "purpose": "Keeps operational actions direct and visibly actionable." }
+    },
+    "shadows": [
+      { "name": "drawer-separation", "value": "-18px 0 40px rgba(15,23,42,.12)", "purpose": "Separates the off-canvas detail pane from the queue." },
+      { "name": "message-lift", "value": "0 12px 32px rgba(15,23,42,.18)", "purpose": "Lifts transient feedback above the workspace." },
+      { "name": "selection-inset", "value": "inset 3px 0 #2563eb", "purpose": "Marks the selected record without creating a card." }
+    ],
+    "motion": [
+      { "name": "detail-enter", "value": "transform .22s cubic-bezier(.23,1,.32,1)", "purpose": "Moves the intermediate-width detail drawer into view; disabled for reduced motion and on phone layouts." }
+    ],
+    "breakpoints": [
+      { "name": "drawer", "value": "1050px" },
+      { "name": "mobile", "value": "700px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Decision Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single affirmative action in the current decision context.",
+      "html": "<button class=\"ds-btn-primary\">Odobri za demo</button>",
+      "css": ".ds-btn-primary { min-height: 44px; border: 1px solid var(--blue); border-radius: var(--radius); padding: 10px 16px; background: var(--blue); color: #fff; font: 700 1rem/1.45 Inter, ui-sans-serif, system-ui, sans-serif; cursor: pointer; } .ds-btn-primary:hover { filter: brightness(.94); } .ds-btn-primary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:disabled { cursor: not-allowed; opacity: .48; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A neutral control for reversible or supporting actions.",
+      "html": "<button class=\"ds-btn-secondary\">Regeneriraj</button>",
+      "css": ".ds-btn-secondary { min-height: 44px; border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 16px; background: #fff; color: var(--ink); font: 700 1rem/1.45 Inter, ui-sans-serif, system-ui, sans-serif; cursor: pointer; } .ds-btn-secondary:hover { background: #f8fafc; } .ds-btn-secondary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; } .ds-btn-secondary:active { background: var(--blue-soft); }"
+    },
+    {
+      "name": "Destructive Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "A visually secondary rejection or archival action.",
+      "html": "<button class=\"ds-btn-danger\">Odbij lead</button>",
+      "css": ".ds-btn-danger { min-height: 44px; border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 16px; background: #fff; color: var(--danger); font: 700 1rem/1.45 Inter, ui-sans-serif, system-ui, sans-serif; cursor: pointer; } .ds-btn-danger:hover { background: #fff7f6; border-color: var(--danger); } .ds-btn-danger:focus-visible { outline: 2px solid var(--danger); outline-offset: 2px; } .ds-btn-danger:active { background: #feeceb; }"
+    },
+    {
+      "name": "Credential Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "The standard engine text or selection control.",
+      "html": "<input class=\"ds-field\" type=\"password\" placeholder=\"Admin token\" aria-label=\"Admin token\">",
+      "css": ".ds-field { min-height: 44px; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; color: var(--ink); font: 400 1rem/1.45 Inter, ui-sans-serif, system-ui, sans-serif; } .ds-field:hover { border-color: var(--muted); } .ds-field:focus { outline: 2px solid var(--blue); outline-offset: 1px; }"
+    },
+    {
+      "name": "Collection Navigation Item",
+      "kind": "nav",
+      "description": "A rail item pairing a work collection with its count.",
+      "html": "<button class=\"ds-nav-item\" aria-current=\"true\"><span>Leadovi</span><small>1</small></button>",
+      "css": ".ds-nav-item { width: 100%; min-height: 44px; display: flex; justify-content: space-between; align-items: center; border: 0; border-radius: 9px; padding: 11px 10px; background: transparent; color: var(--body); font: 400 1rem/1.45 Inter, ui-sans-serif, system-ui, sans-serif; text-align: left; cursor: pointer; } .ds-nav-item small { color: var(--muted); } .ds-nav-item:hover { background: #f8fafc; } .ds-nav-item[aria-current=\"true\"] { background: #fff; color: var(--blue); font-weight: 750; } .ds-nav-item:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }"
+    },
+    {
+      "name": "Queue Record",
+      "kind": "custom",
+      "description": "A ruled comparison row with selection, status, score, and disclosure.",
+      "html": "<button class=\"ds-queue-row\" aria-selected=\"true\"><span class=\"ds-business\"><strong>Fabela Demo</strong><small>lokalni uslužni obrt · Zagreb</small></span><span class=\"ds-status\">Demo spreman</span><span class=\"ds-score\"><b>72</b>/100</span><span aria-hidden=\"true\">›</span></button>",
+      "css": ".ds-queue-row { width: 100%; display: grid; grid-template-columns: minmax(180px,1fr) 110px 92px 22px; gap: 14px; align-items: center; border: 0; border-bottom: 1px solid var(--line); padding: 17px 6px; background: transparent; color: var(--ink); font: 400 1rem/1.45 Inter, ui-sans-serif, system-ui, sans-serif; text-align: left; cursor: pointer; } .ds-business strong, .ds-business small { display: block; } .ds-business small { margin-top: 3px; color: var(--muted); font-size: 13px; } .ds-status { color: var(--body); font-size: 12px; font-weight: 750; } .ds-score { font-variant-numeric: tabular-nums; } .ds-score b { font-size: 18px; } .ds-queue-row:hover, .ds-queue-row[aria-selected=\"true\"] { background: #fff; } .ds-queue-row[aria-selected=\"true\"] { box-shadow: inset 3px 0 var(--blue); padding-left: 14px; } .ds-queue-row:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "status-badge",
+      "description": "A compact indicator for the current record state.",
+      "html": "<span class=\"ds-status-badge\">Demo spreman</span>",
+      "css": ".ds-status-badge { display: inline-flex; align-items: center; min-height: 28px; padding: 4px 9px; border-radius: 999px; background: var(--blue-soft); color: var(--blue); font: 750 12px/1.45 Inter, ui-sans-serif, system-ui, sans-serif; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Operations Ledger",
+    "overview": "The NEPAR Demo Engine is a quiet, exacting work surface: part queue, part case file, part approval ledger. Its visual authority comes from disciplined columns, archival divider lines, restrained status color, and a single action blue that makes the next decision unmistakable.\n\nThe system is dense enough for repeated operational use without feeling compressed. It favors explicit facts and visible state over decoration, matching NEPAR's technically confident, precise, and approachable character. Generated customer demos may adopt their own visual worlds; they are work products shown inside this system and must not donate their theme tokens to the engine shell.",
+    "keyCharacteristics": [
+      "Three-pane desktop workspace with collection rail, queue, and selected-record detail.",
+      "Cool, near-white tonal layering separated by fine archival rules.",
+      "One action blue for selection, focus, primary action, and compact status emphasis.",
+      "Direct Croatian operational copy, numeric alignment, and explicit human approval states.",
+      "Responsive detail drawer that becomes the focused task surface on narrow screens."
+    ],
+    "rules": [
+      { "name": "The One Decision Color Rule", "body": "Decision Blue carries selection, focus, status emphasis, and primary action; do not introduce another competing positive accent.", "section": "colors" },
+      { "name": "The Demo-Is-an-Artifact Rule", "body": "A generated demo's palette belongs to the previewed customer site, not to the engine chrome.", "section": "colors" },
+      { "name": "The Ledger Label Rule", "body": "Uppercase tracking belongs to compact structural labels, never to paragraphs, record names, or primary actions.", "section": "typography" },
+      { "name": "The Selection-to-Detail Rule", "body": "On wide screens, queue and case file remain visible together; on narrow screens, the case file becomes the focused layer and provides a clear return action.", "section": "layout" },
+      { "name": "The Flat Ledger Rule", "body": "Surfaces remain flat at rest; elevation appears only when an element physically overlaps another layer or communicates transient feedback.", "section": "elevation" },
+      { "name": "The Rounded-Control Rule", "body": "Round the things people touch; keep the information architecture rectilinear.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do keep the current record, its evidence, and its decision actions in one continuous case-file reading order.",
+      "Do reserve Decision Blue for focus, selection, status emphasis, and the single primary action.",
+      "Do use rules and tonal surfaces to organize dense data before adding elevation.",
+      "Do preserve 44px minimum controls, visible focus, keyboard dismissal, and reduced-motion behavior.",
+      "Do keep generated demo visuals isolated inside preview media or dedicated demo routes."
+    ],
+    "donts": [
+      "Don't turn the operations ledger into a generic KPI dashboard or a grid of interchangeable cards.",
+      "Don't import a customer's demo accent, typography, or shape language into the engine shell.",
+      "Don't use cyan or red as competing primary-action colors.",
+      "Don't hide an approval prerequisite; disabled actions must retain a concise explanation.",
+      "Don't add decorative gradients, glass effects, or ambient shadows to resting workspace surfaces."
+    ]
+  }
+}

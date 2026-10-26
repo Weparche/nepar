@@ -1,0 +1,30 @@
+{
+  "reviewFingerprint": "e1418c7e9fceac5770c5bba8c196c7a6d1e69ba1bdfa74ba6f9eea07e66f9a98",
+  "captures": [
+    {
+      "viewport": "desktop",
+      "designJudgment": {
+        "score": 92,
+        "reviewer": "gpt-6-astra",
+        "checkedAt": "2026-09-14T19:45:01.816731Z",
+        "rationale": "The real Alan Fleck portrait and aligned caption anchor the introduction. Credentials precede services; cooler colors and the structured two-column service grid distinguish this clinical direction. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance.",
+        "findings": [
+          {
+            "severity": "minor",
+            "detail": "The original portrait has a casual background; identity and photographic authenticity take priority over the generated reference styling."
+          }
+        ]
+      }
+    },
+    {
+      "viewport": "mobile",
+      "designJudgment": {
+        "score": 91,
+        "reviewer": "gpt-6-astra",
+        "checkedAt": "2026-09-14T19:45:01.816731Z",
+        "rationale": "The full-width real portrait, clear name caption and pale credential band retain doctor-first hierarchy on mobile. The stacked composition adapts the reference to readable text at 390px. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance.",
+        "findings": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,510 @@
+{
+  "packageVersion": 1,
+  "lead": {
+    "businessName": "Bond Vet",
+    "slug": "bond-clinic-first-v3",
+    "websiteUrl": "https://bondvet.com/c/east-86th-street-animal-hospital",
+    "city": "New York",
+    "industry": "Veterinarska ambulanta",
+    "source": "official-business-site / local QA specimen",
+    "score": 94,
+    "scoreReasons": [
+      "Aktivna veterinarska ambulanta s jasno objavljenim kontaktom i adresom.",
+      "Službena stranica javno navodi stručnog voditelja i više od 15 godina iskustva.",
+      "Postoji dovoljno provjerljivih usluga za vjerodostojan personalizirani demo."
+    ],
+    "services": [
+      {
+        "title": "Preventivni pregledi",
+        "description": "Redoviti veterinarski pregledi.",
+        "sourceField": "bond.services"
+      },
+      {
+        "title": "Cijepljenje",
+        "description": "Cijepljenje kućnih ljubimaca.",
+        "sourceField": "bond.services"
+      },
+      {
+        "title": "Laboratorijske pretrage",
+        "description": "Laboratorijska dijagnostika.",
+        "sourceField": "bond.services"
+      }
+    ],
+    "facts": {
+      "location": "1535 3rd Ave, Manhattan, NY 10028",
+      "doctor": "Dr. Dan Bloomfield"
+    },
+    "sources": [
+      {
+        "field": "bond.services",
+        "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+        "verifiedAt": "2026-09-14T12:00:00.000Z"
+      },
+      {
+        "field": "bond.location",
+        "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+        "verifiedAt": "2026-09-14T12:00:00.000Z"
+      },
+      {
+        "field": "bond.doctor",
+        "url": "https://bondvet.com/careers/opportunities/veterinarians",
+        "verifiedAt": "2026-09-14T12:00:00.000Z"
+      }
+    ],
+    "visualAssets": [],
+    "verifiedObservations": [
+      "Lokalni QA primjer s fotografijama službene stranice Bond Vet."
+    ],
+    "proposedServiceAngle": "Lokalna provjera renderera; bez slanja ponude."
+  },
+  "brief": {
+    "directionReason": "Local QA specimen using verified official Bond Vet imagery; never an outreach target.",
+    "intent": "Premium presentation and immediate contact; distinct desktop and mobile composition.",
+    "audience": "Vlasnici ambulanti i vlasnici ljubimaca."
+  },
+  "payload": {
+    "slug": "bond-clinic-first-v3",
+    "businessName": "Bond Vet",
+    "designSystemKey": "health-trust",
+    "designVersion": "health-trust-v3",
+    "visualDirection": "clinic-first",
+    "artDirection": "clinic-first",
+    "artDirectionReason": "Local QA specimen using verified official Bond Vet imagery; never an outreach target.",
+    "generationVersion": "astra-codex-prepared-v3",
+    "sourceUrl": "https://bondvet.com/c/east-86th-street-animal-hospital",
+    "content": {
+      "v3": {
+        "hero": {
+          "desktop": {
+            "url": "https://nepar.hr/health-trust-v3/clinic-3eaa8a520aafe54c.webp",
+            "width": 1600,
+            "height": 1067,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "mobile": {
+            "url": "https://nepar.hr/health-trust-v3/clinic-mobile-3cf3d4fa4e88a0ce.webp",
+            "width": 720,
+            "height": 480,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "alt": "Stvarna čekaonica Bond Vet ambulante na Upper East Sideu.",
+          "origin": {
+            "provenance": "business-website",
+            "sourceUrl": "https://bondvet.com/c/east-86th-street-animal-hospital",
+            "verifiedAt": "2026-09-14T12:00:00.000Z",
+            "depictsNamedPerson": false
+          }
+        },
+        "heroRole": "clinic",
+        "support": {
+          "desktop": {
+            "url": "https://nepar.hr/health-trust-v3/clinic-support-4d8a776aa3fc9c6f.webp",
+            "width": 1600,
+            "height": 1066,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "mobile": {
+            "url": "https://nepar.hr/health-trust-v3/clinic-support-4d8a776aa3fc9c6f.webp",
+            "width": 1600,
+            "height": 1066,
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "alt": "Prostor za veterinarski pregled u Bond Vet ambulanti.",
+          "origin": {
+            "provenance": "business-website",
+            "sourceUrl": "https://bondvet.com/c/east-86th-street-animal-hospital",
+            "verifiedAt": "2026-09-14T12:00:00.000Z",
+            "depictsNamedPerson": false
+          }
+        },
+        "fonts": {
+          "serif": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+          "sans": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+          "serifExtended": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+          "sansExtended": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2"
+        },
+        "assetManifest": [
+          {
+            "url": "https://nepar.hr/health-trust-v3/clinic-3eaa8a520aafe54c.webp",
+            "sha256": "3eaa8a520aafe54c39a71485682c6f921e81d6bae7b69af4a87abe30afc801e8",
+            "kind": "image"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/clinic-mobile-3cf3d4fa4e88a0ce.webp",
+            "sha256": "3cf3d4fa4e88a0ce6d8c8ef53d7d7fc1fdd70605af00ba9105b78748a1fa0373",
+            "kind": "image"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/clinic-support-4d8a776aa3fc9c6f.webp",
+            "sha256": "4d8a776aa3fc9c6f66008777b53b357c64f57626c057b47c7a1d5cbb12148510",
+            "kind": "image"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+            "sha256": "3fed8c21c117c2653a693f81f16978fd48a2ca736a3764433eda13bc65679dce",
+            "kind": "font"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+            "sha256": "9f0c3fe870f1f43d2e28e7fac6d25c2648bbe4801a3cc1bc429a24850cc8700f",
+            "kind": "font"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+            "sha256": "719f8798c22cc29215dff686b417bbc33023a98d3c0d3071c98e2d897ec12041",
+            "kind": "font"
+          },
+          {
+            "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2",
+            "sha256": "6c4961b075d4e8e9a3328e000838fe17eaf5c3863d81109642d7af56dc8e5410",
+            "kind": "font"
+          }
+        ]
+      },
+      "brand": {
+        "name": "Bond Vet",
+        "industry": "Veterinarska skrb",
+        "location": "New York"
+      },
+      "contact": {
+        "address": "1535 3rd Ave, Manhattan, NY 10028",
+        "website": "https://bondvet.com/c/east-86th-street-animal-hospital"
+      },
+      "hero": {
+        "headline": "Prostor za pažljivu skrb.",
+        "description": "Preventivni pregledi, cijepljenje i laboratorijska dijagnostika za vaše ljubimce."
+      },
+      "primaryCta": {
+        "label": "Kontakt i lokacija",
+        "href": "#kontakt"
+      },
+      "services": [
+        {
+          "title": "Preventivni pregledi",
+          "description": "Redoviti veterinarski pregledi.",
+          "sourceField": "bond.services"
+        },
+        {
+          "title": "Cijepljenje",
+          "description": "Cijepljenje kućnih ljubimaca.",
+          "sourceField": "bond.services"
+        },
+        {
+          "title": "Laboratorijske pretrage",
+          "description": "Laboratorijska dijagnostika.",
+          "sourceField": "bond.services"
+        }
+      ],
+      "proofPoints": [
+        {
+          "value": "Upper East Side",
+          "label": "1535 3rd Ave · New York",
+          "sourceField": "bond.location"
+        }
+      ],
+      "about": {
+        "title": "Dobro došli u Bond Vet.",
+        "body": "Bond Vet na Upper East Sideu pruža veterinarsku skrb na adresi 1535 3rd Ave u New Yorku."
+      },
+      "sources": [
+        {
+          "field": "bond.services",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        },
+        {
+          "field": "bond.location",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        },
+        {
+          "field": "bond.doctor",
+          "url": "https://bondvet.com/careers/opportunities/veterinarians",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ],
+      "visual": {
+        "accent": "#174b36",
+        "tone": "light",
+        "imagePosition": "center"
+      },
+      "assets": [],
+      "verifiedObservations": [
+        "Lokalni QA primjer s fotografijama službene stranice Bond Vet."
+      ]
+    },
+    "attachDomain": false,
+    "outreach": {
+      "prospectName": "Bond Vet — QA only",
+      "verifiedObservations": [
+        "Lokalni QA primjer s fotografijama službene stranice Bond Vet."
+      ],
+      "proposedServiceAngle": "Lokalna provjera renderera; bez slanja ponude."
+    }
+  },
+  "assetManifest": [
+    {
+      "url": "https://nepar.hr/health-trust-v3/clinic-3eaa8a520aafe54c.webp",
+      "sha256": "3eaa8a520aafe54c39a71485682c6f921e81d6bae7b69af4a87abe30afc801e8",
+      "kind": "image"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/clinic-mobile-3cf3d4fa4e88a0ce.webp",
+      "sha256": "3cf3d4fa4e88a0ce6d8c8ef53d7d7fc1fdd70605af00ba9105b78748a1fa0373",
+      "kind": "image"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/clinic-support-4d8a776aa3fc9c6f.webp",
+      "sha256": "4d8a776aa3fc9c6f66008777b53b357c64f57626c057b47c7a1d5cbb12148510",
+      "kind": "image"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-3fed8c21c117c265.woff2",
+      "sha256": "3fed8c21c117c2653a693f81f16978fd48a2ca736a3764433eda13bc65679dce",
+      "kind": "font"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/cormorant-garamond-latin-ext-9f0c3fe870f1f43d.woff2",
+      "sha256": "9f0c3fe870f1f43d2e28e7fac6d25c2648bbe4801a3cc1bc429a24850cc8700f",
+      "kind": "font"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-719f8798c22cc292.woff2",
+      "sha256": "719f8798c22cc29215dff686b417bbc33023a98d3c0d3071c98e2d897ec12041",
+      "kind": "font"
+    },
+    {
+      "url": "https://nepar.hr/health-trust-v3/dm-sans-latin-ext-6c4961b075d4e8e9.woff2",
+      "sha256": "6c4961b075d4e8e9a3328e000838fe17eaf5c3863d81109642d7af56dc8e5410",
+      "kind": "font"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "master",
+      "prompt": "Create one premium editorial pet photograph, master asset for a Croatian veterinary clinic website. Warm ivory studio daylight, a beautiful healthy adult golden retriever sitting with a small grey-and-white cat calmly nestled beside its front paws. Both entire animals visible, natural proportions, nuanced real fur, attentive gentle eyes, calm affectionate mood. A linen warm cream backdrop and ground seamlessly meet, soft believable shadows, subtle olive tones. Wide landscape composition with both pets grouped on the right half, lots of clean negative space to the left, leave generous margin around ears and paws for mobile recropping. Real photography with exquisite texture, medium-format portrait lens, no plastic AI look. No human, no medical equipment, no clinic interior, no lettering, no logo, no watermark. Generate a single photograph, not a website or collage.",
+      "masterAssetId": "fabela-pets-master-v3"
+    },
+    {
+      "id": "desktop",
+      "prompt": "Edit this master pet photograph into a portrait 4:5 desktop website photo panel: keep EXACTLY the same golden retriever and grey-and-white cat, face markings, coat, pose, light and warm linen background. Center both pets together, fully include all ears and paws, with generous 8 percent margin on all sides. Remove excess empty space on the left by reframing, not changing subjects. Photorealistic, no text or graphics.",
+      "masterAssetId": "fabela-pets-master-v3"
+    },
+    {
+      "id": "mobile",
+      "prompt": "Reframe the attached master photograph for a MOBILE veterinary website hero, landscape 4:3 photograph. Preserve exactly the golden retriever and grey-and-white cat, their faces, markings, pose, fur identity, warm linen daylight atmosphere. Both complete animals including ears and paws, centered together in the frame, with generous margin above and on sides. Same scene, rearrange framing and extend backdrop only. No text, graphics, logo, humans or new animals.",
+      "masterAssetId": "fabela-pets-master-v3"
+    },
+    {
+      "id": "support",
+      "prompt": "Use case: identity-preserve. Reference image is the locked master for these exact two pets. Create one landscape 4:3 editorial supporting photograph, same golden retriever and same grey-and-white cat, identical fur markings, eye colors, warm soft light and cream linen backdrop. Both are now comfortably lying down close together, cat in foreground and dog behind, heads awake looking toward camera, intimate calm natural posture. Tighter framing: animals together fill 85% of frame width, leave small comfortable headroom and keep all ears and forepaws within the frame. Photorealistic premium veterinary website decorative photo. No people, no clinic, no text, no logos. Preserve identities and warm light precisely.",
+      "masterAssetId": "fabela-pets-master-v3"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "brand.name",
+      "value": "Bond Vet",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "brand.name",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "brand.industry",
+      "value": "Veterinarska skrb",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "brand.industry",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "brand.location",
+      "value": "New York",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "brand.location",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "contact.address",
+      "value": "1535 3rd Ave, Manhattan, NY 10028",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "contact.address",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "contact.website",
+      "value": "https://bondvet.com/c/east-86th-street-animal-hospital",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "contact.website",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "hero.headline",
+      "value": "Prostor za pažljivu skrb.",
+      "kind": "editorial",
+      "sources": []
+    },
+    {
+      "path": "hero.description",
+      "value": "Preventivni pregledi, cijepljenje i laboratorijska dijagnostika za vaše ljubimce.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "hero.description",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.0.title",
+      "value": "Preventivni pregledi",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.0.title",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.0.description",
+      "value": "Redoviti veterinarski pregledi.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.0.description",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.1.title",
+      "value": "Cijepljenje",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.1.title",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.1.description",
+      "value": "Cijepljenje kućnih ljubimaca.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.1.description",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.2.title",
+      "value": "Laboratorijske pretrage",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.2.title",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "services.2.description",
+      "value": "Laboratorijska dijagnostika.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "services.2.description",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.0.value",
+      "value": "Upper East Side",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.0.value",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "proofPoints.0.label",
+      "value": "1535 3rd Ave · New York",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "proofPoints.0.label",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "path": "about.title",
+      "value": "Dobro došli u Bond Vet.",
+      "kind": "editorial",
+      "sources": []
+    },
+    {
+      "path": "about.body",
+      "value": "Bond Vet na Upper East Sideu pruža veterinarsku skrb na adresi 1535 3rd Ave u New Yorku.",
+      "kind": "fact",
+      "sources": [
+        {
+          "field": "about.body",
+          "url": "https://bondvet.com/c/east-86th-street-animal-hospital",
+          "verifiedAt": "2026-09-14T12:00:00.000Z"
+        }
+      ]
+    }
+  ]
+}

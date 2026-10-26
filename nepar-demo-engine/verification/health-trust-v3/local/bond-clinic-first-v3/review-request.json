@@ -1,0 +1,20 @@
+{
+  "reviewFingerprint": "1fe3a9d181b8c7fa43e2a81a81f7d06602dda89be45892f723b8d185a3d4b317",
+  "instruction": "Astra must inspect both saved screenshots. Supply independent design judgments; do not infer them from geometry.",
+  "captures": [
+    {
+      "viewport": "mobile",
+      "technicalScore": 100,
+      "geometryScore": 100,
+      "screenshotSha256": "e411b1e072b79c5d86d6ff662ef8392d9d1951ecf4b4754d2f052e926c92e391",
+      "referenceSha256": "69548030e32138ad8a7ef08518ee7076f532a35220fa1aeffe7c56810744a830"
+    },
+    {
+      "viewport": "desktop",
+      "technicalScore": 100,
+      "geometryScore": 100,
+      "screenshotSha256": "3dee493001eb817b6826ac4113ec2a4ffcf4129e01268929263bdcf07b4de35d",
+      "referenceSha256": "cb3596cc277f060bc097f2de83d9af32f6060a95a14753cbd7f7ea57bfb18a02"
+    }
+  ]
+}

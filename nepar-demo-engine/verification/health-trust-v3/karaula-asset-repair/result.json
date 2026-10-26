@@ -1,0 +1,51 @@
+{
+  "at": "2026-09-15T07:09:10.099Z",
+  "deployment": "https://edfb25e7.nepar.pages.dev",
+  "assets": [
+    {
+      "url": "https://nepar.hr/health-trust-default/hero.webp",
+      "status": 200,
+      "type": "image/webp",
+      "bytes": 216714
+    },
+    {
+      "url": "https://nepar.hr/health-trust-default/about.webp",
+      "status": 200,
+      "type": "image/webp",
+      "bytes": 101372
+    }
+  ],
+  "viewports": [
+    {
+      "width": 390,
+      "images": [
+        {
+          "url": "https://nepar.hr/health-trust-default/hero.webp",
+          "loaded": true,
+          "visible": true
+        },
+        {
+          "url": "https://nepar.hr/health-trust-default/about.webp",
+          "loaded": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "images": [
+        {
+          "url": "https://nepar.hr/health-trust-default/hero.webp",
+          "loaded": true,
+          "visible": true
+        },
+        {
+          "url": "https://nepar.hr/health-trust-default/about.webp",
+          "loaded": true,
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "mainSiteUnchanged": true
+}

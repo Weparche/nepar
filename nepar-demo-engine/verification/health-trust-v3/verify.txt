@@ -1,0 +1,61 @@
+
+> nepar-demo-engine@0.1.0 verify
+> npm run check:types && npm run typecheck && node scripts/v3-contract.mjs && npm test && npm run deploy -- --dry-run
+
+
+> nepar-demo-engine@0.1.0 check:types
+> wrangler types src/worker-configuration.d.ts --env-file .dev.vars.example --check
+
+
+ ⛅️ wrangler 4.125.0 (update available 4.131.2)
+───────────────────────────────────────────────
+✨ Types at src/worker-configuration.d.ts are up to date.
+
+
+> nepar-demo-engine@0.1.0 typecheck
+> tsc --noEmit
+
+Immutable health-trust-v3 renderer contract verified.
+
+> nepar-demo-engine@0.1.0 test
+> vitest run
+
+node.exe : (node:34840) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland altern
+ative instead.
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:34840) [D...native instead.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ RUN  v4.1.11 C:/Nepar/nepar-demo-engine
+
+
+ Test Files  4 passed (4)
+      Tests  35 passed (35)
+   Start at  21:48:42
+   Duration  9.08s (transform 690ms, setup 3.04s, import 124ms, tests 507ms, environment 0ms)
+
+
+> nepar-demo-engine@0.1.0 deploy
+> wrangler deploy --dry-run
+
+
+ ⛅️ wrangler 4.125.0 (update available 4.131.2)
+───────────────────────────────────────────────
+Total Upload: 715.27 KiB / gzip: 124.19 KiB
+Your Worker has access to the following bindings:
+Binding                                                                       Resource
+env.EMAIL (unrestricted - senders: nepar@nepar.hr)                            Send Email
+env.DB (nepar-demo-engine)                                                    D1 Database
+env.ASSETS (nepar-demo-assets (eu))                                           R2 Bucket
+env.ROOT_DOMAIN ("nepar.hr")                                                  Environment Variable
+env.ZONE_NAME ("nepar.hr")                                                    Environment Variable
+env.WORKER_SERVICE ("nepar-demo-engine")                                      Environment Variable
+env.ACTIVE_DOMAIN_LIMIT ("80")                                                Environment Variable
+env.DEFAULT_EXPIRY_DAYS ("7")                                                 Environment Variable
+env.ADMIN_RATE_LIMIT_PER_MINUTE ("120")                                       Environment Variable
+
+--dry-run: exiting now.

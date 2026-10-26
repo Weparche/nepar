@@ -1,0 +1,604 @@
+[
+  {
+    "width": 360,
+    "height": 844,
+    "checks": [
+      {
+        "name": "http_200",
+        "passed": true
+      },
+      {
+        "name": "no_overflow",
+        "passed": true
+      },
+      {
+        "name": "images_loaded",
+        "passed": true
+      },
+      {
+        "name": "anchors_resolve",
+        "passed": true
+      },
+      {
+        "name": "hero_priority_and_lazy_support",
+        "passed": true
+      },
+      {
+        "name": "image_dimensions",
+        "passed": true
+      },
+      {
+        "name": "sticky_space_reserved",
+        "passed": true
+      },
+      {
+        "name": "all_services_visible",
+        "passed": true
+      },
+      {
+        "name": "no_runtime_reference_or_script",
+        "passed": true
+      },
+      {
+        "name": "no_console_errors",
+        "passed": true
+      }
+    ],
+    "geometryScore": 100,
+    "measurement": {
+      "hero": {
+        "x": 0,
+        "y": 84.796875,
+        "width": 360,
+        "height": 521.5625,
+        "bottom": 606.359375
+      },
+      "image": {
+        "x": 0,
+        "y": 366.359375,
+        "width": 360,
+        "height": 240,
+        "bottom": 606.359375
+      },
+      "heading": {
+        "x": 20,
+        "y": 114.796875,
+        "width": 238.109375,
+        "height": 86.5,
+        "bottom": 201.296875
+      },
+      "intro": {
+        "x": 20,
+        "y": 114.796875,
+        "width": 320,
+        "height": 223.5625,
+        "bottom": 338.359375
+      },
+      "cta": {
+        "x": 20,
+        "y": 288.359375,
+        "width": 169.9375,
+        "height": 50,
+        "bottom": 338.359375
+      },
+      "trust": {
+        "x": 20,
+        "y": 606.359375,
+        "width": 320,
+        "height": 121.484375,
+        "bottom": 727.84375
+      },
+      "services": {
+        "x": 20,
+        "y": 1260.21875,
+        "width": 320,
+        "height": 592.625,
+        "bottom": 1852.84375
+      },
+      "story": {
+        "x": 20,
+        "y": 727.84375,
+        "width": 320,
+        "height": 532.375,
+        "bottom": 1260.21875
+      },
+      "overflow": false,
+      "broken": [],
+      "anchors": [],
+      "imageLoading": true,
+      "reserved": true,
+      "stickyHeight": 92,
+      "stickyReserved": true,
+      "servicesCount": 3,
+      "hasScript": false
+    }
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "checks": [
+      {
+        "name": "http_200",
+        "passed": true
+      },
+      {
+        "name": "no_overflow",
+        "passed": true
+      },
+      {
+        "name": "images_loaded",
+        "passed": true
+      },
+      {
+        "name": "anchors_resolve",
+        "passed": true
+      },
+      {
+        "name": "hero_priority_and_lazy_support",
+        "passed": true
+      },
+      {
+        "name": "image_dimensions",
+        "passed": true
+      },
+      {
+        "name": "sticky_space_reserved",
+        "passed": true
+      },
+      {
+        "name": "all_services_visible",
+        "passed": true
+      },
+      {
+        "name": "no_runtime_reference_or_script",
+        "passed": true
+      },
+      {
+        "name": "no_console_errors",
+        "passed": true
+      },
+      {
+        "name": "wcag_axe",
+        "passed": true
+      },
+      {
+        "name": "keyboard_focus_visible",
+        "passed": true
+      },
+      {
+        "name": "reduced_motion",
+        "passed": true
+      },
+      {
+        "name": "text_200_percent_no_overlap",
+        "passed": true
+      }
+    ],
+    "geometryScore": 100,
+    "measurement": {
+      "hero": {
+        "x": 0,
+        "y": 84.796875,
+        "width": 390,
+        "height": 541.5625,
+        "bottom": 626.359375
+      },
+      "image": {
+        "x": 0,
+        "y": 366.359375,
+        "width": 390,
+        "height": 260,
+        "bottom": 626.359375
+      },
+      "heading": {
+        "x": 20,
+        "y": 114.796875,
+        "width": 238.109375,
+        "height": 86.5,
+        "bottom": 201.296875
+      },
+      "intro": {
+        "x": 20,
+        "y": 114.796875,
+        "width": 350,
+        "height": 223.5625,
+        "bottom": 338.359375
+      },
+      "cta": {
+        "x": 20,
+        "y": 288.359375,
+        "width": 169.9375,
+        "height": 50,
+        "bottom": 338.359375
+      },
+      "trust": {
+        "x": 20,
+        "y": 626.359375,
+        "width": 350,
+        "height": 121.484375,
+        "bottom": 747.84375
+      },
+      "services": {
+        "x": 20,
+        "y": 1275.6875,
+        "width": 350,
+        "height": 592.625,
+        "bottom": 1868.3125
+      },
+      "story": {
+        "x": 20,
+        "y": 747.84375,
+        "width": 350,
+        "height": 527.84375,
+        "bottom": 1275.6875
+      },
+      "overflow": false,
+      "broken": [],
+      "anchors": [],
+      "imageLoading": true,
+      "reserved": true,
+      "stickyHeight": 92,
+      "stickyReserved": true,
+      "servicesCount": 3,
+      "hasScript": false
+    }
+  },
+  {
+    "width": 768,
+    "height": 844,
+    "checks": [
+      {
+        "name": "http_200",
+        "passed": true
+      },
+      {
+        "name": "no_overflow",
+        "passed": true
+      },
+      {
+        "name": "images_loaded",
+        "passed": true
+      },
+      {
+        "name": "anchors_resolve",
+        "passed": true
+      },
+      {
+        "name": "hero_priority_and_lazy_support",
+        "passed": true
+      },
+      {
+        "name": "image_dimensions",
+        "passed": true
+      },
+      {
+        "name": "sticky_space_reserved",
+        "passed": true
+      },
+      {
+        "name": "all_services_visible",
+        "passed": true
+      },
+      {
+        "name": "no_runtime_reference_or_script",
+        "passed": true
+      },
+      {
+        "name": "no_console_errors",
+        "passed": true
+      }
+    ],
+    "geometryScore": 100,
+    "measurement": {
+      "hero": {
+        "x": 0,
+        "y": 84.796875,
+        "width": 768,
+        "height": 840.15625,
+        "bottom": 924.953125
+      },
+      "image": {
+        "x": 0,
+        "y": 412.953125,
+        "width": 768,
+        "height": 512,
+        "bottom": 924.953125
+      },
+      "heading": {
+        "x": 20,
+        "y": 114.796875,
+        "width": 366.328125,
+        "height": 133.09375,
+        "bottom": 247.890625
+      },
+      "intro": {
+        "x": 20,
+        "y": 114.796875,
+        "width": 728,
+        "height": 270.15625,
+        "bottom": 384.953125
+      },
+      "cta": {
+        "x": 20,
+        "y": 334.953125,
+        "width": 169.9375,
+        "height": 50,
+        "bottom": 384.953125
+      },
+      "trust": {
+        "x": 20,
+        "y": 924.953125,
+        "width": 728,
+        "height": 121.484375,
+        "bottom": 1046.4375
+      },
+      "services": {
+        "x": 20,
+        "y": 1801.578125,
+        "width": 728,
+        "height": 592.625,
+        "bottom": 2394.203125
+      },
+      "story": {
+        "x": 20,
+        "y": 1046.4375,
+        "width": 728,
+        "height": 755.140625,
+        "bottom": 1801.578125
+      },
+      "overflow": false,
+      "broken": [],
+      "anchors": [],
+      "imageLoading": true,
+      "reserved": true,
+      "stickyHeight": 92,
+      "stickyReserved": true,
+      "servicesCount": 3,
+      "hasScript": false
+    }
+  },
+  {
+    "width": 1440,
+    "height": 1000,
+    "checks": [
+      {
+        "name": "http_200",
+        "passed": true
+      },
+      {
+        "name": "no_overflow",
+        "passed": true
+      },
+      {
+        "name": "images_loaded",
+        "passed": true
+      },
+      {
+        "name": "anchors_resolve",
+        "passed": true
+      },
+      {
+        "name": "hero_priority_and_lazy_support",
+        "passed": true
+      },
+      {
+        "name": "image_dimensions",
+        "passed": true
+      },
+      {
+        "name": "sticky_space_reserved",
+        "passed": true
+      },
+      {
+        "name": "all_services_visible",
+        "passed": true
+      },
+      {
+        "name": "no_runtime_reference_or_script",
+        "passed": true
+      },
+      {
+        "name": "no_console_errors",
+        "passed": true
+      },
+      {
+        "name": "wcag_axe",
+        "passed": true
+      },
+      {
+        "name": "keyboard_focus_visible",
+        "passed": true
+      },
+      {
+        "name": "reduced_motion",
+        "passed": true
+      },
+      {
+        "name": "text_200_percent_no_overlap",
+        "passed": true
+      }
+    ],
+    "geometryScore": 100,
+    "measurement": {
+      "hero": {
+        "x": 0,
+        "y": 108.484375,
+        "width": 1440,
+        "height": 748.6875,
+        "bottom": 857.171875
+      },
+      "image": {
+        "x": 0,
+        "y": 377.171875,
+        "width": 1440,
+        "height": 480,
+        "bottom": 857.171875
+      },
+      "heading": {
+        "x": 80,
+        "y": 158.484375,
+        "width": 478.0625,
+        "height": 173.6875,
+        "bottom": 332.171875
+      },
+      "intro": {
+        "x": 80,
+        "y": 158.484375,
+        "width": 1280,
+        "height": 173.6875,
+        "bottom": 332.171875
+      },
+      "cta": {
+        "x": 880,
+        "y": 267.09375,
+        "width": 187.125,
+        "height": 54,
+        "bottom": 321.09375
+      },
+      "trust": {
+        "x": 80,
+        "y": 857.171875,
+        "width": 1280,
+        "height": 134.734375,
+        "bottom": 991.90625
+      },
+      "services": {
+        "x": 80,
+        "y": 1537.546875,
+        "width": 1280,
+        "height": 650.90625,
+        "bottom": 2188.453125
+      },
+      "story": {
+        "x": 80,
+        "y": 991.90625,
+        "width": 1280,
+        "height": 545.640625,
+        "bottom": 1537.546875
+      },
+      "overflow": false,
+      "broken": [],
+      "anchors": [],
+      "imageLoading": true,
+      "reserved": true,
+      "stickyHeight": 0,
+      "stickyReserved": true,
+      "servicesCount": 3,
+      "hasScript": false
+    }
+  },
+  {
+    "width": 1920,
+    "height": 1000,
+    "checks": [
+      {
+        "name": "http_200",
+        "passed": true
+      },
+      {
+        "name": "no_overflow",
+        "passed": true
+      },
+      {
+        "name": "images_loaded",
+        "passed": true
+      },
+      {
+        "name": "anchors_resolve",
+        "passed": true
+      },
+      {
+        "name": "hero_priority_and_lazy_support",
+        "passed": true
+      },
+      {
+        "name": "image_dimensions",
+        "passed": true
+      },
+      {
+        "name": "sticky_space_reserved",
+        "passed": true
+      },
+      {
+        "name": "all_services_visible",
+        "passed": true
+      },
+      {
+        "name": "no_runtime_reference_or_script",
+        "passed": true
+      },
+      {
+        "name": "no_console_errors",
+        "passed": true
+      }
+    ],
+    "geometryScore": 100,
+    "measurement": {
+      "hero": {
+        "x": 0,
+        "y": 108.484375,
+        "width": 1920,
+        "height": 861.34375,
+        "bottom": 969.828125
+      },
+      "image": {
+        "x": 0,
+        "y": 419.828125,
+        "width": 1920,
+        "height": 550,
+        "bottom": 969.828125
+      },
+      "heading": {
+        "x": 240,
+        "y": 183.484375,
+        "width": 526.59375,
+        "height": 191.34375,
+        "bottom": 374.828125
+      },
+      "intro": {
+        "x": 240,
+        "y": 183.484375,
+        "width": 1440,
+        "height": 191.34375,
+        "bottom": 374.828125
+      },
+      "cta": {
+        "x": 1136,
+        "y": 305.34375,
+        "width": 187.125,
+        "height": 54,
+        "bottom": 359.34375
+      },
+      "trust": {
+        "x": 240,
+        "y": 969.828125,
+        "width": 1440,
+        "height": 134.734375,
+        "bottom": 1104.5625
+      },
+      "services": {
+        "x": 240,
+        "y": 1674.546875,
+        "width": 1440,
+        "height": 662.65625,
+        "bottom": 2337.203125
+      },
+      "story": {
+        "x": 240,
+        "y": 1104.5625,
+        "width": 1440,
+        "height": 569.984375,
+        "bottom": 1674.546875
+      },
+      "overflow": false,
+      "broken": [],
+      "anchors": [],
+      "imageLoading": true,
+      "reserved": true,
+      "stickyHeight": 0,
+      "stickyReserved": true,
+      "servicesCount": 3,
+      "hasScript": false
+    }
+  }
+]

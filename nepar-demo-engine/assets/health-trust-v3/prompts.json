@@ -1,0 +1,22 @@
+[
+  {
+    "id": "master",
+    "prompt": "Create one premium editorial pet photograph, master asset for a Croatian veterinary clinic website. Warm ivory studio daylight, a beautiful healthy adult golden retriever sitting with a small grey-and-white cat calmly nestled beside its front paws. Both entire animals visible, natural proportions, nuanced real fur, attentive gentle eyes, calm affectionate mood. A linen warm cream backdrop and ground seamlessly meet, soft believable shadows, subtle olive tones. Wide landscape composition with both pets grouped on the right half, lots of clean negative space to the left, leave generous margin around ears and paws for mobile recropping. Real photography with exquisite texture, medium-format portrait lens, no plastic AI look. No human, no medical equipment, no clinic interior, no lettering, no logo, no watermark. Generate a single photograph, not a website or collage.",
+    "masterAssetId": "fabela-pets-master-v3"
+  },
+  {
+    "id": "desktop",
+    "prompt": "Edit this master pet photograph into a portrait 4:5 desktop website photo panel: keep EXACTLY the same golden retriever and grey-and-white cat, face markings, coat, pose, light and warm linen background. Center both pets together, fully include all ears and paws, with generous 8 percent margin on all sides. Remove excess empty space on the left by reframing, not changing subjects. Photorealistic, no text or graphics.",
+    "masterAssetId": "fabela-pets-master-v3"
+  },
+  {
+    "id": "mobile",
+    "prompt": "Reframe the attached master photograph for a MOBILE veterinary website hero, landscape 4:3 photograph. Preserve exactly the golden retriever and grey-and-white cat, their faces, markings, pose, fur identity, warm linen daylight atmosphere. Both complete animals including ears and paws, centered together in the frame, with generous margin above and on sides. Same scene, rearrange framing and extend backdrop only. No text, graphics, logo, humans or new animals.",
+    "masterAssetId": "fabela-pets-master-v3"
+  },
+  {
+    "id": "support",
+    "prompt": "Use case: identity-preserve. Reference image is the locked master for these exact two pets. Create one landscape 4:3 editorial supporting photograph, same golden retriever and same grey-and-white cat, identical fur markings, eye colors, warm soft light and cream linen backdrop. Both are now comfortably lying down close together, cat in foreground and dog behind, heads awake looking toward camera, intimate calm natural posture. Tighter framing: animals together fill 85% of frame width, leave small comfortable headroom and keep all ears and forepaws within the frame. Photorealistic premium veterinary website decorative photo. No people, no clinic, no text, no logos. Preserve identities and warm light precisely.",
+    "masterAssetId": "fabela-pets-master-v3"
+  }
+]

@@ -1,0 +1,236 @@
+{
+  "v3": {
+    "contentFingerprint": "bf1a4fccdd73b3656e76cd9ff1fa9f14d59033876cfab41bc7c18896a98169e4",
+    "captures": [
+      {
+        "viewport": "mobile",
+        "technicalScore": 100,
+        "geometryScore": 100,
+        "screenshotSha256": "e411b1e072b79c5d86d6ff662ef8392d9d1951ecf4b4754d2f052e926c92e391",
+        "referenceSha256": "69548030e32138ad8a7ef08518ee7076f532a35220fa1aeffe7c56810744a830",
+        "designJudgment": {
+          "score": 92,
+          "reviewer": "gpt-6-astra",
+          "checkedAt": "2026-09-14T19:45:01.816731Z",
+          "reviewFingerprint": "1fe3a9d181b8c7fa43e2a81a81f7d06602dda89be45892f723b8d185a3d4b317",
+          "rationale": "The location photograph spans the mobile viewport, with a compact introduction and clear contact anchor above it. Short text blocks and horizontal imagery preserve the architectural direction. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance.",
+          "findings": []
+        }
+      },
+      {
+        "viewport": "desktop",
+        "technicalScore": 100,
+        "geometryScore": 100,
+        "screenshotSha256": "3dee493001eb817b6826ac4113ec2a4ffcf4129e01268929263bdcf07b4de35d",
+        "referenceSha256": "cb3596cc277f060bc097f2de83d9af32f6060a95a14753cbd7f7ea57bfb18a02",
+        "designJudgment": {
+          "score": 93,
+          "reviewer": "gpt-6-astra",
+          "checkedAt": "2026-09-14T19:45:01.816731Z",
+          "reviewFingerprint": "1fe3a9d181b8c7fa43e2a81a81f7d06602dda89be45892f723b8d185a3d4b317",
+          "rationale": "The large architectural headline leads into a genuinely full-bleed clinic photograph. Horizontal space, a second real interior and ruled service rows produce an architectural rhythm without card UI. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance.",
+          "findings": []
+        }
+      }
+    ]
+  },
+  "status": "passed",
+  "checkedAt": "2026-09-14T19:42:39.051Z",
+  "url": "http://127.0.0.1:8793/?demo=bond-clinic-first-v3",
+  "technicalScore": 100,
+  "visualScore": 100,
+  "visualStatus": "passed",
+  "referenceKey": "health-trust-v3/clinic-first",
+  "visualChecks": [
+    {
+      "viewport": "mobile",
+      "name": "hero_image_dominance",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "mobile",
+      "name": "responsive_composition",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "mobile",
+      "name": "contact_first_view",
+      "passed": true,
+      "weight": 2
+    },
+    {
+      "viewport": "mobile",
+      "name": "hero_balance",
+      "passed": true,
+      "weight": 1
+    },
+    {
+      "viewport": "mobile",
+      "name": "trust_before_services",
+      "passed": true,
+      "weight": 1
+    },
+    {
+      "viewport": "desktop",
+      "name": "hero_image_dominance",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "desktop",
+      "name": "responsive_composition",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "desktop",
+      "name": "contact_first_view",
+      "passed": true,
+      "weight": 2
+    },
+    {
+      "viewport": "desktop",
+      "name": "hero_balance",
+      "passed": true,
+      "weight": 1
+    },
+    {
+      "viewport": "desktop",
+      "name": "trust_before_services",
+      "passed": true,
+      "weight": 1
+    }
+  ],
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "checks": [
+        {
+          "name": "http_200",
+          "passed": true
+        },
+        {
+          "name": "no_overflow",
+          "passed": true
+        },
+        {
+          "name": "images_loaded",
+          "passed": true
+        },
+        {
+          "name": "anchors_resolve",
+          "passed": true
+        },
+        {
+          "name": "hero_priority_and_lazy_support",
+          "passed": true
+        },
+        {
+          "name": "image_dimensions",
+          "passed": true
+        },
+        {
+          "name": "sticky_space_reserved",
+          "passed": true
+        },
+        {
+          "name": "all_services_visible",
+          "passed": true
+        },
+        {
+          "name": "no_runtime_reference_or_script",
+          "passed": true
+        },
+        {
+          "name": "no_console_errors",
+          "passed": true
+        },
+        {
+          "name": "wcag_axe",
+          "passed": true
+        },
+        {
+          "name": "keyboard_focus_visible",
+          "passed": true
+        },
+        {
+          "name": "reduced_motion",
+          "passed": true
+        },
+        {
+          "name": "text_200_percent_no_overlap",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "checks": [
+        {
+          "name": "http_200",
+          "passed": true
+        },
+        {
+          "name": "no_overflow",
+          "passed": true
+        },
+        {
+          "name": "images_loaded",
+          "passed": true
+        },
+        {
+          "name": "anchors_resolve",
+          "passed": true
+        },
+        {
+          "name": "hero_priority_and_lazy_support",
+          "passed": true
+        },
+        {
+          "name": "image_dimensions",
+          "passed": true
+        },
+        {
+          "name": "sticky_space_reserved",
+          "passed": true
+        },
+        {
+          "name": "all_services_visible",
+          "passed": true
+        },
+        {
+          "name": "no_runtime_reference_or_script",
+          "passed": true
+        },
+        {
+          "name": "no_console_errors",
+          "passed": true
+        },
+        {
+          "name": "wcag_axe",
+          "passed": true
+        },
+        {
+          "name": "keyboard_focus_visible",
+          "passed": true
+        },
+        {
+          "name": "reduced_motion",
+          "passed": true
+        },
+        {
+          "name": "text_200_percent_no_overlap",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "consoleErrors": [],
+  "brokenImages": []
+}

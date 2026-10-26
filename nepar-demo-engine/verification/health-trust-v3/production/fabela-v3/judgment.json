@@ -1,0 +1,30 @@
+{
+  "reviewFingerprint": "8155dd1f24bb5ae61a36cdf26cc468bc8525e7905f6ebe2a21344ccdedf3a0b9",
+  "captures": [
+    {
+      "viewport": "desktop",
+      "designJudgment": {
+        "score": 93,
+        "reviewer": "gpt-6-astra",
+        "checkedAt": "2026-09-14T19:47:13.105356Z",
+        "rationale": "The asymmetric serif headline and arched portrait establish a warm editorial hierarchy. Spacious ruled services, the distinct supporting photograph and local contact details sustain a coherent full-page identity. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance. Confirmed on the canonical production domain after the new font manifest was deployed.",
+        "findings": []
+      }
+    },
+    {
+      "viewport": "mobile",
+      "designJudgment": {
+        "score": 91,
+        "reviewer": "gpt-6-astra",
+        "checkedAt": "2026-09-14T19:47:13.105373Z",
+        "rationale": "The headline reads in two deliberate lines at 390px, both animals retain ears and paws, and contact stays immediately reachable. Stacked services and the closing contact block remain readable. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance. Confirmed on the canonical production domain after the new font manifest was deployed.",
+        "findings": [
+          {
+            "severity": "minor",
+            "detail": "The mobile hero leaves generous negative space; the subjects feel quieter than in the target reference."
+          }
+        ]
+      }
+    }
+  ]
+}

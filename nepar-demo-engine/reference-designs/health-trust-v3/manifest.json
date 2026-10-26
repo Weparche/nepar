@@ -1,0 +1,44 @@
+[
+  {
+    "id": "pet-first-desktop",
+    "file": "pet-first-desktop.png",
+    "prompt": "Generate a single high fidelity DESKTOP website design reference, 1440px wide composition, full page screenshot without browser chrome, for Fabela veterinary clinic Zagreb. Warm ivory #f7f5ee, dark forest #243f35, elegant Cormorant Garamond large serif paired with DM Sans. Thin horizontal rules. Header Fabela left with subtle paw outline, Usluge O nama Kontakt right. Asymmetric editorial hero: large 3-line left headline 'Njihov mali svijet. Naša velika briga.', brief Croatian description, dark green 'Nazovite ambulantu' button and simple 'Naše usluge' text link. Right tall arch-topped photograph of a golden retriever and grey-white cat sitting together in warm beige studio, fully visible. Massive tasteful whitespace, mature editorial design, no cards or gradients. Beneath hero a thin ruled horizontal proof strip '15+ godina', 'dr. Alan Jurca', 'Tratinska 53/I'. Below section 'Skrb za svaki njihov korak.' with six services in two rows of three, only typography and thin rules. Below split photograph of pets and 'Blizu vama. Posvećeni njima.' Finally deep forest-green contact section 'Tu smo za vaš prvi korak.' and address, footer 'NEPAR koncept'. Distinct polished veterinary art direction. Do not invent reviews or star ratings.",
+    "status": "generated",
+    "purpose": "Composition reference only. Generated text, branding details and facts are not authoritative; use evidence-backed package content."
+  },
+  {
+    "id": "pet-first-mobile",
+    "file": "pet-first-mobile.png",
+    "prompt": "Create ONE independently designed MOBILE website mockup reference, narrow 390px wide by about 2200px tall full-page screenshot, not a crop of desktop, no phone frame. Fabela veterinary clinic Zagreb. Warm ivory background, forest green typography, elegant large Cormorant Garamond serif, DM Sans body. Header Fabela and small Kontakt link. Hero starts with 'Njihov mali svijet. Naša velika briga.' readable large balanced heading, short 2-line description, green 'Nazovite ambulantu' button. BELOW text a wide arched-top photo panel of golden retriever and grey-white cat together with ears and paws fully visible. Three brief facts below in compact wrapping rows '15+ godina', 'dr. Alan Jurca', 'Tratinska 53/I'. Section 'Skrb za svaki njihov korak.' six service rows separated by thin rules, no cards. Then photo and 'Blizu vama. Posvećeni njima.' story, then green contact area, visible 'NEPAR koncept' footer. At bottom of viewport an ivory fixed bar with green contact button and safe spacing. Quiet premium editorial mobile typography and generous whitespace. No invented stars, numbers or reviews. Text is visual placeholder only.",
+    "status": "generated",
+    "purpose": "Composition reference only. Generated text, branding details and facts are not authoritative; use evidence-backed package content."
+  },
+  {
+    "id": "doctor-first-desktop",
+    "file": "doctor-first-desktop.png",
+    "prompt": "Create ONE premium DESKTOP veterinary website reference, full page 1440px wide composition, not a device frame. Brand Goldi, Zagreb. Doctor-first design, structured private medical practice aesthetic: warm cool-white #f4f4ef, slate green #263d42, large elegant Cormorant Garamond serif headings with precise DM Sans body, thin grid rules. Use the ATTACHED REAL PORTRAIT as the right hero photo, keep face, clothing and pose unchanged; it depicts Alan Fleck. Left heading 'Stručnost s osobnim pristupom.' brief introduction and 'Nazovite ambulantu' button. Photo name caption 'Alan Fleck, dr. med. vet.' Below hero pale slate horizontal credentials strip 'Od 1996.', 'Alan Fleck', 'Medvedgradska 1c'. Below split pet photo and 'Znanje koje susreće pažnju.' story. Then 'Skrb za svaki njihov korak.' structured 2-column ruled services: Preventiva, Interna medicina, Kardiologija, Kirurgija i ortopedija. Bottom slate green contact section and NEPAR koncept footer. Generous whitespace, refined hierarchy, no cards, no ratings, no invented people. Reference imagery and text only, no browser chrome.",
+    "status": "generated",
+    "purpose": "Composition reference only. Generated text, branding details and facts are not authoritative; use evidence-backed package content."
+  },
+  {
+    "id": "doctor-first-mobile",
+    "file": "doctor-first-mobile.png",
+    "prompt": "Create ONE independently designed MOBILE veterinary website mockup, narrow 390px layout, full-page tall screenshot, no phone frame, NOT cropped from desktop. Goldi Zagreb doctor-first design. Warm off-white #f4f4ef, slate-green #263d42, refined serif headlines and DM Sans body. Header Goldi + Kontakt. Intro first: 'Stručnost s osobnim pristupom.' large readable heading, short description, 'Nazovite ambulantu' button. Then large portrait using ATTACHED REAL PHOTO of Alan Fleck, preserve face clothing identity and pose exactly, caption 'Alan Fleck, dr. med. vet.'. Pale slate credentials strip wraps cleanly: Od 1996., Alan Fleck, Medvedgradska 1c. Story title 'Znanje koje susreće pažnju.' short text, warm photograph of pet. Four single-column ruled service rows under 'Skrb za svaki njihov korak.': Preventiva, Interna medicina, Kardiologija, Kirurgija i ortopedija. Deep slate contact block and visible NEPAR koncept footer. Fixed mobile contact bar with safe spacing, everything legible at 390px. No cards, no new people, no star ratings. A true mobile composition.",
+    "status": "generated",
+    "purpose": "Composition reference only. Generated text, branding details and facts are not authoritative; use evidence-backed package content."
+  },
+  {
+    "id": "clinic-first-desktop",
+    "file": "clinic-first-desktop.png",
+    "prompt": "Create ONE DESKTOP premium architectural veterinary clinic web reference full-page screenshot 1440px wide composition. Brand Bond Vet, New York. Clinic-first art direction: warm white #faf9f5, charcoal forest #303b35, hard aligned grid, sophisticated large Cormorant serif plus DM Sans, thin rules, almost no card UI. Header wordmark + services story contact. Main hero title 'Prostor za pažljivu skrb.' on left with compact description and contact link right in horizontal intro strip. Beneath intro a spectacular FULL-BLEED panoramic clinic photograph using the attached verified actual Bond Vet clinic image: preserve architecture, furnishings, colors; reference is the real space. Then restrained location strip 'Upper East Side · 1535 3rd Ave · New York'. A spacious story block 'Dobro došli u Bond Vet.' followed by long horizontal image and short text blocks. Services arranged as generous horizontal ruled rows, not cards: Preventivni pregledi, Cijepljenje, Laboratorijske pretrage. Deep charcoal green contact block and NEPAR koncept footer. Confident architecture magazine layout, luxurious whitespace, natural photography, no reviews, no invented people, no browser chrome.",
+    "status": "generated",
+    "purpose": "Composition reference only. Generated text, branding details and facts are not authoritative; use evidence-backed package content."
+  },
+  {
+    "id": "clinic-first-mobile",
+    "file": "clinic-first-mobile.png",
+    "prompt": "Design ONE independently composed MOBILE architectural veterinary clinic website reference. Narrow 390px mobile layout as tall full-page image, no phone frame, NOT a crop of desktop. Brand Bond Vet New York. Warm white #faf9f5, charcoal forest #303b35, precise grid, sophisticated Cormorant serif and DM Sans, minimal card UI. Top slim header Bond Vet and Kontakt. Large heading 'Prostor za pažljivu skrb.' followed by short 2-line text and a clear contact button. Then edge-to-edge actual clinic photo based on the attached verified Bond Vet interior image; preserve the real furnishings and architecture. Photo mobile composition shows wooden seating, arch doorway and natural light. Below compact location line 'Upper East Side · New York'. Story 'Dobro došli u Bond Vet.' with readable paragraph, a wide smaller clinic-detail photo, three service rows with rules: Preventivni pregledi, Cijepljenje, Laboratorijske pretrage. Dark green contact panel with address '1535 3rd Ave, New York'. NEPAR koncept footer remains visible. Fixed bottom contact button in own safe area, content never obscured. Each block single column, deliberate vertical rhythm. No invented ratings, no new people, no extra navigation pages.",
+    "status": "generated",
+    "purpose": "Composition reference only. Generated text, branding details and facts are not authoritative; use evidence-backed package content."
+  }
+]

@@ -1,0 +1,241 @@
+{
+  "v3": {
+    "contentFingerprint": "103477a2e57f98f1bd55818a0824a606fca90928d85b1632fb1b05033af74d42",
+    "captures": [
+      {
+        "viewport": "mobile",
+        "technicalScore": 100,
+        "geometryScore": 100,
+        "screenshotSha256": "df6c3b0f49e34d222fbc4430525149945b52d2dc5aac45b75462fd7ae5b1ff3d",
+        "referenceSha256": "f9339f3a6f7d43a8e86cf8e1098e639d6d7d2a51b9b7a48940aafa37ae363369",
+        "designJudgment": {
+          "score": 91,
+          "reviewer": "gpt-6-astra",
+          "checkedAt": "2026-09-14T19:45:01.816731Z",
+          "reviewFingerprint": "e1418c7e9fceac5770c5bba8c196c7a6d1e69ba1bdfa74ba6f9eea07e66f9a98",
+          "rationale": "The full-width real portrait, clear name caption and pale credential band retain doctor-first hierarchy on mobile. The stacked composition adapts the reference to readable text at 390px. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance.",
+          "findings": []
+        }
+      },
+      {
+        "viewport": "desktop",
+        "technicalScore": 100,
+        "geometryScore": 100,
+        "screenshotSha256": "793e3cf2aac8cb20fb0791d59d96a8603ba9d5316abbc992968f924e6614581b",
+        "referenceSha256": "8bba4682826db1bc68949fff94a1c6758beb5351b2b86f01d71efe167b497991",
+        "designJudgment": {
+          "score": 92,
+          "reviewer": "gpt-6-astra",
+          "checkedAt": "2026-09-14T19:45:01.816731Z",
+          "reviewFingerprint": "e1418c7e9fceac5770c5bba8c196c7a6d1e69ba1bdfa74ba6f9eea07e66f9a98",
+          "rationale": "The real Alan Fleck portrait and aligned caption anchor the introduction. Credentials precede services; cooler colors and the structured two-column service grid distinguish this clinical direction. Rechecked after font optimization: hierarchy, Croatian glyphs and line breaks retain the intended appearance.",
+          "findings": [
+            {
+              "severity": "minor",
+              "detail": "The original portrait has a casual background; identity and photographic authenticity take priority over the generated reference styling."
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "status": "passed",
+  "checkedAt": "2026-09-14T19:42:27.868Z",
+  "url": "http://127.0.0.1:8793/?demo=goldi-doctor-first-v3",
+  "technicalScore": 100,
+  "visualScore": 100,
+  "visualStatus": "passed",
+  "referenceKey": "health-trust-v3/doctor-first",
+  "visualChecks": [
+    {
+      "viewport": "mobile",
+      "name": "hero_image_dominance",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "mobile",
+      "name": "responsive_composition",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "mobile",
+      "name": "contact_first_view",
+      "passed": true,
+      "weight": 2
+    },
+    {
+      "viewport": "mobile",
+      "name": "hero_balance",
+      "passed": true,
+      "weight": 1
+    },
+    {
+      "viewport": "mobile",
+      "name": "trust_before_services",
+      "passed": true,
+      "weight": 1
+    },
+    {
+      "viewport": "desktop",
+      "name": "hero_image_dominance",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "desktop",
+      "name": "responsive_composition",
+      "passed": true,
+      "weight": 3
+    },
+    {
+      "viewport": "desktop",
+      "name": "contact_first_view",
+      "passed": true,
+      "weight": 2
+    },
+    {
+      "viewport": "desktop",
+      "name": "hero_balance",
+      "passed": true,
+      "weight": 1
+    },
+    {
+      "viewport": "desktop",
+      "name": "trust_before_services",
+      "passed": true,
+      "weight": 1
+    }
+  ],
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "checks": [
+        {
+          "name": "http_200",
+          "passed": true
+        },
+        {
+          "name": "no_overflow",
+          "passed": true
+        },
+        {
+          "name": "images_loaded",
+          "passed": true
+        },
+        {
+          "name": "anchors_resolve",
+          "passed": true
+        },
+        {
+          "name": "hero_priority_and_lazy_support",
+          "passed": true
+        },
+        {
+          "name": "image_dimensions",
+          "passed": true
+        },
+        {
+          "name": "sticky_space_reserved",
+          "passed": true
+        },
+        {
+          "name": "all_services_visible",
+          "passed": true
+        },
+        {
+          "name": "no_runtime_reference_or_script",
+          "passed": true
+        },
+        {
+          "name": "no_console_errors",
+          "passed": true
+        },
+        {
+          "name": "wcag_axe",
+          "passed": true
+        },
+        {
+          "name": "keyboard_focus_visible",
+          "passed": true
+        },
+        {
+          "name": "reduced_motion",
+          "passed": true
+        },
+        {
+          "name": "text_200_percent_no_overlap",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "checks": [
+        {
+          "name": "http_200",
+          "passed": true
+        },
+        {
+          "name": "no_overflow",
+          "passed": true
+        },
+        {
+          "name": "images_loaded",
+          "passed": true
+        },
+        {
+          "name": "anchors_resolve",
+          "passed": true
+        },
+        {
+          "name": "hero_priority_and_lazy_support",
+          "passed": true
+        },
+        {
+          "name": "image_dimensions",
+          "passed": true
+        },
+        {
+          "name": "sticky_space_reserved",
+          "passed": true
+        },
+        {
+          "name": "all_services_visible",
+          "passed": true
+        },
+        {
+          "name": "no_runtime_reference_or_script",
+          "passed": true
+        },
+        {
+          "name": "no_console_errors",
+          "passed": true
+        },
+        {
+          "name": "wcag_axe",
+          "passed": true
+        },
+        {
+          "name": "keyboard_focus_visible",
+          "passed": true
+        },
+        {
+          "name": "reduced_motion",
+          "passed": true
+        },
+        {
+          "name": "text_200_percent_no_overlap",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "consoleErrors": [],
+  "brokenImages": []
+}
