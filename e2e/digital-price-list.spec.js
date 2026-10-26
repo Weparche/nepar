@@ -30,11 +30,13 @@ test("/digitalni-cjenik has Croatian static SEO, one H1, and the official source
   expect(staticHtml).toContain('NN 101/2026-1213');
   expect(staticHtml).toContain('Dvije povezane, ali odvojene obveze');
   expect(staticHtml).toContain('Digitalni cjenik nije obveza samo za webshopove');
-  expect(staticHtml).toContain('39,90 €');
+  expect(staticHtml).toContain('19,90 €');
+  expect(staticHtml).toContain('49,90 €');
+  expect(staticHtml).toContain('79,90 €');
+  expect(staticHtml).not.toContain('39,90 €');
+  expect(staticHtml).not.toContain('89,90 €');
   expect(staticHtml).toContain('NEPAR Publisher');
-  expect(staticHtml).toContain('89,90 €');
   expect(staticHtml).not.toContain('Plugin 49,90');
-  expect(staticHtml).not.toContain('19,90 € / godišnje');
   expect(staticHtml).not.toContain('NEPAR Digital Price Engine');
   expect(staticHtml).toContain('Što još nije definirano');
   expect(staticHtml).toContain('primjer-usluge.csv');
@@ -98,8 +100,8 @@ test("checker archive signal wording reads as a technical signal, not a legal ve
 test("pricing, FAQs, checker disclaimer, and TechArticle citations stay crawlable and responsive", async ({ page }) => {
   await page.goto("/digitalni-cjenik");
   await expect(page.getByRole("heading", { name: "NEPAR Publisher", exact: true })).toBeVisible();
-  await expect(page.getByText(/Uvodna cijena: 39,90 €\/god za prvih 100/).first()).toBeVisible();
-  await expect(page.getByText("Nakon toga 49,90 €/god.").first()).toBeVisible();
+  await expect(page.getByText("Publisher: 49,90 €/god.").first()).toBeVisible();
+  await expect(page.getByText("Link: 19,90 €/god · Web + Publisher: 79,90 €/god.").first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "Provjera", exact: true })).toHaveCount(1);
   await expect(page.getByText("Rješava li MIKROeRAČUN i digitalni cjenik?")).toBeVisible();
   await expect(page.locator('a[href="https://digitalnicjenik.nepar.hr"]').first()).toBeVisible();
