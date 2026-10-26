@@ -19,6 +19,9 @@ const EVENT_PARAM_ALLOWLIST = new Set([
   "utm_content",
   "utm_term",
   "landing_path",
+  "source",
+  "placement",
+  "variant",
   "result",
 ]);
 export const ATTRIBUTION_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];

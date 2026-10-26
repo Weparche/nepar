@@ -28,11 +28,12 @@ import {
   X,
   Zap,
   BadgeEuro,
+  Receipt,
 } from "lucide-react";
 import OrbitalProjectCarousel from "./OrbitalProjectCarousel.jsx";
 import ComputerEvolutionIntro from "./ComputerEvolutionIntro.jsx";
 import ConsentManager, { ConsentSettingsLink } from "./ConsentManager.jsx";
-import { subscribeConsentChanges, trackPageView } from "./analytics.js";
+import { subscribeConsentChanges, trackEvent, trackPageView } from "./analytics.js";
 import { usePageMeta } from "./usePageMeta.js";
 import WebLandingPage from "./WebLandingPage.jsx";
 import "./legacyLanding.css";
@@ -109,6 +110,16 @@ const content = {
         accent: "from-blue-400 to-indigo-500",
         preview: "ai",
         href: "https://kpdinfo.com",
+      },
+      {
+        title: "Digitalni cjenik",
+        description: "Objavite CSV/XML cjenik, arhivu i javni link za postojeći web. Od 19,90 €/god.",
+        Icon: Receipt,
+        accent: "from-sky-300 to-blue-600",
+        preview: "cjenik",
+        href: "https://digitalnicjenik.nepar.hr/?utm_source=nepar.hr&utm_medium=owned_product&utm_campaign=nepar_digitalni_cjenik&utm_content=projekti",
+        sameTab: true,
+        promo: { source: "nepar.hr", placement: "projekti", variant: "product" },
       },
       {
         title: "GeoAdrese.net",
@@ -320,6 +331,16 @@ const content = {
         accent: "from-blue-400 to-indigo-500",
         preview: "ai",
         href: "https://kpdinfo.com",
+      },
+      {
+        title: "Digital price list",
+        description: "Publish a CSV/XML price list, an archive and a public link for an existing website. From 19,90 €/year.",
+        Icon: Receipt,
+        accent: "from-sky-300 to-blue-600",
+        preview: "cjenik",
+        href: "https://digitalnicjenik.nepar.hr/?utm_source=nepar.hr&utm_medium=owned_product&utm_campaign=nepar_digitalni_cjenik&utm_content=projekti",
+        sameTab: true,
+        promo: { source: "nepar.hr", placement: "projekti", variant: "product" },
       },
       {
         title: "GeoAdrese.net",
@@ -853,6 +874,14 @@ function FeaturedProjectImage({ type, copy }) {
     );
   }
 
+  if (type === "cjenik") {
+    return (
+      <div className={`${frameClass} featured-project-media-cjenik`} aria-hidden="true">
+        <Receipt size={42} />
+      </div>
+    );
+  }
+
   return (
     <div className={frameClass}>
       <img
@@ -1252,14 +1281,27 @@ function WebStartPromo({ copy }) {
 }
 
 function FeaturedProjectCard({ project, copy, duplicate = false }) {
+  const cardRef = useRef(null);
+  useEffect(() => {
+    if (duplicate || !project.promo || !cardRef.current) return undefined;
+    const node = cardRef.current;
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer.disconnect();
+      void trackEvent("digital_price_list_promo_view", project.promo);
+    }, { threshold: 0.5 });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [duplicate, project]);
+
   const ProjectShell = project.internal ? MotionLink : project.href ? motion.a : motion.article;
   const linkProps = project.internal
     ? { to: project.href }
     : project.href
     ? {
         href: project.href,
-        target: "_blank",
-        rel: "noreferrer",
+        ...(project.sameTab ? {} : { target: "_blank", rel: "noreferrer" }),
+        ...(project.promo ? { onClick: () => { void trackEvent("digital_price_list_promo_click", project.promo); } } : {}),
         ...(duplicate ? { tabIndex: -1 } : {}),
       }
     : {};
@@ -1267,6 +1309,7 @@ function FeaturedProjectCard({ project, copy, duplicate = false }) {
   return (
     <ProjectShell
       {...linkProps}
+      ref={cardRef}
       className="featured-project-card group"
     >
       <FeaturedProjectImage type={project.preview} copy={copy} />

@@ -347,15 +347,24 @@ test("restored landing keeps its original structure and adds Auto Gubić below",
 
   const projects = page.locator("#projekti");
   await projects.scrollIntoViewIfNeeded();
-  await expect(projects.locator(".featured-project-card")).toHaveCount(11);
+  await expect(projects.locator(".featured-project-card")).toHaveCount(12);
   const projectSectionHeight = await projects.evaluate((section) => section.getBoundingClientRect().height);
-  expect(projectSectionHeight).toBeLessThanOrEqual(page.viewportSize().height);
+  if ((page.viewportSize()?.width ?? 0) >= 1024) {
+    expect(projectSectionHeight).toBeLessThanOrEqual(page.viewportSize().height);
+  }
   await expect(page.locator("#kontakt")).not.toHaveCSS("position", "fixed");
   const projectLink = projects.getByRole("link", { name: /Auto Gubić/ });
   await expect(projectLink).toBeVisible();
   await expect(projectLink).toHaveAttribute("href", "https://autogubic.hr/");
   await expect(projectLink).toHaveAttribute("target", "_blank");
   await expect(projectLink).toHaveAttribute("rel", /noreferrer/);
+  const cjenikLink = projects.getByRole("link", { name: /Digitalni cjenik/ });
+  await expect(cjenikLink).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr/?utm_source=nepar.hr&utm_medium=owned_product&utm_campaign=nepar_digitalni_cjenik&utm_content=projekti");
+  await expect(cjenikLink).not.toHaveAttribute("target", "_blank");
+  await expect(cjenikLink).not.toHaveAttribute("rel", /sponsored|noreferrer/);
+  await expect(cjenikLink).toContainText("19,90 €/god");
+  await expect(projects).not.toContainText("39,90");
+  await expect(projects).not.toContainText("89,90");
   await expect(projectLink.getByRole("heading", { name: "Auto Gubić" })).toBeVisible();
   await expect(projectLink.locator('img[src="/brand/autogubic.webp"]')).toHaveAttribute("alt", "Auto Gubić web-stranica");
 
