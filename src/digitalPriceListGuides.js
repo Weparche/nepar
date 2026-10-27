@@ -209,6 +209,7 @@ export function getDigitalPriceListGuide(path) {
 }
 
 export function getDigitalPriceListGuideSeoPage(path) {
+  if (getGuideRedirect(path)) return null;
   const normalized = normalizePath(path);
   const guide = guides[normalized];
   if (!guide) return null;
@@ -229,6 +230,7 @@ export function getDigitalPriceListGuideSeoPage(path) {
 }
 
 export function getDigitalPriceListGuideStructuredData(path) {
+  if (getGuideRedirect(path)) return null;
   const normalized = normalizePath(path);
   const guide = guides[normalized];
   if (!guide) return null;

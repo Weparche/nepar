@@ -81,6 +81,8 @@ expect("usluge/izrada-web-stranica.html", "FAQPage", "FAQPage schema is missing"
 expect("usluge/izrada-web-stranica.html", "BreadcrumbList", "breadcrumb schema is missing");
 expect("kontakt.html", "ContactPage", "ContactPage schema is missing");
 for (const [path, destination] of Object.entries(GUIDE_REDIRECTS)) {
+  if (getSeoPage(path).canonicalPath !== destination || getSeoPage(path).indexable) failures.push(path + ': legacy SEO metadata must point to the final destination without indexing a duplicate');
+  if (getDigitalPriceListGuideSeoPage(path)) failures.push(path + ': legacy guide canonical must no longer be emitted');
   const output = routeOutputPath(distDir, path);
   if (existsSync(output)) failures.push(path + ': moved marketing page must not be generated');
   if (read('sitemap.xml').includes('https://nepar.hr' + path + '<')) failures.push(path + ': moved page remains in sitemap');
