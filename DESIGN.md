@@ -129,7 +129,14 @@ Paleta zadržava prepoznatljivu Nepar plavu, cijan i ljubičastu, ali koristi je
 
 ## 4. Layout
 
-Stranica ostaje svijetla i ritmična, s kratkim dokaznim blokovima i CTA-ovima u toku sadržaja. Fiksni donji CTA je zabranjen; glavni CTA pojavljuje se inline odmah nakon dokaza i ponovno na kraju stranice.
+Stranica ostaje svijetla i ritmična, s kratkim dokaznim blokovima i CTA-ovima u toku sadržaja. Glavni CTA pojavljuje se inline odmah nakon dokaza i ponovno na kraju stranice.
+
+### Plutajući kontakt dock (samo početna)
+
+- Jedini dopušteni fiksni donji CTA (odluka vlasnika, listopad 2026.): bijeli dock s rubom `#bfdbfe`, najviše 780 px širok, s raketom, naslovom i gumbom „Javite se i pokrenimo projekt”.
+- Pojavljuje se tek ispod hero sekcije i nestaje kad završna CTA sekcija dođe u pogled, pa izgleda kao da se spustio u nju.
+- Uvijek ima gumb za zatvaranje; zatvoren ostaje skriven do kraja posjeta (`sessionStorage`).
+- Na mobitelu gubi opis, a gumb postaje kvadratna strelica od 44 px; tekst gumba ostaje dostupan čitačima zaslona.
 
 ### Product Lab
 
@@ -200,7 +207,7 @@ Cijena i način plaćanja čine prvu vizualnu skupinu. Business je istaknut puno
 
 ### Motion
 
-- Kontinuirano kretanje dopušteno je samo u hero sekciji.
+- Kontinuirano kretanje dopušteno je samo u hero sekciji i u plutajućem kontakt docku: ciklus od 7 s u kojem se raketa „upali” (potisak, ispuh, puls), a zatim odsjaj prijeđe preko gumba. Petlja je pauzirana dok je dock skriven i isključena uz `prefers-reduced-motion`.
 - Ispod prvog viewporta koriste se samo reveal prijelazi pomoću `transform` i `opacity`.
 - Pointer spotlight postoji samo na uređajima koji podržavaju hover i imaju precizan pokazivač (`hover: hover` i `pointer: fine`).
 - Framer Motion koristi `MotionConfig reducedMotion="user"`; CSS `prefers-reduced-motion` prikazuje reveal sadržaj odmah, bez prijelaza.
@@ -219,6 +226,6 @@ Cijena i način plaćanja čine prvu vizualnu skupinu. Business je istaknut puno
 - **Don't** stvarati generički agency predložak ili anonimni stock mockup.
 - **Don't** koristiti pretjerane gradijente, glassmorphism ili beskrajne mreže jednakih kartica.
 - **Don't** koristiti gradijentni tekst, obojene bočne trake ili kartice s obrubom i širokom sjenom.
-- **Don't** koristiti fiksni donji CTA, automatsko pomicanje Product Laba ili kontinuiranu animaciju ispod hero sekcije.
+- **Don't** koristiti fiksne donje CTA-ove osim plutajućeg kontakt docka na početnoj, automatsko pomicanje Product Laba ili kontinuiranu animaciju ispod hero sekcije izvan tog docka.
 - **Don't** koristiti formulacije koje web-stranicu predstavljaju kao najam ili obaveznu pretplatu.
 - **Don't** obećavati prvo mjesto na Googleu, garantirani rast, off-page SEO ili kontinuirane SEO kampanje.

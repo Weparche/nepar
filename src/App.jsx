@@ -279,6 +279,7 @@ const content = {
       title: "Imate ideju? Pretvorimo je u proizvod.",
       description: "Od prvog razgovora do lansiranja, tu smo da va\u0161a ideja postane stvarnost.",
       button: "Javite se i pokrenimo projekt",
+      close: "Zatvori",
     },
     footer: {
       copyright: "\u00a9 2026 Nepar Solutions. Digitalna rje\u0161enja po mjeri.",
@@ -500,6 +501,7 @@ const content = {
       title: "Have an idea? Let\u2019s turn it into a product.",
       description: "From the first conversation to launch, we are here to turn your idea into reality.",
       button: "Reach out and start the project",
+      close: "Close",
     },
     footer: {
       copyright: "\u00a9 2026 Nepar Solutions. Tailored digital solutions.",
@@ -1422,11 +1424,89 @@ function About({ copy, isEvolutionOpen, onPlayEvolution }) {
   );
 }
 
-function BottomCta({ copy }) {
-  const animateDecoration = false;
+const CTA_DOCK_DISMISSED_KEY = "nepar-cta-dock-dismissed";
+
+function readCtaDockDismissed() {
+  try {
+    return sessionStorage.getItem(CTA_DOCK_DISMISSED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+// Floating contact dock: rises once the visitor is past the hero and lands into the inline CTA
+// (targetRef) at the end of the page. Dismissing it keeps it away for the rest of the visit.
+function CtaDock({ copy, targetRef }) {
+  const [pastHero, setPastHero] = useState(false);
+  const [atTarget, setAtTarget] = useState(false);
+  const [dismissed, setDismissed] = useState(readCtaDockDismissed);
+
+  useEffect(() => {
+    const update = () => setPastHero(window.scrollY > window.innerHeight * 0.6);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  useEffect(() => {
+    const target = targetRef.current;
+    if (!target || typeof IntersectionObserver === "undefined") return undefined;
+    const observer = new IntersectionObserver(([entry]) => {
+      setAtTarget(entry.isIntersecting || entry.boundingClientRect.top < 0);
+    });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [targetRef]);
+
+  function dismiss() {
+    setDismissed(true);
+    try {
+      sessionStorage.setItem(CTA_DOCK_DISMISSED_KEY, "1");
+    } catch {
+      /* Storage can be unavailable; the dock still closes for this page view. */
+    }
+  }
+
+  const visible = pastHero && !atTarget && !dismissed;
 
   return (
-    <section id="kontakt" className="product-lab-cta px-4 py-6 sm:py-10">
+    <div className={`cta-dock${visible ? " is-visible" : ""}`} aria-hidden={visible ? undefined : "true"} inert={visible ? undefined : true}>
+      <Link
+        to="/kontakt"
+        className="cta-dock-link"
+        onClick={() => { void trackEvent("cta_dock_click", { placement: "floating_dock" }); }}
+      >
+        <span className="cta-dock-rocket" aria-hidden="true">
+          <Rocket className="size-5" />
+        </span>
+        <span className="cta-dock-copy">
+          <span className="cta-dock-title">{copy.cta.title}</span>
+          <span className="cta-dock-description">{copy.cta.description}</span>
+        </span>
+        <span className="cta-dock-button">
+          <span className="cta-dock-button-label">{copy.cta.button}</span>
+          <Send className="cta-dock-send size-4" aria-hidden="true" />
+        </span>
+      </Link>
+      <button type="button" className="cta-dock-close" aria-label={copy.cta.close} onClick={dismiss}>
+        <X className="size-4" aria-hidden="true" />
+      </button>
+    </div>
+  );
+}
+
+function BottomCta({ copy }) {
+  const animateDecoration = false;
+  const sectionRef = useRef(null);
+
+  return (
+    <>
+    <CtaDock copy={copy} targetRef={sectionRef} />
+    <section ref={sectionRef} id="kontakt" className="product-lab-cta px-4 py-6 sm:py-10">
       <div className="cta-shell relative mx-auto max-w-[1180px] overflow-hidden rounded-2xl px-3 py-2.5 sm:px-6 sm:py-4 lg:max-w-[1380px]">
         <div className="footer-motion-field" aria-hidden="true">
           <div className="footer-stars-track" />
@@ -1532,6 +1612,7 @@ function BottomCta({ copy }) {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
