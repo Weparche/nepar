@@ -1,10 +1,5 @@
 /usluge/web-stranica-bez-pocetnog-troska /usluge/izrada-web-stranica 301
 /kontakt/ /kontakt 301
-/digitalni-cjenik/ /digitalni-cjenik 301
-/digitalni-cjenik/sidrena-cijena/ /digitalni-cjenik/sidrena-cijena 301
-/digitalni-cjenik/xml-csv/ /digitalni-cjenik/xml-csv 301
-/digitalni-cjenik/automatizacija/ /digitalni-cjenik/automatizacija 301
-/sidrene-cijene/ /sidrene-cijene 301
 /cjenik/ /cjenik 301
 /cjenik/arhiva/ /cjenik/arhiva 301
 /privatnost/ /privatnost 301
@@ -14,3 +9,14 @@
 /admin/ /admin 301
 /fabela /fabela/ 301
 /fabela/* /fabela/:splat 200
+
+/digitalni-cjenik https://digitalnicjenik.nepar.hr/ 301
+/digitalni-cjenik/ https://digitalnicjenik.nepar.hr/ 301
+/digitalni-cjenik/xml-csv https://digitalnicjenik.nepar.hr/specifikacija-csv-xml/ 301
+/digitalni-cjenik/xml-csv/ https://digitalnicjenik.nepar.hr/specifikacija-csv-xml/ 301
+/digitalni-cjenik/sidrena-cijena https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/ 301
+/digitalni-cjenik/sidrena-cijena/ https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/ 301
+/sidrene-cijene https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/ 301
+/sidrene-cijene/ https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/ 301
+/digitalni-cjenik/automatizacija https://digitalnicjenik.nepar.hr/vodici/automatizacija-digitalnog-cjenika/ 301
+/digitalni-cjenik/automatizacija/ https://digitalnicjenik.nepar.hr/vodici/automatizacija-digitalnog-cjenika/ 301

@@ -1,12 +1,14 @@
+import { getGuideRedirect } from "./guideRedirects.js";
 const SITE_URL = "https://nepar.hr";
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
 
+// Retain source content for reference; moved guides are no longer built or indexed.
 export const DIGITAL_PRICE_LIST_GUIDE_PATHS = [
   "/digitalni-cjenik/sidrena-cijena",
   "/digitalni-cjenik/xml-csv",
   "/digitalni-cjenik/automatizacija",
-];
+].filter(path => !getGuideRedirect(path));
 
 export const digitalPriceListGuideSources = [
   {

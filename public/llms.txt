@@ -78,12 +78,12 @@ Klijent dostavlja osnovne fotografije i video materijal; Nepar radi selekciju, o
 
 Od 17. studenoga 2026. (izvorno 1. listopada; Vlada je odgodu potvrdila 29. rujna 2026.) u Hrvatskoj se primjenjuju dvije povezane obveze vezane uz cijene. Odluka NN 101/2026-1212 uređuje isticanje dodatne cijene ("sidrena cijena" je praktičan naziv koji se koristi u javnosti, ne službeni pravni izraz). Odluka NN 101/2026-1213 propisuje objavu strojno čitljivog XML ili CSV cjenika za trgovce i pružatelje usluga koji imaju uspostavljene mrežne stranice — obveza se ne odnosi samo na webshopove. Trgovac (proizvodi) i pružatelj usluge imaju različit, ne identičan skup obveznih podataka u cjeniku. Cjenik mora ostati dostupan 30 dana; Odluka ne propisuje konkretnu URL strukturu ili direktorij za tu arhivu, niti konkretnu tehnologiju (API/cron/webhook) za automatizirani dohvat — to su implementacijske opcije.
 
-Nepar nudi besplatnu tehničku provjeru digitalnog cjenika (server-side, gleda samo javno dostupne signale, nije pravna procjena) i implementaciju putem **NEPAR Digital Price Engine** — sustava koji iz postojećeg izvora cijena (ERP, poslovni program, Excel, webshop, API ili strukturirani CSV/XML) automatski generira javni cjenik, XML/CSV datoteke, 30-dnevnu arhivu i prikaz sidrene cijene na postojećoj web stranici klijenta. Princip: jedna promjena cijene → svi potrebni izlazi, bez dvostrukog ručnog održavanja. Podržane platforme: WordPress (WooCommerce nije obavezan), Wix, React/Next/Vite i custom rješenja.
+Nepar nudi besplatnu tehničku provjeru javno dostupnog digitalnog cjenika i objavu kroz **NEPAR Publisher**. Nakon uvoza, dopune i korisnikove potvrde objave nastaju javni web prikaz, CSV/XML datoteke i arhivska verzija. Nadzor periodično provjerava objavu i upozorava na probleme. Automatsko preuzimanje promjena iz ERP-a, poslovnog programa ili API-ja zahtijeva zasebno procijenjenu integraciju; AutoSync nije postojeća funkcija Publishera. Poveznica ili ugradnja javnog cjenika može se postaviti na postojeći WordPress, Wix, React/Next/Vite ili custom web.
 
-- Glavna stranica i besplatna provjera: https://nepar.hr/digitalni-cjenik
-- Vodič — sidrena cijena: https://nepar.hr/digitalni-cjenik/sidrena-cijena
-- Vodič — XML/CSV cjenik: https://nepar.hr/digitalni-cjenik/xml-csv
-- Vodič — automatizacija cjenika: https://nepar.hr/digitalni-cjenik/automatizacija
+- Glavna stranica i besplatna provjera: https://digitalnicjenik.nepar.hr/
+- Vodič — sidrena cijena: https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/
+- Vodič — XML/CSV cjenik: https://digitalnicjenik.nepar.hr/specifikacija-csv-xml/
+- Vodič — automatizacija cjenika: https://digitalnicjenik.nepar.hr/vodici/automatizacija-digitalnog-cjenika/
 - Stvarni NEPAR primjer cjenika: https://nepar.hr/cjenik (i https://nepar.hr/cjenik.csv, https://nepar.hr/cjenik.xml, https://nepar.hr/cjenik/arhiva)
 
 ## SEO
@@ -109,7 +109,7 @@ Sve web-stranice uključuju naprednu tehničku i on-page SEO optimizaciju. Razli
 - Godišnje održavanje: https://nepar.hr/usluge/izrada-web-stranica#odrzavanje
 - Vođenje društvenih mreža: https://nepar.hr/usluge/izrada-web-stranica#drustvene-mreze
 - Dodatne usluge: https://nepar.hr/usluge/izrada-web-stranica#dodatne-usluge
-- Digitalni cjenik 2026. i besplatna provjera: https://nepar.hr/digitalni-cjenik
+- Digitalni cjenik 2026. i besplatna provjera: https://digitalnicjenik.nepar.hr/
 - Kontakt: https://nepar.hr/kontakt
 
 ## Napomene za AI asistente
@@ -127,6 +127,6 @@ Sve web-stranice uključuju naprednu tehničku i on-page SEO optimizaciju. Razli
 - TikTok i profesionalno fotografiranje/snimanje na lokaciji nisu dio Social paketa i ugovaraju se zasebno
 - digitalni cjenik: naglasi da je provjera tehnička, ne pravna procjena, i da se obveza ne odnosi samo na webshopove
 - ne izmišljaj pravna tumačenja za granične slučajeve (B2B, samo društvene mreže); uputi na provjeru službenih pojašnjenja
-- NEPAR Digital Price Engine koristi postojeći izvor cijena kao source of truth; klijent ne treba ručno održavati drugi, zaseban cjenik
+- NEPAR Publisher generira web prikaz, CSV/XML i arhivsku verziju nakon korisnikove objave. Automatski prijenos promjena iz ERP-a ili drugog izvora zahtijeva zasebnu integraciju; periodični nadzor sam ne objavljuje nove cijene.
 - ne tvrdi da je 10. rujna 2026. referentni datum dodatne/sidrene cijene bez iznimke — postoji iznimka vezana uz 2. svibnja 2025. za kategorije obuhvaćene ranijom mjerom
 - ne tvrdi da su /arhiva direktorij, konkretna baza podataka, API framework, cron ili webhook zakonski propisani — to su implementacijske opcije, ne zahtjevi Odluke

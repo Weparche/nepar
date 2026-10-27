@@ -226,11 +226,11 @@ export function SiteFooter({ copy, homeLink = true, lang = "hr" }) {
         <div className="footer-bottom">
           <p>{copy.footer.copyright}</p>
           <div className="footer-utility-links">
-            <Link to="/digitalni-cjenik">{lang === "hr" ? "Digitalni cjenik 2026." : "Digital price list 2026"}</Link>
+            <a href="https://digitalnicjenik.nepar.hr/">{lang === "hr" ? "Digitalni cjenik 2026." : "Digital price list 2026"}</a>
             {showDigitalPriceListGuides && <>
-              <Link to="/digitalni-cjenik/sidrena-cijena">Sidrena cijena</Link>
-              <Link to="/digitalni-cjenik/xml-csv">XML/CSV vodič</Link>
-              <Link to="/digitalni-cjenik/automatizacija">Automatizacija cjenika</Link>
+              <a href="https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/">Sidrena cijena</a>
+              <a href="https://digitalnicjenik.nepar.hr/specifikacija-csv-xml/">XML/CSV vodič</a>
+              <a href="https://digitalnicjenik.nepar.hr/vodici/automatizacija-digitalnog-cjenika/">Automatizacija cjenika</a>
             </>}
             <Link to="/cjenik">{lang === "hr" ? "Cjenik" : "Price list"}</Link>
             <Link to="/mozgalica">Mozgalica</Link>

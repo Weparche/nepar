@@ -35,6 +35,7 @@ import ComputerEvolutionIntro from "./ComputerEvolutionIntro.jsx";
 import ConsentManager, { ConsentSettingsLink } from "./ConsentManager.jsx";
 import { subscribeConsentChanges, trackEvent, trackPageView } from "./analytics.js";
 import { usePageMeta } from "./usePageMeta.js";
+import { GUIDE_REDIRECTS } from "./guideRedirects.js";
 import WebLandingPage from "./WebLandingPage.jsx";
 import "./legacyLanding.css";
 
@@ -44,11 +45,13 @@ const WebStartPage = lazy(() => import("./WebStartPage.jsx"));
 const PrivacyPage = lazy(() => import("./PrivacyPage.jsx"));
 const MozgalicaPage = lazy(() => import("./mozgalica/MozgalicaPage.jsx"));
 const NjamkoPage = lazy(() => import("./njamko/NjamkoPage.jsx"));
-const DigitalPriceListPage = lazy(() => import("./DigitalPriceListPage.jsx"));
-const DigitalPriceListGuidePage = lazy(() => import("./DigitalPriceListGuidePage.jsx"));
-const SidreneCijenePage = lazy(() => import("./SidreneCijenePage.jsx"));
 const CjenikPage = lazy(() => import("./CjenikPage.jsx"));
 const CjenikArhivaPage = lazy(() => import("./CjenikArhivaPage.jsx"));
+
+function MovedGuide({ destination }) {
+  useEffect(() => { window.location.replace(destination); }, [destination]);
+  return <main><h1>Vodič je premješten</h1><p><a href={destination}>Otvorite vodič na digitalnicjenik.nepar.hr</a></p></main>;
+}
 
 const easeOut = [0.23, 1, 0.32, 1];
 const revealTransition = { duration: 0.48, ease: easeOut };
@@ -1185,13 +1188,12 @@ function PriceListBanner({ copy }) {
         <p className="text-blue-950">
           <span className="font-bold">{banner.tag}</span> {banner.text}
         </p>
-        <Link
-          to="/digitalni-cjenik"
+        <a href="https://digitalnicjenik.nepar.hr/"
           className="inline-flex shrink-0 items-center gap-1.5 font-bold text-blue-700 transition hover:text-blue-900"
         >
           {banner.cta}
           <ArrowRight size={16} aria-hidden="true" />
-        </Link>
+        </a>
       </motion.div>
     </section>
   );
@@ -1686,7 +1688,7 @@ function HomePage() {
             <div className="flex flex-col items-center justify-between gap-2 border-t border-slate-200 pt-4 text-xs text-slate-500 sm:flex-row sm:gap-4 sm:pt-5 sm:text-sm">
               <p>{copy.footer.copyright}</p>
               <div className="footer-utility-links">
-                <Link to="/digitalni-cjenik">{lang === "hr" ? "Digitalni cjenik 2026." : "Digital price list 2026"}</Link>
+                <a href="https://digitalnicjenik.nepar.hr/">{lang === "hr" ? "Digitalni cjenik 2026." : "Digital price list 2026"}</a>
                 <Link to="/cjenik">{lang === "hr" ? "Cjenik" : "Price list"}</Link>
                 <Link to="/privatnost">{lang === "hr" ? "Privatnost" : "Privacy"}</Link>
                 <ConsentSettingsLink lang={lang} />
@@ -1816,11 +1818,7 @@ export default function App() {
           <Route path="/usluge/web-stranica-bez-pocetnog-troska" element={<LegacyWebRedirect />} />
           <Route path="/mozgalica" element={<MozgalicaPage />} />
           <Route path="/njamko" element={<NjamkoPage />} />
-          <Route path="/digitalni-cjenik" element={<DigitalPriceListPage />} />
-          <Route path="/digitalni-cjenik/sidrena-cijena" element={<DigitalPriceListGuidePage routePath="/digitalni-cjenik/sidrena-cijena" />} />
-          <Route path="/digitalni-cjenik/xml-csv" element={<DigitalPriceListGuidePage routePath="/digitalni-cjenik/xml-csv" />} />
-          <Route path="/digitalni-cjenik/automatizacija" element={<DigitalPriceListGuidePage routePath="/digitalni-cjenik/automatizacija" />} />
-          <Route path="/sidrene-cijene" element={<SidreneCijenePage />} />
+          {Object.entries(GUIDE_REDIRECTS).map(([path, destination]) => <Route key={path} path={path} element={<MovedGuide destination={destination} />} />)}
           <Route path="/cjenik" element={<CjenikPage />} />
           <Route path="/cjenik/arhiva" element={<CjenikArhivaPage />} />
           <Route path="*" element={<NotFoundPage />} />

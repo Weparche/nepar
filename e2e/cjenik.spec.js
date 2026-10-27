@@ -34,8 +34,8 @@ test("/cjenik has crawlable static content, official fields, and NEPAR services"
   await expect(page.getByRole("link", { name: /Preuzmite \/cjenik\.csv/ })).toHaveAttribute("href", "/cjenik.csv");
   await expect(page.getByRole("link", { name: /Preuzmite \/cjenik\.xml/ })).toHaveAttribute("href", "/cjenik.xml");
   await expect(page.getByRole("link", { name: /Arhiva prethodnih verzija/ })).toHaveAttribute("href", "/cjenik/arhiva");
-  await expect(page.getByRole("link", { name: "Vodič za sidrenu cijenu" })).toHaveAttribute("href", "/digitalni-cjenik/sidrena-cijena");
-  await expect(page.getByRole("link", { name: "Tehnički zahtjevi XML/CSV digitalnog cjenika" })).toHaveAttribute("href", "/digitalni-cjenik/xml-csv");
+  await expect(page.getByRole("link", { name: "Vodič za sidrenu cijenu" })).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/");
+  await expect(page.getByRole("link", { name: "Tehnički zahtjevi XML/CSV digitalnog cjenika" })).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr/specifikacija-csv-xml/");
 });
 
 test("/cjenik.csv has the official Odluka columns plus clearly-marked NEPAR extensions", async ({ page }) => {

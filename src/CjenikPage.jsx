@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { ArrowRight, FileCode2, FileText } from "lucide-react";
 import { Background, Navbar, SiteFooter, siteContent } from "./SiteChrome.jsx";
 import { usePageMeta } from "./usePageMeta.js";
@@ -184,7 +183,7 @@ export default function CjenikPage() {
         <div className="section-shell max-w-5xl">
           <p id={copy.odNoteId} className="max-w-prose text-xs leading-5 text-slate-500">{copy.odNote}</p>
           <p className="mt-2 max-w-prose text-xs leading-5 text-slate-500">{copy.newServiceNote}</p>
-          <Link to="/digitalni-cjenik/sidrena-cijena" className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">{copy.sidrenaGuideLink}<ArrowRight size={15} aria-hidden="true" /></Link>
+          <a href="https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/" className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">{copy.sidrenaGuideLink}<ArrowRight size={15} aria-hidden="true" /></a>
         </div>
       </section>
 
@@ -209,7 +208,7 @@ export default function CjenikPage() {
             {copy.archiveLink}<ArrowRight size={16} aria-hidden="true" />
           </a>
           <div>
-            <Link to="/digitalni-cjenik/xml-csv" className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">{copy.xmlCsvGuideLink}<ArrowRight size={15} aria-hidden="true" /></Link>
+            <a href="https://digitalnicjenik.nepar.hr/specifikacija-csv-xml/" className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">{copy.xmlCsvGuideLink}<ArrowRight size={15} aria-hidden="true" /></a>
           </div>
         </div>
       </section>

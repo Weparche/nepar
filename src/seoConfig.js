@@ -1,3 +1,4 @@
+import { getGuideRedirect } from "./guideRedirects.js";
 import { webOfferContent } from "./webOfferContent.js";
 import { nepaUsluge } from "./cjenikData.js";
 import { BUSINESS } from "./siteIdentity.js";
@@ -217,11 +218,11 @@ const localizedPages = {
 };
 
 export const PRERENDER_PATHS = Object.entries(localizedPages)
-  .filter(([, page]) => page.prerender ?? page.indexable)
+  .filter(([path, page]) => !getGuideRedirect(path) && (page.prerender ?? page.indexable))
   .map(([path]) => path);
 
 export const SITEMAP_PATHS = Object.entries(localizedPages)
-  .filter(([, page]) => page.indexable)
+  .filter(([path, page]) => !getGuideRedirect(path) && page.indexable)
   .map(([path]) => path);
 
 export const STATIC_HTML_PATHS = [...new Set([
@@ -233,7 +234,8 @@ export const STATIC_HTML_PATHS = [...new Set([
 
 export function getSeoPage(path = "/", lang = "hr") {
   const normalizedPath = path !== "/" ? path.replace(/\/+$/, "") : "/";
-  const entry = localizedPages[normalizedPath] || localizedPages["/404"];
+  const destination = getGuideRedirect(normalizedPath);
+  const entry = destination ? { ...localizedPages["/404"], canonicalPath: destination, robots: "noindex,follow" } : localizedPages[normalizedPath] || localizedPages["/404"];
   const locale = entry[lang] ? lang : "hr";
   return {
     path: normalizedPath,
@@ -296,6 +298,7 @@ function cjenikOffers() {
 }
 
 export function getStructuredData(path = "/") {
+  if (getGuideRedirect(path)) return null;
   const page = getSeoPage(path, "hr");
   const canonicalUrl = page.canonicalPath ? `${SITE_URL}${page.canonicalPath === "/" ? "/" : page.canonicalPath}` : undefined;
   /** @type {Array<Record<string, any>>} */

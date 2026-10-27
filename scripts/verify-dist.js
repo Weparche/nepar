@@ -1,3 +1,4 @@
+import { GUIDE_REDIRECTS } from "../src/guideRedirects.js";
 import { existsSync, lstatSync, readFileSync } from "node:fs";
 import { relative, resolve } from "node:path";
 import { nepaUsluge } from "../src/cjenikData.js";
@@ -37,10 +38,6 @@ for (const file of [
   "index.html",
   "web.html",
   "kontakt.html",
-  "digitalni-cjenik.html",
-  "digitalni-cjenik/sidrena-cijena.html",
-  "digitalni-cjenik/xml-csv.html",
-  "digitalni-cjenik/automatizacija.html",
   "cjenik.html",
   "cjenik/arhiva.html",
   "cjenik.csv",
@@ -83,51 +80,14 @@ expect("usluge/izrada-web-stranica.html", "OfferCatalog", "service offer schema 
 expect("usluge/izrada-web-stranica.html", "FAQPage", "FAQPage schema is missing");
 expect("usluge/izrada-web-stranica.html", "BreadcrumbList", "breadcrumb schema is missing");
 expect("kontakt.html", "ContactPage", "ContactPage schema is missing");
-expect("digitalni-cjenik.html", "Digitalni cjenik 2026 – CSV/XML i sidrena cijena | NEPAR", "digital price list title is missing");
-expect("digitalni-cjenik.html", '<link rel="canonical" href="https://nepar.hr/digitalni-cjenik" />', "digital price list canonical is missing");
-expect("digitalni-cjenik.html", "FAQPage", "digital price list FAQPage schema is missing");
-expect("digitalni-cjenik.html", "BreadcrumbList", "digital price list breadcrumb schema is missing");
-expect("digitalni-cjenik.html", "TechArticle", "digital price list Article schema is missing");
-expect("digitalni-cjenik.html", "https://nepar.hr/digitalni-cjenik#page", "digital price list WebPage @id is missing");
-expect("digitalni-cjenik.html", "data-nepar-static-content", "digital price list initial HTML body is missing");
-expect("digitalni-cjenik.html", "NN 101/2026-1212", "digital price list additional-price citation is missing");
-expect("digitalni-cjenik.html", "NN 101/2026-1213", "digital price list XML/CSV citation is missing");
-expect("digitalni-cjenik.html", "Digitalni cjenik nije obveza samo za webshopove", "digital price list B2C scope text is missing");
-expect("digitalni-cjenik.html", "49,90 €", "digital price list primary price is missing");
-expect("digitalni-cjenik.html", "primjer-usluge.csv", "digital price list CSV example link is missing");
-
-for (const routePath of DIGITAL_PRICE_LIST_GUIDE_PATHS) {
-  const relativePath = relative(distDir, routeOutputPath(distDir, routePath));
-  expect(relativePath, `<link rel="canonical" href="https://nepar.hr${routePath}" />`, `${routePath} canonical is missing`);
-  expect(relativePath, "data-nepar-static-content", `${routePath} prerendered body is missing`);
-  expect(relativePath, "TechArticle", `${routePath} TechArticle schema is missing`);
-  expect(relativePath, `https://nepar.hr${routePath}#page`, `${routePath} WebPage @id is missing`);
-  expect(relativePath, "FAQPage", `${routePath} FAQPage schema is missing`);
-  expect(relativePath, "BreadcrumbList", `${routePath} breadcrumb schema is missing`);
-  expect(relativePath, "NEPAR Digital Price Engine", `${routePath} Price Engine entity is missing`);
-  expect(relativePath, "NN 101/2026-1213", `${routePath} official XML/CSV source is missing`);
-}
-
-// Uniqueness guard: the hub and its three supporting guides must read as four distinct
-// documents to a crawler, not four near-identical pages sharing one title/H1.
-{
-  const uniquenessTargets = [
-    ["digitalni-cjenik.html", "/digitalni-cjenik"],
-    ["digitalni-cjenik/sidrena-cijena.html", "/digitalni-cjenik/sidrena-cijena"],
-    ["digitalni-cjenik/xml-csv.html", "/digitalni-cjenik/xml-csv"],
-    ["digitalni-cjenik/automatizacija.html", "/digitalni-cjenik/automatizacija"],
-  ];
-  const titles = new Set();
-  const h1s = new Set();
-  for (const [file] of uniquenessTargets) {
-    const html = read(file);
-    const title = html.match(/<title>([\s\S]*?)<\/title>/)?.[1];
-    const rootMatch = html.match(/<div id="root"[^>]*>([\s\S]*)<\/div>\s*<\/body>/);
-    const h1 = rootMatch?.[1]?.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, "").trim();
-    if (!title || titles.has(title)) failures.push(`${file}: <title> is missing or duplicates another page in the hub cluster`);
-    titles.add(title);
-    if (!h1 || h1s.has(h1)) failures.push(`${file}: <h1> is missing or duplicates another page in the hub cluster`);
-    h1s.add(h1);
+for (const [path, destination] of Object.entries(GUIDE_REDIRECTS)) {
+  const output = routeOutputPath(distDir, path);
+  if (existsSync(output)) failures.push(path + ': moved marketing page must not be generated');
+  if (read('sitemap.xml').includes('https://nepar.hr' + path + '<')) failures.push(path + ': moved page remains in sitemap');
+  for (const suffix of ['', '/']) {
+    const expected = path + suffix + ' ' + destination + ' 301';
+    const matches = read('_redirects').split(/\r?\n/).filter(line => line.split(/\s+/)[0] === path + suffix);
+    if (matches.length !== 1 || matches[0] !== expected) failures.push('Expected direct redirect: ' + expected);
   }
 }
 
@@ -219,11 +179,6 @@ if (read("robots.txt") !== expectedRobots) failures.push("robots.txt does not ma
 const redirects = read("_redirects");
 for (const rule of [
   "/kontakt/ /kontakt 301",
-  "/digitalni-cjenik/ /digitalni-cjenik 301",
-  "/digitalni-cjenik/sidrena-cijena/ /digitalni-cjenik/sidrena-cijena 301",
-  "/digitalni-cjenik/xml-csv/ /digitalni-cjenik/xml-csv 301",
-  "/digitalni-cjenik/automatizacija/ /digitalni-cjenik/automatizacija 301",
-  "/sidrene-cijene/ /sidrene-cijene 301",
   "/cjenik/ /cjenik 301",
   "/cjenik/arhiva/ /cjenik/arhiva 301",
   "/privatnost/ /privatnost 301",
