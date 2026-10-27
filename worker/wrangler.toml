@@ -2,6 +2,9 @@ name = "nepar-contact"
 main = "index.js"
 compatibility_date = "2026-06-08"
 compatibility_flags = ["nodejs_compat"]
+# Keep nepar-contact.ig29007.workers.dev alive next to the nepar.hr routes: digitalnicjenik.nepar.hr
+# reports checks there and public/nepar-pageview.js (Lime) sends pageviews there.
+workers_dev = true
 
 routes = [
   { pattern = "nepar.hr/analytics/*", zone_name = "nepar.hr" },
