@@ -26,6 +26,7 @@ import {
   RANGE_PRESETS,
   cleanRows,
   deltaPercent,
+  filterChecks,
   filterEvents,
   firstDate,
   pageRows,
@@ -105,6 +106,14 @@ function DeviceIcon({ name, size = 16 }) {
   if (name === "tablet") return <Tablet size={size} aria-hidden="true" />;
   return <Monitor size={size} aria-hidden="true" />;
 }
+
+const CHECK_STATUS = {
+  green: { label: "CSV/XML pronađen", className: "bg-emerald-50 text-emerald-800" },
+  yellow: { label: "Samo stranica s cijenama", className: "bg-amber-50 text-amber-800" },
+  red: { label: "Nije pronađen", className: "bg-red-50 text-red-800" },
+  unavailable: { label: "Provjera nije uspjela", className: "bg-slate-100 text-slate-700" },
+};
+const CHECK_SOURCE = { nepar: "Nepar.hr", digitalnicjenik: "Digitalni cjenik" };
 
 function AdminLogin({ onLogin, error, loading }) {
   const [username, setUsername] = useState("nepar");
@@ -268,6 +277,7 @@ export default function AdminPage() {
     const pagesPrev = prevRange ? pageRows(rows, summary.pages, { ...base, ...prevRange }) : null;
 
     const events = filterEvents(summary.recent, base);
+    const checks = filterChecks(summary.checks, property);
     const nowMs = Date.parse(summary.generatedAt) || 0;
 
     return {
@@ -285,6 +295,7 @@ export default function AdminPage() {
       pagesPrev,
       quick: quickTotals(rows, todayKey, base),
       events,
+      checks,
       nowMs,
       live: recentCount(events, nowMs, 30),
     };
@@ -620,6 +631,47 @@ export default function AdminPage() {
             </table>
           </div>
         </Card>
+
+        {property !== "kids" && (
+          <Card padded={false} className="mb-6" title="Provjere cjenika" subtitle="Koje web stranice ljudi provjeravaju, najnovije prvo">
+            <div className="mt-4 overflow-x-auto border-t border-slate-200">
+              <table className="w-full min-w-0 text-left text-sm">
+                <thead className="bg-slate-50">
+                  <tr>
+                    <Th>Vrijeme</Th>
+                    <Th>Web stranica</Th>
+                    <Th>Rezultat</Th>
+                    <Th className="hidden md:table-cell">Gdje</Th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {model.checks.slice(0, 50).map((check, index) => {
+                    const status = CHECK_STATUS[check.status] || CHECK_STATUS.unavailable;
+                    return (
+                      <tr key={`${check.at}-${check.site}-${index}`}>
+                        <td className="whitespace-nowrap px-3 py-3 sm:px-5 text-slate-600">{minutesAgo(check.at, model.nowMs)}</td>
+                        <td className="max-w-[18rem] truncate px-3 py-3 sm:px-5 font-medium">
+                          <a href={`https://${check.site}`} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline-offset-2 hover:underline">
+                            {check.site}
+                          </a>
+                        </td>
+                        <td className="px-3 py-3 sm:px-5">
+                          <span className={`whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold ${status.className}`}>{status.label}</span>
+                        </td>
+                        <td className="hidden px-3 py-3 sm:px-5 text-slate-600 md:table-cell">{CHECK_SOURCE[check.source] || check.source}</td>
+                      </tr>
+                    );
+                  })}
+                  {model.checks.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="px-3 py-10 sm:px-5 text-center text-slate-500">Još nema provjera.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        )}
 
         <details className="group rounded-xl border border-slate-200 bg-white shadow-sm">
           <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 px-5 text-sm font-semibold text-slate-800 marker:hidden">

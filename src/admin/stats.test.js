@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   cleanRows,
   deltaPercent,
+  filterChecks,
   filterEvents,
   pageRows,
   quickTotals,
@@ -59,6 +60,17 @@ test("digitalnicjenik.nepar.hr pages are their own property, nepar.hr guides sta
   assert.equal(sum(seriesFor(sites, { property: "digitalnicjenik", ...range })), 5);
   assert.equal(sum(seriesFor(sites, { property: "nepar", ...range })), 5);
   assert.equal(sum(seriesFor(sites, { property: "kids", ...range })), 0);
+});
+
+test("price-list checks follow the property tab", () => {
+  const checks = [
+    { at: "2026-10-17T10:00:00Z", site: "primjer.hr", status: "red", source: "nepar" },
+    { at: "2026-10-17T09:00:00Z", site: "trgovina.hr/cjenik", status: "green", source: "digitalnicjenik" },
+    { at: "2026-10-17T08:00:00Z", status: "red", source: "nepar" },
+  ];
+  assert.equal(filterChecks(checks, "all").length, 2);
+  assert.deepEqual(filterChecks(checks, "digitalnicjenik").map((check) => check.site), ["trgovina.hr/cjenik"]);
+  assert.equal(filterChecks(checks, "kids").length, 0);
 });
 
 test("delta handles a zero baseline", () => {

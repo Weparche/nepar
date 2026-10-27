@@ -11,7 +11,7 @@ export async function submitContactLead(payload) {
   const timeout = setTimeout(() => controller.abort(), 10000);
   let response;
   try {
-    response = await fetch(workerUrl, {
+    response = await fetch(`${workerUrl}/api/contact`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

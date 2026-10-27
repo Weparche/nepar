@@ -167,6 +167,13 @@ export function filterEvents(events, { property = "all", audience = "all" }) {
   });
 }
 
+// Price-list checks come from the nepar.hr checker ("nepar") and digitalnicjenik.nepar.hr; Kids has none.
+export function filterChecks(checks, property = "all") {
+  return (Array.isArray(checks) ? checks : []).filter(
+    (check) => check && typeof check.site === "string" && (property === "all" || check.source === property),
+  );
+}
+
 export function recentCount(events, nowMs, minutes = 30) {
   const since = nowMs - minutes * 60_000;
   return events.filter((event) => Date.parse(event.at) >= since).length;

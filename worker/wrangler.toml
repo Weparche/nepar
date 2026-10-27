@@ -4,7 +4,9 @@ compatibility_date = "2026-06-08"
 compatibility_flags = ["nodejs_compat"]
 
 routes = [
-  { pattern = "nepar.hr/analytics/*", zone_name = "nepar.hr" }
+  { pattern = "nepar.hr/analytics/*", zone_name = "nepar.hr" },
+  # The checker and contact form post same-origin to /api/* (VITE_WORKER_URL=https://nepar.hr).
+  { pattern = "nepar.hr/api/*", zone_name = "nepar.hr" }
 ]
 
 [vars]

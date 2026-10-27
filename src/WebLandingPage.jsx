@@ -213,7 +213,7 @@ export default function WebLandingPage() {
     }
 
     try {
-      const response = await fetch(workerUrl, {
+      const response = await fetch(`${workerUrl.replace(/\/$/, "")}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

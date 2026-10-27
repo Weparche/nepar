@@ -209,12 +209,43 @@ async function findConfirmedDigitalPriceListDocument(kind, candidates, env, dnsC
   return null;
 }
 
-async function handleDigitalPriceListCheck(request, env, origin) {
+const CHECK_LOG_KEY = "checks:recent";
+const CHECK_LOG_LIMIT = 300;
+const CHECK_STATUSES = new Set(["green", "yellow", "red", "unavailable"]);
+const CHECK_SOURCES = new Set(["nepar", "digitalnicjenik"]);
+
+// Admin sees which websites people run through the price-list checker. Only host + path is kept:
+// no query string, no IP, nothing about who asked.
+export async function recordPriceListCheck(kv, { url, status, source }, now = new Date()) {
+  if (!kv || !CHECK_STATUSES.has(status) || !CHECK_SOURCES.has(source)) return;
+  const site = `${url.hostname}${url.pathname === "/" ? "" : url.pathname}`.slice(0, 200);
+  const current = await kv.get(CHECK_LOG_KEY, "json");
+  const next = [{ at: now.toISOString(), site, status, source }, ...(Array.isArray(current) ? current : [])];
+  await kv.put(CHECK_LOG_KEY, JSON.stringify(next.slice(0, CHECK_LOG_LIMIT)));
+}
+
+// digitalnicjenik.nepar.hr runs its own checker and reports each finished check here.
+async function handleCheckLog(request, env, ctx, origin) {
+  const body = await parseInternalJson(request, 4096);
+  let url;
+  try { url = normalizeDigitalPriceListUrl(body?.url); } catch { return json({ error: "invalid_url" }, 400, origin); }
+  if (!CHECK_STATUSES.has(body?.status)) return json({ error: "invalid_status" }, 400, origin);
+  ctx?.waitUntil(recordPriceListCheck(env.ANALYTICS, { url, status: body.status, source: "digitalnicjenik" }).catch(() => {}));
+  return json({ ok: true }, 202, origin);
+}
+
+async function handleDigitalPriceListCheck(request, env, ctx, origin) {
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, origin);
   const body = await parseInternalJson(request, 4096);
   if (!body || typeof body.url !== "string") return json(digitalPriceListResult("red", "Unesite ispravnu adresu web stranice."), 400, origin);
   let initialUrl;
   try { initialUrl = normalizeDigitalPriceListUrl(body.url); } catch { return json(digitalPriceListResult("red", "Unesite ispravnu adresu web stranice."), 400, origin); }
+  const { result, httpStatus } = await checkDigitalPriceList(initialUrl, env);
+  ctx?.waitUntil(recordPriceListCheck(env.ANALYTICS, { url: initialUrl, status: result.status, source: "nepar" }).catch(() => {}));
+  return json(result, httpStatus, origin);
+}
+
+async function checkDigitalPriceList(initialUrl, env) {
   const dnsCache = new Map();
   let homepage;
   try {
@@ -222,10 +253,10 @@ async function handleDigitalPriceListCheck(request, env, origin) {
     if (!homepage.response.ok) throw new Error("homepage_unavailable");
   } catch (error) {
     const blocked = error?.message === "blocked_destination";
-    return json(digitalPriceListResult("red", blocked ? "Unesite ispravnu adresu web stranice." : "Nismo uspjeli dohvatiti web stranicu."), blocked ? 400 : 200, origin);
+    return { result: digitalPriceListResult("red", blocked ? "Unesite ispravnu adresu web stranice." : "Nismo uspjeli dohvatiti web stranicu."), httpStatus: blocked ? 400 : 200 };
   }
   let html;
-  try { html = await readResponseLimit(homepage.response, DIGITAL_PRICE_LIST_MAX_HTML_BYTES); } catch { return json(digitalPriceListResult("red", "Nismo uspjeli dohvatiti web stranicu."), 200, origin); }
+  try { html = await readResponseLimit(homepage.response, DIGITAL_PRICE_LIST_MAX_HTML_BYTES); } catch { return { result: digitalPriceListResult("red", "Nismo uspjeli dohvatiti web stranicu."), httpStatus: 200 }; }
   const homepageLinks = extractDigitalPriceListLinks(html, homepage.url);
   const secondaryPages = [];
   const csvCandidates = [];
@@ -268,9 +299,9 @@ async function handleDigitalPriceListCheck(request, env, origin) {
       if (fetched.response.ok) { details.archiveFound = true; details.archiveUrl = fetched.url.href; break; }
     } catch { /* Try the next archive candidate. */ }
   }
-  if (details.csvFound || details.xmlFound) return json(digitalPriceListResult("green", "Na web stranici pronađen je javno dostupan CSV ili XML dokument.", details), 200, origin);
-  if (details.pricePageFound) return json(digitalPriceListResult("yellow", "Na stranici postoje informacije o cijenama ili cjeniku, ali automatska provjera nije pronašla javno dostupan XML ili CSV dokument.", details), 200, origin);
-  return json(digitalPriceListResult("red", "Automatska provjera nije pronašla javno dostupan XML ili CSV cjenik.", details), 200, origin);
+  if (details.csvFound || details.xmlFound) return { result: digitalPriceListResult("green", "Na web stranici pronađen je javno dostupan CSV ili XML dokument.", details), httpStatus: 200 };
+  if (details.pricePageFound) return { result: digitalPriceListResult("yellow", "Na stranici postoje informacije o cijenama ili cjeniku, ali automatska provjera nije pronašla javno dostupan XML ili CSV dokument.", details), httpStatus: 200 };
+  return { result: digitalPriceListResult("red", "Automatska provjera nije pronašla javno dostupan XML ili CSV cjenik.", details), httpStatus: 200 };
 }
 
 function internalTokenMatches(request, env) {
@@ -725,6 +756,7 @@ async function handleAnalyticsSummary(request, env, origin) {
   const dayVisitors = await listJson(env.ANALYTICS, "analytics:dayvisitor:");
   const meta = await env.ANALYTICS.get("analytics:meta", "json") || {};
   const recent = await env.ANALYTICS.get("analytics:recent", "json") || [];
+  const checks = await env.ANALYTICS.get(CHECK_LOG_KEY, "json") || [];
   const pageMap = new Map();
   const dayMap = new Map();
 
@@ -787,6 +819,7 @@ async function handleAnalyticsSummary(request, env, origin) {
     sources,
     devices,
     recent: Array.isArray(recent) ? recent : [],
+    checks: Array.isArray(checks) ? checks : [],
   }, 200, origin);
 }
 
@@ -889,7 +922,7 @@ async function handleContact(request, env, origin) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get("Origin") || "";
     const url = new URL(request.url);
 
@@ -909,8 +942,12 @@ export default {
       return handleAnalyticsReset(request, env, origin);
     }
 
+    if (url.pathname === "/analytics/check" && request.method === "POST") {
+      return handleCheckLog(request, env, ctx, origin);
+    }
+
     if (url.pathname === "/api/digitalni-cjenik/check") {
-      return handleDigitalPriceListCheck(request, env, origin);
+      return handleDigitalPriceListCheck(request, env, ctx, origin);
     }
 
     if (url.pathname === "/internal/kids/openai" && request.method === "POST") {

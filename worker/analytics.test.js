@@ -155,3 +155,38 @@ test("pageview writes pseudonymous and daily KV records with absolute expiration
   const page = writes.find(({ key }) => key === "analytics:page:%2Fkontakt");
   assert.deepEqual(Object.keys(page.value.referrers), ["https://google.com/search"]);
 });
+
+test("digitalnicjenik check reports keep only host and path, newest first", async () => {
+  const values = new Map();
+  const kv = {
+    async get(key, type) {
+      const value = values.get(key);
+      if (value === undefined) return null;
+      return type === "json" ? JSON.parse(value) : value;
+    },
+    async put(key, value) {
+      values.set(key, value);
+    },
+  };
+  async function report(body) {
+    const pending = [];
+    const response = await worker.fetch(new Request("https://worker.nepar.test/analytics/check", {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify(body),
+    }), { ANALYTICS: kv }, { waitUntil: (promise) => pending.push(promise) });
+    await Promise.all(pending);
+    return response.status;
+  }
+
+  assert.equal(await report({ url: "https://trgovina.hr/cjenik?ref=mail#x", status: "green" }), 202);
+  assert.equal(await report({ url: "primjer.hr", status: "red" }), 202);
+  assert.equal(await report({ url: "primjer.hr", status: "maybe" }), 400);
+  assert.equal(await report({ url: "http://127.0.0.1/", status: "red" }), 400);
+
+  const checks = JSON.parse(values.get("checks:recent"));
+  assert.deepEqual(checks.map(({ site, status, source }) => [site, status, source]), [
+    ["primjer.hr", "red", "digitalnicjenik"],
+    ["trgovina.hr/cjenik", "green", "digitalnicjenik"],
+  ]);
+});
