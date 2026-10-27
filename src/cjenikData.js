@@ -47,14 +47,15 @@ export const nepaUsluge = [
   // Datumi prvog uvrštenja: prva objava cjenika (broj pohrane 1, 15.9.2026.) za provjeru i integraciju,
   // 21.9.2026. (commit 4da734f) za NEPAR Publisher, 26.10.2026. (digitalnicjenik.nepar.hr d3a6107) za
   // Web Link i Web + Publisher, 27.10.2026. (broj pohrane 3) za pomoć s ugradnjom.
-  // Publisher je od 26.10.2026. 49,90 €; sidrena cijena ostaje cijena s datuma prvog uvrštenja (39,90 €).
+  // Publisher: redovna cijena od prvog uvrštenja (21.9.2026.) je 49,90 €; 39,90 € bila je lansirna ponuda
+  // za prve korisnike (posebni oblik prodaje), pa je sidrena cijena 49,90 € (broj pohrane 4).
   // "Postavljanje NEPAR Publishera (prva godina)" se više ne nudi; zamijenio ga je paket Web + Publisher.
   // NEPAR ove usluge prodaje DRUGIM tvrtkama (implementacija digitalnog cjenika na
   // njihovu web-stranicu) — zasebna kategorija da se ne pomiješaju s NEPAR-ovim
   // vlastitim web/social ponudama u istoj tablici.
   { id: "cjenik-provjera", naziv: "Provjera digitalnog cjenika web-stranice", kategorija: "Usluge digitalnog cjenika", cijena: 0, cijenaOd: false, naplata: "jednokratno", posebnaProdaja: false, posebnaProdajaNaziv: null, sidrenaCijena: 0, datumReferentneCijene: "2026-09-15", novaStavka: true },
   { id: "cjenik-web-link", naziv: "NEPAR Web Link – godišnja pretplata", kategorija: "Usluge digitalnog cjenika", cijena: 19.9, cijenaOd: false, naplata: "godišnje", posebnaProdaja: false, posebnaProdajaNaziv: null, sidrenaCijena: 19.9, datumReferentneCijene: "2026-10-26", novaStavka: true, napomena: "Digitalni cjenik za postojeći web, do 5.000 stavki, bez plugina." },
-  { id: "cjenik-publisher", naziv: "NEPAR Publisher – godišnja pretplata", kategorija: "Usluge digitalnog cjenika", cijena: 49.9, cijenaOd: false, naplata: "godišnje", posebnaProdaja: false, posebnaProdajaNaziv: null, sidrenaCijena: 39.9, datumReferentneCijene: "2026-09-21", novaStavka: true, napomena: "Self-service putem digitalnicjenik.nepar.hr." },
+  { id: "cjenik-publisher", naziv: "NEPAR Publisher – godišnja pretplata", kategorija: "Usluge digitalnog cjenika", cijena: 49.9, cijenaOd: false, naplata: "godišnje", posebnaProdaja: false, posebnaProdajaNaziv: null, sidrenaCijena: 49.9, datumReferentneCijene: "2026-09-21", novaStavka: true, napomena: "Self-service putem digitalnicjenik.nepar.hr." },
   { id: "cjenik-web-publisher", naziv: "NEPAR Web + Publisher – godišnja pretplata", kategorija: "Usluge digitalnog cjenika", cijena: 79.9, cijenaOd: false, naplata: "godišnje", posebnaProdaja: false, posebnaProdajaNaziv: null, sidrenaCijena: 79.9, datumReferentneCijene: "2026-10-26", novaStavka: true, napomena: "Publisher uz jednostavan NEPAR web, hosting i SSL." },
   { id: "cjenik-ugradnja", naziv: "Pomoć s ugradnjom digitalnog cjenika na postojeći web", kategorija: "Usluge digitalnog cjenika", cijena: 29.9, cijenaOd: false, naplata: "jednokratno", posebnaProdaja: false, posebnaProdajaNaziv: null, sidrenaCijena: 29.9, datumReferentneCijene: "2026-10-27", novaStavka: true, napomena: "Postavljanje poveznice ili gumba za digitalni cjenik." },
   { id: "cjenik-integracija-platforme", naziv: "Wix / React / Next / Vite / custom integracija", kategorija: "Usluge digitalnog cjenika", cijena: 149, cijenaOd: true, naplata: "jednokratno", posebnaProdaja: false, posebnaProdajaNaziv: null, sidrenaCijena: 149, datumReferentneCijene: "2026-09-15", novaStavka: true, napomena: "Prilagođena integracija ERP/POS/webshop — individualna ponuda." },

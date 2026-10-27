@@ -14,8 +14,8 @@ export const cjenikMeta = {
   oblikProdajnogObjekta: "mrežna stranica",
   adresaProdajnogObjekta: `${BUSINESS.streetAddress}, ${BUSINESS.postalCode} ${BUSINESS.addressLocality}`,
   oznakaProdajnogObjekta: "WEB-NEPAR-01",
-  brojPohrane: 3,
-  publishedAt: "2026-10-27T19:24:16",
+  brojPohrane: 4,
+  publishedAt: "2026-10-27T19:41:06",
   // 2 = CSV/XML uz pet podataka iz Odluke nose i datum_referentne_cijene (datum na koji se odnosi sidrena
   // cijena) te NEPAR-ovo proširenje nepar_nova_stavka. Arhivske objave bez formatVersion renderiraju se
   // u izvornom obliku (vidi src/cjenikRender.js).
