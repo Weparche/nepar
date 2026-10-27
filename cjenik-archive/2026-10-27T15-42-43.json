@@ -1,0 +1,273 @@
+{
+  "meta": {
+    "oblikProdajnogObjekta": "mrežna stranica",
+    "adresaProdajnogObjekta": "Koprivnička ulica 52, 10000 Zagreb",
+    "oznakaProdajnogObjekta": "WEB-NEPAR-01",
+    "brojPohrane": 1,
+    "publishedAt": "2026-09-15T22:45:00",
+    "supersededAt": "2026-10-27T15:42:43"
+  },
+  "usluge": [
+    {
+      "id": "web-basic",
+      "naziv": "Web Basic",
+      "kategorija": "Izrada web-stranica",
+      "cijena": 300,
+      "cijenaOd": false,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 300
+    },
+    {
+      "id": "web-business",
+      "naziv": "Web Business",
+      "kategorija": "Izrada web-stranica",
+      "cijena": 500,
+      "cijenaOd": false,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 500
+    },
+    {
+      "id": "web-pro",
+      "naziv": "Web Pro",
+      "kategorija": "Izrada web-stranica",
+      "cijena": 700,
+      "cijenaOd": false,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 700
+    },
+    {
+      "id": "redesign-basic",
+      "naziv": "Redizajn Basic",
+      "kategorija": "Redizajn",
+      "cijena": 800,
+      "cijenaOd": true,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 800
+    },
+    {
+      "id": "redesign-business",
+      "naziv": "Redizajn Business",
+      "kategorija": "Redizajn",
+      "cijena": 1100,
+      "cijenaOd": true,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 1100
+    },
+    {
+      "id": "redesign-pro",
+      "naziv": "Redizajn Pro",
+      "kategorija": "Redizajn",
+      "cijena": 1500,
+      "cijenaOd": true,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 1500
+    },
+    {
+      "id": "maintenance-basic",
+      "naziv": "Održavanje Basic",
+      "kategorija": "Održavanje",
+      "cijena": 200,
+      "cijenaOd": false,
+      "naplata": "godišnje",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 200
+    },
+    {
+      "id": "maintenance-business",
+      "naziv": "Održavanje Business",
+      "kategorija": "Održavanje",
+      "cijena": 400,
+      "cijenaOd": false,
+      "naplata": "godišnje",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 400
+    },
+    {
+      "id": "maintenance-pro",
+      "naziv": "Održavanje Pro",
+      "kategorija": "Održavanje",
+      "cijena": 600,
+      "cijenaOd": false,
+      "naplata": "godišnje",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 600
+    },
+    {
+      "id": "social-basic",
+      "naziv": "Social Basic",
+      "kategorija": "Social media",
+      "cijena": 300,
+      "cijenaOd": false,
+      "naplata": "mjesečno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 300
+    },
+    {
+      "id": "social-business",
+      "naziv": "Social Business",
+      "kategorija": "Social media",
+      "cijena": 450,
+      "cijenaOd": false,
+      "naplata": "mjesečno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 450
+    },
+    {
+      "id": "social-pro",
+      "naziv": "Social Pro",
+      "kategorija": "Social media",
+      "cijena": 650,
+      "cijenaOd": false,
+      "naplata": "mjesečno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 650
+    },
+    {
+      "id": "addon-podstranica",
+      "naziv": "Dodatna podstranica",
+      "kategorija": "Dodatne usluge",
+      "cijena": 80,
+      "cijenaOd": true,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 80
+    },
+    {
+      "id": "addon-seo-landing",
+      "naziv": "Ciljana SEO landing stranica",
+      "kategorija": "Dodatne usluge",
+      "cijena": 100,
+      "cijenaOd": true,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 100
+    },
+    {
+      "id": "addon-gbp",
+      "naziv": "Google Business profil i osnovno podešavanje",
+      "kategorija": "Dodatne usluge",
+      "cijena": 100,
+      "cijenaOd": true,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 100
+    },
+    {
+      "id": "addon-administracija",
+      "naziv": "Dodatna administracija sadržaja",
+      "kategorija": "Dodatne usluge",
+      "cijena": 40,
+      "cijenaOd": false,
+      "naplata": "po satu",
+      "displaySuffixHr": "/sat",
+      "displaySuffixEn": "/hour",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 40
+    },
+    {
+      "id": "addon-ai-chatbot",
+      "naziv": "AI chatbot ili AI integracija",
+      "kategorija": "Dodatne usluge",
+      "cijena": 500,
+      "cijenaOd": true,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 500
+    },
+    {
+      "id": "addon-content-session",
+      "naziv": "Content session na lokaciji (do 60 min snimanja fotografija i videa)",
+      "kategorija": "Dodatne usluge",
+      "cijena": 150,
+      "cijenaOd": true,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 150
+    },
+    {
+      "id": "addon-meta-ads",
+      "naziv": "Upravljanje Meta Ads kampanjama",
+      "kategorija": "Dodatne usluge",
+      "cijena": 150,
+      "cijenaOd": true,
+      "naplata": "mjesečno",
+      "displaySuffixHr": " / mj. + oglasni budžet",
+      "displaySuffixEn": " / month + ad budget",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": 150
+    },
+    {
+      "id": "cjenik-provjera",
+      "naziv": "Provjera digitalnog cjenika web-stranice",
+      "kategorija": "Usluge digitalnog cjenika",
+      "cijena": 0,
+      "cijenaOd": false,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": null,
+      "napomena": "Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva."
+    },
+    {
+      "id": "cjenik-publisher",
+      "naziv": "NEPAR Publisher – godišnja pretplata",
+      "kategorija": "Usluge digitalnog cjenika",
+      "cijena": 39.9,
+      "cijenaOd": false,
+      "naplata": "godišnje",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": null,
+      "napomena": "Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije utvrđena (REGULATORY TODO). Self-service putem digitalnicjenik.nepar.hr."
+    },
+    {
+      "id": "cjenik-publisher-postavljanje",
+      "naziv": "Postavljanje NEPAR Publishera (prva godina)",
+      "kategorija": "Usluge digitalnog cjenika",
+      "cijena": 89.9,
+      "cijenaOd": false,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": null,
+      "napomena": "Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva."
+    },
+    {
+      "id": "cjenik-integracija-platforme",
+      "naziv": "Wix / React / Next / Vite / custom integracija",
+      "kategorija": "Usluge digitalnog cjenika",
+      "cijena": 149,
+      "cijenaOd": true,
+      "naplata": "jednokratno",
+      "posebnaProdaja": false,
+      "posebnaProdajaNaziv": null,
+      "sidrenaCijena": null,
+      "napomena": "Nova usluga uvedena nakon 10.09.2026.; sidrena cijena nije primjenjiva. Prilagođena integracija ERP/POS/webshop — individualna ponuda."
+    }
+  ]
+}

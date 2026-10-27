@@ -2,11 +2,16 @@
  * Čisti generatori za NEPAR-ov digitalni cjenik. Bez ovisnosti o React-u, jer se
  * koriste i iz vite.config.js (build-time) i iz scripts/verify-dist.js (provjera).
  *
- * Službenih 5 polja iz Odluke NN 101/2026-1213 (naziv_usluge, maloprodajna_cijena,
- * posebni_oblik_prodaje, naziv_posebnog_oblika_prodaje, sidrena_cijena) uvijek dolaze
- * prva i nepromijenjena. `nepar_cijena_od`/`nepar_napomena` su NEPAR-ova dodatna,
- * jasno prefiksirana polja — Odluka ne definira semantiku "cijena od" pa se ta
- * informacija ne smije tiho izgubiti pretvaranjem u fiksan broj.
+ * Pet podataka koje Odluka NN 101/2026-1213 traži za usluge (naziv usluge, maloprodajna
+ * cijena, posebni oblik prodaje i njegov naziv, sidrena cijena) uvijek dolaze prvi. Nazivi
+ * stupaca/elemenata (naziv_usluge, maloprodajna_cijena, …) su NEPAR preporučena shema,
+ * usklađena s podacima iz Odluke i HOK predloškom — Odluka ne propisuje nazive ni shemu.
+ * `nepar_cijena_od`/`nepar_napomena` su NEPAR-ova dodatna, jasno prefiksirana polja — Odluka
+ * ne definira semantiku "cijena od" pa se ta informacija ne smije tiho izgubiti.
+ *
+ * Od `meta.formatVersion` 2 datoteka nosi i `datum_referentne_cijene` (datum na koji se odnosi
+ * sidrena cijena; za nove usluge datum prvog uvrštenja) te proširenje `nepar_nova_stavka`.
+ * Arhivske objave bez `formatVersion` renderiraju se točno kako su izvorno objavljene.
  */
 function money(value) {
   return value.toFixed(2);
@@ -32,14 +37,22 @@ function neparNapomena(usluga) {
   return parts.join(" ");
 }
 
-export function renderCjenikCsv(usluge) {
-  const header = "naziv_usluge,maloprodajna_cijena,posebni_oblik_prodaje,naziv_posebnog_oblika_prodaje,sidrena_cijena,nepar_cijena_od,nepar_napomena";
+function withReferenceDate(meta) {
+  return (meta?.formatVersion ?? 1) >= 2;
+}
+
+export function renderCjenikCsv(usluge, meta) {
+  const dated = withReferenceDate(meta);
+  const header = dated
+    ? "naziv_usluge,maloprodajna_cijena,posebni_oblik_prodaje,naziv_posebnog_oblika_prodaje,sidrena_cijena,datum_referentne_cijene,nepar_nova_stavka,nepar_cijena_od,nepar_napomena"
+    : "naziv_usluge,maloprodajna_cijena,posebni_oblik_prodaje,naziv_posebnog_oblika_prodaje,sidrena_cijena,nepar_cijena_od,nepar_napomena";
   const rows = usluge.map((usluga) => [
     csvField(usluga.naziv),
     money(usluga.cijena),
     usluga.posebnaProdaja ? "true" : "false",
     csvField(usluga.posebnaProdajaNaziv ?? ""),
     usluga.sidrenaCijena == null ? "" : money(usluga.sidrenaCijena),
+    ...(dated ? [usluga.datumReferentneCijene ?? "", usluga.novaStavka ? "true" : "false"] : []),
     usluga.cijenaOd ? "true" : "false",
     csvField(neparNapomena(usluga)),
   ].join(","));
@@ -47,12 +60,15 @@ export function renderCjenikCsv(usluge) {
 }
 
 export function renderCjenikXml(usluge, meta) {
+  const dated = withReferenceDate(meta);
   const items = usluge.map((usluga) => `  <usluga>
     <naziv_usluge>${escapeXml(usluga.naziv)}</naziv_usluge>
     <maloprodajna_cijena valuta="EUR">${money(usluga.cijena)}</maloprodajna_cijena>
     <posebni_oblik_prodaje>${usluga.posebnaProdaja ? "true" : "false"}</posebni_oblik_prodaje>
     ${usluga.posebnaProdajaNaziv ? `<naziv_posebnog_oblika_prodaje>${escapeXml(usluga.posebnaProdajaNaziv)}</naziv_posebnog_oblika_prodaje>` : "<naziv_posebnog_oblika_prodaje />"}
-    ${usluga.sidrenaCijena == null ? "<sidrena_cijena />" : `<sidrena_cijena valuta="EUR">${money(usluga.sidrenaCijena)}</sidrena_cijena>`}
+    ${usluga.sidrenaCijena == null ? "<sidrena_cijena />" : `<sidrena_cijena valuta="EUR">${money(usluga.sidrenaCijena)}</sidrena_cijena>`}${dated ? `
+    ${usluga.datumReferentneCijene ? `<datum_referentne_cijene>${escapeXml(usluga.datumReferentneCijene)}</datum_referentne_cijene>` : "<datum_referentne_cijene />"}
+    <nepar_nova_stavka>${usluga.novaStavka ? "true" : "false"}</nepar_nova_stavka>` : ""}
     <nepar_cijena_od>${usluga.cijenaOd ? "true" : "false"}</nepar_cijena_od>
     ${neparNapomena(usluga) ? `<nepar_napomena>${escapeXml(neparNapomena(usluga))}</nepar_napomena>` : "<nepar_napomena />"}
   </usluga>`).join("\n");
@@ -78,6 +94,20 @@ function formatEur(value, lang) {
     maximumFractionDigits: 2,
   }).format(value);
   return lang === "hr" ? `${amount} €` : `€${amount}`;
+}
+
+/** Datum sidrene cijene u obliku „16. 9. 2026.” odnosno „16 Sep 2026”. */
+export function formatReferenceDate(value, lang = "hr") {
+  const [year, month, day] = value.split("-").map(Number);
+  if (lang === "hr") return `${day}. ${month}. ${year}.`;
+  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(year, month - 1, day)));
+}
+
+/** Sidrena cijena uz datum na koji se odnosi, npr. „149 € · cijena na dan 15. 9. 2026.”. */
+export function formatAnchorWithDate(usluga, lang = "hr") {
+  const amount = formatCjenikDisplayPrice({ ...usluga, cijena: usluga.sidrenaCijena, cijenaOd: false }, lang);
+  if (!usluga.datumReferentneCijene) return amount;
+  return `${amount} · ${lang === "hr" ? "cijena na dan" : "price on"} ${formatReferenceDate(usluga.datumReferentneCijene, lang)}`;
 }
 
 /** Prikazna cijena za marketinški sadržaj (npr. additionalServices u webOfferContent.js). */

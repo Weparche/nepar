@@ -4,6 +4,7 @@ import { relative, resolve } from "node:path";
 import { nepaUsluge } from "../src/cjenikData.js";
 import { cjenikMeta, canonicalCjenikFilename } from "../src/cjenikMeta.js";
 import { renderCjenikCsv, renderCjenikXml } from "../src/cjenikRender.js";
+import { retainedSnapshots } from "./cjenikArchive.js";
 import { PRERENDER_PATHS, SITEMAP_PATHS, getSeoPage } from "../src/seoConfig.js";
 import { DIGITAL_PRICE_LIST_GUIDE_PATHS, getDigitalPriceListGuideSeoPage } from "../src/digitalPriceListGuides.js";
 import { routeOutputPath } from "../src/seoRoutes.js";
@@ -101,14 +102,26 @@ expect("cjenik.html", "BreadcrumbList", "cjenik breadcrumb schema is missing");
 expect("cjenik.html", "Web Basic", "cjenik must list known NEPAR services");
 expect("cjenik/arhiva.html", "<title>Arhiva digitalnog cjenika | Nepar Solutions</title>", "cjenik arhiva title is missing");
 expect("cjenik/arhiva.html", "data-nepar-static-content", "cjenik arhiva initial HTML body is missing");
-expect("cjenik/arhiva.html", "Nema starijih verzija", "cjenik arhiva must state there are no older versions yet");
+const retained = retainedSnapshots(resolve(process.cwd(), "cjenik-archive"));
+if (!retained.length) expect("cjenik/arhiva.html", "Nema starijih verzija", "cjenik arhiva must state there are no older versions yet");
+// Arhivske objave moraju ostati točno kako su izvorno objavljene (30 dana dostupnosti).
+for (const snapshot of retained) {
+  for (const [ext, render] of [["csv", renderCjenikCsv], ["xml", renderCjenikXml]]) {
+    const name = canonicalCjenikFilename(snapshot.meta, ext);
+    if (read(`cjenici/${name}`) !== render(snapshot.usluge, snapshot.meta)) failures.push(`Missing or mismatched archived dist/cjenici/${name}`);
+    expect("cjenik/arhiva.html", `/cjenici/${name}`, `cjenik arhiva must link archived ${name}`);
+  }
+}
 
-const expectedCjenikCsv = renderCjenikCsv(nepaUsluge);
+const expectedCjenikCsv = renderCjenikCsv(nepaUsluge, cjenikMeta);
 const expectedCjenikXml = renderCjenikXml(nepaUsluge, cjenikMeta);
 if (read("cjenik.csv") !== expectedCjenikCsv) failures.push("cjenik.csv does not match the data generated from src/cjenikData.js.");
 if (read("cjenik.xml") !== expectedCjenikXml) failures.push("cjenik.xml does not match the data generated from src/cjenikData.js.");
 if (!read("cjenik.csv").includes("nepar_cijena_od")) failures.push("cjenik.csv is missing the nepar_cijena_od extension column.");
 if (!read("cjenik.xml").includes("<nepar_cijena_od>")) failures.push("cjenik.xml is missing the nepar_cijena_od extension element.");
+for (const usluga of nepaUsluge) {
+  if (usluga.sidrenaCijena == null || !/^\d{4}-\d{2}-\d{2}$/.test(usluga.datumReferentneCijene ?? "")) failures.push(`${usluga.id}: sidrena cijena and its reference date are required`);
+}
 
 const canonicalCsvName = canonicalCjenikFilename(cjenikMeta, "csv");
 const canonicalXmlName = canonicalCjenikFilename(cjenikMeta, "xml");

@@ -1,13 +1,17 @@
 import { expect, test } from "@playwright/test";
 import { nepaUsluge } from "../src/cjenikData.js";
 import { cjenikMeta, canonicalCjenikFilename } from "../src/cjenikMeta.js";
+import { retainedSnapshots } from "../scripts/cjenikArchive.js";
+
+const archived = retainedSnapshots("cjenik-archive");
 
 test("/cjenik has crawlable static content, official fields, and NEPAR services", async ({ page }) => {
   const staticResponse = await page.request.get("/cjenik");
   const staticHtml = await staticResponse.text();
   expect(staticHtml).toContain("data-nepar-static-content");
   expect(staticHtml).toContain("Web Basic");
-  expect(staticHtml).toContain("nova usluga");
+  expect(staticHtml).toContain("cijena na dan 21. 9. 2026.");
+  expect(staticHtml).toContain("cijena na dan 10. 9. 2026.");
   expect(staticHtml).toContain("Izrada web-stranica");
   expect(staticHtml).toContain("Usluge digitalnog cjenika");
   expect(staticHtml).toContain("Jednokratno");
@@ -38,14 +42,15 @@ test("/cjenik has crawlable static content, official fields, and NEPAR services"
   await expect(page.getByRole("link", { name: "Tehnički zahtjevi XML/CSV digitalnog cjenika" })).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr/specifikacija-csv-xml/");
 });
 
-test("/cjenik.csv has the official Odluka columns plus clearly-marked NEPAR extensions", async ({ page }) => {
+// Nazivi stupaca su NEPAR preporučena shema (usklađena s podacima iz Odluke i HOK predloškom); Odluka propisuje podatke.
+test("/cjenik.csv carries the Odluka data, the anchor-price date and clearly-marked NEPAR extensions", async ({ page }) => {
   const response = await page.request.get("/cjenik.csv");
   const csv = await response.text();
   const header = csv.split("\n")[0];
-  expect(header).toBe("naziv_usluge,maloprodajna_cijena,posebni_oblik_prodaje,naziv_posebnog_oblika_prodaje,sidrena_cijena,nepar_cijena_od,nepar_napomena");
-  expect(csv).toContain("Web Basic,300.00,false,,300.00,false,");
-  expect(csv).toContain("Provjera digitalnog cjenika web-stranice,0.00,false,,,false,");
-  expect(csv).toContain("NEPAR Publisher – godišnja pretplata,39.90,false,,,false,");
+  expect(header).toBe("naziv_usluge,maloprodajna_cijena,posebni_oblik_prodaje,naziv_posebnog_oblika_prodaje,sidrena_cijena,datum_referentne_cijene,nepar_nova_stavka,nepar_cijena_od,nepar_napomena");
+  expect(csv).toContain("Web Basic,300.00,false,,300.00,2026-09-10,false,false,");
+  expect(csv).toContain("Provjera digitalnog cjenika web-stranice,0.00,false,,0.00,2026-09-15,true,false,");
+  expect(csv).toContain("NEPAR Publisher – godišnja pretplata,39.90,false,,39.90,2026-09-21,true,false,");
   expect(csv).not.toMatch(/NEPAR Publisher[^\n]*49\.90/);
 });
 
@@ -56,6 +61,8 @@ test("/cjenik.xml has the digitalni-cjenik root, official fields, and NEPAR exte
   expect(xml).toContain('oznaka-prodajnog-objekta="WEB-NEPAR-01"');
   expect(xml).toContain("<naziv_usluge>Web Basic</naziv_usluge>");
   expect(xml).toContain("<nepar_cijena_od>");
+  expect(xml).toContain("<datum_referentne_cijene>2026-09-21</datum_referentne_cijene>");
+  expect(xml).not.toContain("<sidrena_cijena />");
 });
 
 test("/cjenici/<canonical file> exists and matches the /cjenik.csv and /cjenik.xml aliases", async ({ page }) => {
@@ -74,11 +81,19 @@ test("/cjenici/<canonical file> exists and matches the /cjenik.csv and /cjenik.x
   expect(canonicalXml).toBe(aliasXml);
 });
 
-test("/cjenik/arhiva lists the current version and states there is no history yet", async ({ page }) => {
+test("/cjenik/arhiva lists retained previous publications, still served unchanged", async ({ page }) => {
   const staticResponse = await page.request.get("/cjenik/arhiva");
   const staticHtml = await staticResponse.text();
   expect(staticHtml).toContain("data-nepar-static-content");
-  expect(staticHtml).toContain("Nema starijih verzija");
+  if (!archived.length) expect(staticHtml).toContain("Nema starijih verzija");
+  for (const snapshot of archived) {
+    const csvName = canonicalCjenikFilename(snapshot.meta, "csv");
+    expect(staticHtml).toContain(`/cjenici/${csvName}`);
+    const response = await page.request.get(`/cjenici/${csvName}`);
+    expect(response.ok()).toBeTruthy();
+    // Arhivska objava bez formatVersion zadržava izvorni oblik (bez stupca datuma).
+    if (!snapshot.meta.formatVersion) expect((await response.text()).split("\n")[0]).not.toContain("datum_referentne_cijene");
+  }
   expect(staticHtml).not.toContain(cjenikMeta.publishedAt);
 
   await page.goto("/cjenik/arhiva");
@@ -86,9 +101,13 @@ test("/cjenik/arhiva lists the current version and states there is no history ye
   await expect(page.getByRole("link", { name: /Natrag na trenutni cjenik/ })).toHaveAttribute("href", "/cjenik");
 });
 
-test("every NEPAR usluga has a stable id and either a sidrena cijena or an explicit new-service note", () => {
+test("every NEPAR usluga has a stable id, a sidrena cijena and the date it applies to", () => {
   for (const usluga of nepaUsluge) {
     expect(usluga.id).toMatch(/^[a-z0-9-]+$/);
-    if (usluga.sidrenaCijena == null) expect(usluga.napomena).toContain("10.09.2026");
+    expect(typeof usluga.sidrenaCijena).toBe("number");
+    expect(usluga.datumReferentneCijene).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    // Usluga uvedena nakon 10. 9. 2026.: sidrena = cijena s datuma prvog uvrštenja (MINGO pojašnjenje).
+    if (usluga.novaStavka) expect(usluga.datumReferentneCijene > "2026-09-10").toBe(true);
+    else expect(usluga.datumReferentneCijene).toBe("2026-09-10");
   }
 });

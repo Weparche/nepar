@@ -4,7 +4,7 @@ import { Background, Navbar, SiteFooter, siteContent } from "./SiteChrome.jsx";
 import { usePageMeta } from "./usePageMeta.js";
 import { nepaUsluge } from "./cjenikData.js";
 import { cjenikMeta, canonicalCjenikFilename } from "./cjenikMeta.js";
-import { formatCjenikDisplayPrice, formatCjenikDate, groupByCategory } from "./cjenikRender.js";
+import { formatAnchorWithDate, formatCjenikDisplayPrice, formatCjenikDate, groupByCategory } from "./cjenikRender.js";
 
 const CJENIK_CATEGORY = "Usluge digitalnog cjenika";
 
@@ -38,11 +38,10 @@ const content = {
     tableHeaders: ["Usluga", "Naplata", "Maloprodajna cijena", "Posebni oblik prodaje", "Sidrena cijena"],
     odNoteId: "cjenik-od-note",
     odNote: "* Cijena je početna (\"od\") — konačna cijena ovisi o opsegu ili platformi. Odluka ne definira posebnu semantiku za početnu cijenu; ovo je NEPAR-ovo tehničko pojašnjenje, vidljivo i u strojnom zapisu kao dodatno polje nepar_cijena_od.",
-    newServiceNote: "Usluge bez sidrene cijene uvedene su nakon 10.9.2026., a Odluka NN 101/2026-1212 za njih ne definira sidrenu cijenu.",
+    newServiceNote: "Sidrena cijena usluga koje su postojale 10. 9. 2026. je cijena s tog datuma. Za usluge uvedene kasnije sidrena cijena je cijena s datuma prvog uvrštenja u prodaju, uz naveden datum (službeno pojašnjenje Ministarstva gospodarstva).",
     sidrenaGuideLink: "Vodič za sidrenu cijenu",
     xmlCsvGuideLink: "Tehnički zahtjevi XML/CSV digitalnog cjenika",
     cjenikCategoryNote: "Ovo su usluge koje NEPAR nudi drugim tvrtkama za implementaciju digitalnog cjenika na njihovoj web-stranici — nisu dio NEPAR-ove web ili social ponude iznad.",
-    noSidrena: "— (nova usluga)",
     noSpecial: "—",
     downloadsTitle: "Preuzimanje",
     csv: "Preuzmite /cjenik.csv",
@@ -62,11 +61,10 @@ const content = {
     tableHeaders: ["Service", "Billing", "Retail price", "Special sale format", "Reference price"],
     odNoteId: "cjenik-od-note",
     odNote: "* This is a starting (\"from\") price — the final price depends on scope or platform. The Decision does not define \"starting price\" semantics; this is a NEPAR technical clarification, also present in the machine file as the nepar_cijena_od field.",
-    newServiceNote: "Services without a reference price were introduced after 10 September 2026, and Decision NN 101/2026-1212 does not define one for them.",
+    newServiceNote: "For services offered on 10 September 2026 the reference price is the price on that date. For services introduced later it is the price on the date they were first offered, shown with that date (official Ministry of Economy clarification).",
     sidrenaGuideLink: "Reference-price guide",
     xmlCsvGuideLink: "XML/CSV digital price list technical requirements",
     cjenikCategoryNote: "These are services NEPAR sells to other businesses to implement a digital price list on their own website — they are not part of NEPAR's own web or social offering above.",
-    noSidrena: "— (new service)",
     noSpecial: "—",
     downloadsTitle: "Downloads",
     csv: "Download /cjenik.csv",
@@ -105,9 +103,7 @@ function CjenikTable({ usluge, copy, lang, categoryLabel }) {
                 <td className="px-5 py-4">{copy.naplataLabel(usluga.naplata)}</td>
                 <td className="px-5 py-4 tabular-nums">{formatCjenikDisplayPrice(usluga, lang)}</td>
                 <td className="px-5 py-4">{usluga.posebnaProdajaNaziv || copy.noSpecial}</td>
-                <td className="px-5 py-4 tabular-nums">
-                  {usluga.sidrenaCijena == null ? copy.noSidrena : formatCjenikDisplayPrice({ ...usluga, cijena: usluga.sidrenaCijena, cijenaOd: false }, lang)}
-                </td>
+                <td className="px-5 py-4 tabular-nums">{formatAnchorWithDate(usluga, lang)}</td>
               </tr>
             ))}
           </tbody>
@@ -127,9 +123,7 @@ function CjenikTable({ usluge, copy, lang, categoryLabel }) {
             <dt className="text-slate-500">{copy.mobileFields.special}</dt>
             <dd className="text-right text-slate-700">{usluga.posebnaProdajaNaziv || copy.noSpecial}</dd>
             <dt className="text-slate-500">{copy.mobileFields.sidrena}</dt>
-            <dd className="text-right tabular-nums text-slate-700">
-              {usluga.sidrenaCijena == null ? copy.noSidrena : formatCjenikDisplayPrice({ ...usluga, cijena: usluga.sidrenaCijena, cijenaOd: false }, lang)}
-            </dd>
+            <dd className="text-right tabular-nums text-slate-700">{formatAnchorWithDate(usluga, lang)}</dd>
           </div>
         ))}
       </dl>

@@ -167,7 +167,7 @@ function routeSeoPlugin(siteUrl) {
       const cjeniciDir = resolve(outDir, "cjenici");
       mkdirSync(cjeniciDir, { recursive: true });
 
-      const currentCsv = renderCjenikCsv(nepaUsluge);
+      const currentCsv = renderCjenikCsv(nepaUsluge, cjenikMeta);
       const currentXml = renderCjenikXml(nepaUsluge, cjenikMeta);
       writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(cjenikMeta, "csv")), currentCsv, "utf8");
       writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(cjenikMeta, "xml")), currentXml, "utf8");
@@ -176,7 +176,7 @@ function routeSeoPlugin(siteUrl) {
       writeFileSync(resolve(outDir, "cjenik.xml"), currentXml, "utf8");
 
       for (const snapshot of retainedSnapshots(archiveDir)) {
-        writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(snapshot.meta, "csv")), renderCjenikCsv(snapshot.usluge), "utf8");
+        writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(snapshot.meta, "csv")), renderCjenikCsv(snapshot.usluge, snapshot.meta), "utf8");
         writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(snapshot.meta, "xml")), renderCjenikXml(snapshot.usluge, snapshot.meta), "utf8");
       }
     },
