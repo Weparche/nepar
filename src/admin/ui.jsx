@@ -20,7 +20,7 @@ export function Card({ title, subtitle, action, children, className = "", as: Ta
 
 export function Segmented({ label, options, value, onChange }) {
   return (
-    <div role="group" aria-label={label} className="inline-flex rounded-lg border border-slate-300 bg-slate-100 p-0.5">
+    <div role="group" aria-label={label} className="inline-flex max-w-full flex-wrap rounded-lg border border-slate-300 bg-slate-100 p-0.5">
       {options.map((option) => {
         const selected = option.id === value;
         return (

@@ -15,6 +15,14 @@ export const PROPERTIES = [
   { id: "all", label: "Sve stranice" },
   { id: "nepar", label: "Nepar.hr" },
   { id: "kids", label: "NEPAR Kids" },
+  { id: "digitalnicjenik", label: "Digitalni cjenik" },
+];
+
+// Other sites forward their pageviews to the Nepar worker with a path prefix (kids.nepar.hr → /kids,
+// digitalnicjenik.nepar.hr → /digitalnicjenik). Everything else is nepar.hr itself.
+const PROPERTY_PREFIXES = [
+  ["kids", "/kids"],
+  ["digitalnicjenik", "/digitalnicjenik"],
 ];
 
 export const AUDIENCES = [
@@ -54,7 +62,9 @@ export function isSyntheticPath(path) {
 }
 
 export function propertyOf(path) {
-  return typeof path === "string" && path.startsWith("/kids") ? "kids" : "nepar";
+  if (typeof path !== "string") return "nepar";
+  const match = PROPERTY_PREFIXES.find(([, prefix]) => path === prefix || path.startsWith(`${prefix}/`));
+  return match ? match[0] : "nepar";
 }
 
 export function matchesProperty(path, property) {

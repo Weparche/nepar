@@ -49,6 +49,18 @@ test("series fills missing days with zero and respects property and audience", (
   assert.equal(sum(seriesFor(clean, { audience: "owner", start: "2026-10-10", end: "2026-10-17" })), 4);
 });
 
+test("digitalnicjenik.nepar.hr pages are their own property, nepar.hr guides stay on Nepar", () => {
+  const sites = [
+    { date: "2026-10-17", path: "/digitalnicjenik/", total: 3, ownerTotal: 0 },
+    { date: "2026-10-17", path: "/digitalnicjenik/c/auto-gubic", total: 2, ownerTotal: 0 },
+    { date: "2026-10-17", path: "/digitalni-cjenik", total: 5, ownerTotal: 0 },
+  ];
+  const range = { start: "2026-10-17", end: "2026-10-17" };
+  assert.equal(sum(seriesFor(sites, { property: "digitalnicjenik", ...range })), 5);
+  assert.equal(sum(seriesFor(sites, { property: "nepar", ...range })), 5);
+  assert.equal(sum(seriesFor(sites, { property: "kids", ...range })), 0);
+});
+
 test("delta handles a zero baseline", () => {
   assert.equal(deltaPercent(0, 0), 0);
   assert.equal(deltaPercent(5, 0), null);
