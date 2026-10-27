@@ -6,6 +6,7 @@ export const PRODUCT_URL = "https://digitalnicjenik.nepar.hr";
 export const LINK_PRICE_EUR = 19.9;
 export const PUBLISHER_PRICE_EUR = 49.9;
 export const SETUP_FIRST_YEAR_EUR = 79.9;
+export const INSTALLATION_EUR = 29.9;
 
 /** Backward-compatible aliases for older imports. */
 export const LAUNCH_PRICE_EUR = PUBLISHER_PRICE_EUR;
@@ -18,13 +19,13 @@ export function formatPublisherEur(amount) {
 
 export const marketingPriceHr = {
   launchLine: `Publisher: ${formatPublisherEur(PUBLISHER_PRICE_EUR)}/god.`,
-  afterLine: `Link: ${formatPublisherEur(LINK_PRICE_EUR)}/god · Web + Publisher: ${formatPublisherEur(SETUP_FIRST_YEAR_EUR)}/god.`,
+  afterLine: `Web Link: ${formatPublisherEur(LINK_PRICE_EUR)}/god · Web + Publisher: ${formatPublisherEur(SETUP_FIRST_YEAR_EUR)}/god · ugradnja: ${formatPublisherEur(INSTALLATION_EUR)} jednokratno.`,
   shortLaunch: `Publisher ${formatPublisherEur(PUBLISHER_PRICE_EUR)}/god.`,
 };
 
 export const marketingPriceEn = {
   launchLine: `Publisher: ${formatPublisherEur(PUBLISHER_PRICE_EUR)}/year.`,
-  afterLine: `Link: ${formatPublisherEur(LINK_PRICE_EUR)}/year · Web + Publisher: ${formatPublisherEur(SETUP_FIRST_YEAR_EUR)}/year.`,
+  afterLine: `Web Link: ${formatPublisherEur(LINK_PRICE_EUR)}/year · Web + Publisher: ${formatPublisherEur(SETUP_FIRST_YEAR_EUR)}/year · installation: ${formatPublisherEur(INSTALLATION_EUR)} one-off.`,
   shortLaunch: `Publisher ${formatPublisherEur(PUBLISHER_PRICE_EUR)}/year.`,
 };
 
