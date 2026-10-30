@@ -52,6 +52,7 @@ test("/cjenik.csv carries the Odluka data, the anchor-price date and clearly-mar
   expect(csv).toContain("Provjera digitalnog cjenika web-stranice,0.00,false,,0.00,2026-09-15,true,false,");
   expect(csv).toContain("NEPAR Publisher – godišnja pretplata,49.90,false,,49.90,2026-09-21,true,false,");
   expect(csv).toContain("NEPAR Web Link – godišnja pretplata,19.90,false,,19.90,2026-10-26,true,false,");
+  expect(csv).toContain("NEPAR Web + Publisher – godišnja pretplata,99.00,false,,79.90,2026-10-26,true,false,");
   expect(csv).toContain("Pomoć s ugradnjom digitalnog cjenika na postojeći web,29.90,false,,29.90,2026-10-27,true,false,");
   expect(csv).not.toContain("Postavljanje NEPAR Publishera");
 });

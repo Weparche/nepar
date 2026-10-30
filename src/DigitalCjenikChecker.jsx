@@ -10,8 +10,8 @@ import { getContactWorkerUrl, submitContactLead } from "./contactLead.js";
 import { trackEvent } from "./analytics.js";
 
 const easeOut = [0.23, 1, 0.32, 1];
-const revealTransition = { duration: 0.35, ease: easeOut };
-const spinTransition = { repeat: Infinity, duration: 0.8, ease: "linear" };
+const revealTransition = { duration: 0.35, ease: /** @type {[number, number, number, number]} */ (easeOut) };
+const spinTransition = { repeat: Infinity, duration: 0.8, ease: /** @type {const} */ ("linear") };
 const inputClass = "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-200";
 
 export const checkerCopy = {

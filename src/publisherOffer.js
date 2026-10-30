@@ -1,12 +1,13 @@
 import { trackEvent } from "./analytics.js";
+import { getCjenikCijena } from "./cjenikData.js";
 
 export const PRODUCT_URL = "https://digitalnicjenik.nepar.hr";
 
 /** Aktualne godišnje cijene moraju biti usklađene s digitalnicjenik.nepar.hr. */
-export const LINK_PRICE_EUR = 19.9;
-export const PUBLISHER_PRICE_EUR = 49.9;
-export const SETUP_FIRST_YEAR_EUR = 79.9;
-export const INSTALLATION_EUR = 29.9;
+export const LINK_PRICE_EUR = getCjenikCijena("cjenik-web-link").price;
+export const PUBLISHER_PRICE_EUR = getCjenikCijena("cjenik-publisher").price;
+export const SETUP_FIRST_YEAR_EUR = getCjenikCijena("cjenik-web-publisher").price;
+export const INSTALLATION_EUR = getCjenikCijena("cjenik-ugradnja").price;
 
 /** Backward-compatible aliases for older imports. */
 export const LAUNCH_PRICE_EUR = PUBLISHER_PRICE_EUR;
