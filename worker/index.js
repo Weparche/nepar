@@ -348,6 +348,11 @@ async function handleKidsOpenAI(request, env, origin) {
   });
 }
 
+/** Resend accepts idempotency keys of 1–256 characters; anything else is dropped rather than forwarded. */
+export function kidsIdempotencyKey(value) {
+  return typeof value === "string" && /^[\x21-\x7e]{1,256}$/.test(value) ? value : "";
+}
+
 async function handleKidsEmail(request, env, origin) {
   if (!internalTokenMatches(request, env)) return json({ error: "Unauthorized" }, 401, origin);
   if (!env.RESEND_API_KEY) return json({ error: "Resend is not configured" }, 503, origin);
@@ -358,11 +363,15 @@ async function handleKidsEmail(request, env, origin) {
   const html = typeof body.html === "string" ? body.html.slice(0, 160000) : "";
   if (!to.length || !subject || !html) return json({ error: "Invalid email payload" }, 400, origin);
 
+  // NEPAR Kids retries an e-mail whose result it never recorded (e.g. the Worker stopped after the send).
+  // Forwarding its stable outbox key lets Resend return the original e-mail instead of sending it twice.
+  const idempotencyKey = kidsIdempotencyKey(request.headers.get("Idempotency-Key") || body.idempotencyKey);
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${env.RESEND_API_KEY || ""}`,
       "Content-Type": "application/json",
+      ...(idempotencyKey ? { "Idempotency-Key": idempotencyKey } : {}),
     },
     body: JSON.stringify({
       from: env.KIDS_EMAIL_FROM || "NEPAR Kids <orders@kids.nepar.hr>",
