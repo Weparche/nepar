@@ -15,7 +15,7 @@
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots",
     "test:e2e:fallback": "playwright test --config=playwright.fallback.config.js",
-    "test:worker": "node --test worker/analytics.test.js worker/digital-price-list.test.js",
+    "test:worker": "node --test worker/analytics.test.js worker/digital-price-list.test.js worker/kids-email.test.js",
     "test:admin": "node --test src/admin/stats.test.js"
   },
   "dependencies": {
