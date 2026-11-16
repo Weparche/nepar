@@ -117,8 +117,8 @@ const expectedCjenikCsv = renderCjenikCsv(nepaUsluge, cjenikMeta);
 const expectedCjenikXml = renderCjenikXml(nepaUsluge, cjenikMeta);
 if (read("cjenik.csv") !== expectedCjenikCsv) failures.push("cjenik.csv does not match the data generated from src/cjenikData.js.");
 if (read("cjenik.xml") !== expectedCjenikXml) failures.push("cjenik.xml does not match the data generated from src/cjenikData.js.");
-if (!read("cjenik.csv").includes("nepar_cijena_od")) failures.push("cjenik.csv is missing the nepar_cijena_od extension column.");
-if (!read("cjenik.xml").includes("<nepar_cijena_od>")) failures.push("cjenik.xml is missing the nepar_cijena_od extension element.");
+if (read("cjenik.csv").split(/\r?\n/)[0] !== "Naziv usluge;Maloprodajna cijena;Poseban oblik prodaje;Bazna cijena") failures.push("NN 132 CSV header mismatch.");
+if (!read("cjenik.xml").includes("<bazna_cijena>")) failures.push("NN 132 XML base price missing.");
 for (const usluga of nepaUsluge) {
   if (usluga.sidrenaCijena == null || !/^\d{4}-\d{2}-\d{2}$/.test(usluga.datumReferentneCijene ?? "")) failures.push(`${usluga.id}: sidrena cijena and its reference date are required`);
 }

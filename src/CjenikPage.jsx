@@ -34,12 +34,12 @@ const naplataLabelsEn = {
 const content = {
   hr: {
     title: "NEPAR — digitalni cjenik usluga",
-    lead: "Prema Odluci NN 101/2026-1213, ovo je strojno čitljiv cjenik svih NEPAR usluga.",
-    tableHeaders: ["Usluga", "Naplata", "Maloprodajna cijena", "Posebni oblik prodaje", "Sidrena cijena"],
+    lead: "Strojno čitljiv cjenik NEPAR usluga prema Pravilniku NN 132/2026-1584.",
+    tableHeaders: ["Usluga", "Naplata", "Maloprodajna cijena", "Posebni oblik prodaje", "Bazna cijena"],
     odNoteId: "cjenik-od-note",
     odNote: "* Cijena je početna (\"od\") — konačna cijena ovisi o opsegu ili platformi. Odluka ne definira posebnu semantiku za početnu cijenu; ovo je NEPAR-ovo tehničko pojašnjenje, vidljivo i u strojnom zapisu kao dodatno polje nepar_cijena_od.",
-    newServiceNote: "Sidrena cijena usluga koje su postojale 10. 9. 2026. je cijena s tog datuma. Za usluge uvedene kasnije sidrena cijena je cijena s datuma prvog uvrštenja u prodaju, uz naveden datum (službeno pojašnjenje Ministarstva gospodarstva).",
-    sidrenaGuideLink: "Vodič za sidrenu cijenu",
+    newServiceNote: "Bazna cijena usluga koje su postojale 10. 9. 2026. je cijena s tog datuma. Za usluge uvedene kasnije bazna cijena je cijena s datuma prvog uvrštenja u prodaju, uz naveden datum (službeno pojašnjenje Ministarstva gospodarstva).",
+    sidrenaGuideLink: "Vodič za baznu cijenu",
     xmlCsvGuideLink: "Tehnički zahtjevi XML/CSV digitalnog cjenika",
     cjenikCategoryNote: "Ovo su usluge koje NEPAR nudi drugim tvrtkama za implementaciju digitalnog cjenika na njihovoj web-stranici — nisu dio NEPAR-ove web ili social ponude iznad.",
     noSpecial: "—",
@@ -53,7 +53,7 @@ const content = {
     objekt: (meta) => `Prodajni objekt: ${meta.oblikProdajnogObjekta}, ${meta.adresaProdajnogObjekta} (oznaka ${meta.oznakaProdajnogObjekta})`,
     categoryLabel: (kategorija) => kategorija,
     naplataLabel: (naplata) => naplataLabelsHr[naplata] || naplata,
-    mobileFields: { naplata: "Naplata", price: "Maloprodajna cijena", special: "Posebni oblik prodaje", sidrena: "Sidrena cijena" },
+    mobileFields: { naplata: "Naplata", price: "Maloprodajna cijena", special: "Posebni oblik prodaje", sidrena: "Bazna cijena" },
   },
   en: {
     title: "NEPAR — digital service price list",

@@ -41,7 +41,20 @@ function withReferenceDate(meta) {
   return (meta?.formatVersion ?? 1) >= 2;
 }
 
+// NN 132: naziv nosi jedinicu naplate i oznaku početne cijene, bez dodatnih stupaca.
+function currentName(usluga) {
+  const period = usluga.naplata === "jednokratno" || /godišnja pretplata/i.test(usluga.naziv) ? "" : usluga.naplata;
+  const qualifiers = [period, usluga.cijenaOd ? "početna cijena" : "", usluga.displaySuffixHr?.includes("oglasni budžet") ? "+ oglasni budžet" : ""].filter(Boolean);
+  return usluga.naziv + (qualifiers.length ? " (" + qualifiers.join(", ") + ")" : "");
+}
+function currentCsvField(value) {
+  const str = String(value);
+  return /[;"\r\n]/.test(str) ? '"' + str.replaceAll('"','""') + '"' : str;
+}
 export function renderCjenikCsv(usluge, meta) {
+  if (meta?.formatVersion >= 3) {
+    return ["Naziv usluge;Maloprodajna cijena;Poseban oblik prodaje;Bazna cijena", ...usluge.map(u => [currentCsvField(currentName(u)), money(u.cijena), u.posebnaProdaja ? "DA" : "NE", money(u.sidrenaCijena)].join(";"))].join("\r\n") + "\r\n";
+  }
   const dated = withReferenceDate(meta);
   const header = dated
     ? "naziv_usluge,maloprodajna_cijena,posebni_oblik_prodaje,naziv_posebnog_oblika_prodaje,sidrena_cijena,datum_referentne_cijene,nepar_nova_stavka,nepar_cijena_od,nepar_napomena"
@@ -60,6 +73,9 @@ export function renderCjenikCsv(usluge, meta) {
 }
 
 export function renderCjenikXml(usluge, meta) {
+  if (meta?.formatVersion >= 3) {
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<cjenik format="nn-132-2026">\n' + usluge.map(u => '  <usluga>\n    <naziv_usluge>' + escapeXml(currentName(u)) + '</naziv_usluge>\n    <maloprodajna_cijena>' + money(u.cijena) + '</maloprodajna_cijena>\n    <poseban_oblik_prodaje>' + (u.posebnaProdaja ? "DA" : "NE") + '</poseban_oblik_prodaje>\n    <bazna_cijena>' + money(u.sidrenaCijena) + '</bazna_cijena>\n  </usluga>').join("\n") + '\n</cjenik>\n';
+  }
   const dated = withReferenceDate(meta);
   const items = usluge.map((usluga) => `  <usluga>
     <naziv_usluge>${escapeXml(usluga.naziv)}</naziv_usluge>

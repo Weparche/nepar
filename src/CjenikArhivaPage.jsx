@@ -6,21 +6,21 @@ import { usePageMeta } from "./usePageMeta.js";
 import { cjenikMeta, canonicalCjenikFilename } from "./cjenikMeta.js";
 import { formatCjenikDate } from "./cjenikRender.js";
 
-const RETENTION_DAYS = 30;
+const RETENTION_DAYS = 15;
 
 const archiveModules = import.meta.glob("../cjenik-archive/*.json", { eager: true, import: "default" });
 
 function retainedSnapshots() {
   const now = Date.now();
   return Object.values(archiveModules)
-    .filter((snapshot) => now - new Date(snapshot.meta.supersededAt).getTime() <= RETENTION_DAYS * 24 * 60 * 60 * 1000)
+    .filter((snapshot) => now - new Date(snapshot.meta.supersededAt).getTime() <= (snapshot.meta.retentionDays ?? (snapshot.meta.formatVersion >= 3 ? RETENTION_DAYS : 30)) * 24 * 60 * 60 * 1000)
     .sort((a, b) => new Date(b.meta.supersededAt).getTime() - new Date(a.meta.supersededAt).getTime());
 }
 
 const content = {
   hr: {
     title: "Arhiva digitalnog cjenika",
-    lead: "Prema Odluci NN 101/2026-1213, prethodne objavljene verzije NEPAR cjenika ostaju dostupne 30 dana od promjene.",
+    lead: "Prema Pravilniku NN 132/2026-1584, prethodne objave NEPAR cjenika dostupne su najmanje 15 dana od zamjene. Starijim objavama zadržan je prethodni rok.",
     back: "Natrag na trenutni cjenik",
     currentTitle: "Trenutna verzija",
     noArchive: "Nema starijih verzija — ovo je prva objavljena verzija cjenika.",
@@ -31,7 +31,7 @@ const content = {
   },
   en: {
     title: "Digital price list archive",
-    lead: "Under Croatian Decision NN 101/2026-1213, previously published NEPAR price-list versions remain available for 30 days after a change.",
+    lead: "Under Croatian Regulation NN 132/2026-1584, superseded NEPAR price lists remain available for at least 15 days. Earlier publications retain their previous retention period.",
     back: "Back to the current price list",
     currentTitle: "Current version",
     noArchive: "No older versions — this is the first published version of the price list.",

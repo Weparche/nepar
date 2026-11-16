@@ -1,7 +1,7 @@
 /**
  * Pokreni PRIJE izmjene src/cjenikData.js kad se cijena stvarno mijenja.
  * Snima trenutno (uskoro zamijenjeno) stanje cjenika u cjenik-archive/, s
- * `supersededAt` = sada, tako da ostane dostupno 30 dana sukladno Odluci.
+ * `supersededAt` = sada, tako da ostane dostupno 15 dana sukladno novom Pravilniku.
  *
  * Nakon pokretanja: uredi src/cjenikData.js (nove cijene) i bumaj
  * cjenikMeta.publishedAt / cjenikMeta.brojPohrane u src/cjenikMeta.js.
@@ -32,7 +32,7 @@ if (existsSync(filePath)) {
 }
 
 const snapshot = {
-  meta: { ...cjenikMeta, supersededAt },
+  meta: { ...cjenikMeta, supersededAt, retentionDays: 15 },
   usluge: nepaUsluge,
 };
 

@@ -38,34 +38,28 @@ test("/cjenik has crawlable static content, official fields, and NEPAR services"
   await expect(page.getByRole("link", { name: /Preuzmite \/cjenik\.csv/ })).toHaveAttribute("href", "/cjenik.csv");
   await expect(page.getByRole("link", { name: /Preuzmite \/cjenik\.xml/ })).toHaveAttribute("href", "/cjenik.xml");
   await expect(page.getByRole("link", { name: /Arhiva prethodnih verzija/ })).toHaveAttribute("href", "/cjenik/arhiva");
-  await expect(page.getByRole("link", { name: "Vodič za sidrenu cijenu" })).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/");
+  await expect(page.getByRole("link", { name: "Vodič za baznu cijenu" })).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr/vodici/sidrena-cijena/");
   await expect(page.getByRole("link", { name: "Tehnički zahtjevi XML/CSV digitalnog cjenika" })).toHaveAttribute("href", "https://digitalnicjenik.nepar.hr/specifikacija-csv-xml/");
 });
 
-// Nazivi stupaca su NEPAR preporučena shema (usklađena s podacima iz Odluke i HOK predloškom); Odluka propisuje podatke.
-test("/cjenik.csv carries the Odluka data, the anchor-price date and clearly-marked NEPAR extensions", async ({ page }) => {
-  const response = await page.request.get("/cjenik.csv");
-  const csv = await response.text();
-  const header = csv.split("\n")[0];
-  expect(header).toBe("naziv_usluge,maloprodajna_cijena,posebni_oblik_prodaje,naziv_posebnog_oblika_prodaje,sidrena_cijena,datum_referentne_cijene,nepar_nova_stavka,nepar_cijena_od,nepar_napomena");
-  expect(csv).toContain("Web Basic,300.00,false,,300.00,2026-09-10,false,false,");
-  expect(csv).toContain("Provjera digitalnog cjenika web-stranice,0.00,false,,0.00,2026-09-15,true,false,");
-  expect(csv).toContain("NEPAR Publisher – godišnja pretplata,49.90,false,,49.90,2026-09-21,true,false,");
-  expect(csv).toContain("NEPAR Web Link – godišnja pretplata,19.90,false,,19.90,2026-10-26,true,false,");
-  expect(csv).toContain("NEPAR Web + Publisher – godišnja pretplata,99.00,false,,79.90,2026-10-26,true,false,");
-  expect(csv).toContain("Pomoć s ugradnjom digitalnog cjenika na postojeći web,29.90,false,,29.90,2026-10-27,true,false,");
-  expect(csv).not.toContain("Postavljanje NEPAR Publishera");
+test("current CSV follows NN 132 and preserves all actual prices", async ({ page }) => {
+  const csv = await (await page.request.get("/cjenik.csv")).text();
+  expect(csv.split(/\r?\n/)[0]).toBe("Naziv usluge;Maloprodajna cijena;Poseban oblik prodaje;Bazna cijena");
+  expect(csv).toContain("Web Basic;300.00;NE;300.00");
+  expect(csv).toContain("NEPAR Web Link – godišnja pretplata;19.90;NE;19.90");
+  expect(csv).toContain("NEPAR Publisher – godišnja pretplata;49.90;NE;49.90");
+  expect(csv).toContain("Redizajn Basic (početna cijena);800.00;NE;800.00");
+  expect(csv).not.toContain("nepar_cijena_od");
+  expect(csv.trim().split(/\r?\n/)).toHaveLength(nepaUsluge.length + 1);
 });
 
-test("/cjenik.xml has the digitalni-cjenik root, official fields, and NEPAR extensions", async ({ page }) => {
-  const response = await page.request.get("/cjenik.xml");
-  const xml = await response.text();
-  expect(xml).toContain("<digitalni-cjenik");
-  expect(xml).toContain('oznaka-prodajnog-objekta="WEB-NEPAR-01"');
+test("current XML follows NN 132", async ({ page }) => {
+  const xml = await (await page.request.get("/cjenik.xml")).text();
+  expect(xml).toContain('<cjenik format="nn-132-2026">');
   expect(xml).toContain("<naziv_usluge>Web Basic</naziv_usluge>");
-  expect(xml).toContain("<nepar_cijena_od>");
-  expect(xml).toContain("<datum_referentne_cijene>2026-09-21</datum_referentne_cijene>");
-  expect(xml).not.toContain("<sidrena_cijena />");
+  expect(xml).toContain("<bazna_cijena>300.00</bazna_cijena>");
+  expect(xml).toContain("<poseban_oblik_prodaje>NE</poseban_oblik_prodaje>");
+  expect(xml).not.toContain("<nepar_cijena_od>");
 });
 
 test("/cjenici/<canonical file> exists and matches the /cjenik.csv and /cjenik.xml aliases", async ({ page }) => {

@@ -14,12 +14,13 @@ export const cjenikMeta = {
   oblikProdajnogObjekta: "mrežna stranica",
   adresaProdajnogObjekta: `${BUSINESS.streetAddress}, ${BUSINESS.postalCode} ${BUSINESS.addressLocality}`,
   oznakaProdajnogObjekta: "WEB-NEPAR-01",
-  brojPohrane: 5,
-  publishedAt: "2026-10-30T19:23:35",
+  brojPohrane: 6,
+  merchantIdentifier: "99267101",
+  publishedAt: "2026-11-16T23:07:15",
   // 2 = CSV/XML uz pet podataka iz Odluke nose i datum_referentne_cijene (datum na koji se odnosi sidrena
   // cijena) te NEPAR-ovo proširenje nepar_nova_stavka. Arhivske objave bez formatVersion renderiraju se
   // u izvornom obliku (vidi src/cjenikRender.js).
-  formatVersion: 2,
+  formatVersion: 3,
 };
 
 function slug(value) {
@@ -37,6 +38,10 @@ function slug(value) {
  */
 export function canonicalCjenikFilename(meta, ext) {
   const [date, time] = meta.publishedAt.split("T");
+  if (meta.formatVersion >= 3) {
+    if (!meta.merchantIdentifier) throw new Error("Nedostaje identifikator trgovca");
+    return [meta.merchantIdentifier, slug(meta.oblikProdajnogObjekta), slug(meta.adresaProdajnogObjekta), slug(meta.oznakaProdajnogObjekta), "USLUGE", meta.brojPohrane, date.replaceAll("-", ""), "0"+time.replaceAll(":","").slice(0,4)].join("_") + `.${ext}`;
+  }
   return [
     slug(meta.oblikProdajnogObjekta),
     slug(meta.adresaProdajnogObjekta),
