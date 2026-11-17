@@ -181,6 +181,7 @@ function OfferCard({ item, lang, copy, offerKind, onSelect }) {
           <p className="offer-price">
             <strong>{formatOfferPrice(item.price, lang, item.priceFrom)}</strong>
             <span>{item.payment}</span>
+            <small>{lang === "hr" ? "Bazna cijena" : "Base price"}: {formatOfferPrice(item.basePrice, lang, item.priceFrom)}</small>
             {item.monthlyEquivalent && <small>{formatMonthlyEquivalent(item.monthlyEquivalent, lang)}</small>}
             {item.billingNote && <small className="offer-billing-note">{item.billingNote}</small>}
           </p>
@@ -350,6 +351,7 @@ export default function WebStartPage() {
               <span>{text.hero.startingPrice}</span>
               <strong>{formatOfferPrice(offer.buildPackages[0].price, lang)}</strong>
               <small>{offer.buildPackages[0].payment}</small>
+              <small>{lang === "hr" ? "Bazna cijena" : "Base price"}: {formatOfferPrice(offer.buildPackages[0].basePrice, lang)}</small>
             </div>
             <div className="ownership-panel">
               <ShieldCheck aria-hidden="true" size={28} />
@@ -482,7 +484,7 @@ export default function WebStartPage() {
         <div className="section-shell additional-layout">
           <SectionHeading title={text.additional.title} intro={text.additional.intro} />
           <dl className="additional-list">
-            {offer.additionalServices.map(([service, price]) => <div key={service}><dt>{service}</dt><dd>{price}</dd></div>)}
+            {offer.additionalServices.map(([service, price, basePrice]) => <div key={service}><dt>{service}</dt><dd>{price}{basePrice && <small className="block text-xs font-normal">{lang === "hr" ? "Bazna cijena" : "Base price"}: {basePrice}</small>}</dd></div>)}
           </dl>
         </div>
       </section>
