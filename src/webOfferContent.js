@@ -1,6 +1,9 @@
 import { getCjenikCijena, getCjenikUsluga } from "./cjenikData.js";
 import { formatCjenikDisplayPrice } from "./cjenikRender.js";
 
+const offerPrices = id => ({ ...getCjenikCijena(id), basePrice: getCjenikUsluga(id).sidrenaCijena });
+const baseDisplay = (id, lang) => { const item = getCjenikUsluga(id); return formatCjenikDisplayPrice({ ...item, cijena: item.sidrenaCijena }, lang); };
+
 /**
  * @typedef {"website" | "redesign" | "maintenance" | "social"} OfferKind
  */
@@ -10,6 +13,7 @@ import { formatCjenikDisplayPrice } from "./cjenikRender.js";
  * @property {string} id
  * @property {string} name
  * @property {number} price
+ * @property {number} basePrice
  * @property {boolean} [priceFrom]
  * @property {boolean} [recommended]
  * @property {string} [badge]
@@ -29,7 +33,7 @@ const buildPackagesHr = [
   {
     id: "basic",
     name: "Web Basic",
-    ...getCjenikCijena("web-basic"),
+    ...offerPrices("web-basic"),
     payment: "jednokratno",
     description: "Za obrte i male tvrtke kojima treba jednostavna, moderna i profesionalna web-stranica.",
     included: [
@@ -54,7 +58,7 @@ const buildPackagesHr = [
   {
     id: "business",
     name: "Web Business",
-    ...getCjenikCijena("web-business"),
+    ...offerPrices("web-business"),
     payment: "jednokratno",
     badge: "Najbolji omjer cijene i koristi",
     recommended: true,
@@ -81,7 +85,7 @@ const buildPackagesHr = [
   {
     id: "pro",
     name: "Web Pro",
-    ...getCjenikCijena("web-pro"),
+    ...offerPrices("web-pro"),
     payment: "jednokratno",
     description: "Za tvrtke kojima je web važan prodajni kanal i koje žele napredniju SEO strukturu, ciljane podstranice i funkcionalnosti prilagođene poslovanju.",
     included: [
@@ -114,7 +118,7 @@ const buildPackagesEn = [
   {
     id: "basic",
     name: "Web Basic",
-    ...getCjenikCijena("web-basic"),
+    ...offerPrices("web-basic"),
     payment: "one-time",
     description: "For trades and small businesses that need a simple, modern, and professional website.",
     included: [
@@ -139,7 +143,7 @@ const buildPackagesEn = [
   {
     id: "business",
     name: "Web Business",
-    ...getCjenikCijena("web-business"),
+    ...offerPrices("web-business"),
     payment: "one-time",
     badge: "Best value",
     recommended: true,
@@ -166,7 +170,7 @@ const buildPackagesEn = [
   {
     id: "pro",
     name: "Web Pro",
-    ...getCjenikCijena("web-pro"),
+    ...offerPrices("web-pro"),
     payment: "one-time",
     description: "For companies that treat their website as an important sales channel and need advanced SEO structure, targeted pages, and business-specific functionality.",
     included: [
@@ -199,7 +203,7 @@ const redesignPackagesHr = [
   {
     id: "redesign-basic",
     name: "Redizajn Basic",
-    ...getCjenikCijena("redesign-basic"),
+    ...offerPrices("redesign-basic"),
     payment: "jednokratno",
     description: "Za postojeću one-page stranicu kojoj treba jasniji dizajn, bolja izvedba i siguran prijelaz na novu infrastrukturu.",
     highlights: [
@@ -223,7 +227,7 @@ const redesignPackagesHr = [
   {
     id: "redesign-business",
     name: "Redizajn Business",
-    ...getCjenikCijena("redesign-business"),
+    ...offerPrices("redesign-business"),
     payment: "jednokratno",
     recommended: true,
     badge: "Preporučeno",
@@ -251,7 +255,7 @@ const redesignPackagesHr = [
   {
     id: "redesign-pro",
     name: "Redizajn Pro",
-    ...getCjenikCijena("redesign-pro"),
+    ...offerPrices("redesign-pro"),
     payment: "jednokratno",
     description: "Za sadržajno i tehnički zahtjevnije web-stranice kojima su važni SEO kontinuitet, konverzije i detaljna provjera nakon objave.",
     highlights: [
@@ -281,7 +285,7 @@ const redesignPackagesEn = [
   {
     id: "redesign-basic",
     name: "Redesign Basic",
-    ...getCjenikCijena("redesign-basic"),
+    ...offerPrices("redesign-basic"),
     payment: "one-time",
     description: "For an existing one-page website that needs clearer design, stronger execution, and a safe move to new infrastructure.",
     highlights: [
@@ -305,7 +309,7 @@ const redesignPackagesEn = [
   {
     id: "redesign-business",
     name: "Redesign Business",
-    ...getCjenikCijena("redesign-business"),
+    ...offerPrices("redesign-business"),
     payment: "one-time",
     recommended: true,
     badge: "Recommended",
@@ -333,7 +337,7 @@ const redesignPackagesEn = [
   {
     id: "redesign-pro",
     name: "Redesign Pro",
-    ...getCjenikCijena("redesign-pro"),
+    ...offerPrices("redesign-pro"),
     payment: "one-time",
     description: "For more demanding websites where SEO continuity, conversion tracking, and detailed post-launch verification matter.",
     highlights: [
@@ -363,7 +367,7 @@ const maintenanceHr = [
   {
     id: "maintenance-basic",
     name: "Održavanje Basic",
-    ...getCjenikCijena("maintenance-basic"),
+    ...offerPrices("maintenance-basic"),
     payment: "godišnje",
     description: "Za hosting, sigurnost i tehničku stabilnost web-stranice bez redovitih sadržajnih izmjena.",
     highlights: [
@@ -390,7 +394,7 @@ const maintenanceHr = [
   {
     id: "maintenance-business",
     name: "Održavanje Business",
-    ...getCjenikCijena("maintenance-business"),
+    ...offerPrices("maintenance-business"),
     payment: "godišnje",
     description: "Za poslovanja koja povremeno mijenjaju ponudu, cijene, fotografije i drugi postojeći sadržaj.",
     highlights: [
@@ -414,7 +418,7 @@ const maintenanceHr = [
   {
     id: "maintenance-pro",
     name: "Održavanje Pro",
-    ...getCjenikCijena("maintenance-pro"),
+    ...offerPrices("maintenance-pro"),
     payment: "godišnje",
     monthlyEquivalent: 50,
     billingNote: "Naplata jednom godišnje",
@@ -447,7 +451,7 @@ const maintenanceEn = [
   {
     id: "maintenance-basic",
     name: "Maintenance Basic",
-    ...getCjenikCijena("maintenance-basic"),
+    ...offerPrices("maintenance-basic"),
     payment: "per year",
     description: "For hosting, security, and technical stability without recurring content changes.",
     highlights: [
@@ -474,7 +478,7 @@ const maintenanceEn = [
   {
     id: "maintenance-business",
     name: "Maintenance Business",
-    ...getCjenikCijena("maintenance-business"),
+    ...offerPrices("maintenance-business"),
     payment: "per year",
     description: "For businesses that occasionally update their offer, pricing, photographs, and other existing content.",
     highlights: [
@@ -498,7 +502,7 @@ const maintenanceEn = [
   {
     id: "maintenance-pro",
     name: "Maintenance Pro",
-    ...getCjenikCijena("maintenance-pro"),
+    ...offerPrices("maintenance-pro"),
     payment: "per year",
     monthlyEquivalent: 50,
     billingNote: "Billed once per year",
@@ -531,7 +535,7 @@ const socialPackagesHr = [
   {
     id: "social-basic",
     name: "Social Basic",
-    ...getCjenikCijena("social-basic"),
+    ...offerPrices("social-basic"),
     payment: "/ mj.",
     billingCycle: "monthly",
     description: "Za tvrtke koje žele profesionalno i redovito biti prisutne na Facebooku i Instagramu.",
@@ -555,7 +559,7 @@ const socialPackagesHr = [
   {
     id: "social-business",
     name: "Social Business",
-    ...getCjenikCijena("social-business"),
+    ...offerPrices("social-business"),
     payment: "/ mj.",
     billingCycle: "monthly",
     recommended: true,
@@ -583,7 +587,7 @@ const socialPackagesHr = [
   {
     id: "social-pro",
     name: "Social Pro",
-    ...getCjenikCijena("social-pro"),
+    ...offerPrices("social-pro"),
     payment: "/ mj.",
     billingCycle: "monthly",
     description: "Za tvrtke koje žele ozbiljniji kontinuirani kanal komunikacije i aktivno poboljšavanje rezultata.",
@@ -611,7 +615,7 @@ const socialPackagesEn = [
   {
     id: "social-basic",
     name: "Social Basic",
-    ...getCjenikCijena("social-basic"),
+    ...offerPrices("social-basic"),
     payment: "/ month",
     billingCycle: "monthly",
     description: "For businesses that want a professional, consistent presence on Facebook and Instagram.",
@@ -635,7 +639,7 @@ const socialPackagesEn = [
   {
     id: "social-business",
     name: "Social Business",
-    ...getCjenikCijena("social-business"),
+    ...offerPrices("social-business"),
     payment: "/ month",
     billingCycle: "monthly",
     recommended: true,
@@ -663,7 +667,7 @@ const socialPackagesEn = [
   {
     id: "social-pro",
     name: "Social Pro",
-    ...getCjenikCijena("social-pro"),
+    ...offerPrices("social-pro"),
     payment: "/ month",
     billingCycle: "monthly",
     description: "For businesses that want a serious, continuous communication channel with active performance improvement.",
@@ -698,12 +702,12 @@ const additionalIdsAndLabels = [
 ];
 
 const additionalHr = [
-  ...additionalIdsAndLabels.map(([id, labelHr]) => [labelHr, formatCjenikDisplayPrice(getCjenikUsluga(id), "hr")]),
+  ...additionalIdsAndLabels.map(([id, labelHr]) => [labelHr, formatCjenikDisplayPrice(getCjenikUsluga(id), "hr"), baseDisplay(id, "hr")]),
   ["Webshop, rezervacijski sustavi i napredne funkcionalnosti", "prema ponudi"],
 ];
 
 const additionalEn = [
-  ...additionalIdsAndLabels.map(([id, , labelEn]) => [labelEn, formatCjenikDisplayPrice(getCjenikUsluga(id), "en")]),
+  ...additionalIdsAndLabels.map(([id, , labelEn]) => [labelEn, formatCjenikDisplayPrice(getCjenikUsluga(id), "en"), baseDisplay(id, "en")]),
   ["E-commerce, booking systems, and advanced functionality", "custom quote"],
 ];
 
