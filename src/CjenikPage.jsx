@@ -149,6 +149,10 @@ export default function CjenikPage() {
           <p className="mt-5 max-w-prose text-lg leading-8 text-slate-600">{copy.lead}</p>
           <p className="mt-4 max-w-prose text-sm text-slate-500">{copy.published(cjenikMeta)}</p>
           <p className="mt-1 max-w-prose text-sm text-slate-500">{copy.objekt(cjenikMeta)}</p>
+          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm font-bold text-blue-700">
+            <a href="https://digitalnicjenik.nepar.hr/c/nepar-solutions" className="underline underline-offset-4">{lang === "hr" ? "NEPAR Solutions — cjenik u Publisheru" : "NEPAR Solutions — Publisher price list"}</a>
+            <a href="https://digitalnicjenik.nepar.hr/c/digitalni-cjenik" className="underline underline-offset-4">{lang === "hr" ? "Usluge Digitalnog cjenika — cjenik u Publisheru" : "Digital price-list services — Publisher price list"}</a>
+          </div>
         </div>
       </section>
 
