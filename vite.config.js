@@ -175,6 +175,14 @@ function routeSeoPlugin(siteUrl) {
       writeFileSync(resolve(outDir, "cjenik.csv"), currentCsv, "utf8");
       writeFileSync(resolve(outDir, "cjenik.xml"), currentXml, "utf8");
 
+      // A stable URL must identify the immutable publication it actually serves.
+      // Generate this from the same metadata as the files, never a hard-coded version.
+      const headersPath = resolve(outDir, "_headers");
+      const currentHeaders = [ "csv", "xml" ].map((ext) =>
+        `/cjenik.${ext}\n  Content-Disposition: attachment; filename="${canonicalCjenikFilename(cjenikMeta, ext)}"\n  Cache-Control: no-cache, must-revalidate\n`
+      ).join("\n");
+      writeFileSync(headersPath, currentHeaders, "utf8");
+
       for (const snapshot of retainedSnapshots(archiveDir)) {
         writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(snapshot.meta, "csv")), renderCjenikCsv(snapshot.usluge, snapshot.meta), "utf8");
         writeFileSync(resolve(cjeniciDir, canonicalCjenikFilename(snapshot.meta, "xml")), renderCjenikXml(snapshot.usluge, snapshot.meta), "utf8");

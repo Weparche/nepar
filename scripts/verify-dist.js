@@ -125,6 +125,9 @@ for (const usluga of nepaUsluge) {
 
 const canonicalCsvName = canonicalCjenikFilename(cjenikMeta, "csv");
 const canonicalXmlName = canonicalCjenikFilename(cjenikMeta, "xml");
+for (const [ext, name] of [["csv", canonicalCsvName], ["xml", canonicalXmlName]]) {
+  expect("_headers", `/cjenik.${ext}\n  Content-Disposition: attachment; filename="${name}"`, "stable price-list alias must identify the current immutable filename");
+}
 if (read(`cjenici/${canonicalCsvName}`) !== expectedCjenikCsv) failures.push(`Missing or mismatched canonical dist/cjenici/${canonicalCsvName}`);
 if (read(`cjenici/${canonicalXmlName}`) !== expectedCjenikXml) failures.push(`Missing or mismatched canonical dist/cjenici/${canonicalXmlName}`);
 // Smoke-test za sve prerenderirane rute (ne formalna "SEO pravila" — interna provjera
