@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {MODES,safeContext,sameOrigin,authorized,promptFor} from "../functions/_lib.js";
 import {onRequestPost as start} from "../functions/api/session.js";
 import {onRequestPost as report} from "../functions/api/report.js";
+import {onRequestPost as preflight} from "../functions/api/preflight.js";
 const url="https://talk.nepar.hr/api/session";
 const key="test-only-password";
 function req(url,body,origin="https://talk.nepar.hr",code=key){return new Request(url,{method:"POST",headers:{"Content-Type":"application/json","Origin":origin,"X-Preview-Code":code},body:JSON.stringify(body)});}
@@ -17,3 +18,5 @@ test("loš kod se odbija prije poziva OpenAI-ju",async()=>{const r=await start({
 test("maloljetnički zahtjev se odbija",async()=>{const r=await start({request:req(url,{...good,ageConfirmed:false}),env:{OPENAI_API_KEY:"dummy",TALK_PREVIEW_CODE:key}});assert.equal(r.status,403);});
 test("neispravan SDP se odbija",async()=>{const r=await start({request:req(url,{...good,sdp:"invalid"}),env:{OPENAI_API_KEY:"dummy",TALK_PREVIEW_CODE:key}});assert.equal(r.status,400);});
 test("bez dovoljno prijepisa nema lažne AI analize",async()=>{const r=await report({request:req("https://talk.nepar.hr/api/report",{mode:"salary",transcript:[{role:"user",text:"Bok"}]}),env:{OPENAI_API_KEY:"dummy",TALK_PREVIEW_CODE:key}});assert.equal(r.status,400);});
+
+test("preflight ne traži mikrofon prije uspješne provjere pristupa",async()=>{let noKey=await preflight({request:req("https://talk.nepar.hr/api/preflight",{}),env:{}});assert.equal(noKey.status,503);let denied=await preflight({request:req("https://talk.nepar.hr/api/preflight",{},"https://talk.nepar.hr","wrong"),env:{OPENAI_API_KEY:"dummy",TALK_PREVIEW_CODE:key}});assert.equal(denied.status,401);let ok=await preflight({request:req("https://talk.nepar.hr/api/preflight",{}),env:{OPENAI_API_KEY:"dummy",TALK_PREVIEW_CODE:key}});assert.equal(ok.status,200);});

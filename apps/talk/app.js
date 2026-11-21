@@ -19,7 +19,9 @@ async function startCall(e){e.preventDefault();if(!$("setupForm").reportValidity
  S.mode=$("selectedMode").value;S.scenario=$("scenario").value.trim().slice(0,900);S.difficulty=$("difficulty").value;S.extraContext=$("extraContext").value.trim().slice(0,2400);S.code=$("previewCode").value.trim();
  if(S.scenario.length<5){$("setupError").textContent="Opiši situaciju u nekoliko riječi.";return;}
  if(!S.code){$("setupError").textContent="Za glasovni test potreban je pristupni kod. Ogledni izvještaj možeš vidjeti bez koda.";return;}
- const btn=$("setupForm").querySelector('button[type="submit"]');btn.disabled=true;btn.textContent="Povezujem...";
+ const btn=$("setupForm").querySelector('button[type="submit"]');btn.disabled=true;btn.textContent="Provjeravam pristup...";
+ try{const check=await fetch("/api/preflight",{method:"POST",headers:{"X-Preview-Code":S.code}});const data=await check.json();if(!check.ok||!data.ready)throw Error(data.error||"Glasovni preview trenutačno nije aktiviran.");}catch(err){$("setupError").textContent=err.message||"Provjera pristupa nije uspjela.";btn.disabled=false;btn.innerHTML='Pokreni razgovor <span aria-hidden="true">→</span>';return;}
+ btn.textContent="Povezujem...";
  closeSetup();reset();visible("callScreen",true);document.body.style.overflow="hidden";$("sessionTitle").textContent=MODES[S.mode].title;status("Tražim pristup mikrofonu...");
  try{if(!window.RTCPeerConnection||!navigator.mediaDevices?.getUserMedia)throw Error("Preglednik ne podržava WebRTC ili mikrofon.");
  S.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
