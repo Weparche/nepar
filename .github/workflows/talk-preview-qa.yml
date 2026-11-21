@@ -1,0 +1,27 @@
+name: Talk Preview QA
+on:
+  push:
+    branches: ["preview/talk"]
+    paths:
+      - "apps/talk/**"
+      - ".github/workflows/talk-preview-qa.yml"
+  pull_request:
+    paths:
+      - "apps/talk/**"
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: JavaScript syntax
+        working-directory: apps/talk
+        run: npm run check
+      - name: API privacy and validation tests
+        working-directory: apps/talk
+        run: npm test
