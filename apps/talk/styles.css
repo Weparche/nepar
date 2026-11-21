@@ -83,3 +83,15 @@
 @keyframes pop-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.demo-line{animation:none}}
 @media(max-width:500px){.demo-conversation{height:290px}.demo-controls{display:grid;grid-template-columns:1fr 1fr}.demo-controls .btn:last-child{grid-column:1/-1}.demo-tabs button{font-size:11px;padding:8px 3px}}
+
+/* Visual QA: correct chooser card grid and prevent mobile hero collision */
+.choose-grid button{grid-template-rows:min-content min-content;align-content:center;min-height:84px}
+.choose-grid .choose-icon{grid-column:1;grid-row:1/3}
+.choose-grid strong{grid-column:2;grid-row:1;align-self:end}
+.choose-grid small{grid-column:2;grid-row:2;align-self:start;line-height:1.5}
+.choose-grid .choose-arrow{grid-column:3;grid-row:1/3;align-self:center}
+@media(max-width:430px){
+ .hero-visual{height:400px;min-height:400px}
+ .hero-visual .floating-feedback{bottom:5px}
+ .choose-grid button{min-height:78px}
+}
