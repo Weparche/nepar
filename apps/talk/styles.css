@@ -23,3 +23,63 @@
 
 /* Narrow viewport: prevent 320px overflow without sacrificing the preview CTA */
 @media(max-width:350px){.header-inner{gap:5px}.header-actions{gap:5px}.brand{gap:6px;font-size:13px}.header-inner .btn-small{padding:8px 9px;font-size:9px}.history-link{font-size:9px}.orb-one{width:290px;height:290px}}
+
+/* Conversion flow — quick trainer selection */
+.hero-quick{margin-top:23px;display:grid;gap:10px}
+.quick-label{font-size:11px;font-weight:800;color:#4c685a}
+.quick-mode-list{display:flex;flex-wrap:wrap;gap:7px}
+.quick-mode-list button{background:#f2f6ec;border:1px solid #cfded0;color:#244b3b;border-radius:100px;display:inline-flex;align-items:center;gap:7px;padding:9px 13px;font-size:11px;font-weight:800;transition:background .2s,border-color .2s}
+.quick-mode-list button:hover{background:#dcebcf;border-color:#729780}
+.quick-mode-list button span{font-size:15px;line-height:1}
+.mode-demo-link{display:flex;align-items:center;gap:18px;margin-top:22px;flex-wrap:wrap}
+.mode-demo-link .btn{white-space:nowrap}
+.mode-demo-link span{color:#52665a;font-size:12px}
+/* Mode picker dialog */
+.choose-modal,.demo-modal{position:relative;background:#fffefa;width:min(660px,100%);max-height:min(92vh,900px);overflow:auto;border-radius:24px;padding:38px;box-shadow:0 40px 120px rgba(0,0,0,.22)}
+.choose-modal h2,.demo-modal h2{font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:clamp(36px,4vw,49px);line-height:1.12;letter-spacing:-.05em;margin:14px 50px 13px 0}
+.choose-modal>p:not(.kicker),.demo-modal>p:not(.kicker){color:#51685b;font-size:13px;line-height:1.7;max-width:500px}
+.choose-grid{margin-top:23px;display:grid;gap:10px}
+.choose-grid button{position:relative;display:grid;grid-template-columns:48px 1fr 26px;grid-template-rows:auto auto;column-gap:13px;align-items:center;text-align:left;background:#f5f7f1;border:1px solid #d8e3d7;border-radius:15px;padding:17px 19px;color:#193f31;transition:background .2s,border-color .2s}
+.choose-grid button:hover{background:#e9f3e6;border-color:#78a68c}
+.choose-icon{grid-row:span 2;display:grid;place-items:center;font-size:23px;width:45px;height:45px;background:#deebd5;border-radius:13px}
+.choose-grid strong{font-size:15px;line-height:1.25}
+.choose-grid small{font-size:12px;color:#52665a}
+.choose-arrow{grid-column:3;grid-row:span 2;justify-self:end;font-size:22px}
+/* Compact two-stage onboarding */
+.setup-modal{width:min(560px,100%)}
+.setup-modal .modal-heading h2{font-size:clamp(32px,4vw,43px)}
+.setup-modal .modal-heading p{margin-bottom:15px}
+.setup-modal textarea{min-height:85px}
+.setup-modal .context-details{margin:12px 0 6px}
+.setup-controls{display:flex;align-items:end;justify-content:space-between;gap:14px}
+.setup-controls>div{flex:1;min-width:0}
+.preview-length{font-size:11px;font-weight:800;color:#365e4a;white-space:nowrap;background:#eaf2e4;border:1px solid #cddfce;padding:13px 10px;border-radius:10px;margin-bottom:1px}
+.preview-length>span{font-size:17px;vertical-align:middle}
+.setup-privacy-head{background:#eff6ec;border:1px solid #d7e8d9;border-radius:14px;padding:16px 17px;display:grid;grid-template-columns:32px 1fr;column-gap:10px;margin:12px 0 17px}
+.setup-privacy-head strong{font-size:14px;align-self:end}
+.setup-privacy-head p{grid-column:2;font-size:12px;line-height:1.6;margin:5px 0 0;color:#526b5b}
+.setup-lock{background:#d3e9d2;border-radius:50%;width:29px;height:29px;display:grid;place-items:center;font-size:19px}
+.wizard-actions{margin-top:23px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wizard-actions .btn{width:100%}
+.setup-modal .check-row{line-height:1.55}
+.setup-modal .input-hint{line-height:1.6}
+.form-error:not(:empty){padding:8px 0 0}
+@media(max-width:760px){.hero{padding-top:39px;gap:16px}.hero h1{margin:18px 0}.hero-quick{margin-top:19px}.trust-line{margin-top:23px}.hero-visual{height:345px}.choose-modal,.demo-modal{padding:30px 24px}.setup-modal{padding:25px 23px;max-height:min(92dvh,760px)}.setup-modal .modal-heading h2{margin:10px 0}.setup-modal label:not(.check-row){margin-top:12px}.setup-modal .modal-actions{position:static;margin-bottom:0;padding:0}.setup-modal .modal-heading p{margin-bottom:8px}.choose-grid button{padding:13px}}
+@media(max-width:430px){.hero .hero-buttons{margin-top:24px}.quick-mode-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.quick-mode-list button{padding:10px 7px;font-size:10px;justify-content:center;white-space:nowrap}.hero-quick{margin-top:13px}.trust-line{margin-top:18px}.hero-visual{height:315px}.setup-modal .modal-heading h2{font-size:32px}.preview-length{font-size:10px;padding:12px 8px}.choose-modal,.demo-modal{padding:24px 18px}.choose-grid strong{font-size:13px}.choose-grid small{font-size:11px}.choose-grid button{grid-template-columns:40px 1fr 18px;gap:10px}.choose-icon{width:38px;height:38px}.wizard-actions .btn{font-size:12px;padding:12px 9px}}
+/* Interactive sample conversation, not a paid model session */
+.demo-disclaimer{color:#536e5d!important}
+.demo-tabs{display:flex;background:#edf2e9;border-radius:999px;padding:4px;gap:4px;margin:20px 0}
+.demo-tabs button{flex:1;background:transparent;border:0;border-radius:999px;padding:10px;font-weight:800;font-size:12px;color:#43604e}
+.demo-tabs button[aria-pressed="true"]{background:#173b31;color:#fff}
+.demo-conversation{height:min(40vh,340px);min-height:230px;overflow:auto;background:#f2f6ef;border:1px solid #dce6da;border-radius:17px;padding:18px;display:flex;flex-direction:column;gap:13px;scroll-behavior:smooth}
+.demo-line{max-width:88%;border-radius:14px;padding:12px 14px;animation:pop-in .2s ease-out}
+.demo-line.demo-ai{background:#fff;align-self:flex-start;border:1px solid #dbe5d8}
+.demo-line.demo-user{background:#d8ebd4;align-self:flex-end}
+.demo-line-who{color:#42664f;letter-spacing:.11em;font-size:9px;font-weight:800}
+.demo-line p{font-size:13px;line-height:1.65;margin:6px 0 0;color:#193d30}
+.demo-controls{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.demo-controls .btn{font-size:12px;gap:7px;padding:11px 16px}
+.demo-audio-note{font-size:11px;color:#586c5f;margin:13px 0 0}
+@keyframes pop-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.demo-line{animation:none}}
+@media(max-width:500px){.demo-conversation{height:290px}.demo-controls{display:grid;grid-template-columns:1fr 1fr}.demo-controls .btn:last-child{grid-column:1/-1}.demo-tabs button{font-size:11px;padding:8px 3px}}
