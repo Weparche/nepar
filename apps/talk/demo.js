@@ -47,5 +47,5 @@ document.addEventListener("click",e=>{
 byId("demoReplay").addEventListener("click",runExample);
 byId("demoSpeak").addEventListener("click",speak);
 byId("demoStart").addEventListener("click",()=>{const mode=current;closeDemo();document.querySelector('.quick-mode-list [data-open="'+mode+'"]')?.click();});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!byId("demoOverlay").classList.contains("hidden"))closeDemo();});
+document.addEventListener("keydown",e=>{const overlay=byId("demoOverlay");if(overlay.classList.contains("hidden"))return;if(e.key==="Escape"){closeDemo();return;}if(e.key!=="Tab")return;const f=[...overlay.querySelectorAll("button:not(:disabled)")].filter(x=>x.getClientRects().length);if(!f.length)return;if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus();}else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus();}});
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&"speechSynthesis" in window)window.speechSynthesis.cancel();});
