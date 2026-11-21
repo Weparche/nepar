@@ -20,3 +20,6 @@
 .eyebrow,.kicker{color:#365e4c}.light-kicker{color:#cce6d6}.trust-line{color:#52645d}.floating-feedback div>span{color:#59655f}.value-grid strong{color:#315f4b}.section-intro>p{color:#536b5f}.chip-available{color:#285c3f}.mode-footer>span{color:#52695e}.chip-soft{color:#285f46}.sample-left>p{color:#4f685c}.rec-label{color:#35734c}.pricing-head h2 em{color:#44735e}.pricing-head>p:last-child{color:#4f6959}.price-overline{color:#3b7251}.pricing-footnote{color:#4c6556}.closing-inner .kicker{color:#285a42}#reportIntro{color:#52685c}.report-footnote{color:#4f6356}
 
 .audio-unlock{position:relative;z-index:2;display:inline-flex;margin:6px 0 4px;border-color:#558e75;background:#fff;padding:10px 22px}.audio-unlock:before{content:"♪";font-size:17px}
+
+/* Narrow viewport: prevent 320px overflow without sacrificing the preview CTA */
+@media(max-width:350px){.header-inner{gap:5px}.header-actions{gap:5px}.brand{gap:6px;font-size:13px}.header-inner .btn-small{padding:8px 9px;font-size:9px}.history-link{font-size:9px}.orb-one{width:290px;height:290px}}
