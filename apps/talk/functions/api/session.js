@@ -10,7 +10,7 @@ export async function onRequestPost({request,env}){
  if(!Object.hasOwn(MODES,data.mode))return errorResponse("Nepoznat trening.");
  const scenario=safeContext(data.scenario);if(scenario.length<5)return errorResponse("Opiši situaciju s nekoliko riječi.");
  if(typeof data.sdp!=="string"||data.sdp.length<100||data.sdp.length>128000||!data.sdp.includes("v=0"))return errorResponse("Neispravan WebRTC zahtjev.");
- const payload={session:{model:"gpt-live-1.1",instructions:promptFor(data.mode,scenario,data.difficulty),audio:{output:{voice:"marin"}},delegation:{type:"client"}},transport:{type:"webrtc",sdp:data.sdp}};
+ const payload={session:{model:"gpt-live-1.1",instructions:promptFor(data.mode,scenario,data.difficulty),input:[{type:"message",role:"developer",content:[{type:"input_text",text:"Na početku sesije pozdravi na hrvatskom, objasni da je ovo simulacija i postavi prvo kratko pitanje. Zatim stani i slušaj."}]}],store:false,audio:{output:{voice:"marin"}},delegation:{type:"client"}},transport:{type:"webrtc",sdp:data.sdp}};
  try{
   const res=await fetch("https://api.openai.com/v1/live/sessions",{method:"POST",headers:{"Authorization":"Bearer "+env.OPENAI_API_KEY,"Content-Type":"application/json"},body:JSON.stringify(payload),signal:AbortSignal.timeout(25000)});
   const result=await res.json().catch(()=>null);
