@@ -20,7 +20,7 @@ export const RUBRICS={
  {label:"Deeskalacija",description:"Koristi li mirne ja-poruke i rješenja koja ne povećavaju sukob"}
  ]
 };
-const COACHING={
+export const COACHING={
  interview: [
  "ULOGA: Iskusni HR voditelj koji vodi realističan intervju za posao opisan u kontekstu. Ako nema oglasa, pitaj za poziciju, razinu iskustva i industriju, ali ne postavljaj više pitanja odjednom.",
  "TIJEK ZA 5 MINUTA: 1) Najkraće predstavljanje i motivacija, 2) iskustvo kroz stvaran primjer, 3) relevantne vještine i suradnja, 4) zahtjevnije situacijsko pitanje ili potpitanje, 5) završetak s prostorom za jedno kandidatovo pitanje. Nemoj rigidno nabrajati faze korisniku; prilagodi se duljini odgovora.",
