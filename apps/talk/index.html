@@ -3,56 +3,106 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#102626">
+  <meta name="theme-color" content="#0d6a4b">
   <meta name="description" content="NEPAR Talk: uvježbaj razgovor za posao, pregovore za povišicu ili težak razgovor uz glasovnog AI trenera na hrvatskom jeziku.">
   <meta property="og:title" content="NEPAR Talk — Uvježbaj razgovor koji je važan">
   <meta property="og:description" content="Stvarne simulacije, glasovni razgovor i konkretan plan kako razgovarati bolje.">
   <title>NEPAR Talk — Vježbaj razgovore koji su važni</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23102626'/%3E%3Cpath d='M15 35v-8m9 18V19m9 22V23m9 12V29m8 6v-8' stroke='%23b8e5cf' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/landing-v2.css">
   <script type="module" src="/app.js"></script>
   <script type="module" src="/demo.js"></script>
 </head>
-<body>
+<body class="talk-v2">
   <a class="skip" href="#main">Preskoči na sadržaj</a>
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="brand" href="#vrh" aria-label="NEPAR Talk – naslovnica"><span class="brand-icon"><span></span><span></span><span></span><span></span><span></span></span><span>NEPAR<span class="brand-soft">TALK</span></span></a>
-      <nav class="desktop-nav" aria-label="Glavna navigacija"><a href="#treneri">Treneri</a><a href="#kako-radi">Kako radi</a><a href="#cijene">Cijene</a></nav>
-      <div class="header-actions"><button class="history-link" id="historyBtn" type="button">Moj napredak</button><span class="header-note"><span class="green-dot"></span> Privatni preview</span><button class="btn btn-small btn-dark" data-choose="1">Privatni test <span aria-hidden="true">↗</span></button></div>
+      <a class="brand" href="#vrh" aria-label="NEPAR Talk — naslovnica">
+        <span class="brand-icon" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+        <span class="brand-wordmark">NEPAR <strong>Talk</strong></span>
+      </a>
+      <nav class="desktop-nav" id="mainNav" aria-label="Glavna navigacija">
+        <a class="nav-active" href="#vrh">Početna</a><a href="#treneri">AI treneri</a><a href="#kako-radi">Kako radi</a><a href="#cijene">Cijene</a><a href="#faq">FAQ</a>
+        <button type="button" class="mobile-history" id="mobileHistory">Moj napredak</button>
+      </nav>
+      <div class="header-actions">
+        <button class="history-link" id="historyBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2c0-4 3-6 8-6s8 2 8 6v2"/></svg> Moj napredak</button>
+        <button class="btn btn-small btn-dark header-test" type="button" data-choose="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg> Privatni test</button>
+        <button class="menu-toggle" type="button" id="menuToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Otvori izbornik"><span></span><span></span><span></span></button>
+      </div>
     </div>
   </header>
-  <main id="main">
+  <main id="main" class="landing-v2">
     <section class="hero wrap" id="vrh">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="eyebrow-line"></span> AI TRENING KOMUNIKACIJE · NA HRVATSKOM</div>
-        <h1>Važni razgovori zaslužuju <em>dobru pripremu.</em></h1>
-        <p class="hero-lead">Razgovor za posao, povišica ili nešto što već dugo želiš reći. Vježbaj naglas s AI sugovornikom — bez nelagode i bez pritiska.</p>
-        <div class="hero-buttons"><button class="btn btn-primary btn-big" data-choose="1">Odaberi svog trenera <span aria-hidden="true">↗</span></button><button class="btn btn-text" data-demo-open="1" type="button">Poslušaj demo <span aria-hidden="true">▶</span></button></div>
-        <div class="hero-quick" aria-label="Brzi odabir trenera"><span class="quick-label">Odmah uvježbaj:</span><div class="quick-mode-list"><button type="button" data-open="interview"><span aria-hidden="true">▣</span> Intervju</button><button type="button" data-open="salary"><span aria-hidden="true">↗</span> Povišicu</button><button type="button" data-open="difficult"><span aria-hidden="true">◎</span> Težak razgovor</button></div></div>
-        <div class="trust-line"><span class="trust-check">✓</span> Za odrasle 18+ <span class="sep">·</span> <span class="trust-check">✓</span> Bez automatskog spremanja razgovora <span class="sep">·</span> <span class="trust-check">✓</span> Govori prirodno</div>
-      </div>
-      <div class="hero-visual" aria-label="Prikaz glasovne vježbe">
-        <div class="visual-orb orb-one"></div><div class="visual-orb orb-two"></div>
-        <div class="talk-card">
-          <div class="talk-top"><span class="talk-logo-dot"></span><span>LIVE TRENING</span><span class="talk-ready"><span class="green-dot"></span> Primjer</span></div>
-          <div class="talk-avatar"><div class="talk-avatar-ring ring-out"></div><div class="talk-avatar-ring ring-in"></div><div class="talk-avatar-core"><div class="mini-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
-          <div class="talk-question">„Zašto bismo zaposlili baš vas?”</div>
-          <div class="talk-caption">AI glumi poslodavca. Ti odgovaraš kao na pravom razgovoru.</div>
-          <div class="talk-controls"><span class="call-tag">01 / 05 · Intervju</span><div class="talk-microphone" aria-hidden="true">◉</div><span class="call-tag">00:42</span></div>
+        <div class="eyebrow hero-eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="10" y="3" width="4" height="12" rx="2"/><path d="M6 10a6 6 0 0 0 12 0M12 16v5m-4 0h8"/></svg> AI glasovni trener</div>
+        <h1><span class="desktop-title">Vježbaj razgovor za posao, pregovore za povišicu i teške razgovore <em>s AI trenerom</em></span><span class="mobile-title">Vježbaj teške razgovore <em>s AI trenerom</em></span></h1>
+        <p class="hero-lead">Prirodni glasovni razgovori u realnim situacijama. Vježbaj, dobij konkretnu povratnu informaciju i uđi u važan razgovor spremniji.</p>
+        <div class="hero-benefits">
+          <div><span class="benefit-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-7l1-7"/></svg></span><span>Realistične<br>simulacije</span></div>
+          <div><span class="benefit-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V12m6 8V7m6 13V3m4 17H2"/></svg></span><span>Trenutna<br>povratna info</span></div>
+          <div><span class="benefit-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/><path d="m12 12 8-8"/></svg></span><span>Konkretni savjeti<br>i sljedeći koraci</span></div>
         </div>
-        <div class="floating-feedback"><span class="feedback-icon">✦</span><div><strong>Svaki odgovor je vježba.</strong><span>Dobivaš konkretne prijedloge.</span></div></div>
+        <div class="hero-buttons">
+          <button class="btn btn-primary btn-big" type="button" data-choose="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg> Privatni test <span aria-hidden="true">→</span></button>
+          <button class="btn btn-text hero-secondary" type="button" data-demo-open="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10 6z"/></svg> Poslušaj demo</button>
+        </div>
+        <div class="trust-line"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg> Samo za odrasle 18+ <span class="sep">·</span> Privatni preview <span class="sep">·</span> Bez automatskog spremanja zvuka</div>
+      </div>
+      <div class="hero-visual" aria-label="Ogledni prikaz NEPAR Talk glasovne simulacije">
+        <div class="hero-blob" aria-hidden="true"></div>
+        <div class="conversation-preview">
+          <div class="preview-head">
+            <img class="preview-avatar" src="/assets/coach-avatar.webp" width="86" height="86" alt="">
+            <div class="preview-person"><span class="preview-overline">AI TRENER</span><h2>Trener za posao</h2><p>Simulacija razgovora za posao</p></div>
+            <span class="preview-status"><span></span> Demo</span>
+            <span class="preview-timer" aria-label="Primjer trajanja razgovora">02:34</span>
+          </div>
+          <div class="preview-chat">
+            <div class="preview-message preview-ai"><span class="preview-bot-icon" aria-hidden="true">▥</span><div class="preview-bubble"><span>AI TRENER</span><p>Pozdrav! Ja sam tvoj AI trener. Zamislimo da si na pravom intervjuu. Možeš li mi ukratko predstaviti sebe?</p></div><time>02:10</time></div>
+            <div class="preview-message preview-human"><time>02:23</time><div class="preview-bubble"><p>Naravno! Radim na web aplikacijama, posebno s Reactom, i volim rješavati zahtjevne probleme.</p></div><span class="preview-user-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2c0-4 3-6 8-6s8 2 8 6v2"/></svg></span></div>
+            <div class="preview-message preview-ai preview-third"><span class="preview-bot-icon" aria-hidden="true">▥</span><div class="preview-bubble"><span>AI TRENER</span><p>Odlično! Možeš li mi opisati projekt na kojem si osobno imao najveći utjecaj?</p></div><time>02:34</time></div>
+          </div>
+          <div class="preview-actions">
+            <button class="preview-advice" type="button" data-demo-open="1"><span aria-hidden="true">✧</span> Poslušaj demo</button>
+            <button class="preview-microphone" type="button" data-demo-open="1" aria-label="Poslušaj ogledni glas trenera"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0m-7 7v4m-4 0h8"/></svg></button>
+            <button class="preview-end" type="button" data-open="interview"><span aria-hidden="true">■</span> Isprobaj trenera</button>
+          </div>
+          <div class="preview-caption"><span class="preview-caption-dot"></span> Ogledni razgovor · stvarni trener razgovara uživo</div>
+        </div>
       </div>
     </section>
-    <section class="value-strip"><div class="wrap value-grid"><div><strong>01.</strong><span>Odaberi situaciju</span></div><div><strong>02.</strong><span>Razgovaraj naglas</span></div><div><strong>03.</strong><span>Dobij svoj plan napretka</span></div></div></section>
-    <section class="section wrap" id="treneri">
-      <div class="section-intro"><div><p class="kicker">TVOJA SLJEDEĆA VJEŽBA</p><h2>Koji razgovor želiš<br><em>odraditi bolje?</em></h2></div><p>Tri pažljivo osmišljena treninga za početak. Svaki ima svoj scenarij, izazove i povratne informacije — ne samo običan chat.</p></div>
+    <section class="section wrap trainer-section" id="treneri">
+      <div class="trainer-section-head"><span></span><h2>Odaberi svog AI trenera</h2><span></span></div>
       <div class="mode-grid">
-        <article class="mode-card active-card"><div class="mode-card-top"><span class="mode-number">01 / KARIJERA</span><span class="chip chip-available">Privatni preview</span></div><div class="mode-art art-interview"><div class="art-briefcase">▣</div><div class="art-bubble bubble-a">Recite nam nešto o sebi.</div><div class="art-bubble bubble-b">Zašto baš ova pozicija?</div></div><h3>Razgovor za posao</h3><p>Prođi kroz zahtjevna HR pitanja i uvježbaj odgovore koji ostavljaju dobar dojam.</p><div class="mode-footer"><span>HR intervju · Potpitanja</span><button class="round-button" data-open="interview" aria-label="Pokreni trening za razgovor za posao">↗</button></div></article>
-        <article class="mode-card active-card"><div class="mode-card-top"><span class="mode-number">02 / PREGOVORI</span><span class="chip chip-available">Privatni preview</span></div><div class="mode-art art-salary"><div class="art-chart"><span></span><span></span><span></span><span></span><span></span></div><div class="art-bubble bubble-a">Trenutačno nemamo budžet.</div><div class="art-spark">↗</div></div><h3>Pregovori za povišicu</h3><p>Nauči predstaviti rezultate, odgovoriti na prigovore i ostati miran dok pregovaraš.</p><div class="mode-footer"><span>Argumenti · Pregovaranje</span><button class="round-button" data-open="salary" aria-label="Pokreni trening za povišicu">↗</button></div></article>
-        <article class="mode-card active-card"><div class="mode-card-top"><span class="mode-number">03 / ODNOSI</span><span class="chip chip-available">Privatni preview</span></div><div class="mode-art art-difficult"><div class="art-circle-one"></div><div class="art-circle-two"></div><div class="art-bubble bubble-c">Htio bih ti nešto reći...</div></div><h3>Teški razgovori</h3><p>Postavi granice, izrazi što osjećaš i vježbaj komunikaciju bez optuživanja.</p><div class="mode-footer"><span>Granice · Asertivnost</span><button class="round-button" data-open="difficult" aria-label="Pokreni trening teškog razgovora">↗</button></div></article>
+        <article class="mode-card coach-interview">
+          <img class="coach-photo" src="/assets/coach-interview.webp" width="153" height="208" alt="" loading="lazy" decoding="async">
+          <div class="coach-card-inner">
+            <div class="coach-card-title"><span class="coach-square-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18m-11 0v2h4v-2"/></svg></span><h3>Razgovor za posao</h3></div>
+            <p>Uvježbaj intervju, odgovaraj na realna pitanja i dobij konkretnu analizu svojih odgovora.</p>
+            <button class="coach-cta" type="button" data-open="interview">Isprobaj trenera <span aria-hidden="true">→</span></button>
+          </div>
+        </article>
+        <article class="mode-card coach-salary">
+          <img class="coach-photo" src="/assets/coach-salary.webp" width="110" height="208" alt="" loading="lazy" decoding="async">
+          <div class="coach-card-inner">
+            <div class="coach-card-title"><span class="coach-square-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20v-6m6 6V9m6 11V4m4 16H2"/></svg></span><h3>Pregovori za povišicu</h3></div>
+            <p>Nauči predstaviti svoju vrijednost, odgovoriti na prigovore i pregovarati o boljim uvjetima.</p>
+            <button class="coach-cta" type="button" data-open="salary">Isprobaj trenera <span aria-hidden="true">→</span></button>
+          </div>
+        </article>
+        <article class="mode-card coach-difficult">
+          <img class="coach-photo" src="/assets/coach-difficult.webp" width="155" height="207" alt="" loading="lazy" decoding="async">
+          <div class="coach-card-inner">
+            <div class="coach-card-title"><span class="coach-square-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 11a7 7 0 0 1-7 7H7l-4 3v-7a7 7 0 1 1 14 0"/><path d="M14 5h2a5 5 0 0 1 5 5v3l-3 3"/></svg></span><h3>Teški razgovori</h3></div>
+            <p>Pripremi se za osjetljive situacije s partnerom, kolegom ili obitelji. Vježbaj jasnu komunikaciju.</p>
+            <button class="coach-cta" type="button" data-open="difficult">Isprobaj trenera <span aria-hidden="true">→</span></button>
+          </div>
+        </article>
       </div>
-      <div class="mode-demo-link"><button class="btn btn-outline" data-demo-open="1" type="button">Pogledaj ogledni razgovor <span aria-hidden="true">▶</span></button><span>Primjer je unaprijed pripremljen; stvarni trener odgovara uživo.</span></div><div class="more-modes"><span class="more-dot">＋</span><p><strong>U pripremi:</strong> Javni nastup, prodajne vještine, komunikacija u vezi i osobni razvoj.</p><span>Sljedeće faze</span></div>
+      <div class="mode-demo-link"><button class="btn btn-outline" data-demo-open="1" type="button">Poslušaj ogledni razgovor <span aria-hidden="true">▶</span></button><span>Demo je pripremljen unaprijed. U stvarnoj sesiji AI odgovara na tvoje riječi.</span></div>
+      <div class="more-modes"><span class="more-dot">＋</span><p><strong>U pripremi:</strong> Javni nastup, prodajne vještine, komunikacija u vezi i osobni razvoj.</p><span>Sljedeće faze</span></div>
     </section>
     <section class="feature-section" id="kako-radi"><div class="wrap feature-grid"><div class="feature-left"><p class="kicker light-kicker">KAKO FUNKCIONIRA</p><h2>Nije još jedan chatbot.<br><em>To je proba za stvarni život.</em></h2><p>Najbolji način da uvježbaš razgovor jest da ga stvarno izgovoriš. AI odgovara u trenutku, postavlja potpitanja i prilagođava se tvojim odgovorima.</p><button class="btn btn-light" data-choose="1">Odaberi trenera <span aria-hidden="true">↗</span></button></div><div class="feature-right">
       <div class="feature-step"><span>01</span><div><h3>Postavi scenu</h3><p>Reci za kakav se razgovor pripremaš, s kim pričaš i što želiš postići.</p></div></div>
@@ -62,7 +112,7 @@
     </div></div></section>
     <section class="section wrap results-section"><div class="section-intro"><div><p class="kicker">KAKO IZGLEDA POVRATNA INFORMACIJA</p><h2>Ne samo „bravo”.<br><em>Nego što popraviti.</em></h2></div><p>Nakon završetka razgovora dobivaš sažetak, jasne primjere i idući korak. Ocjene su pomoć pri vježbanju, ne objektivna procjena osobe.</p></div><div class="sample-report"><div class="sample-left"><span class="chip chip-soft">OGLEDNI IZVJEŠTAJ</span><h3>„Dobar početak. Argumente poveži s rezultatom.”</h3><p>Simulacija pregovora o povišici</p><div class="score-grid"><div><span>Jasnoća zahtjeva</span><strong>8/10</strong><div class="progress"><span style="width:80%"></span></div></div><div><span>Argumentacija</span><strong>6/10</strong><div class="progress"><span style="width:60%"></span></div></div><div><span>Pregovaračka fleksibilnost</span><strong>7/10</strong><div class="progress"><span style="width:70%"></span></div></div></div></div><div class="sample-right"><div class="rec-label">PRIJEDLOG ZA SLJEDEĆI PUT</div><div class="sample-quote">„U posljednjih šest mjeseci preuzeo sam dva nova projekta i skratio rok isporuke. Volio bih razgovarati o usklađivanju plaće s ovom odgovornošću.”</div><button class="btn btn-outline" data-sample="salary">Otvori ogledni izvještaj ↗</button></div></div></section>
     <section class="pricing-section" id="cijene"><div class="wrap"><div class="pricing-head"><p class="kicker">PLANIRANI PAKETI</p><h2>Počni besplatno.<br><em>Nastavi kad ti zatreba.</em></h2><p>Plaćanje još nije aktivirano. Ispod su planirane cijene za komercijalno izdanje.</p></div><div class="price-grid"><article class="price-card"><span class="price-overline">PROBA</span><h3>Besplatno</h3><p>Upoznaj trenera i testiraj način rada.</p><div class="price"><strong>0 €</strong></div><ul><li>Do 5 minuta testnog razgovora*</li><li>Odabir jednog scenarija</li><li>Ogledni izvještaj</li></ul><button class="btn btn-outline btn-block" data-choose="1">Privatni test uz kod</button></article><article class="price-card featured"><span class="price-overline">JEDNA PRIPREMA</span><h3>Pripremi se</h3><p>Za razgovor koji te čeka ovih dana.</p><div class="price"><strong>9,90 €</strong><span>/ paket</span></div><ul><li>30 minuta glasovnog treninga</li><li>Izbor svih aktivnih scenarija</li><li>Personalizirane povratne informacije</li></ul><button class="btn btn-disabled btn-block" disabled>Uskoro dostupno</button></article><article class="price-card"><span class="price-overline">REDOVITI TRENING</span><h3>Talk Plus</h3><p>Za komunikacijske vještine koje gradiš redovito.</p><div class="price"><strong>19,90 €</strong><span>/ mj.</span></div><ul><li>120 minuta mjesečno</li><li>Napredak kroz više sesija</li><li>Detaljne vježbe i analiza</li></ul><button class="btn btn-disabled btn-block" disabled>Uskoro dostupno</button></article></div><p class="pricing-footnote">* Glasovni test u previewu dostupan je samo uz pristupni kod i aktiviranu AI integraciju. Nema naplate ni automatske pretplate.</p></div></section>
-    <section class="faq-section wrap"><div class="section-intro"><div><p class="kicker">DOBRO JE ZNATI</p><h2>Pitanja prije<br><em>prvog razgovora.</em></h2></div></div><div class="faq-grid"><details><summary>Je li razgovor stvarno glasovni?</summary><p>Da, kada je omogućen GPT-Live-1.1 i imaš pristupni kod za preview. Potreban je mikrofon i dopuštenje preglednika. Bez aktivnog API-ja dostupni su pregled proizvoda i ogledni izvještaj.</p></details><details><summary>Spremate li moje razgovore?</summary><p>Web ne sprema audio. Prijepis nastaje tijekom razgovora samo za prikaz i izradu povratne informacije; lokalna povijest sprema se isključivo ako je sam odabereš. Podatke poslane AI pružatelju obrađuje taj pružatelj prema primjenjivim uvjetima.</p></details><details><summary>Može li zamijeniti psihologa ili savjetnika?</summary><p>Ne. NEPAR Talk je trening komunikacijskih vještina za odrasle, nije psihoterapija, psihijatrija ni usluga krizne intervencije. Kod opasnosti ili neposredne krize zovi 112 ili potraži stručnu pomoć.</p></details><details><summary>Mogu li govoriti hrvatski?</summary><p>Da. Treneri su podešeni za razgovor na hrvatskom. Kvaliteta ovisi o modelu, mikrofonu i vezi. Scenariji mogu uključivati engleski kada je to korisno za pripremu.</p></details></div></section>
+    <section class="faq-section wrap" id="faq"><div class="section-intro"><div><p class="kicker">DOBRO JE ZNATI</p><h2>Pitanja prije<br><em>prvog razgovora.</em></h2></div></div><div class="faq-grid"><details><summary>Je li razgovor stvarno glasovni?</summary><p>Da, kada je omogućen GPT-Live-1.1 i imaš pristupni kod za preview. Potreban je mikrofon i dopuštenje preglednika. Bez aktivnog API-ja dostupni su pregled proizvoda i ogledni izvještaj.</p></details><details><summary>Spremate li moje razgovore?</summary><p>Web ne sprema audio. Prijepis nastaje tijekom razgovora samo za prikaz i izradu povratne informacije; lokalna povijest sprema se isključivo ako je sam odabereš. Podatke poslane AI pružatelju obrađuje taj pružatelj prema primjenjivim uvjetima.</p></details><details><summary>Može li zamijeniti psihologa ili savjetnika?</summary><p>Ne. NEPAR Talk je trening komunikacijskih vještina za odrasle, nije psihoterapija, psihijatrija ni usluga krizne intervencije. Kod opasnosti ili neposredne krize zovi 112 ili potraži stručnu pomoć.</p></details><details><summary>Mogu li govoriti hrvatski?</summary><p>Da. Treneri su podešeni za razgovor na hrvatskom. Kvaliteta ovisi o modelu, mikrofonu i vezi. Scenariji mogu uključivati engleski kada je to korisno za pripremu.</p></details></div></section>
     <section class="closing-cta"><div class="wrap closing-inner"><div><p class="kicker">MALI KORAK. VELIKA RAZLIKA.</p><h2>Sljedeći put reci<br><em>ono što stvarno misliš.</em></h2></div><button class="btn btn-dark btn-big" data-choose="1">Započni trening ↗</button></div></section>
   </main>
   <footer class="footer"><div class="wrap footer-inner"><div><a class="brand footer-brand" href="#vrh"><span class="brand-icon"><span></span><span></span><span></span><span></span><span></span></span><span>NEPAR<span class="brand-soft">TALK</span></span></a><p>Komunikacija se uči razgovorom.</p></div><div class="footer-links"><span>© 2026 NEPAR</span><a href="mailto:nepar@nepar.hr?subject=NEPAR%20Talk%20preview">Kontakt</a><a href="#privatnost">Privatnost</a></div></div><div class="wrap footer-legal" id="privatnost">NEPAR Talk je alat za vježbanje komunikacije, namijenjen punoljetnim osobama. Nije medicinski, pravni, psihološki niti financijski savjet. Za preview nije omogućena naplata. Ne šalji lozinke, medicinske nalaze ni tuđe povjerljive podatke.</div></footer>

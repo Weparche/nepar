@@ -70,3 +70,16 @@ test("mobile Live screen is one fixed viewport with a separately scrolling trans
  assert.match(css,/#callScreen\s+\.transcript-scroll\s*\{[^}]*overflow-y:auto/);
  assert.match(css,/#callScreen\s+\.transcript-panel\s*\{[^}]*min-height:0/);
 });
+
+test("landing v2 keeps preview trust copy and all three coach CTAs",()=>{
+ const html=readFileSync(new URL("../index.html",import.meta.url),"utf8");
+ assert.match(html,/class="talk-v2"/);
+ assert.match(html,/id="mainNav"/);
+ assert.match(html,/id="menuToggle"/);
+ assert.match(html,/data-open="interview"/);
+ assert.match(html,/data-open="salary"/);
+ assert.match(html,/data-open="difficult"/);
+ assert.match(html,/data-demo-open="1"/);
+ assert.match(html,/Ogledni razgovor/);
+ assert.doesNotMatch(html,/id="loginButton"/);
+});

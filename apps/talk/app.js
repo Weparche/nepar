@@ -104,3 +104,24 @@ function showHistory(){
   });
 }
 $("historyBtn").addEventListener("click",showHistory);
+
+/* Responsive landing navigation. Keep existing coaching modal and local-history actions. */
+(()=>{
+ const toggle=document.getElementById("menuToggle");
+ const nav=document.getElementById("mainNav");
+ const mobileHistory=document.getElementById("mobileHistory");
+ if(!toggle||!nav)return;
+ function setOpen(open){
+   nav.classList.toggle("nav-open",open);
+   toggle.setAttribute("aria-expanded",String(open));
+   toggle.setAttribute("aria-label",open?"Zatvori izbornik":"Otvori izbornik");
+ }
+ toggle.addEventListener("click",()=>setOpen(toggle.getAttribute("aria-expanded")!=="true"));
+ nav.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>setOpen(false)));
+ mobileHistory?.addEventListener("click",()=>{setOpen(false);document.getElementById("historyBtn")?.click();});
+ document.addEventListener("click",e=>{
+   if(nav.classList.contains("nav-open")&&!e.target.closest(".header-inner"))setOpen(false);
+ });
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&nav.classList.contains("nav-open")){setOpen(false);toggle.focus();}});
+ window.matchMedia("(min-width: 861px)").addEventListener("change",e=>{if(e.matches)setOpen(false)});
+})();

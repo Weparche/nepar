@@ -1,0 +1,218 @@
+/* NEPAR Talk — chosen visual direction (desktop + mobile), landing only.
+   Live call cockpit and the existing modal/report flows keep their own styling. */
+:root{--talk-navy:#111e32;--talk-green:#0e6e4a;--talk-green-dark:#07583c;--talk-cream:#fffaf6}
+body.talk-v2{background:var(--talk-cream);color:var(--talk-navy)}
+.talk-v2 .wrap{width:min(1320px,calc(100% - 72px))}
+.talk-v2 .site-header{background:rgba(255,250,246,.96);border-bottom:0;box-shadow:0 1px 0 rgba(38,58,46,.06);z-index:30}
+.talk-v2 .header-inner{min-height:78px;gap:28px}
+.talk-v2 .brand{font-size:25px;letter-spacing:-.055em;gap:11px;color:var(--talk-navy);font-weight:800}
+.talk-v2 .brand-icon{width:49px;height:43px;border-radius:14px 14px 14px 6px;position:relative;background:linear-gradient(155deg,#309966,#08744f);box-shadow:0 5px 12px rgba(15,94,64,.15);gap:3px}
+.talk-v2 .brand-icon:after{content:"";position:absolute;bottom:-5px;left:8px;border-width:8px 8px 0 0;border-style:solid;border-color:#137f57 transparent transparent transparent;transform:rotate(12deg)}
+.talk-v2 .brand-icon span{background:#fff;width:3px}
+.talk-v2 .brand-wordmark{white-space:nowrap}
+.talk-v2 .brand-wordmark strong{color:#127c51}
+.talk-v2 .desktop-nav{display:flex;align-items:center;gap:8px;margin-left:auto;color:var(--talk-navy);font-size:13px}
+.talk-v2 .desktop-nav>a{padding:10px 13px;border-radius:99px;white-space:nowrap;transition:background .2s}
+.talk-v2 .desktop-nav>a:hover,.talk-v2 .desktop-nav .nav-active{background:#e5f0e3;color:#0f412f}
+.talk-v2 .header-actions{display:flex;gap:12px;align-items:center}
+.talk-v2 .history-link{display:inline-flex;gap:9px;align-items:center;background:transparent;border:1px solid #cfd5d2;border-radius:12px;padding:11px 14px;color:var(--talk-navy);font-size:12px;white-space:nowrap}
+.talk-v2 .history-link svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.talk-v2 .history-link:hover{background:#f3f6ee;text-decoration:none}
+.talk-v2 .header-test{background:linear-gradient(160deg,#238b5e,#075a3f);color:#fff;border-radius:11px;font-size:12px;white-space:nowrap;padding:12px 17px;box-shadow:0 6px 15px rgba(14,99,65,.13)}
+.talk-v2 .header-test svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+.talk-v2 .mobile-history,.talk-v2 .menu-toggle{display:none}
+.talk-v2 .hero{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.13fr);gap:32px;align-items:center;padding-top:43px;padding-bottom:24px}
+.talk-v2 .hero-copy{min-width:0;position:relative;z-index:2}
+.talk-v2 .hero-eyebrow{display:inline-flex;align-items:center;gap:9px;background:#e4f1de;border-radius:99px;padding:8px 14px;color:#173b2d;letter-spacing:0;font-size:12px;font-weight:800}
+.talk-v2 .hero-eyebrow svg{width:18px;height:18px;stroke:#146648;stroke-width:2;fill:none;stroke-linecap:round}
+.talk-v2 .hero h1{font-family:'DM Sans',system-ui,sans-serif;font-size:clamp(40px,3.25vw,54px);line-height:1.115;font-weight:800;letter-spacing:-.055em;margin:21px 0 20px;color:var(--talk-navy)}
+.talk-v2 .hero h1 em{font-family:inherit;font-weight:800;font-style:normal;color:var(--talk-green);position:relative;white-space:nowrap}
+.talk-v2 .hero h1 em:after{content:"";position:absolute;bottom:-6px;left:11%;right:2%;border-bottom:3px solid #0d8c5c;border-radius:50%;transform:rotate(-2deg)}
+.talk-v2 .mobile-title{display:none}
+.talk-v2 .hero-lead{font-size:16px;color:#435364;line-height:1.65;max-width:540px;margin:0 0 21px}
+.talk-v2 .hero-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:19px 0 23px}
+.talk-v2 .hero-benefits>div{display:flex;gap:9px;align-items:center;font-size:11px;font-weight:800;line-height:1.25;min-width:0}
+.talk-v2 .benefit-icon{background:#e7f2e2;border-radius:12px;width:43px;height:43px;flex-shrink:0;display:grid;place-items:center}
+.talk-v2 .benefit-icon svg{width:25px;height:25px;fill:none;stroke:#147653;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.talk-v2 .hero-buttons{display:flex;gap:13px;align-items:center;margin-top:5px;flex-wrap:wrap}
+.talk-v2 .hero .btn-primary{background:linear-gradient(157deg,#269365,#09603f);color:#fff;border-radius:12px;font-size:16px;font-weight:800;min-width:240px;padding:16px 22px;box-shadow:0 15px 30px rgba(16,109,73,.16)}
+.talk-v2 .hero .btn-primary:hover{background:linear-gradient(157deg,#2e9f6e,#095539)}
+.talk-v2 .hero .btn-primary svg{width:21px;height:21px;fill:currentColor}
+.talk-v2 .hero .btn-primary>span{font-size:20px;margin-left:auto}
+.talk-v2 .hero-secondary{font-size:12px;color:#244a3a;font-weight:800}
+.talk-v2 .hero-secondary svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
+.talk-v2 .trust-line{display:flex;align-items:center;gap:7px;margin-top:15px;font-size:10px;line-height:1.4;color:#52665e}
+.talk-v2 .trust-line svg{width:18px;height:18px;fill:none;stroke:#426f5c;stroke-width:1.7;flex:none}
+.talk-v2 .trust-line .sep{color:#a3b7a9}
+.talk-v2 .hero-visual{height:auto;min-height:480px;display:grid;place-items:center;position:relative;margin:0;padding:18px 0}
+.talk-v2 .hero-blob{position:absolute;inset:10px 0 0;border-radius:42% 36% 35% 35%;background:linear-gradient(135deg,#1e6c57,#8ac4a4 48%,#07563f);transform:rotate(-11deg) scale(.94);z-index:0;filter:drop-shadow(0 10px 14px rgba(13,70,53,.12))}
+.talk-v2 .conversation-preview{width:100%;position:relative;z-index:1;border:1px solid rgba(255,255,255,.95);border-radius:24px;background:rgba(255,252,247,.98);box-shadow:0 26px 48px rgba(16,56,42,.2);padding:21px 23px 15px;min-width:0;color:var(--talk-navy)}
+.talk-v2 .preview-head{display:flex;gap:10px;align-items:center;padding-bottom:18px;border-bottom:1px solid #e9ebe7}
+.talk-v2 .preview-avatar{width:75px;height:75px;object-fit:cover;border-radius:50%;border:2px solid #319767;padding:2px;background:#fff;flex:none}
+.talk-v2 .preview-person{flex:1;min-width:0}
+.talk-v2 .preview-overline{display:block;font-size:9px;font-weight:800;letter-spacing:.07em;color:#647268;margin-bottom:2px}
+.talk-v2 .preview-person h2{font-family:'DM Sans',sans-serif;font-size:20px;line-height:1.16;letter-spacing:-.035em;margin:0;font-weight:800;color:var(--talk-navy)}
+.talk-v2 .preview-person p{font-size:11px;color:#6a7781;margin:4px 0 0}
+.talk-v2 .preview-status{font-size:10px;font-weight:800;color:#0b5f39;background:#e6f2e4;border-radius:99px;padding:7px 10px;white-space:nowrap}
+.talk-v2 .preview-status>span,.talk-v2 .preview-caption-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#18b651;margin-right:3px}
+.talk-v2 .preview-timer{border:1px solid #d8ded9;border-radius:99px;padding:6px 9px;font-size:11px;font-weight:800}
+.talk-v2 .preview-chat{display:grid;gap:11px;padding:18px 0 14px}
+.talk-v2 .preview-message{display:flex;align-items:center;gap:9px}
+.talk-v2 .preview-bubble{padding:10px 13px;border-radius:13px;background:#f0f1ed;min-width:0;max-width:85%;flex:1}
+.talk-v2 .preview-bubble span{font-size:9px;color:#2c664c;font-weight:800}
+.talk-v2 .preview-bubble p{margin:3px 0 0;font-size:11.5px;line-height:1.46;color:#1e2c34}
+.talk-v2 .preview-message time{font-size:10px;color:#81918d;white-space:nowrap}
+.talk-v2 .preview-bot-icon{width:32px;height:32px;flex:none;border-radius:50%;background:#e0f1e2;color:#0b7c55;display:grid;place-items:center;font-weight:800}
+.talk-v2 .preview-human{margin-left:40px}
+.talk-v2 .preview-human .preview-bubble{background:#e1f0db;max-width:82%;margin-left:auto}
+.talk-v2 .preview-user-icon{width:32px;height:32px;background:#e6f1e3;border-radius:50%;display:grid;place-items:center;flex:none}
+.talk-v2 .preview-user-icon svg{width:19px;height:19px;fill:none;stroke:#146a4a;stroke-width:2;stroke-linecap:round}
+.talk-v2 .preview-actions{display:grid;grid-template-columns:1fr 72px 1fr;align-items:center;gap:12px;padding-top:4px}
+.talk-v2 .preview-actions button{cursor:pointer}
+.talk-v2 .preview-advice{justify-self:start;border:1px solid #458968;background:#fffdf9;color:#175e42;font-size:11px;font-weight:800;padding:10px 12px;border-radius:10px}
+.talk-v2 .preview-advice span{font-size:17px}
+.talk-v2 .preview-microphone{justify-self:center;display:grid;place-items:center;width:67px;height:67px;border:none;border-radius:50%;background:radial-gradient(circle at 34% 22%,#68c689,#0a8753 65%,#076440);box-shadow:0 0 0 9px #e5f3e3,0 0 0 15px #eff8eb,0 7px 13px rgba(20,86,53,.23)}
+.talk-v2 .preview-microphone svg{height:32px;width:32px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.talk-v2 .preview-end{justify-self:end;color:#b82e2e;background:transparent;border:1px solid #d94747;border-radius:10px;font-size:11px;font-weight:800;padding:10px 11px;white-space:nowrap}
+.talk-v2 .preview-end span{color:#c43636;font-size:12px;margin-right:4px}
+.talk-v2 .preview-caption{text-align:center;font-size:10px;color:#60736a;margin-top:16px}
+.talk-v2 .preview-caption-dot{width:7px;height:7px}
+/* Card band directly below hero, as in the reference */
+.talk-v2 .trainer-section{padding-top:10px;padding-bottom:78px}
+.talk-v2 .trainer-section-head{display:flex;align-items:center;gap:28px;margin:0 0 28px}
+.talk-v2 .trainer-section-head>span{height:1px;background:#ccd5d1;flex:1}
+.talk-v2 .trainer-section-head h2{font-family:'DM Sans',sans-serif;font-weight:800;font-size:clamp(28px,2.9vw,39px);letter-spacing:-.055em;color:var(--talk-navy);text-align:center;margin:0;white-space:nowrap}
+.talk-v2 .mode-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.talk-v2 .mode-card{position:relative;min-height:216px;display:flex;flex-direction:column;border:none;border-radius:18px;padding:18px 17px;background:linear-gradient(105deg,#e9f2ee,#f0f1ed);overflow:hidden;box-shadow:none;isolation:isolate}
+.talk-v2 .mode-card.coach-salary{background:linear-gradient(100deg,#fff0d7,#eee9db)}
+.talk-v2 .mode-card.coach-difficult{background:linear-gradient(110deg,#e8f0e8,#f2f0e8)}
+.talk-v2 .mode-card:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(21,54,44,.1)}
+.talk-v2 .coach-photo{position:absolute;right:0;bottom:0;height:100%;max-width:49%;width:auto;object-fit:cover;object-position:right bottom;z-index:0;pointer-events:none}
+.talk-v2 .coach-card-inner{position:relative;z-index:1;display:flex;flex:1;flex-direction:column;align-items:flex-start;max-width:69%}
+.talk-v2 .coach-card-title{display:flex;gap:10px;align-items:center;margin-bottom:13px}
+.talk-v2 .coach-square-icon{width:41px;height:41px;display:grid;place-items:center;background:linear-gradient(145deg,#4a9c72,#0b6b48);border-radius:12px;color:#fff;flex:none;box-shadow:0 5px 12px rgba(13,104,61,.14)}
+.talk-v2 .coach-square-icon svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.talk-v2 .coach-salary .coach-square-icon{background:linear-gradient(145deg,#d3b775,#a98639)}
+.talk-v2 .coach-card-title h3{font-family:'DM Sans',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.04em;color:var(--talk-navy);line-height:1.18;margin:0}
+.talk-v2 .mode-card p{font-size:12px;line-height:1.55;color:#1c2d3e;margin:0 0 13px;min-height:0}
+.talk-v2 .coach-cta{margin-top:auto;background:linear-gradient(150deg,#22885d,#075d3f);border:0;border-radius:8px;color:#fff;padding:10px 12px;display:inline-flex;align-items:center;gap:10px;white-space:nowrap;font-size:11px;font-weight:800}
+.talk-v2 .coach-cta span{font-size:18px;line-height:1}
+.talk-v2 .coach-cta:hover{background:#064c38}
+.talk-v2 .mode-demo-link{margin-top:18px}
+/* Typography consistency further down the page */
+.talk-v2 .section-intro h2,.talk-v2 .feature-left h2,.talk-v2 .pricing-head h2,.talk-v2 .closing-inner h2,.talk-v2 .faq-section h2{font-family:'DM Sans',sans-serif;font-size:clamp(36px,4vw,54px);font-weight:800;letter-spacing:-.055em;line-height:1.11}
+.talk-v2 .section-intro h2 em,.talk-v2 .feature-left h2 em,.talk-v2 .pricing-head h2 em,.talk-v2 .closing-inner h2 em{font-family:inherit;font-style:normal;font-weight:800}
+.talk-v2 .kicker{color:#276e4b}
+.talk-v2 .feature-section .kicker{color:#b7dfc6}
+.talk-v2 .footer .brand-wordmark strong{color:#91e5b8}
+@media(max-width:1180px){
+ .talk-v2 .wrap{width:min(100% - 42px,1100px)}
+ .talk-v2 .header-inner{gap:12px}
+ .talk-v2 .brand{font-size:20px}
+ .talk-v2 .desktop-nav>a{padding:8px 9px}
+ .talk-v2 .hero{gap:20px;grid-template-columns:minmax(0,1fr) minmax(0,1.04fr)}
+ .talk-v2 .hero h1{font-size:clamp(35px,3.6vw,46px)}
+ .talk-v2 .conversation-preview{padding:17px}
+ .talk-v2 .coach-card-inner{max-width:74%}
+ .talk-v2 .coach-card-title h3{font-size:16px}
+ .talk-v2 .coach-card-title{gap:7px}
+ .talk-v2 .coach-square-icon{height:36px;width:36px}
+}
+@media(max-width:860px){
+ .talk-v2 .header-inner{min-height:68px;position:relative}
+ .talk-v2 .desktop-nav{display:none;position:absolute;left:0;right:0;top:calc(100% - 1px);flex-direction:column;align-items:stretch;gap:5px;padding:15px;background:#fffdf8;border:1px solid #e1e8de;border-radius:0 0 17px 17px;box-shadow:0 16px 30px rgba(15,45,36,.13);margin:0}
+ .talk-v2 .desktop-nav.nav-open{display:flex}
+ .talk-v2 .desktop-nav>a{padding:12px}
+ .talk-v2 .mobile-history{display:block;background:#edf5e9;border:0;border-radius:8px;padding:12px;text-align:left;font-size:13px;font-weight:800;color:var(--talk-green-dark)}
+ .talk-v2 .history-link{display:none}
+ .talk-v2 .menu-toggle{display:flex;flex-direction:column;gap:5px;width:34px;height:36px;align-items:center;justify-content:center;border:none;background:transparent;padding:0;flex:none}
+ .talk-v2 .menu-toggle span{display:block;width:24px;height:2px;border-radius:2px;background:#0f2635}
+ .talk-v2 .menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+ .talk-v2 .menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+ .talk-v2 .menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+ .talk-v2 .hero{display:flex;flex-direction:column;align-items:stretch;gap:9px;padding:25px 0 25px}
+ .talk-v2 .hero h1{font-size:clamp(34px,5.7vw,52px)}
+ .talk-v2 .desktop-title{display:none}
+ .talk-v2 .mobile-title{display:inline}
+ .talk-v2 .hero-lead{max-width:650px}
+ .talk-v2 .hero-visual{width:100%;min-height:0;max-width:680px;margin:0 auto;padding:13px 0}
+ .talk-v2 .conversation-preview{width:100%}
+ .talk-v2 .trainer-section{padding-top:18px}
+ .talk-v2 .mode-grid{grid-template-columns:1fr;gap:13px}
+ .talk-v2 .mode-card{min-height:178px}
+ .talk-v2 .coach-card-inner{max-width:72%}
+ .talk-v2 .coach-photo{max-width:39%}
+}
+@media(max-width:500px){
+ .talk-v2 .wrap{width:calc(100% - 28px)}
+ .talk-v2 .header-inner{min-height:63px}
+ .talk-v2 .brand{font-size:18px;gap:7px}
+ .talk-v2 .brand-icon{width:39px;height:37px}
+ .talk-v2 .brand-icon span{width:3px}
+ .talk-v2 .header-actions{gap:9px}
+ .talk-v2 .header-test{padding:10px 11px;font-size:11px;gap:5px}
+ .talk-v2 .header-test svg{width:15px;height:15px}
+ .talk-v2 .menu-toggle{width:29px}
+ .talk-v2 .menu-toggle span{width:21px}
+ .talk-v2 .hero{padding-top:26px;padding-bottom:14px}
+ .talk-v2 .hero-eyebrow{font-size:10px;padding:6px 10px}
+ .talk-v2 .hero h1{font-size:clamp(34px,8.7vw,45px);line-height:1.08;margin:16px 0 13px;letter-spacing:-.058em}
+ .talk-v2 .hero-lead{font-size:14px;line-height:1.48;margin-bottom:12px}
+ .talk-v2 .hero-benefits{margin:16px 0 19px;gap:5px}
+ .talk-v2 .hero-benefits>div{font-size:9.5px;gap:5px}
+ .talk-v2 .benefit-icon{width:34px;height:34px;border-radius:10px}
+ .talk-v2 .benefit-icon svg{width:19px;height:19px}
+ .talk-v2 .hero-buttons{display:grid;grid-template-columns:1fr auto;gap:8px;margin:0}
+ .talk-v2 .hero .btn-primary{min-width:0;width:100%;padding:13px 11px;font-size:14px;border-radius:12px;gap:9px}
+ .talk-v2 .hero .btn-primary svg{width:19px;height:19px}
+ .talk-v2 .hero-secondary{font-size:10px;padding:9px 3px;gap:3px}
+ .talk-v2 .hero-secondary svg{width:13px;height:13px}
+ .talk-v2 .trust-line{margin-top:12px;font-size:9px;flex-wrap:wrap}
+ .talk-v2 .trust-line .sep{display:none}
+ .talk-v2 .hero-visual{padding:16px 0 0}
+ .talk-v2 .hero-blob{inset:25px -6px 15px;transform:rotate(-10deg) scale(.98)}
+ .talk-v2 .conversation-preview{padding:15px 14px 12px;border-radius:20px}
+ .talk-v2 .preview-head{gap:7px;padding-bottom:13px}
+ .talk-v2 .preview-avatar{width:52px;height:52px}
+ .talk-v2 .preview-person h2{font-size:15px}
+ .talk-v2 .preview-person p{font-size:9px}
+ .talk-v2 .preview-overline{font-size:8px}
+ .talk-v2 .preview-status{font-size:9px;padding:5px 8px}
+ .talk-v2 .preview-timer{font-size:10px;padding:5px 8px}
+ .talk-v2 .preview-chat{gap:8px;padding:12px 0 9px}
+ .talk-v2 .preview-message{gap:6px}
+ .talk-v2 .preview-bubble{padding:9px 10px;max-width:90%}
+ .talk-v2 .preview-bubble p{font-size:10px;line-height:1.37}
+ .talk-v2 .preview-bubble span{font-size:8px}
+ .talk-v2 .preview-message time{font-size:8px}
+ .talk-v2 .preview-bot-icon,.talk-v2 .preview-user-icon{width:26px;height:26px}
+ .talk-v2 .preview-human{margin-left:20px}
+ .talk-v2 .preview-third{display:none}
+ .talk-v2 .preview-actions{grid-template-columns:1fr 52px 1fr;gap:6px;margin:7px 0 0}
+ .talk-v2 .preview-microphone{width:48px;height:48px;box-shadow:0 0 0 5px #e5f3e3,0 0 0 8px #eff8eb}
+ .talk-v2 .preview-microphone svg{width:25px;height:25px}
+ .talk-v2 .preview-advice,.talk-v2 .preview-end{font-size:9px;padding:8px 7px;white-space:normal;text-align:center}
+ .talk-v2 .preview-caption{margin-top:13px;font-size:8.5px}
+ .talk-v2 .trainer-section-head{gap:12px;margin:7px 0 17px}
+ .talk-v2 .trainer-section-head h2{font-size:24px}
+ .talk-v2 .mode-grid{gap:12px}
+ .talk-v2 .mode-card{min-height:177px;padding:14px}
+ .talk-v2 .coach-card-inner{max-width:72%}
+ .talk-v2 .coach-photo{max-width:38%;height:100%;object-fit:cover}
+ .talk-v2 .coach-card-title{margin-bottom:8px}
+ .talk-v2 .coach-card-title h3{font-size:15px}
+ .talk-v2 .coach-square-icon{width:32px;height:32px;border-radius:9px}
+ .talk-v2 .coach-square-icon svg{width:18px;height:18px}
+ .talk-v2 .mode-card p{font-size:11px;line-height:1.45;margin-bottom:10px}
+ .talk-v2 .coach-cta{padding:8px 10px;font-size:10px}
+}
+@media(max-width:350px){
+ .talk-v2 .brand{font-size:15px}
+ .talk-v2 .header-test{font-size:9px;padding:9px}
+ .talk-v2 .hero h1{font-size:32px}
+ .talk-v2 .hero-benefits>div{font-size:8.5px}
+ .talk-v2 .coach-card-inner{max-width:75%}
+ .talk-v2 .coach-card-title h3{font-size:14px}
+ .talk-v2 .preview-status{display:none}
+}
+@media(prefers-reduced-motion:reduce){.talk-v2 .hero h1 em:after{transform:none}}
