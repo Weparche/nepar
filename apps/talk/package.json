@@ -1,0 +1,9 @@
+{
+  "name": "nepar-talk-preview",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check app.js && node --check functions/_lib.js && node --check functions/api/session.js && node --check functions/api/report.js"
+  }
+}
