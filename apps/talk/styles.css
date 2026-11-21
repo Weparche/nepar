@@ -164,3 +164,6 @@
  .demo-play-controls .btn{font-size:11px;min-width:124px}
  .demo-sound-time{font-size:10px}
 }
+
+/* WCAG AA: additional desktop label contrast */
+.more-modes>span:last-child{color:#3d604c}

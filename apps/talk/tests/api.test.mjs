@@ -4,6 +4,8 @@ import {MODES,RUBRICS,COACHING,safeContext,sameOrigin,authorized,promptFor} from
 import {onRequestPost as start} from "../functions/api/session.js";
 import {onRequestPost as report} from "../functions/api/report.js";
 import {onRequestPost as preflight} from "../functions/api/preflight.js";
+import {onRequestGet as demoAudio, onRequestPost as demoPost} from "../functions/api/demo-audio.js";
+import {readFileSync} from "node:fs";
 const url="https://talk.nepar.hr/api/session";
 const key="test-only-password";
 function req(url,body,origin="https://talk.nepar.hr",code=key){return new Request(url,{method:"POST",headers:{"Content-Type":"application/json","Origin":origin,"X-Preview-Code":code},body:JSON.stringify(body)});}
@@ -22,3 +24,41 @@ test("neispravan SDP se odbija",async()=>{const r=await start({request:req(url,{
 test("bez dovoljno prijepisa nema lažne AI analize",async()=>{const r=await report({request:req("https://talk.nepar.hr/api/report",{mode:"salary",transcript:[{role:"user",text:"Bok"}]}),env:{OPENAI_API_KEY:"dummy",TALK_PREVIEW_CODE:key}});assert.equal(r.status,400);});
 
 test("preflight ne traži mikrofon prije uspješne provjere pristupa",async()=>{let noKey=await preflight({request:req("https://talk.nepar.hr/api/preflight",{}),env:{}});assert.equal(noKey.status,503);let denied=await preflight({request:req("https://talk.nepar.hr/api/preflight",{},"https://talk.nepar.hr","wrong"),env:{OPENAI_API_KEY:"dummy",TALK_PREVIEW_CODE:key}});assert.equal(denied.status,401);let ok=await preflight({request:req("https://talk.nepar.hr/api/preflight",{}),env:{OPENAI_API_KEY:"dummy",TALK_PREVIEW_CODE:key}});assert.equal(ok.status,200);});
+
+test("audio: rejects modes not on the allowlist",async()=>{
+ const req=new Request("https://talk.nepar.hr/api/demo-audio?mode=any-user-input");
+ const res=await demoAudio({request:req,env:{}});
+ assert.equal(res.status,400);
+});
+test("audio: refuses to generate without a private R2 binding",async()=>{
+ const req=new Request("https://talk.nepar.hr/api/demo-audio?mode=interview");
+ const res=await demoAudio({request:req,env:{}});
+ assert.equal(res.status,503);
+});
+test("audio: blocks cross-site embedding",async()=>{
+ const req=new Request("https://talk.nepar.hr/api/demo-audio?mode=interview",{headers:{"Sec-Fetch-Site":"cross-site"}});
+ const res=await demoAudio({request:req,env:{}});
+ assert.equal(res.status,403);
+});
+test("audio: serves saved R2 bytes without any API key or model call",async()=>{
+ const bytes=new TextEncoder().encode("fake-mp3-test-data");
+ let reads=0;
+ const req=new Request("https://talk.nepar.hr/api/demo-audio?mode=salary");
+ const env={TALK_DEMO_AUDIO:{get:async key=>{reads++;assert.equal(key,"v1/salary.mp3");return {body:new Blob([bytes]).stream(),size:bytes.length};}}};
+ const res=await demoAudio({request:req,env});
+ assert.equal(res.status,200);
+ assert.equal(res.headers.get("Content-Type"),"audio/mpeg");
+ assert.equal(res.headers.get("X-Preview-Cache"),"R2-HIT");
+ assert.equal(reads,1);
+ assert.equal((await res.arrayBuffer()).byteLength,bytes.length);
+});
+test("audio: no POST or arbitrary text input allowed",()=>{
+ assert.equal(demoPost().status,405);
+});
+test("preview copy and audio controls are clearly disclosed",()=>{
+ const html=readFileSync(new URL("../index.html",import.meta.url),"utf8");
+ assert.match(html,/Privatni test/);
+ assert.doesNotMatch(html,/Isprobaj besplatno/);
+ assert.match(html,/id="demoAudio"/);
+ assert.match(html,/AI-generirani hrvatski glas/);
+});
