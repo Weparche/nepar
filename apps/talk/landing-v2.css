@@ -216,3 +216,13 @@ body.talk-v2{background:var(--talk-cream);color:var(--talk-navy)}
  .talk-v2 .preview-status{display:none}
 }
 @media(prefers-reduced-motion:reduce){.talk-v2 .hero h1 em:after{transform:none}}
+
+
+/* Final visual QA: footer identity and tiny preview timestamps meet WCAG AA contrast. */
+.talk-v2 .footer .footer-brand{color:#ebf7ed!important}
+.talk-v2 .footer .footer-brand .brand-soft{color:#b2ead0!important}
+.talk-v2 .preview-message time{color:#50645b}
+@media(max-width:500px){
+ .talk-v2 .hero-benefits>div{font-size:10px}
+ .talk-v2 .preview-message time{font-size:9px}
+}
