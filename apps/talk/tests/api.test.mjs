@@ -62,3 +62,11 @@ test("preview copy and audio controls are clearly disclosed",()=>{
  assert.match(html,/id="demoAudio"/);
  assert.match(html,/AI-generirani hrvatski glas/);
 });
+
+test("mobile Live screen is one fixed viewport with a separately scrolling transcript",()=>{
+ const css=readFileSync(new URL("../styles.css",import.meta.url),"utf8");
+ assert.match(css,/#callScreen\s*\{[^}]*height:100dvh/);
+ assert.match(css,/#callScreen\s+\.session-main\s*\{[^}]*overflow:hidden/);
+ assert.match(css,/#callScreen\s+\.transcript-scroll\s*\{[^}]*overflow-y:auto/);
+ assert.match(css,/#callScreen\s+\.transcript-panel\s*\{[^}]*min-height:0/);
+});
