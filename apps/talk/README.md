@@ -29,3 +29,7 @@ Samo internom testeru dijeliti pristupni kod. Pristupni kod NE zamjenjuje korisn
 6. Nema izmišljene analize bez valjanog prijepisa.
 7. Testirati 5-minutni limit, otkazivanje i gašenje mikrofona.
 8. Testirati GDPR i sigurnosne evaluacije prije javnog prometa.
+
+## Hrvatski glasovni demo
+
+Svaki od tri scenarija ima unaprijed definirano uvodno pitanje koje `/api/demo-audio?mode=...` sintetizira govorom `gpt-4o-mini-tts`, glas `marin`, pri prvom zahtjevu. Zvučni zapis sprema se u zasebni, privatni Cloudflare R2 bucket `nepar-talk-audio` preko production bindinga `TALK_DEMO_AUDIO` i nakon toga se služi iz R2 bez novih TTS poziva. Iznos TTS računa jednokratan je po scenariju, osim u slučaju paralelnih prvih zahtjeva prije uspješnog spremanja. Nema teksta korisnika, nema prijave i nema obrade mikrofona u demonstraciji. Ovo nije snimka GPT-Live sesije, to je primjer istog ugrađenog glasa u TTS modelu.

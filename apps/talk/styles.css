@@ -95,3 +95,72 @@
  .hero-visual .floating-feedback{bottom:5px}
  .choose-grid button{min-height:78px}
 }
+
+
+/* Iteracija 2026-11: concise first fold and scan-friendly coach cards */
+@media(max-width:760px){
+ .hero{padding-top:27px;padding-bottom:35px;gap:11px}
+ .hero h1{font-size:clamp(42px,11vw,53px);margin:13px 0 15px;line-height:.99}
+ .hero-lead{font-size:14px;line-height:1.65}
+ .hero .hero-buttons{margin-top:17px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+ .hero .hero-buttons .btn{width:auto}
+ .hero .hero-buttons .btn-big{padding:14px 17px;font-size:12px}
+ .hero .hero-buttons .btn-text{padding:10px 6px;font-size:12px;gap:7px}
+ .hero-quick{margin-top:12px;gap:7px}
+ .trust-line{margin-top:12px;line-height:1.7}
+ .hero-visual{height:182px!important;min-height:182px!important;display:block}
+ .visual-orb{display:none}
+ .talk-card{width:100%;max-width:none;height:167px;display:grid;grid-template-columns:64px minmax(0,1fr);grid-template-rows:auto auto auto;padding:17px;border-radius:17px;gap:3px 12px}
+ .talk-top{grid-column:1/-1;grid-row:1;margin-bottom:10px}
+ .talk-avatar{grid-column:1;grid-row:2/4;width:64px;height:75px}
+ .talk-avatar-ring.ring-out{width:75px;height:75px}
+ .talk-avatar-ring.ring-in{width:62px;height:62px}
+ .talk-avatar-core{width:53px;height:53px}
+ .talk-question{grid-column:2;grid-row:2;text-align:left;font-size:18px;line-height:1.15;margin:0;align-self:end}
+ .talk-caption{grid-column:2;grid-row:3;text-align:left;font-size:10px;margin:1px 0;max-width:none;line-height:1.4}
+ .talk-controls,.floating-feedback{display:none}
+ .mode-grid{gap:12px}
+ .mode-card{display:grid;grid-template-columns:112px minmax(0,1fr);grid-template-rows:auto auto auto auto;gap:0 13px;padding:16px;border-radius:16px}
+ .mode-card-top{grid-column:1/-1;grid-row:1;margin-bottom:11px}
+ .mode-art{grid-column:1;grid-row:2/4;width:112px;height:110px;margin:0}
+ .mode-card h3{grid-column:2;grid-row:2;font-size:24px;margin:0 0 7px;align-self:end}
+ .mode-card>p{grid-column:2;grid-row:3;font-size:12px;line-height:1.55;margin:0;min-height:0;align-self:start}
+ .mode-footer{grid-column:1/-1;grid-row:4;margin-top:13px;padding-top:12px}
+ .mode-art .art-bubble{display:none}
+ .art-briefcase{right:24px;top:27px;font-size:68px}
+ .art-chart{inset:22px 14px;gap:7px}
+ .art-chart span{width:20px}
+ .art-spark{font-size:44px;top:0;right:8px}
+ .art-circle-one,.art-circle-two{width:78px;height:78px;top:16px;left:4px}
+ .art-circle-two{left:auto;right:4px}
+}
+@media(max-width:370px){
+ .mode-card{grid-template-columns:100px minmax(0,1fr)}
+ .mode-art{width:100px}
+ .mode-card h3{font-size:22px}
+}
+/* Transparent, persistent audio example UI */
+.demo-sound-panel{border:1px solid #c9dece;background:#e9f2e6;border-radius:16px;padding:15px;margin:18px 0 13px}
+.demo-sound-heading{display:flex;align-items:center;gap:11px}
+.demo-sound-heading strong{display:block;font-size:13px}
+.demo-sound-heading small{display:block;color:#4e695a;font-size:11px;margin-top:2px}
+.demo-sound-icon{display:grid;place-items:center;width:37px;height:37px;border-radius:12px;background:#d0e5d2;color:#27644a;font-size:19px}
+.demo-play-controls{display:flex;align-items:center;gap:10px;margin-top:13px}
+.demo-play-controls .btn{font-size:12px;min-width:138px;padding:11px 13px;background:#173b31;color:#fff;border:0}
+.demo-play-controls .btn[aria-pressed="true"]{background:#417661}
+.demo-play-controls progress{flex:1;min-width:18px;height:7px;accent-color:#407959}
+.demo-play-controls progress::-webkit-progress-bar{background:#ccdece;border-radius:10px}
+.demo-play-controls progress::-webkit-progress-value{background:#407959;border-radius:10px}
+.demo-sound-time{color:#345a47;min-width:39px;white-space:nowrap;text-align:right;font-size:10px;font-variant-numeric:tabular-nums}
+.demo-conversation{height:min(35vh,290px);min-height:190px}
+.demo-controls{display:flex;gap:9px}
+.demo-controls .btn:last-child{grid-column:auto}
+@media(max-width:500px){
+ .demo-modal .demo-tabs{margin:14px 0 0}
+ .demo-sound-panel{margin-top:13px;margin-bottom:10px;padding:12px}
+ .demo-conversation{height:230px;min-height:180px}
+ .demo-controls{display:grid;grid-template-columns:1fr 1fr}
+ .demo-controls .btn{font-size:11px;padding:11px 8px}
+ .demo-play-controls .btn{font-size:11px;min-width:124px}
+ .demo-sound-time{font-size:10px}
+}
