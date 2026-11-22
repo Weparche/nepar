@@ -83,3 +83,9 @@ test("landing v2 keeps preview trust copy and all three coach CTAs",()=>{
  assert.match(html,/Ogledni razgovor/);
  assert.doesNotMatch(html,/id="loginButton"/);
 });
+
+test("landing: dynamic mobile demo height prevents trainer cards from being overlapped",()=>{
+ const css=readFileSync(new URL("../landing-v2.css",import.meta.url),"utf8");
+ assert.match(css,/\.talk-v2 \.hero-visual\{height:auto!important;min-height:0!important/);
+ assert.match(css,/\.talk-v2 \.hero\{overflow-x:clip\}/);
+});

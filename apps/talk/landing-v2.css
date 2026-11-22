@@ -226,3 +226,13 @@ body.talk-v2{background:var(--talk-cream);color:var(--talk-navy)}
  .talk-v2 .hero-benefits>div{font-size:10px}
  .talk-v2 .preview-message time{font-size:9px}
 }
+
+
+/* Mobile demo layout regression: legacy styles.css fixes .hero-visual at 182px.
+   The new conversational card is taller; let its parent grow in normal flow,
+   and clip only the decorative blob horizontally to avoid side-scrolling. */
+.talk-v2 .hero{overflow-x:clip}
+@media(max-width:860px){
+ .talk-v2 .hero-visual{height:auto!important;min-height:0!important;overflow:visible}
+ .talk-v2 .hero{align-items:stretch}
+}
